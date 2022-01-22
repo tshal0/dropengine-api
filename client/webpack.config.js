@@ -8,6 +8,8 @@ const TerserPlugin = require("terser-webpack-plugin");
 const HtmlMinimizerPlugin = require("html-minimizer-webpack-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const CompressionPlugin = require('compression-webpack-plugin');
+
 const ROOT_DIR = path.resolve(__dirname);
 const SRC_DIR = path.resolve(ROOT_DIR, "src");
 const config = {
@@ -78,7 +80,7 @@ const config = {
       chunkFilename: "[id].css",
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new BundleAnalyzerPlugin()
+
   ],
   module: {
     rules: [
@@ -122,18 +124,18 @@ const config = {
   },
 };
 
-config.devServer = {
-  client: {
-    progress: true,
-    reconnect: true,
-    overlay: {
-      errors: false, warnings: false
-    }
-  },
-  hot: true,
-  port: 3000,
-  compress: true
-};
+// config.devServer = {
+//   client: {
+//     progress: true,
+//     reconnect: true,
+//     overlay: {
+//       errors: false, warnings: false
+//     }
+//   },
+//   hot: true,
+//   port: 3001,
+//   compress: true
+// };
 
 
 module.exports = config;
