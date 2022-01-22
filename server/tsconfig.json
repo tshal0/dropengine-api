@@ -14,6 +14,12 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "paths": {
+      "@server/*": [
+        "src/server/*"
+      ],
+      "@client/*": [
+        "src/client/*"
+      ],
       "@shared/*": [
         "src/shared/*"
       ],
