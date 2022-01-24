@@ -9,22 +9,16 @@
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "incremental": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "paths": {
-      "@server/*": [
-        "src/server/*"
-      ],
-      "@client/*": [
-        "src/client/*"
-      ],
       "@shared/*": [
         "src/shared/*"
       ],
       "@db/*": [
-        "src/prisma/*"
+        "prisma/*"
       ]
     },
   },
