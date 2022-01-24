@@ -15,11 +15,11 @@
     "resolveJsonModule": true,
     "paths": {
       "@shared/*": [
-        "src/shared/*"
+        "server/shared/*"
       ],
       "@db/*": [
-        "prisma/*"
+        "server/prisma/*"
       ]
     },
-  },
+  }
 }

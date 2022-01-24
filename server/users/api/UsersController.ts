@@ -9,24 +9,25 @@ import {
   Res,
   UnprocessableEntityException,
   UseGuards,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { UUID } from '@shared/domain/ValueObjects';
-import { AzureLoggerService } from '@shared/modules/azure-logger/azure-logger.service';
-import { Request, Response } from 'express';
-import { CreateUserDto } from '../dto/CreateUserDto';
-import { CreateUserUseCase } from '../useCases/CreateUser';
-import { GetUserUseCase } from '../useCases/GetUser';
+} from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { UUID } from "@shared/domain/ValueObjects";
+import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { Request, Response } from "express";
+import { CreateUserDto } from "../dto/CreateUserDto";
+import { CreateUserUseCase } from "../useCases/CreateUser";
+import { GetUserUseCase } from "../useCases/GetUser";
+
 @UseGuards(AuthGuard())
-@Controller('/api/users')
+@Controller("/api/users")
 export class UsersController {
   constructor(
     private readonly createUser: CreateUserUseCase,
     private readonly logger: AzureLoggerService,
-    private readonly getUser: GetUserUseCase,
+    private readonly getUser: GetUserUseCase
   ) {}
-  @Get(':id')
-  async get(@Param('id') id: string) {
+  @Get(":id")
+  async get(@Param("id") id: string) {
     let uuid = UUID.from(id);
     let result = await this.getUser.execute(uuid);
     if (result.isSuccess) {

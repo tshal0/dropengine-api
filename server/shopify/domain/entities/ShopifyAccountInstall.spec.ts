@@ -66,7 +66,7 @@ describe(`ShopifyAccountInstall`, () => {
   it(`should generate a valid install link`, () => {
     const ts = moment().toDate().valueOf();
     const nonce = ts.valueOf();
-    console.log(nonce);
+    
     const mockOrigin = 'mock-origin';
     const mockHmac = 'da9d83c171400a41f8db91a950508985';
     const mockShopifyAccountId = UUID.generate();
