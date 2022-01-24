@@ -6,14 +6,14 @@ import { ConnectShopifyAccountUseCase } from '../useCases/ConnectShopifyAccount'
 import { DeleteShopifyAccountUseCase } from '../useCases/DeleteShopifyAccount';
 import { GetAllAccountsUseCase } from '../useCases/GetAllAccounts';
 import { GetShopifyAccountUseCase } from '../useCases/GetShopifyAccount';
-import { ShopifyController } from './shopify.api.controller';
+import { ShopifyApiController } from './shopify.api.controller';
 
 describe('ShopifyController', () => {
-  let controller: ShopifyController;
+  let controller: ShopifyApiController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [ShopifyController],
+      controllers: [ShopifyApiController],
       providers: [
         { provide: AzureLoggerService, useValue: {} },
         { provide: ShopifyApiClient, useValue: {} },
@@ -25,7 +25,7 @@ describe('ShopifyController', () => {
       ],
     }).compile();
 
-    controller = module.get<ShopifyController>(ShopifyController);
+    controller = module.get<ShopifyApiController>(ShopifyApiController);
   });
 
   it('should be defined', () => {

@@ -8,6 +8,7 @@ import {
 import { Cache } from "cache-manager";
 
 import { ShopifyController } from "./shopify.controller";
+import { ShopifyApiController } from "./api/shopify.api.controller";
 import { HttpService, HttpModule } from "@nestjs/axios";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import * as https from "https";
@@ -48,7 +49,7 @@ import { GetAllAccountsUseCase } from "./useCases/GetAllAccounts";
       inject: [ConfigService, CACHE_MANAGER],
     }),
   ],
-  controllers: [ShopifyController],
+  controllers: [ShopifyController, ShopifyApiController],
   providers: [
     DbShopifyAccountsRepository,
     ShopifyApiClient,

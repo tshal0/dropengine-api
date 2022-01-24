@@ -30,7 +30,7 @@ export class ConnectShopifyQuery {
 
 @Controller("api/shopify")
 @UseGuards(AuthGuard())
-export class ShopifyController {
+export class ShopifyApiController {
   constructor(
     private readonly shopify: ShopifyApiClient,
     private readonly logger: AzureLoggerService,
