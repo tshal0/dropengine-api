@@ -75,6 +75,7 @@ describe(`User`, () => {
       const props = user.getProps();
       expect(props).toEqual({
         id: mockUserId,
+        externalUserId: "mock|12345",
         email: "mock@email.com",
         status: "ACTIVATED",
         firstName: "Mock",
@@ -114,8 +115,9 @@ describe(`User`, () => {
 
       const expectedUser = {
         id: "00000000-0000-0000-0000-000000000001",
+        externalUserId: undefined,
         email: "mock@email.com",
-        status: "ACTIVATED",
+        status: "DEACTIVATED",
         firstName: "Mock",
         lastName: "User",
         createdAt: now,
@@ -129,6 +131,7 @@ describe(`User`, () => {
               email: "mock@email.com",
               firstName: "Mock",
               lastName: "User",
+              password: undefined
             },
             eventId: "00000000-0000-0000-0000-00000000000e",
             eventType: "UserSignedUp",
@@ -176,7 +179,7 @@ describe(`User`, () => {
 
       const expectedUser: IUser = {
         id: "00000000-0000-0000-0000-000000000001",
-        externalUserId: `MOCK_AUTH0_USER_ID`,
+        externalUserId: `auth0|MOCK_AUTH0_USER_ID`,
         email: "mock@email.com",
         status: "ACTIVATED",
         firstName: "Mock",

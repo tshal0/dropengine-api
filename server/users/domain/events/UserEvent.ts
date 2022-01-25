@@ -63,7 +63,12 @@ export class UserSignedUp extends UserEvent {
     return event;
   }
   public withDetails(dto: CreateUserDto) {
-    this.details = dto;
+    this.details = {
+      email: dto.email,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      password: undefined,
+    };
     return this;
   }
 }

@@ -50,10 +50,10 @@ export class DeleteUserUseCase implements UseCase<UUID, any> {
         const AUTH0_M2M_CLIENT_SECRET = this.config.get(
           "AUTH0_M2M_CLIENT_SECRET"
         );
-
         const AUTH0_DOMAIN = this.config.get(`AUTH0_DOMAIN`);
         const AUTH0_MGMT_AUDIENCE = `https://${AUTH0_DOMAIN}/api/v2/`;
         const AUTH0_MGMT_GRANT_TYPE = `client_credentials`;
+
         if (!TOKEN) {
           const options = {
             method: "POST",
