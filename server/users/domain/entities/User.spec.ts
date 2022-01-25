@@ -1,27 +1,40 @@
-import { User } from './User';
-import * as moment from 'moment';
-import { UserSignedUp } from '../events/UserEvent';
-import { CreateUserDto } from '../../dto/CreateUserDto';
-import { UUID } from '@shared/domain/ValueObjects';
+import { IUser, User, UserProps } from "./User";
+import * as moment from "moment";
+import { UserSignedUp } from "../events/UserEvent";
+import {
+  CreateAuth0UserResponseDto,
+  CreateUserDto,
+} from "../../dto/CreateUserDto";
+import { UUID } from "@shared/domain/ValueObjects";
+import { DbUser } from "@shared/modules/prisma/models/User";
+import { BaseDomainEvent } from "@shared/domain/events/BaseDomainEvents";
 jest
-  .spyOn(global.Date, 'now')
-  .mockImplementation(() => new Date('2021-01-01T00:00:00.000Z').valueOf());
+  .spyOn(global.Date, "now")
+  .mockImplementation(() => new Date("2021-01-01T00:00:00.000Z").valueOf());
 describe(`User`, () => {
   describe(`init`, () => {
     it(`should initialize a new user given a UUID`, () => {
-      const mockUuid = UUID.generate();
-      const user = User.init(mockUuid);
+      const mockEventId = "00000000-0000-0000-0000-00000000000e";
+      const mockEventUuid = UUID.from(mockEventId);
+      const mockGenerateEventId = jest.fn().mockReturnValue(mockEventUuid);
+      BaseDomainEvent.generateUuid = mockGenerateEventId;
+
+      const mockUserId = "00000000-0000-0000-0000-000000000001";
+      const mockUserUuid = UUID.from(mockUserId);
+      const mockGenerateUserId = jest.fn().mockReturnValue(mockUserUuid);
+      User.generateUuid = mockGenerateUserId;
+
+      const user = User.create();
       const props = user.getProps();
-      const defaultUserStatus = 'DEACTIVATED';
-      const defaultPicture = '';
+      const defaultUserStatus = "DEACTIVATED";
+      const defaultPicture = "";
       const now = moment().toDate();
 
       expect(props).toEqual({
-        id: mockUuid.value,
-        email: '',
-        name: '',
-        firstName: '',
-        lastName: '',
+        id: mockUserId,
+        email: "",
+        firstName: "",
+        lastName: "",
         status: defaultUserStatus,
         picture: defaultPicture,
         createdAt: now,
@@ -31,74 +44,169 @@ describe(`User`, () => {
     });
   });
 
-  // describe(`fromDb`, () => {
-  //   it(`should load a user from the db into the domain object`, () => {
-  //     const mockUuid = UUID.generate();
-  //     const now = moment().toDate();
+  describe(`fromDb`, () => {
+    it(`should load a user from the db into the domain object`, () => {
+      const mockEventId = "00000000-0000-0000-0000-00000000000e";
+      const mockEventUuid = UUID.from(mockEventId);
+      const mockGenerateEventId = jest.fn().mockReturnValue(mockEventUuid);
+      BaseDomainEvent.generateUuid = mockGenerateEventId;
 
-  //     const mockPrismaUser: PrismaUser = {
-  //       id: mockUuid.value,
-  //       email: 'mock@email.com',
-  //       name: 'Mock User',
-  //       status: 'ACTIVATED',
-  //       firstName: 'Mock',
-  //       lastName: 'User',
-  //       createdAt: now,
-  //       updatedAt: now,
-  //       picture: 'Picture',
-  //       lastLogin: now,
-  //       lastIp: 'Ip Address',
-  //       loginsCount: 0,
-  //     };
+      const mockUserId = "00000000-0000-0000-0000-000000000001";
+      const mockUserUuid = UUID.from(mockUserId);
+      const mockGenerateUserId = jest.fn().mockReturnValue(mockUserUuid);
+      User.generateUuid = mockGenerateUserId;
 
-  //     const user = User.fromDb(mockPrismaUser);
-  //     const props = user.getProps();
-  //     expect(props).toEqual({
-  //       id: mockUuid.value,
-  //       email: 'mock@email.com',
-  //       name: 'Mock User',
-  //       status: 'ACTIVATED',
-  //       firstName: 'Mock',
-  //       lastName: 'User',
-  //       createdAt: now,
-  //       updatedAt: now,
-  //       picture: 'Picture',
-  //       lastLogin: now,
-  //       lastIp: 'Ip Address',
-  //       loginsCount: 0,
-  //       events: [],
-  //     });
-  //   });
-  // });
+      const now = moment().toDate();
+
+      const mockDbUser: DbUser = {
+        id: mockUserId,
+        externalUserId: "mock|12345",
+        email: "mock@email.com",
+        status: "ACTIVATED",
+        firstName: "Mock",
+        lastName: "User",
+        createdAt: now,
+        updatedAt: now,
+        picture: "Picture",
+        events: [],
+      };
+
+      const user = User.fromDb(mockDbUser);
+      const props = user.getProps();
+      expect(props).toEqual({
+        id: mockUserId,
+        email: "mock@email.com",
+        status: "ACTIVATED",
+        firstName: "Mock",
+        lastName: "User",
+        createdAt: now,
+        updatedAt: now,
+        picture: "Picture",
+        events: [],
+      });
+    });
+  });
 
   describe(`signUp`, () => {
     it(`should update the users email, name, and add a UserSignedUp event`, () => {
-      const mockUuid = UUID.generate();
+      const mockEventId = "00000000-0000-0000-0000-00000000000e";
+      const mockEventUuid = UUID.from(mockEventId);
+      const mockGenerateEventId = jest.fn().mockReturnValue(mockEventUuid);
+      BaseDomainEvent.generateUuid = mockGenerateEventId;
+
+      const mockUserId = "00000000-0000-0000-0000-000000000001";
+      const mockUserUuid = UUID.from(mockUserId);
+      const mockGenerateUserId = jest.fn().mockReturnValue(mockUserUuid);
+      User.generateUuid = mockGenerateUserId;
+
       const mockSignUpDto: CreateUserDto = {
-        email: 'mock@email.com',
-        firstName: 'Mock',
-        lastName: 'User',
-        externalUserId: 'MockAuth0Id',
-        id: mockUuid.value,
-        picture: 'MockPicture',
+        email: "mock@email.com",
+        firstName: "Mock",
+        lastName: "User",
+        password: "password123",
       };
-      const event = UserSignedUp.generate(mockSignUpDto);
-      const user = User.init(mockUuid);
+
+      // const event = UserSignedUp.generate(mockSignUpDto);
+      const user = User.create();
       const now = moment().toDate();
-      user.signUp(event);
+      user.signUp(mockSignUpDto);
       const props = user.getProps();
-      expect(props).toEqual({
-        id: mockUuid.value,
-        email: 'mock@email.com',
-        name: 'Mock User',
-        status: 'ACTIVATED',
-        firstName: 'Mock',
-        lastName: 'User',
+
+      const expectedUser = {
+        id: "00000000-0000-0000-0000-000000000001",
+        email: "mock@email.com",
+        status: "ACTIVATED",
+        firstName: "Mock",
+        lastName: "User",
         createdAt: now,
         updatedAt: now,
-        picture: 'MockPicture',
-        events: [event.getProps()],
-      });
+        picture: "",
+        events: [
+          {
+            aggregateId: "00000000-0000-0000-0000-000000000001",
+            aggregateType: "User",
+            details: {
+              email: "mock@email.com",
+              firstName: "Mock",
+              lastName: "User",
+            },
+            eventId: "00000000-0000-0000-0000-00000000000e",
+            eventType: "UserSignedUp",
+            timestamp: now,
+          },
+        ],
+      };
+      expect(props).toEqual(expectedUser);
+    });
+  });
+  describe(`updateAuth0UserId`, () => {
+    it(`should update users Auth0 ID`, () => {
+      const mockEventId = "00000000-0000-0000-0000-00000000000e";
+      const mockEventUuid = UUID.from(mockEventId);
+      const mockGenerateEventId = jest.fn().mockReturnValue(mockEventUuid);
+      BaseDomainEvent.generateUuid = mockGenerateEventId;
+
+      const mockUserId = "00000000-0000-0000-0000-000000000001";
+      const mockUserUuid = UUID.from(mockUserId);
+      const mockGenerateUserId = jest.fn().mockReturnValue(mockUserUuid);
+      User.generateUuid = mockGenerateUserId;
+
+      const mockSignUpDto: CreateUserDto = {
+        email: "mock@email.com",
+        firstName: "Mock",
+        lastName: "User",
+        password: "password123",
+      };
+
+      const user = User.create();
+      const now = moment().toDate();
+      const mockAuth0Resp: CreateAuth0UserResponseDto = {
+        _id: "MOCK_AUTH0_USER_ID",
+        email_verified: false,
+        email: mockSignUpDto.email,
+        username: "",
+        given_name: mockSignUpDto.firstName,
+        family_name: mockSignUpDto.lastName,
+        name: "",
+        nickname: "",
+        picture: "",
+      };
+
+      user.updateAuth0Details(mockAuth0Resp);
+
+      const expectedUser: IUser = {
+        id: "00000000-0000-0000-0000-000000000001",
+        externalUserId: `MOCK_AUTH0_USER_ID`,
+        email: "mock@email.com",
+        status: "ACTIVATED",
+        firstName: "Mock",
+        lastName: "User",
+        createdAt: now,
+        updatedAt: now,
+        picture: "",
+        events: [
+          {
+            aggregateId: "00000000-0000-0000-0000-000000000001",
+            aggregateType: "User",
+            details: {
+              _id: "MOCK_AUTH0_USER_ID",
+              email_verified: false,
+              email: mockSignUpDto.email,
+              username: "",
+              given_name: mockSignUpDto.firstName,
+              family_name: mockSignUpDto.lastName,
+              name: "",
+              nickname: "",
+              picture: "",
+            },
+            eventId: "00000000-0000-0000-0000-00000000000e",
+            eventType: "UserCreatedInAuth0",
+            timestamp: now,
+          },
+        ],
+      };
+      const props = user.getProps();
+      expect(props).toEqual(expectedUser);
     });
   });
   describe(`updateEmail`, () => {

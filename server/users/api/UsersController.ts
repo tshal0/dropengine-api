@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -14,8 +15,11 @@ import { AuthGuard } from "@nestjs/passport";
 import { UUID } from "@shared/domain/ValueObjects";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { Request, Response } from "express";
+import { IUser } from "../domain/entities/User";
 import { CreateUserDto } from "../dto/CreateUserDto";
 import { CreateUserUseCase } from "../useCases/CreateUser";
+import { DeleteUserUseCase } from "../useCases/DeleteUser";
+import { GetAllUsersUseCase } from "../useCases/GetAllUsers";
 import { GetUserUseCase } from "../useCases/GetUser";
 
 @UseGuards(AuthGuard())
@@ -24,7 +28,9 @@ export class UsersController {
   constructor(
     private readonly createUser: CreateUserUseCase,
     private readonly logger: AzureLoggerService,
-    private readonly getUser: GetUserUseCase
+    private readonly getUser: GetUserUseCase,
+    private readonly getAll: GetAllUsersUseCase,
+    private readonly deleteUser: DeleteUserUseCase
   ) {}
   @Get(":id")
   async get(@Param("id") id: string) {
@@ -34,13 +40,28 @@ export class UsersController {
       return result.getValue().getProps();
     }
   }
+  @Delete(":id")
+  async delete(@Param("id") id: string) {
+    let uuid = UUID.from(id);
+    let result = await this.deleteUser.execute(uuid);
+    if (result.isSuccess) {
+      return result.getValue();
+    }
+  }
   @Post()
-  async post(@Body() dto: CreateUserDto) {
+  async post(@Body() dto: CreateUserDto): Promise<IUser> {
     let result = await this.createUser.execute(dto);
     if (result.isSuccess) {
-      return result.getValue().getProps();
+      return result.getValue();
     } else {
       throw new UnprocessableEntityException(result.error);
+    }
+  }
+  @Get()
+  async getAllUsers(): Promise<IUser[]> {
+    let result = await this.getAll.execute();
+    if (result.isSuccess) {
+      return result.getValue();
     }
   }
 }

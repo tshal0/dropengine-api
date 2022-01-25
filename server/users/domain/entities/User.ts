@@ -1,15 +1,21 @@
-import { UnprocessableEntityException } from '@nestjs/common';
-import { IDomainEventProps } from '@shared/domain/events/BaseDomainEvents';
-import { ResultError, Result } from '@shared/domain/Result';
-import { UUID } from '@shared/domain/ValueObjects';
-import { DbUser, DbUserStatus } from '@shared/modules/prisma/models/User';
-import * as moment from 'moment';
+import { UnprocessableEntityException } from "@nestjs/common";
+import { IDomainEventProps } from "@shared/domain/events/BaseDomainEvents";
+import { ResultError, Result } from "@shared/domain/Result";
+import { UUID } from "@shared/domain/ValueObjects";
+import { DbUser, DbUserStatus } from "@shared/modules/prisma/models/User";
+import * as moment from "moment";
+import {
+  CreateAuth0UserDto,
+  CreateAuth0UserResponseDto,
+  CreateUserDto,
+} from "server/users/dto/CreateUserDto";
 import {
   UserEvent,
   UserSignedUp,
   UserActivated,
   UserDeactivated,
-} from '../events/UserEvent';
+  UserCreatedInAuth0,
+} from "../events/UserEvent";
 
 export abstract class IUserStatus {
   static readonly ACTIVATED: string = `ACTIVATED`;
@@ -21,7 +27,6 @@ export interface IUser {
   id: string;
   externalUserId?: string | undefined;
   email: string;
-  name: string;
   status: DbUserStatus;
   picture: string;
   firstName: string;
@@ -34,7 +39,6 @@ export interface UserProps {
   id: UUID;
   externalUserId?: string | undefined;
   email: string;
-  name: string;
   status: DbUserStatus;
   picture: string;
   firstName: string;
@@ -56,7 +60,16 @@ export class User {
     return this.props.email;
   }
   get name() {
-    return this.props.name;
+    return `${this.props.firstName || ""} ${this.props.lastName || ""}`.trim();
+  }
+  get status() {
+    return this.props.status;
+  }
+  get picture() {
+    return this.props.picture;
+  }
+  get externalUserId() {
+    return this.props.externalUserId;
   }
   public static errorResult(error: any, value: any) {
     const err = new Error(error?.message || error);
@@ -64,16 +77,19 @@ export class User {
     const result = Result.fail<User>(resultError);
     return result;
   }
-  public static init(id: UUID) {
+  public static generateUuid() {
+    return UUID.generate();
+  }
+  public static create() {
+    const id = User.generateUuid();
     const now = moment().toDate();
-    const defaultUserStatus = 'DEACTIVATED';
-    const defaultPicture = '';
+    const defaultUserStatus = "DEACTIVATED";
+    const defaultPicture = "";
     const props: UserProps = {
       id: id,
-      email: '',
-      name: '',
-      firstName: '',
-      lastName: '',
+      email: "",
+      firstName: "",
+      lastName: "",
       status: defaultUserStatus,
       picture: defaultPicture,
       createdAt: now,
@@ -88,8 +104,8 @@ export class User {
       const id = UUID.from(prismaUser.id);
       const props: UserProps = {
         id: id,
+        externalUserId: prismaUser.externalUserId,
         email: prismaUser.email,
-        name: prismaUser.name,
         status: prismaUser.status,
         picture: prismaUser.picture,
         firstName: prismaUser.firstName,
@@ -111,7 +127,7 @@ export class User {
     const resp: IUser = {
       id: this.props.id.value,
       email: this.props.email,
-      name: this.props.name,
+      externalUserId: this.props.externalUserId,
       status: this.props.status,
       picture: this.props.picture,
       firstName: this.props.firstName,
@@ -131,23 +147,29 @@ export class User {
     return resp;
   }
 
-  signUp(event: UserSignedUp): User {
-    this.props.externalUserId = event.details.externalUserId;
-    this.props.picture = event.details.picture;
+  signUp(dto: CreateUserDto): User {
+    const event = UserSignedUp.generate(this.props.id, dto);
     this.props.email = event.details.email;
     this.props.firstName = event.details.firstName;
     this.props.lastName = event.details.lastName;
-    this.props.status = 'ACTIVATED';
-    let generatedName = `${this.props.firstName} ${this.props.lastName}`;
-    generatedName = generatedName.trim();
-    this.props.name = generatedName;
+    this.props.status = "DEACTIVATED";
     this.raiseEvent(event);
     return this;
   }
-  raiseEvent(event: UserEvent): User {
-    this.props.events.push(event);
+  updateAuth0Details(dto: CreateAuth0UserResponseDto): User {
+    const event = UserCreatedInAuth0.generate(this.props.id, dto);
+    this.props.externalUserId = `auth0|${dto._id}`;
+    this.props.email = dto.email;
+    this.props.picture = dto.picture;
+    this.props.firstName = dto.given_name;
+    this.props.lastName = dto.family_name;
+
+    this.props.status = "ACTIVATED";
+
+    this.raiseEvent(event);
     return this;
   }
+
   updateEmail(email: string): User {
     this.props.email = email;
     return this;
@@ -156,28 +178,43 @@ export class User {
     this.props.externalUserId = id;
     return this;
   }
-  updateName(name: string): User {
-    this.props.name = name;
-    return this;
-  }
+
   updatePicture(picture: string): User {
     this.props.picture = picture;
     return this;
   }
 
   activate(event: UserActivated): User {
-    this.props.status = 'ACTIVATED';
+    this.props.status = "ACTIVATED";
     this.raiseEvent(event);
     return this;
   }
   deactivate(event: UserDeactivated): User {
-    this.props.status = 'DEACTIVATED';
+    this.props.status = "DEACTIVATED";
     this.raiseEvent(event);
     return this;
   }
 
   disable(): User {
-    this.props.status = 'DISABLED';
+    this.props.status = "DISABLED";
     return this;
+  }
+  raiseEvent(event: UserEvent): User {
+    this.props.events.push(event);
+    return this;
+  }
+
+  generateAuth0CreateUserPayload(
+    dto: CreateUserDto,
+    clientId: string,
+    connection: string
+  ): CreateAuth0UserDto {
+    let auth0Dto: CreateAuth0UserDto = {
+      client_id: clientId,
+      email: this.props.email,
+      password: dto.password,
+      connection: connection,
+    };
+    return auth0Dto;
   }
 }

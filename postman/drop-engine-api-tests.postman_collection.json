@@ -1,0 +1,345 @@
+{
+	"info": {
+		"_postman_id": "286bdd03-b1be-4da9-bd66-75f028c02724",
+		"name": "drop-engine-api-tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "scenarios",
+			"item": [
+				{
+					"name": "User Account Registration",
+					"item": [
+						{
+							"name": "SignUp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"const sample = {\r",
+											"    \"id\": \"682cad3a-f574-48f2-853d-9b222b41d07f\",\r",
+											"    \"email\": \"test@sample.com\",\r",
+											"    \"externalUserId\": \"auth0|61ef42f486e6f5006a3c28b2\",\r",
+											"    \"status\": \"ACTIVATED\",\r",
+											"    \"picture\": \"\",\r",
+											"    \"firstName\": \"Test\",\r",
+											"    \"lastName\": \"Sample\",\r",
+											"    \"createdAt\": \"2022-01-25T00:23:15.755Z\",\r",
+											"    \"updatedAt\": \"2022-01-25T00:23:15.755Z\",\r",
+											"    \"events\": []\r",
+											"}\r",
+											"\r",
+											"const userId = resp.id;\r",
+											"const email = resp.email;\r",
+											"\r",
+											"pm.test(`Created User should have a valid email`, () => {\r",
+											"    pm.expect(email).to.eq(`test@sample.com`)\r",
+											"    pm.collectionVariables.set(`userEmail`, email)\r",
+											"})\r",
+											"pm.test(`Created User should be ACTIVATED`, () => {\r",
+											"    pm.expect(resp.status).to.eq(`ACTIVATED`)\r",
+											"})\r",
+											"pm.test(`Created User should have valid UserId`, () => {\r",
+											"    pm.expect(userId?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set(`testUserId`, userId)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"test@sample.com\",\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"Sample\",\r\n    \"password\": \"password123!\",\r\n    \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14GhKJE3lkI5CMtaZH6J1MQVd7Hbp5-MxcwwmQCQl=s96-c\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FindUserById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"FindUserById Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/users/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{testUserId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FindAllUsers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"FindAllUsers Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteUser",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DeleteUser Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/users/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{testUserId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth0_access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Potential Errors: ",
+					"// 500 No Default Connection. Go to Tenant > Settings > Default Directory, set to Username-Password-Authentication",
+					"// 403 Wrong email or password. Go create a user account on your tenant.",
+					"",
+					"const access_token = pm.environment.get('auth0_access_token');",
+					"const expiry = pm.environment.get('auth0_access_token_expiration');",
+					"const limitDate = new Date(new Date().getTime() - (12 * 60 * 60 * 1000));",
+					"const expiryDate = Date.parse(expiry)",
+					"",
+					"let noExpirySet = !expiryDate;",
+					"let expiryDateLessThanLimit = expiryDate < limitDate;",
+					"let noAccessToken = !access_token?.length",
+					"",
+					"let renewAccessToken = false;",
+					"if (noExpirySet) {",
+					"    console.warn(`[WARNING] No Expiry Date`)",
+					"    renewAccessToken = true;",
+					"}",
+					"if (expiryDateLessThanLimit) {",
+					"    console.warn(`[WARNING] Access Token Has Expired`)",
+					"    renewAccessToken = true;",
+					"}",
+					"if (noAccessToken) {",
+					"    console.warn(`[WARNING] No Access Token Found`)",
+					"    renewAccessToken = true;",
+					"}",
+					"",
+					"if (renewAccessToken) {",
+					"",
+					"    const domain = pm.environment.get('auth0_domain')",
+					"    const authUrl = pm.environment.get('auth0_authUrl').replace('{{auth0_domain}}', domain)",
+					"    const tokenUrl = pm.environment.get('auth0_access_token_url').replace('{{auth0_domain}}', domain)",
+					"    pm.environment.set('auth0_authUrl', authUrl)",
+					"    pm.environment.set('auth0_access_token_url', tokenUrl)",
+					"    console.info(`[INFO] Set auth0_authUrl: ${authUrl}`)",
+					"    console.info(`[INFO] Set auth0_access_token_url: ${tokenUrl}`)",
+					"    const client_id = pm.environment.get('auth0_client_id')",
+					"    const client_secret = pm.environment.get('auth0_client_secret')",
+					"    const audience = pm.environment.get('auth0_audience')",
+					"    const username = pm.environment.get('auth0_user')",
+					"    const password = pm.environment.get('auth0_password')",
+					"    const scope = pm.environment.get('auth0_scope')",
+					"    const grant_type = 'password'",
+					"    const authPayload = {",
+					"        \"client_id\": client_id,",
+					"        \"client_secret\": client_secret,",
+					"        \"audience\": audience,",
+					"        \"username\": username,",
+					"        \"password\": password,",
+					"        \"scope\": scope,",
+					"        \"grant_type\": grant_type,",
+					"    }",
+					"    console.info(`[INFO] Loaded auth0 payload: `, authPayload)",
+					"    const authTokenUrl = pm.environment.get('auth0_access_token_url')",
+					"",
+					"    const options = {",
+					"        url: authTokenUrl,",
+					"        method: 'POST',",
+					"        header: { 'content-type': 'application/json' },",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify(authPayload)",
+					"",
+					"        }",
+					"    };",
+					"    console.info(`[INFO] Loaded authentication request options: `, options)",
+					"    pm.sendRequest(options, function (err, response) {",
+					"        const resp = response.json()",
+					"        console.info(`[INFO] Auth0 Authentication Response: `, response)",
+					"        if (resp.error) {",
+					"            console.error(`[ERROR] Auth0 Authentication Request Failed With Status ${response.code} ${response.status}: ${resp.error} - ${resp.error_description}`)",
+					"            return;",
+					"        }",
+					"        let expiry = new Date(Date.now());",
+					"        pm.environment.set('auth0_access_token', resp.access_token);",
+					"        console.info(`[INFO] Set auth0_access_token: ${resp.access_token}`)",
+					"        pm.environment.set('auth0_access_token_expiration', `${expiry}`);",
+					"        console.info(`[INFO] Set auth0_access_token_expiration: ${expiry}`)",
+					"    });",
+					"} else {",
+					"    console.info(`[INFO] No Authentication Problems Detected`)",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "createdUserId",
+			"value": "93119315-5cda-4b93-8c54-636b61bd7623"
+		},
+		{
+			"key": "testUserEmail",
+			"value": "test@sample.com"
+		},
+		{
+			"key": "testUserId",
+			"value": ""
+		},
+		{
+			"key": "userEmail",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,397 @@
+{
+	"info": {
+		"_postman_id": "e9ae99d1-8098-4666-93d2-f992c9ca1004",
+		"name": "drop-engine-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "FindById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "c0af603a-29bd-4622-bc92-11df2c0d4a11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/users/:id/activate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								":id",
+								"activate"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "98cdd307-c6c6-47f5-a42b-b7a2807a8fa6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@sample.com\",\r\n    \"password\": \"password123!\",\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"Sample\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "348a6b1e-3f6d-41d1-87aa-2baaa07cb4dc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindUserByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v2/users?email=test@example.com",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "test@example.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "shopify",
+			"item": [
+				{
+					"name": "Connect",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/shopify?shop=de-template-local&timestamp={{$timestamp}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"shopify"
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "de-template-local"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{$timestamp}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AcceptInstall",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/shopify/accept",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"shopify",
+								"accept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Shopify Account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/shopify/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"shopify",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "53d354d6-bbcb-4b13-b642-13b13c6b6401"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/shopify",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"shopify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/shopify/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"shopify",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "955f54fe-f43f-43d1-a6ad-9690dd84f2c3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth0_access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const access_token = pm.environment.get('auth0_access_token');",
+					"const expiry = pm.environment.get('auth0_access_token_expiration');",
+					"const limitDate = new Date(new Date().getTime() - (12 * 60 * 60 * 1000));",
+					"const expiryDate = Date.parse(expiry)",
+					"console.warn({ limitDate, expiryDate, expiry })",
+					"if (!expiryDate || expiryDate < limitDate || expiryDate && !access_token?.length) {",
+					"    console.warn(`No Access Token. Loading new one now...`)",
+					"    const domain = pm.environment.get('auth0_domain')",
+					"    const authUrl = pm.environment.get('auth0_authUrl').replace('{{auth0_domain}}', domain)",
+					"    const tokenUrl = pm.environment.get('auth0_access_token_url').replace('{{auth0_domain}}', domain)",
+					"    pm.environment.set('auth0_authUrl', authUrl)",
+					"    pm.environment.set('auth0_access_token_url', tokenUrl)",
+					"    const client_id = pm.environment.get('auth0_client_id')",
+					"    const client_secret = pm.environment.get('auth0_client_secret')",
+					"    const audience = pm.environment.get('auth0_audience')",
+					"    const username = pm.environment.get('auth0_user')",
+					"    const password = pm.environment.get('auth0_password')",
+					"    const scope = pm.environment.get('auth0_scope')",
+					"    const grant_type = 'password'",
+					"    const authPayload = {",
+					"        \"client_id\": client_id,",
+					"        \"client_secret\": client_secret,",
+					"        \"audience\": audience,",
+					"        \"username\": username,",
+					"        \"password\": password,",
+					"        \"scope\": scope,",
+					"        \"grant_type\": grant_type,",
+					"    }",
+					"",
+					"    const authTokenUrl = pm.environment.get('auth0_access_token_url')",
+					"    console.log(authTokenUrl)",
+					"    const options = {",
+					"        url: authTokenUrl,",
+					"        method: 'POST',",
+					"        header: { 'content-type': 'application/json' },",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify(authPayload)",
+					"",
+					"        }",
+					"    };",
+					"    console.warn(authPayload, authTokenUrl)",
+					"    pm.sendRequest(options, function (err, response) {",
+					"        const resp = response.json()",
+					"        pm.environment.set('auth0_access_token', resp.access_token);",
+					"        pm.environment.set('auth0_access_token_expiration', `${new Date(Date.now())}`);",
+					"",
+					"    });",
+					"}",
+					"",
+					"console.log(`Exiting PreRequest Script...`)"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "createdUserId",
+			"value": "93119315-5cda-4b93-8c54-636b61bd7623"
+		},
+		{
+			"key": "testUserEmail",
+			"value": "test@sample.com"
+		},
+		{
+			"key": "testUserId",
+			"value": ""
+		}
+	]
+}

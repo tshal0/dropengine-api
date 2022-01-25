@@ -1,7 +1,7 @@
-import { UUID } from '../ValueObjects';
-import { AggregateType } from './AggregateType';
-import * as moment from 'moment';
-import { UnprocessableEntityException } from '@nestjs/common';
+import { UUID } from "../ValueObjects";
+import { AggregateType } from "./AggregateType";
+import * as moment from "moment";
+import { UnprocessableEntityException } from "@nestjs/common";
 
 export class IDomainEvent {
   public readonly timestamp: Date;
@@ -43,7 +43,7 @@ export abstract class BaseDomainEvent implements IDomainEvent {
   public abstract aggregateType: AggregateType;
   public abstract eventType: any;
   getEventId(): string {
-    return this.eventId.value;
+    return this.eventId?.value;
   }
   getEventType(): string {
     try {
@@ -52,19 +52,19 @@ export abstract class BaseDomainEvent implements IDomainEvent {
       throw new UnprocessableEntityException(
         `Unable to call toString on event: ${this.aggregateType} ${
           this.eventId
-        } ${JSON.stringify(this.details)}`,
+        } ${JSON.stringify(this.details)}`
       );
     }
   }
   getAggregateId(): string {
-    return this.aggregateId.value;
+    return this.aggregateId?.value;
   }
   getAggregateType(): string {
     try {
       return this.aggregateType.toString();
     } catch (err) {
       throw new UnprocessableEntityException(
-        `Unable to call toString on event: ${this.eventType}`,
+        `Unable to call toString on event: ${this.eventType}`
       );
     }
   }
@@ -97,9 +97,11 @@ export abstract class BaseDomainEvent implements IDomainEvent {
       throw error;
     }
   }
-
+  public static generateUuid() {
+    return UUID.generate();
+  }
   new() {
-    this.eventId = UUID.generate();
+    this.eventId = BaseDomainEvent.generateUuid();
     this.timestamp = moment().toDate();
     return this;
   }

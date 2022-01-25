@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { ResultError, Result } from '@shared/domain/Result';
-import { UUID } from '@shared/domain/ValueObjects';
-import { EntityAlreadyExistsException } from '@shared/exceptions/entityalreadyexists.exception';
-import { EntityNotFoundException } from '@shared/exceptions/entitynotfound.exception';
-import { Prisma } from '.prisma/client';
+import { Injectable } from "@nestjs/common";
+import { ResultError, Result } from "@shared/domain/Result";
+import { UUID } from "@shared/domain/ValueObjects";
+import { EntityAlreadyExistsException } from "@shared/exceptions/entityalreadyexists.exception";
+import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
+import { Prisma } from ".prisma/client";
 
-import * as moment from 'moment';
-import { User } from '../domain/entities/User';
-import { CreateUserDto } from '../dto/CreateUserDto';
-import { AzureLoggerService } from '@shared/modules/azure-logger/azure-logger.service';
-import { DbUser } from '@shared/modules/prisma/models/User';
-import { PrismaService } from '@shared/modules/prisma/prisma.service';
+import * as moment from "moment";
+import { User } from "../domain/entities/User";
+import { CreateUserDto } from "../dto/CreateUserDto";
+import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { DbUser } from "@shared/modules/prisma/models/User";
+import { PrismaService } from "@shared/modules/prisma/prisma.service";
 export class UserNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
     super(`User not found with ID: ${id}`, id, `USER_NOT_FOUND`);
@@ -26,7 +26,7 @@ export class UserNotFoundWithEmailException extends EntityNotFoundException {
 export class DbUsersRepository {
   constructor(
     private readonly logger: AzureLoggerService,
-    private readonly db: PrismaService,
+    private readonly db: PrismaService
   ) {}
   get llog() {
     return `[${moment()}][${DbUsersRepository.name}]`;
@@ -37,7 +37,37 @@ export class DbUsersRepository {
     const result = Result.fail<T>(resultError);
     return result;
   }
+  async findAll(): Promise<User[]> {
+    try {
+      const result = await this.db.user
+        .findMany({
+          include: {
+            events: true,
+          },
+        })
+        .then((user) => {
+          return Result.ok<DbUser[]>(user);
+        })
+        .catch((err) => {
+          this.logger.error(err);
+          throw err;
+        });
 
+      if (result.isSuccess) {
+        const entities = result.getValue();
+        const users = entities.map((e) => User.fromDb(e));
+        return users;
+      } else {
+        throw result.error;
+      }
+    } catch (err: any) {
+      this.logger.error(`${this.llog} Failed to find users.`);
+      if (err.name == `NotFoundError`) {
+        throw new UserNotFoundException(``);
+      }
+      throw err;
+    }
+  }
   async exists(id: UUID): Promise<boolean> {
     const result = await this.db.user
       .findFirst({
@@ -123,7 +153,7 @@ export class DbUsersRepository {
           where: {
             id: id.value,
           },
-          include: {},
+          include: { events: false },
           rejectOnNotFound: true,
         })
         .then((user) => {
@@ -176,7 +206,7 @@ export class DbUsersRepository {
         .$transaction([userTrx])
         .then(([user]) => {
           this.logger.debug(
-            `${this.llog}Successfully persisted user ${user.id}`,
+            `${this.llog}Successfully persisted user ${user.id}`
           );
           return Result.ok<DbUser>(user);
         })
@@ -236,22 +266,22 @@ export class DbUsersRepository {
       });
       this.logger.log(
         `Successfully created User: ${entity.email} ${entity.id}.`,
-        entity,
+        entity
       );
       return entity;
     } catch (err: any) {
       this.logger.error(err);
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
         this.logger.error(err.message, err.stack, { ...err });
-        if (err.code === 'P2002') {
+        if (err.code === "P2002") {
           const target =
             err.meta &&
-            err.meta['target'] &&
-            err.meta['target'].length &&
-            err.meta['target'][0];
+            err.meta["target"] &&
+            err.meta["target"].length &&
+            err.meta["target"][0];
           throw new EntityAlreadyExistsException(
             `Entity already exists with duplicate property '${target}'.`,
-            dto[target],
+            dto[target]
           );
         }
       }

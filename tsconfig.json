@@ -18,7 +18,7 @@
         "server/shared/*"
       ],
       "@db/*": [
-        "server/prisma/*"
+        "server/shared/modules/prisma/*"
       ]
     },
   }

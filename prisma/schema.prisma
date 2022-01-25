@@ -32,10 +32,8 @@ model User {
   @@map("users")
   id   String  @id @default(uuid())
   email String  @unique
-  name  String? 
   picture String?
   externalUserId String? @map("external_user_id")
-
   status UserStatus @default(DEACTIVATED)
 
   firstName  String?  @map("first_name")
