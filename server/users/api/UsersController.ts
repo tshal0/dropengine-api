@@ -22,7 +22,6 @@ import { DeleteUserUseCase } from "../useCases/DeleteUser";
 import { GetAllUsersUseCase } from "../useCases/GetAllUsers";
 import { GetUserUseCase } from "../useCases/GetUser";
 
-@UseGuards(AuthGuard())
 @Controller("/api/users")
 export class UsersController {
   constructor(
@@ -33,6 +32,7 @@ export class UsersController {
     private readonly deleteUser: DeleteUserUseCase
   ) {}
   @Get(":id")
+  @UseGuards(AuthGuard())
   async get(@Param("id") id: string) {
     let uuid = UUID.from(id);
     let result = await this.getUser.execute(uuid);
@@ -41,6 +41,7 @@ export class UsersController {
     }
   }
   @Delete(":id")
+  @UseGuards(AuthGuard())
   async delete(@Param("id") id: string) {
     let uuid = UUID.from(id);
     let result = await this.deleteUser.execute(uuid);
@@ -58,6 +59,7 @@ export class UsersController {
     }
   }
   @Get()
+  @UseGuards(AuthGuard())
   async getAllUsers(): Promise<IUser[]> {
     let result = await this.getAll.execute();
     if (result.isSuccess) {

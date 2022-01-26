@@ -12,16 +12,41 @@
       "*": [
         "src/*"
       ],
+      "pages": [
+        "src/pages"
+      ],
       "components": [
         "src/components"
       ],
       "assets": [
         "src/assets"
-      ]
+      ],
+      "context": [
+        "src/context"
+      ],
+      "utils": [
+        "src/utils"
+      ],
+      "state": [
+        "src/state"
+      ],
+      "app": [
+        "src/app"
+      ],
+      "content": [
+        "src/content"
+      ],
+      "layouts": [
+        "src/layouts"
+      ],
+      "router": [
+        "src/router"
+      ],
     },
-    "target": "ES2019",
+    "target": "ES6",
     "moduleResolution": "node",
-    "strict": true,
+    "module": "ES2022",
+    "strict": false,
     "noEmit": true,
     "esModuleInterop": true,
     "jsx": "react",

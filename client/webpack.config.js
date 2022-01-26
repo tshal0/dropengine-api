@@ -13,7 +13,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const ROOT_DIR = path.resolve(__dirname);
 const SRC_DIR = path.resolve(ROOT_DIR, "src");
 const config = {
-  mode: "production",
+  mode: "development",
   devtool: "source-map",
   entry: {
     index: './src/index.tsx',
@@ -28,7 +28,6 @@ const config = {
   resolve: {
     extensions: [".js", ".ts", ".tsx", ".scss", ".css", ".jsx"],
     modules: ["node_modules"],
-
   },
   optimization: {
     chunkIds: 'total-size',
@@ -56,20 +55,21 @@ const config = {
     },
     usedExports: true,
     minimizer: [
-      new TerserPlugin({
-        extractComments: false,
-        terserOptions: { sourceMap: false },
-      }),
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true
-      })
+      // new TerserPlugin({
+      //   extractComments: false,
+      //   terserOptions: { sourceMap: false },
+      // }),
+      // new UglifyJsPlugin({
+      //   cache: true,
+      //   parallel: true
+      // })
       // new HtmlMinimizerPlugin(),
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "webpack Boilerplate",
+      title: "DropEngine",
+      favicon: "./src/favicon.ico",
       template: path.resolve(__dirname, "./src/index.html"), // template file
       filename: "index.html", // output file
     }),

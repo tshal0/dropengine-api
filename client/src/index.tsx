@@ -1,15 +1,13 @@
 // import "core-js/stable";
 import "regenerator-runtime/runtime";
-import React, { FunctionComponent } from "react";
-import { render } from "react-dom";
+import React from "react";
+import * as ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import App from "./app/App";
 
-interface RootProps {}
-
-(async () => {  
-  const Root: FunctionComponent<RootProps> = (props: any) => {
-    return (
-      <div>React</div>
-    );
-  };
-  render(<Root />, document.getElementById("root") as HTMLElement);
-})();
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  document.getElementById("root")
+);
