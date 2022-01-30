@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  main:
+    container_name: dropengine_main
+    image: dropengine-api:1.0.1
+    build:
+      context: .
+      target: build
+      dockerfile: Dockerfile
+    ports:
+      - ${WEBSITES_PORT}:${WEBSITES_PORT}
+      - 9228:9229
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+    command: yarn start:dev
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - de-network
+  db:
+    image: postgres:13
+    container_name: de_psql_docker
+    hostname: de_psql_docker
+    restart: always
+    ports:
+      - '6544:5432'
+    expose:
+      - '5432'
+    env_file:
+      - .env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - de-network
+volumes:
+  postgres:
+    name: de_psql_volume
+networks:
+  de-network:
+    name: de-network

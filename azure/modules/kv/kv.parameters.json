@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "objectId": {
+      "value": "to-be-provided"
+    },
+    "userObjectId": {
+      "value": "484d7643-bde6-4ce8-8d42-2ab1c684c1df"
+    },
+    "secretsObject": {
+      "value": {
+        "secrets": [
+          {
+            "secretName": "Auth0Domain",
+            "secretValue": "Auth0Domain"
+          },
+          {
+            "secretName": "Auth0Audience",
+            "secretValue": "Auth0Audience"
+          },
+          {
+            "secretName": "Auth0ClientId",
+            "secretValue": "Auth0ClientId"
+          },
+          {
+            "secretName": "Auth0ClientSecret",
+            "secretValue": "Auth0ClientSecret"
+          },
+          {
+            "secretName": "Auth0User",
+            "secretValue": "Auth0User"
+          },
+          {
+            "secretName": "Auth0Password",
+            "secretValue": "Auth0Password"
+          },
+          {
+            "secretName": "LaunchDarklyKey",
+            "secretValue": "LaunchDarklyKey"
+          },
+          {
+            "secretName": "MongoConnectionString",
+            "secretValue": "MongoConnectionString"
+          },
+          {
+            "secretName": "SqlAdminLogin",
+            "secretValue": "SqlAdminLogin"
+          },
+          {
+            "secretName": "SqlAdminLoginPassword",
+            "secretValue": "SqlAdminLoginPassword"
+          },
+          {
+            "secretName": "PostgresDatabaseUrl",
+            "secretValue": "PostgresDatabaseUrl"
+          }
+        ]
+      }
+    }
+  }
+}

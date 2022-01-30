@@ -10,11 +10,11 @@ const config: Config.InitialOptions = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
-  collectCoverageFrom: ['src/server/**/*.(t|j)s'],
-  coveragePathIgnorePatterns: ['src/server/console', 'src/server/migration'],
+  collectCoverageFrom: ['src/**/*.(t|j)s'],
+  coveragePathIgnorePatterns: ['src/console', 'src/migration'],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
-  moduleDirectories: ['node_modules', 'src/server'],
+  moduleDirectories: ['node_modules', 'src'],
   rootDir: './',
 
   // collectCoverage: true,

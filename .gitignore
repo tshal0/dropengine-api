@@ -3,6 +3,21 @@ public
 dist
 node_modules
 .env
+.env.local
+ssl
+*.ignore.*
+*.postman.xml
+/globalConfig.json
+azlogin.json
+junit.build.xml
+coverage
+bin
+obj
+csx
+.vs*
+edge
+Publish
+
 # Logs
 logs
 *.log

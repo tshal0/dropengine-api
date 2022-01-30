@@ -9,17 +9,23 @@
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "incremental": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "paths": {
       "@shared/*": [
-        "server/shared/*"
+        "shared/*"
+      ],
+      "@users/*": [
+        "users/*"
+      ],
+      "@shopify/*": [
+        "shopify/*"
       ],
       "@db/*": [
-        "server/shared/modules/prisma/*"
+        "/shared/modules/prisma/*"
       ]
     },
-  }
+  },
 }
