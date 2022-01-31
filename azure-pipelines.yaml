@@ -111,18 +111,23 @@ stages:
           vmImage: 'ubuntu-latest'
         steps:
           - task: PowerShell@2
-            displayName: 'ACR Host Name and ServiceImage'
+            displayName: 'ACR Host Name and imageName'
             inputs:
               targetType: 'inline'
-              script: 'Write-Output """### TESTING ### $(acrHostName) $(serviceImage)"""'
+              script: 'Write-Output """### TESTING ### $(acrHostName) $(imageName)"""'
               showWarnings: true
               pwsh: true
           - task: Docker@2
+            displayName: 'Build MyProject image'
             inputs:
-              containerRegistry: 'DropEngineACR-Dev'
-              repository: '$(service)'
-              command: 'buildAndPush'
+              repository: '$(imageName)'
+              command: build
               Dockerfile: '**/Dockerfile'
-              tags: |
-                $(Build.BuildId)
-                dev
+              tags: $(Build.BuildId)
+          - task: Docker@2
+            displayName: 'Save image to TAR'
+            inputs:
+              repository: '$(imageName)'
+              command: save
+              arguments: '--output $(build.artifactstagingdirectory)/$(imageName).image.tar $(imageName):$(Build.BuildId)'
+              addPipelineData: false
