@@ -117,20 +117,12 @@ stages:
               script: 'Write-Output """### TESTING ### $(acrHostName) $(serviceImage)"""'
               showWarnings: true
               pwsh: true
-          - task: Docker@1
-            displayName: 'Build Docker Image'
-            inputs:
-              azureSubscriptionEndpoint: '$(azureSubscription)'
-              azureContainerRegistry: '$(acrHostName)'
-              imageName: '$(serviceImage)'
-              useDefaultContext: false
-              buildContext: '$(System.DefaultWorkingDirectory)'
-              includeLatestTag: true
           - task: Docker@2
             inputs:
               containerRegistry: 'DropEngineACR-Dev'
               repository: '$(service)'
-              command: 'push'
+              command: 'buildAndPush'
+              Dockerfile: '**/Dockerfile'
               tags: |
                 $(Build.BuildId)
                 dev
