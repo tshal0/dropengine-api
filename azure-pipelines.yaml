@@ -128,24 +128,9 @@ stages:
               includeLatestTag: true
           - task: Docker@2
             inputs:
-              command: 'save'
-              arguments: '--output $(Build.ArtifactStagingDirectory)/$(serviceImage).image.tar $(serviceImage):$(tag)'
-  - stage: PublishBuildArtifact
-    jobs:
-      - job: PublishBuildArtifact
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: CmdLine@2
-            inputs:
-              script: 'dir'
-          - task: AzureKeyVault@2 
-            inputs:
-              azureSubscription: '$(azureSubscription)'
-              KeyVaultName: '$(keyVaultName)'
-              SecretsFilter: '*'
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/$(serviceImage).image.tar'
-              artifact: '$(Build.BuildNumber)'
-              publishLocation: 'pipeline'
+              containerRegistry: 'DropEngineACR-Dev'
+              repository: '$(service)'
+              command: 'push'
+              tags: |
+                $(Build.BuildId)
+                dev
