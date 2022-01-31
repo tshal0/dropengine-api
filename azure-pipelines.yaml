@@ -6,7 +6,7 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   azureServiceConnection: 'DropEngineRM'
-  azureSubscription: 'DropEngine-Primary'
+  azureSubscription: 'DropEngine-Primary(0eaeda16-3a81-428c-a7d4-427b1354dc02)'
   vmImageName: 'ubuntu-latest'
   location: 'eastus'
   postgresDatabaseUrl: ''
@@ -104,6 +104,32 @@ stages:
               targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_postman.zip'
               artifact: '$(Build.BuildId)_postman'
               publishLocation: 'pipeline'
+  - stage: BuildAndPushDockerImage
+    jobs:
+      - job: BuildAndPushDockerImage
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: PowerShell@2
+            displayName: 'ACR Host Name and ServiceImage'
+            inputs:
+              targetType: 'inline'
+              script: 'Write-Output """### TESTING ### $(acrHostName) $(serviceImage)"""'
+              showWarnings: true
+              pwsh: true
+          - task: Docker@1
+            displayName: 'Build Docker Image'
+            inputs:
+              azureSubscriptionEndpoint: '$(azureSubscription)'
+              azureContainerRegistry: '$(acrHostName)'
+              imageName: '$(serviceImage)'
+              useDefaultContext: false
+              buildContext: '$(System.DefaultWorkingDirectory)'
+              includeLatestTag: true
+          - task: Docker@2
+            inputs:
+              command: 'save'
+              arguments: '--output $(Build.ArtifactStagingDirectory)/$(serviceImage).image.tar $(serviceImage):$(tag)'
   - stage: PublishBuildArtifact
     jobs:
       - job: PublishBuildArtifact
@@ -118,16 +144,8 @@ stages:
               azureSubscription: '$(azureSubscription)'
               KeyVaultName: '$(keyVaultName)'
               SecretsFilter: '*'
-          - task: ArchiveFiles@2
-            inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-              includeRootFolder: true
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
-              replaceExistingArchive: true
-              verbose: true
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(serviceImage).image.tar'
               artifact: '$(Build.BuildNumber)'
               publishLocation: 'pipeline'
