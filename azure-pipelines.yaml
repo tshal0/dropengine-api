@@ -124,5 +124,5 @@ stages:
               command: 'buildAndPush'
               Dockerfile: '**/Dockerfile'
               tags: |
-                $(Build.BuildNumber)
+                $(Build.BuildId)
                 dev
