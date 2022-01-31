@@ -10,6 +10,10 @@ param location string = resourceGroup().location
 param rgService string = resourceGroup().name
 @description('The name of the KeyVault for this deployment')
 param kvName string = 'kv-${service}-${env}'
+@description('The name of the resource group holding the Azure Container Registry for this deployment')
+param rgContainers string = 'rg-containers'
+@description('The name of the Azure Container Registry for this deployment')
+param acrName string = 'acrdropengine${env}'
 
 var subscriptionId = subscription().subscriptionId
 
@@ -47,6 +51,35 @@ module storageAccount 'modules/sa/sa.template.bicep' = {
 var saConnString = storageAccount.outputs.storageAccountConnectionString
 var saAcctSasKey = storageAccount.outputs.storageAccountSasKey
 var saName = storageAccount.outputs.saName
+
+// Provision the service (including the AppService Plan, AppService, AppInsights)
+module appService 'modules/app/app.template.bicep' = {
+  name: 'appServiceDeployment'
+  params: {
+    service: service
+    env: env
+    acrName: acrName
+    // psqlServerDatabaseUrl: psqlServerDatabaseUrl
+    rgContainers: rgContainers
+    saAcctSasKey: saAcctSasKey
+    saConnString: saConnString
+    saName: saName
+    location:location
+    serviceImage: kv.getSecret('ServiceImage')
+
+    ShopifyApiKey: kv.getSecret('ShopifyApiKey')
+    ShopifyApiSecret: kv.getSecret('ShopifyApiSecret')
+    ShopifyApiScopes: kv.getSecret('ShopifyApiScopes')
+    Auth0Audience: kv.getSecret('Auth0Audience')
+    Auth0ClientId: kv.getSecret('Auth0ClientId')
+    Auth0ClientSecret:kv.getSecret('Auth0ClientSecret')
+    Auth0Domain:kv.getSecret('Auth0Domain')
+    LaunchDarklyKey:kv.getSecret('LaunchDarklyKey')
+    PostgresDatabaseUrl:postgresDatabaseUrl    
+    Auth0M2MClientId:kv.getSecret('Auth0M2MClientId')
+    Auth0M2MClientSecret:kv.getSecret('Auth0M2MClientSecret')
+  }
+}
 
 // Output the PostgreSQL database URL (will be sent to the KeyVault)
 output postgresDatabaseUrl string = postgresDatabaseUrl

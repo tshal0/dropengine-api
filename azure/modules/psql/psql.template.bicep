@@ -63,9 +63,9 @@ resource clientIpAddress 'Microsoft.DBforPostgreSQL/servers/firewallRules@2017-1
     psqlServer
   ]
 }
-resource postgres 'Microsoft.DBforPostgreSQL/servers/databases@2017-12-01' = {
+resource db 'Microsoft.DBforPostgreSQL/servers/databases@2017-12-01' = {
   parent: psqlServer
-  name: 'postgres'
+  name: service
   properties: {
     charset: 'UTF8'
     collation: 'English_United States.1252'
@@ -76,9 +76,8 @@ var user = '${psqlLogin}@${psqlName}'
 var password = psqlPassword
 var host = psqlServer.properties.fullyQualifiedDomainName
 var port = '5432'
-var db = psqlName
 var schema = 'public'
-var database_url = 'postgresql://${user}:${password}@${host}:${port}/${db}?schema=${schema}&sslmode=prefer'
+var database_url = 'postgresql://${user}:${password}@${host}:${port}/${db.name}?schema=${schema}&sslmode=prefer'
 
 // We output the database_url in order to store it in a KeyVault for use in migrations later
 output database_url string = database_url
