@@ -17,7 +17,7 @@ import { join } from "path";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: "docker.env" }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
     AuthModule,
     UsersModule,
     ShopifyModule,

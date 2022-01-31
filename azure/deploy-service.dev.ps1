@@ -5,6 +5,7 @@ param ($service = 'dropengine', $location = 'eastus', $env = 'dev')
 $rgService = "rg-$service-$env"
 $kvName = "kv-$service-$env"
 
+
 # Initialize the resource group if not exists
 if ($(az group list --query "[?name=='$rgService'] | length(@)") -eq 0) {
   Write-Output "################# DEPLOYING AZURE RESOURCE GROUP '$rgService' ##################"
