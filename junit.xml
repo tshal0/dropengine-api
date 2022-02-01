@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="24" failures="0" errors="0" time="12.381">
+  <testsuite name="User" errors="0" failures="0" skipped="0" timestamp="2022-02-01T20:40:29" time="9.547" tests="10">
+    <testcase classname="User init should initialize a new user given a UUID" name="User init should initialize a new user given a UUID" time="0.005">
+    </testcase>
+    <testcase classname="User fromDb should load a user from the db into the domain object" name="User fromDb should load a user from the db into the domain object" time="0.001">
+    </testcase>
+    <testcase classname="User signUp should update the users email, name, and add a UserSignedUp event" name="User signUp should update the users email, name, and add a UserSignedUp event" time="0.002">
+    </testcase>
+    <testcase classname="User updateAuth0UserId should update users Auth0 ID" name="User updateAuth0UserId should update users Auth0 ID" time="0.002">
+    </testcase>
+    <testcase classname="User updateEmail should update users email" name="User updateEmail should update users email" time="0">
+    </testcase>
+    <testcase classname="User updateName should update users email" name="User updateName should update users email" time="0.001">
+    </testcase>
+    <testcase classname="User updatePicture should update users picture" name="User updatePicture should update users picture" time="0">
+    </testcase>
+    <testcase classname="User activate should activate the users account" name="User activate should activate the users account" time="0">
+    </testcase>
+    <testcase classname="User deactivate should deactivate the users account" name="User deactivate should deactivate the users account" time="0">
+    </testcase>
+    <testcase classname="User disable should disable the users account" name="User disable should disable the users account" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="ShopifyAccountInstall" errors="0" failures="0" skipped="0" timestamp="2022-02-01T20:40:29" time="9.594" tests="2">
+    <testcase classname="ShopifyAccountInstall should generate a valid install" name="ShopifyAccountInstall should generate a valid install" time="0.009">
+    </testcase>
+    <testcase classname="ShopifyAccountInstall should generate a valid install link" name="ShopifyAccountInstall should generate a valid install link" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="ShopifyAccount" errors="0" failures="0" skipped="0" timestamp="2022-02-01T20:40:29" time="9.783" tests="6">
+    <testcase classname="ShopifyAccount beginConnectionProcess should generate a valid account and installation" name="ShopifyAccount beginConnectionProcess should generate a valid account and installation" time="0.013">
+    </testcase>
+    <testcase classname="ShopifyAccount beginConnectionProcess should generate a valid install link" name="ShopifyAccount beginConnectionProcess should generate a valid install link" time="0.002">
+    </testcase>
+    <testcase classname="ShopifyAccount acceptInstallation should update installation status to ACCEPTED" name="ShopifyAccount acceptInstallation should update installation status to ACCEPTED" time="0.001">
+    </testcase>
+    <testcase classname="ShopifyAccount confirmInstallation should update the existing installation with an access token" name="ShopifyAccount confirmInstallation should update the existing installation with an access token" time="0">
+    </testcase>
+    <testcase classname="ShopifyAccount failInstallation should update installation status to FAILED" name="ShopifyAccount failInstallation should update installation status to FAILED" time="0">
+    </testcase>
+    <testcase classname="ShopifyAccount resetInstallation should update installation status to INITIATED" name="ShopifyAccount resetInstallation should update installation status to INITIATED" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="AzureLoggerService" errors="0" failures="0" skipped="0" timestamp="2022-02-01T20:40:29" time="9.962" tests="1">
+    <testcase classname="AzureLoggerService should be defined" name="AzureLoggerService should be defined" time="0.024">
+    </testcase>
+  </testsuite>
+  <testsuite name="AppController" errors="0" failures="0" skipped="0" timestamp="2022-02-01T20:40:29" time="10.399" tests="1">
+    <testcase classname="AppController healthCheck should return a JSON with status: UP" name="AppController healthCheck should return a JSON with status: UP" time="0.017">
+    </testcase>
+  </testsuite>
+  <testsuite name="AzureStorageService" errors="0" failures="0" skipped="0" timestamp="2022-02-01T20:40:29" time="10.246" tests="1">
+    <testcase classname="AzureStorageService should be defined" name="AzureStorageService should be defined" time="0.021">
+    </testcase>
+  </testsuite>
+  <testsuite name="PrismaService" errors="0" failures="0" skipped="0" timestamp="2022-02-01T20:40:29" time="10.498" tests="1">
+    <testcase classname="PrismaService should be defined" name="PrismaService should be defined" time="0.025">
+    </testcase>
+  </testsuite>
+  <testsuite name="ShopifyController" errors="0" failures="0" skipped="0" timestamp="2022-02-01T20:40:29" time="10.918" tests="1">
+    <testcase classname="ShopifyController should be defined" name="ShopifyController should be defined" time="0.013">
+    </testcase>
+  </testsuite>
+  <testsuite name="ShopifyController" errors="0" failures="0" skipped="0" timestamp="2022-02-01T20:40:29" time="10.968" tests="1">
+    <testcase classname="ShopifyController should be defined" name="ShopifyController should be defined" time="0.031">
+    </testcase>
+  </testsuite>
+</testsuites>

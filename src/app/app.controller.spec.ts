@@ -17,7 +17,7 @@ describe("AppController", () => {
   describe("healthCheck", () => {
     it("should return a JSON with status: UP", async () => {
       let result = await appController.getHealthCheck();
-      expect(result).toEqual({ status: "UP" });
+      expect(result).toEqual({ status: "DropEngine™ API Up!" });
     });
   });
 });

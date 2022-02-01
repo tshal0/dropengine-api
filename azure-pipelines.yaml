@@ -19,91 +19,118 @@ variables:
   serviceImage: $[ format('{0}:{1}', variables.imageName, variables['Build.BuildId'])]
   webAppUrl: ${{ format('https://app-{0}-{1}.azurewebsites.net/api', variables.service, variables.env)}}
 stages:
-  # - stage: BuildAndRunTests
-  #   jobs:
-  #     - job: BuildAndRunTests
-  #       pool:
-  #         vmImage: 'ubuntu-latest'
-  #       steps:
-  #         - task: Npm@1
-  #           displayName: npm install
-  #           inputs:
-  #             command: 'install'
-  #             workingDir: $(System.DefaultWorkingDirectory)
-  #         - task: Npm@1
-  #           displayName: npm run build
-  #           inputs:
-  #             command: 'custom'
-  #             workingDir: '$(System.DefaultWorkingDirectory)'
-  #             customCommand: 'run build'
-  #           continueOnError: false
-  #         - task: Npm@1
-  #           displayName: npm run test (Unit Tests)
-  #           inputs:
-  #             command: 'custom'
-  #             workingDir: '$(System.DefaultWorkingDirectory)'
-  #             customCommand: 'run test'
-  #           continueOnError: true
-  #         - task: PublishTestResults@2
-  #           displayName: 'Publish NestJS Unit Test Results'
-  #           inputs:
-  #             testResultsFiles: '**/junit.build.xml'
-  #             failTaskOnFailedTests: true
-  #             testRunTitle: 'NestJS Unit Tests (Staging)'
-  # - stage: PublishARMTemplates
-  #   jobs:
-  #     - job: PublishARMTemplates
-  #       pool:
-  #         vmImage: 'ubuntu-latest'
-  #       steps:
-  #         - task: CmdLine@2
-  #           inputs:
-  #             script: 'dir'
-  #         - task: AzureKeyVault@2 
-  #           inputs:
-  #             azureSubscription: '$(azureSubscription)'
-  #             KeyVaultName: '$(keyVaultName)'
-  #             SecretsFilter: '*'
-  #         - task: ArchiveFiles@2
-  #           inputs:
-  #             rootFolderOrFile: '$(System.DefaultWorkingDirectory)/azure'
-  #             includeRootFolder: true
-  #             archiveType: 'zip'
-  #             archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_azure.zip'
-  #             replaceExistingArchive: true
-  #             verbose: true
-  #         - task: PublishPipelineArtifact@1
-  #           inputs:
-  #             targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_azure.zip'
-  #             artifact: '$(Build.BuildId)_azure'
-  #             publishLocation: 'pipeline'
-  # - stage: PublishPostmanAPITests
-  #   jobs:
-  #     - job: PublishPostmanAPITests
-  #       pool:
-  #         vmImage: 'ubuntu-latest'
-  #       steps:
-  #         - task: CmdLine@2
-  #           inputs:
-  #             script: 'dir'
-  #         - task: AzureKeyVault@2 
-  #           inputs:
-  #             azureSubscription: '$(azureSubscription)'
-  #             KeyVaultName: '$(keyVaultName)'
-  #             SecretsFilter: '*'
-  #         - task: ArchiveFiles@2
-  #           inputs:
-  #             rootFolderOrFile: '$(System.DefaultWorkingDirectory)/postman'
-  #             includeRootFolder: true
-  #             archiveType: 'zip'
-  #             archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_postman.zip'
-  #             replaceExistingArchive: true
-  #             verbose: true
-  #         - task: PublishPipelineArtifact@1
-  #           inputs:
-  #             targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_postman.zip'
-  #             artifact: '$(Build.BuildId)_postman'
-  #             publishLocation: 'pipeline'
+  - stage: BuildAndRunTests
+    jobs:
+      - job: BuildAndRunTests
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: Npm@1
+            displayName: npm install
+            inputs:
+              command: 'install'
+              workingDir: $(System.DefaultWorkingDirectory)
+          - task: Npm@1
+            displayName: npm run build
+            inputs:
+              command: 'custom'
+              workingDir: '$(System.DefaultWorkingDirectory)'
+              customCommand: 'run build'
+            continueOnError: false
+          - task: Npm@1
+            displayName: npm run test (Unit Tests)
+            inputs:
+              command: 'custom'
+              workingDir: '$(System.DefaultWorkingDirectory)'
+              customCommand: 'run test'
+            continueOnError: true
+          - task: PublishTestResults@2
+            displayName: 'Publish NestJS Unit Test Results'
+            inputs:
+              testResultsFiles: '**/junit.xml'
+              failTaskOnFailedTests: true
+              testRunTitle: 'NestJS Unit Tests (Staging)'
+  - stage: PublishARMTemplates
+    jobs:
+      - job: PublishARMTemplates
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: 'dir'
+          - task: AzureKeyVault@2 
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              KeyVaultName: '$(keyVaultName)'
+              SecretsFilter: '*'
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/azure'
+              includeRootFolder: true
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_azure.zip'
+              replaceExistingArchive: true
+              verbose: true
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_azure.zip'
+              artifact: '$(Build.BuildId)_azure'
+              publishLocation: 'pipeline'
+  - stage: PublishPostmanAPITests
+    jobs:
+      - job: PublishPostmanAPITests
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: 'dir'
+          - task: AzureKeyVault@2 
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              KeyVaultName: '$(keyVaultName)'
+              SecretsFilter: '*'
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/postman'
+              includeRootFolder: true
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_postman.zip'
+              replaceExistingArchive: true
+              verbose: true
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_postman.zip'
+              artifact: '$(Build.BuildId)_postman'
+              publishLocation: 'pipeline'
+  - stage: PublishPrisma
+    jobs:
+      - job: PublishPrisma
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: 'dir'
+          - task: AzureKeyVault@2 
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              KeyVaultName: '$(keyVaultName)'
+              SecretsFilter: '*'
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/prisma'
+              includeRootFolder: true
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_prisma.zip'
+              replaceExistingArchive: true
+              verbose: true
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_prisma.zip'
+              artifact: '$(Build.BuildId)_prisma'
+              publishLocation: 'pipeline'
   - stage: BuildAndPushDockerImage
     jobs:
       - job: BuildAndPushDockerImage

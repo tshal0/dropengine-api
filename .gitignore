@@ -9,7 +9,7 @@ ssl
 *.postman.xml
 /globalConfig.json
 azlogin.json
-junit.build.xml
+junit.xml
 coverage
 bin
 obj
