@@ -451,7 +451,7 @@ resource appSlot1 'Microsoft.Web/sites/slots@2021-02-01' = {
           value: serviceImage
         }
         {
-          name: 'POSTGRESQL_DATABASE_URL'
+          name: 'DATABASE_URL'
           value: PostgresDatabaseUrl
         }
         {

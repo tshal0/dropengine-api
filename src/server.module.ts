@@ -19,8 +19,6 @@ import { join } from "path";
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
     AuthModule,
-    UsersModule,
-    ShopifyModule,
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),
     HttpModule,
