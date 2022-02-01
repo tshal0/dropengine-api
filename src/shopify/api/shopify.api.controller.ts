@@ -29,7 +29,6 @@ export class ConnectShopifyQuery {
 }
 
 @Controller("api/shopify")
-@UseGuards(AuthGuard())
 export class ShopifyApiController {
   constructor(
     private readonly shopify: ShopifyApiClient,
@@ -86,7 +85,6 @@ export class ShopifyApiController {
     //   res.status(400).send('Required parameters missing');
     // }
   }
-  @UseGuards(AuthGuard())
   @Get(":id")
   async get(@Param("id") id: string) {
     let uuid = UUID.from(id);
@@ -94,7 +92,6 @@ export class ShopifyApiController {
     let account = result.getValue();
     return account.getProps();
   }
-  @UseGuards(AuthGuard())
   @Delete(":id")
   async delete(@Param("id") id: string) {
     let uuid = UUID.from(id);

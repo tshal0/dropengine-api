@@ -14,9 +14,11 @@ import { ShopifyModule } from "./shopify/shopify.module";
 import { UsersModule } from "./users/user.module";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
+import { PassportModule } from "@nestjs/passport";
 
 @Module({
   imports: [
+    PassportModule.register({ defaultStrategy: "jwt" }),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
     AuthModule,
     EventEmitterModule.forRoot(),

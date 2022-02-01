@@ -6,7 +6,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 
 @Module({
-  imports: [PassportModule.register({ defaultStrategy: "jwt" })],
+  imports: [],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,4 +1,5 @@
 import { ConfigService } from "@nestjs/config";
+import { PassportModule } from "@nestjs/passport";
 import { Test, TestingModule } from "@nestjs/testing";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { ShopifyController } from "./shopify.controller";
@@ -25,6 +26,7 @@ describe("ShopifyController", () => {
         { provide: GetAllAccountsUseCase, useValue: {} },
         { provide: DeleteShopifyAccountUseCase, useValue: {} },
       ],
+      imports: [PassportModule.register({ defaultStrategy: "jwt" })],
     }).compile();
 
     controller = module.get<ShopifyController>(ShopifyController);

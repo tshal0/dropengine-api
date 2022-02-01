@@ -7,6 +7,6 @@ import { PrismaService } from './prisma.service';
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
-  imports: [AuthModule, HttpModule, AzureLoggerModule],
+  imports: [AzureLoggerModule],
 })
 export class PrismaModule {}

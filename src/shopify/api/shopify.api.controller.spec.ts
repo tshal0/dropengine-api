@@ -1,14 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AzureLoggerService } from '@shared/modules/azure-logger/azure-logger.service';
-import { ShopifyApiClient } from '../ShopifyApiClient';
-import { AcceptShopifyInstallUseCase } from '../useCases/AcceptShopifyInstallUseCase';
-import { ConnectShopifyAccountUseCase } from '../useCases/ConnectShopifyAccount';
-import { DeleteShopifyAccountUseCase } from '../useCases/DeleteShopifyAccount';
-import { GetAllAccountsUseCase } from '../useCases/GetAllAccounts';
-import { GetShopifyAccountUseCase } from '../useCases/GetShopifyAccount';
-import { ShopifyApiController } from './shopify.api.controller';
+import { PassportModule } from "@nestjs/passport";
+import { Test, TestingModule } from "@nestjs/testing";
+import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { ShopifyApiClient } from "../ShopifyApiClient";
+import { AcceptShopifyInstallUseCase } from "../useCases/AcceptShopifyInstallUseCase";
+import { ConnectShopifyAccountUseCase } from "../useCases/ConnectShopifyAccount";
+import { DeleteShopifyAccountUseCase } from "../useCases/DeleteShopifyAccount";
+import { GetAllAccountsUseCase } from "../useCases/GetAllAccounts";
+import { GetShopifyAccountUseCase } from "../useCases/GetShopifyAccount";
+import { ShopifyApiController } from "./shopify.api.controller";
 
-describe('ShopifyController', () => {
+describe("ShopifyController", () => {
   let controller: ShopifyApiController;
 
   beforeEach(async () => {
@@ -23,12 +24,13 @@ describe('ShopifyController', () => {
         { provide: GetAllAccountsUseCase, useValue: {} },
         { provide: DeleteShopifyAccountUseCase, useValue: {} },
       ],
+      imports: [PassportModule.register({ defaultStrategy: "jwt" })],
     }).compile();
 
     controller = module.get<ShopifyApiController>(ShopifyApiController);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 });
