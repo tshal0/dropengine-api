@@ -4,7 +4,6 @@ trigger:
     include:
       - main
 variables:
-  DATABASE_URL: ''
   buildConfiguration: 'Release'
   azureServiceConnection: 'DropEngineRM'
   azureSubscription: 'DropEngine-Primary(0eaeda16-3a81-428c-a7d4-427b1354dc02)'
@@ -32,13 +31,13 @@ stages:
               KeyVaultName: '$(keyVaultName)'
               SecretsFilter: '*'
               RunAsPreJob: true
-          - task: PowerShell@2
-            displayName: 'Set the DATABASE_URL env variable to PostGresDatabaseUrl from the KeyVault'
-            inputs:
-              targetType: 'inline'
-              script: 'Write-Host "##vso[task.setvariable variable=database.url]$(PostgresDatabaseUrl)"'
-              showWarnings: true
-              pwsh: true
+          # - task: PowerShell@2
+          #   displayName: 'Set the DATABASE_URL env variable to PostgresDatabaseUrl from the KeyVault'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: 'Write-Host "##vso[task.setvariable variable=database.url]$(PostgresDatabaseUrl)"'
+          #     showWarnings: true
+          #     pwsh: true
           - task: Npm@1
             displayName: npm install
             inputs:
@@ -83,13 +82,13 @@ stages:
               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/azure'
               includeRootFolder: true
               archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_azure.zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_azure.zip'
               replaceExistingArchive: true
               verbose: true
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_azure.zip'
-              artifact: '$(Build.BuildId)_azure'
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_azure.zip'
+              artifact: '$(Build.BuildNumber)_azure'
               publishLocation: 'pipeline'
   - stage: PublishPostmanAPITests
     jobs:
@@ -110,12 +109,12 @@ stages:
               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/postman'
               includeRootFolder: true
               archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_postman.zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_postman.zip'
               replaceExistingArchive: true
               verbose: true
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_postman.zip'
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_postman.zip'
               artifact: '$(Build.BuildId)_postman'
               publishLocation: 'pipeline'
   - stage: PublishPrisma
@@ -137,13 +136,13 @@ stages:
               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/prisma'
               includeRootFolder: true
               archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_prisma.zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_prisma.zip'
               replaceExistingArchive: true
               verbose: true
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_prisma.zip'
-              artifact: '$(Build.BuildId)_prisma'
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_prisma.zip'
+              artifact: '$(Build.BuildNumber)_prisma'
               publishLocation: 'pipeline'
   - stage: BuildAndPushDockerImage
     jobs:
