@@ -115,7 +115,7 @@ stages:
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_postman.zip'
-              artifact: '$(Build.BuildId)_postman'
+              artifact: '$(Build.BuildNumber)_postman'
               publishLocation: 'pipeline'
   - stage: PublishPrisma
     jobs:
