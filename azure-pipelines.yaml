@@ -63,6 +63,40 @@ stages:
               testResultsFiles: '**/junit.xml'
               failTaskOnFailedTests: true
               testRunTitle: 'NestJS Unit Tests (Staging)'
+  - stage: PublishPrismaArtifact
+    jobs:
+      - job: PublishPrismaArtifact
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: CmdLine@2
+            inputs:
+              script: 'dir'
+          - task: AzureKeyVault@2 
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              KeyVaultName: '$(keyVaultName)'
+              SecretsFilter: '*'
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(System.DefaultWorkingDirectory)'
+              Contents: |
+                package.json
+                prisma
+              TargetFolder: '_prisma'
+          - task: ArchiveFiles@2
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/_prisma'
+              includeRootFolder: true
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_prisma.zip'
+              replaceExistingArchive: true
+              verbose: true
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_prisma.zip'
+              artifact: '$(Build.BuildNumber)_prisma'
+              publishLocation: 'pipeline'
   - stage: PublishARMTemplates
     jobs:
       - job: PublishARMTemplates
@@ -116,33 +150,6 @@ stages:
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_postman.zip'
               artifact: '$(Build.BuildNumber)_postman'
-              publishLocation: 'pipeline'
-  - stage: PublishPrisma
-    jobs:
-      - job: PublishPrisma
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: CmdLine@2
-            inputs:
-              script: 'dir'
-          - task: AzureKeyVault@2 
-            inputs:
-              azureSubscription: '$(azureSubscription)'
-              KeyVaultName: '$(keyVaultName)'
-              SecretsFilter: '*'
-          - task: ArchiveFiles@2
-            inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/prisma'
-              includeRootFolder: true
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_prisma.zip'
-              replaceExistingArchive: true
-              verbose: true
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_prisma.zip'
-              artifact: '$(Build.BuildNumber)_prisma'
               publishLocation: 'pipeline'
   - stage: BuildAndPushDockerImage
     jobs:
