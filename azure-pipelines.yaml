@@ -4,6 +4,7 @@ trigger:
     include:
       - main
 variables:
+  DATABASE_URL: ''
   buildConfiguration: 'Release'
   azureServiceConnection: 'DropEngineRM'
   azureSubscription: 'DropEngine-Primary(0eaeda16-3a81-428c-a7d4-427b1354dc02)'
