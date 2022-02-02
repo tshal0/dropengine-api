@@ -22,7 +22,8 @@
     "docker": "docker-compose --env-file .env up --build",
     "migrate:docker": "dotenv -e docker.migrate.env -- prisma migrate dev --preview-feature",
     "get:prisma": "npm install -g prisma",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "migrate:deploy": "prisma migrate deploy --preview-feature"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.8.0",
