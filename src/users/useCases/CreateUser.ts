@@ -11,16 +11,17 @@ import {
   CreateAuth0UserResponseDto,
   CreateUserDto,
 } from "../dto/CreateUserDto";
-import * as moment from "moment";
+import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
-import { IUser, User } from "../domain/entities/User";
+import { IUser } from "@users/domain/interfaces/IUser";
 import { UserEventType, UserSignedUp } from "../domain/events/UserEvent";
-import { UUID } from "@shared/domain/ValueObjects";
+import { UUID } from "@shared/domain/valueObjects";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { lastValueFrom } from "rxjs";
 import { getCircularReplacer } from "@shared/utils";
+import { User } from "@users/domain";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateUserUseCase implements UseCase<CreateUserDto, any> {
@@ -35,14 +36,19 @@ export class CreateUserUseCase implements UseCase<CreateUserDto, any> {
     return `[${moment()}][${CreateUserUseCase.name}]`;
   }
 
-  async execute(dto: CreateUserDto): Promise<Result<IUser>> {
+  async execute(dto: CreateUserDto): Promise<Result<User>> {
     try {
-      let user = User.create();
-      user.signUp(dto);
-      let event = user.getProps().events[0];
-      user = await this._repo.persist(user);
-      this.eventEmitter.emit(UserEventType.UserSignedUp, event);
-      user = await this._repo.loadAggregate(user.id);
+      let result = await this._repo.load(dto);
+      if (result.isFailure) {
+        result = User.create(dto);
+        if (result.isFailure) {
+          return Result.fail(result.error);
+        }
+      }
+      let user = result.value();
+
+      // this.eventEmitter.emit(UserEventType.UserSignedUp, event);
+      // user = await this._repo.loadAggregate(user.id);
 
       const AUTH0_CLIENT_ID = this.config.get(`AUTH0_CLIENT_ID`);
       const AUTH0_DOMAIN = this.config.get(`AUTH0_DOMAIN`);
@@ -71,21 +77,20 @@ export class CreateUserUseCase implements UseCase<CreateUserDto, any> {
         this.logger.log(`${this.llog} Auth0 Response:`, {
           resp: JSON.stringify(resp.data, null, 2),
         });
-        user.updateAuth0Details(resp.data);
-        const auth0Event = user.getProps().events[0];
-
-        user = await this._repo.persist(user);
-        this.eventEmitter.emit(UserEventType.UserCreatedInAuth0, auth0Event);
+        result = user.applyAuth0Response(resp.data);
+        if (result.isFailure) {
+          //TODO: FailedToCreateAuth0User
+          return Result.fail(result.error);
+        }
+        user = result.value();
+        result = await this._repo.save(user);
+        return result;
       } catch (error) {
         this.logger.debug(error.response.data);
+        throw error;
       }
-
-      user = await this._repo.loadAggregate(user.id);
-
-      return Result.ok(user.getProps());
     } catch (error) {
-      let err = User.errorResult(error, dto);
-      return Result.fail(new ResultError(err.error, [error], { dto }));
+      return Result.fail(new ResultError(error, [error], { dto }));
     }
   }
 }

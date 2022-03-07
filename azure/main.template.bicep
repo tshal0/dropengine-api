@@ -30,6 +30,7 @@ module psqlServer 'modules/psql/psql.template.bicep' = {
     env: env
     psqlLogin: kv.getSecret('SqlAdminLogin')
     psqlPassword: kv.getSecret('SqlAdminLoginPassword')
+    location: location
   }
 }
 
@@ -44,7 +45,6 @@ module storageAccount 'modules/sa/sa.template.bicep' = {
     location: location
   }
 }
-
 
 // TODO: Deploy AppService
 
@@ -64,7 +64,7 @@ module appService 'modules/app/app.template.bicep' = {
     saAcctSasKey: saAcctSasKey
     saConnString: saConnString
     saName: saName
-    location:location
+    location: location
     serviceImage: kv.getSecret('ServiceImage')
 
     ShopifyApiKey: kv.getSecret('ShopifyApiKey')
@@ -72,12 +72,12 @@ module appService 'modules/app/app.template.bicep' = {
     ShopifyApiScopes: kv.getSecret('ShopifyApiScopes')
     Auth0Audience: kv.getSecret('Auth0Audience')
     Auth0ClientId: kv.getSecret('Auth0ClientId')
-    Auth0ClientSecret:kv.getSecret('Auth0ClientSecret')
-    Auth0Domain:kv.getSecret('Auth0Domain')
-    LaunchDarklyKey:kv.getSecret('LaunchDarklyKey')
-    PostgresDatabaseUrl:postgresDatabaseUrl    
-    Auth0M2MClientId:kv.getSecret('Auth0M2MClientId')
-    Auth0M2MClientSecret:kv.getSecret('Auth0M2MClientSecret')
+    Auth0ClientSecret: kv.getSecret('Auth0ClientSecret')
+    Auth0Domain: kv.getSecret('Auth0Domain')
+    LaunchDarklyKey: kv.getSecret('LaunchDarklyKey')
+    PostgresDatabaseUrl: postgresDatabaseUrl
+    Auth0M2MClientId: kv.getSecret('Auth0M2MClientId')
+    Auth0M2MClientSecret: kv.getSecret('Auth0M2MClientSecret')
   }
 }
 

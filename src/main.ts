@@ -1,4 +1,4 @@
-import 'module-alias/register';
+import "module-alias/register";
 import {
   VersioningType,
   VERSION_NEUTRAL,
@@ -18,7 +18,17 @@ async function bootstrap() {
   const config_service = app.get<ConfigService>(ConfigService);
 
   app.useLogger(await app.resolve(AzureLoggerService));
+  
   const logger = await app.resolve<AzureLoggerService>(AzureLoggerService);
+  logger.debug(`POSTGRES_DB: ${process.env.POSTGRES_DB}`);
+  logger.debug(`POSTGRES_USER: ${process.env.POSTGRES_USER}`);
+  logger.debug(`POSTGRES_PASSWORD: ${process.env.POSTGRES_PASSWORD}`);
+  logger.debug(`POSTGRES_DB: ${process.env.POSTGRES_DB}`);
+  logger.debug(`POSTGRES_HOST: ${process.env.POSTGRES_HOST}`);
+  logger.debug(`POSTGRES_PORT: ${process.env.POSTGRES_PORT}`);
+  logger.debug(`POSTGRES_SCHEMA: ${process.env.POSTGRES_SCHEMA}`);
+  logger.debug(`DATABASE_URL: ${process.env.DATABASE_URL}`);
+
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: VERSION_NEUTRAL,

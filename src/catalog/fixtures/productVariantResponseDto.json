@@ -1,0 +1,57 @@
+{
+  "id": 101,
+  "image": { "name": "variantImage", "link": "link" },
+  "sku": "MEM-268-2-30-Black",
+  "options": [
+    { "Name": "Color", "value": "Black" },
+    { "name": "Size", "value": 30 }
+  ],
+  "dimensions": {
+    "height": { "value": 30, "units": "in" },
+    "width": { "value": 15, "units": "in" },
+    "weight": { "value": 120, "units": "oz" }
+  },
+  "pricing": {
+    "baseCost": { "value": 11, "currency": "USD" },
+    "colorCost": { "value": 11, "currency": "USD" },
+    "manufacturingCost": { "value": 11, "currency": "USD" },
+    "shippingCost": { "value": 11, "currency": "USD" },
+    "basePrice": { "value": 11, "currency": "USD" },
+    "compareAtPrice": { "value": 11, "currency": "USD" }
+  },
+  "product": {
+    "id": 100,
+    "svg": { "name": "svg", "link": "link" },
+    "type": {
+      "name": "MetalArt",
+      "manufacturingDetails": {
+        "material": "Mild Steel",
+        "thickness": "0.06",
+        "route": "1"
+      }
+    },
+    "customization": {
+      "options": [
+        {
+          "name": "name",
+          "label": "Name",
+          "placeholder": "Enter up to 20 characters",
+          "required": true,
+          "type": "input",
+
+          "maxLength": 20,
+          "pattern": "^[a-zA-Z0-9\\s.,'/&]*"
+        },
+        {
+          "name": "initial",
+          "label": "Initial",
+          "placeholder": "Select your initial here",
+          "required": true,
+          "type": "dropdown",
+
+          "options": "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
+        }
+      ]
+    }
+  }
+}

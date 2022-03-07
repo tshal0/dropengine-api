@@ -18,7 +18,6 @@ import { PassportModule } from "@nestjs/passport";
 import { AzureLoggerModule } from "@shared/modules/azure-logger/azure-logger.module";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { DbShopifyAccountsRepository } from "./database/DbShopifyAccountsRepository";
-import { PrismaModule } from "@shared/modules/prisma/prisma.module";
 import { GetShopifyAccountUseCase } from "./useCases/GetShopifyAccount";
 import { AcceptShopifyInstallUseCase } from "./useCases/AcceptShopifyInstallUseCase";
 import { DeleteShopifyAccountUseCase } from "./useCases/DeleteShopifyAccount";
@@ -27,7 +26,6 @@ import { GetAllAccountsUseCase } from "./useCases/GetAllAccounts";
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
-    PrismaModule,
     AzureLoggerModule,
     HttpModule.registerAsync({
       imports: [ConfigModule, CacheModule.register()],

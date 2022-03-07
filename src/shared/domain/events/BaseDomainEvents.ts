@@ -1,6 +1,6 @@
-import { UUID } from "../ValueObjects";
+import { UUID } from "../valueObjects";
 import { AggregateType } from "./AggregateType";
-import * as moment from "moment";
+import moment from "moment";
 import { UnprocessableEntityException } from "@nestjs/common";
 
 export class IDomainEvent {
@@ -21,7 +21,7 @@ export interface IDomainEventProps {
   readonly details: any;
 }
 export interface HasProps {
-  getProps(): any;
+  props(): any;
 }
 export interface IDomainEvent extends HasProps {
   getEventId(): string;
@@ -31,7 +31,7 @@ export interface IDomainEvent extends HasProps {
   getAggregateType(): string;
   getTimestamp(): string;
   getDetails(): any;
-  getProps(): IDomainEventProps;
+  props(): IDomainEventProps;
 }
 
 export abstract class BaseDomainEvent implements IDomainEvent {
@@ -43,7 +43,7 @@ export abstract class BaseDomainEvent implements IDomainEvent {
   public abstract aggregateType: AggregateType;
   public abstract eventType: any;
   getEventId(): string {
-    return this.eventId?.value;
+    return this.eventId?.value();
   }
   getEventType(): string {
     try {
@@ -57,7 +57,7 @@ export abstract class BaseDomainEvent implements IDomainEvent {
     }
   }
   getAggregateId(): string {
-    return this.aggregateId?.value;
+    return this.aggregateId?.value();
   }
   getAggregateType(): string {
     try {
@@ -74,7 +74,7 @@ export abstract class BaseDomainEvent implements IDomainEvent {
   getTimestamp(): string {
     return moment(this.timestamp).toISOString();
   }
-  getProps(): IDomainEventProps {
+  props(): IDomainEventProps {
     try {
       const aggId = this.getAggregateId();
       const aggType = this.getAggregateType();
@@ -111,5 +111,22 @@ export abstract class BaseDomainEvent implements IDomainEvent {
     return this;
   }
 
-  abstract fromDbEvent(dbEvent: IDomainEventProps);
+  fromDbEvent(dbEvent: IDomainEventProps) {
+    this.eventId = UUID.from(dbEvent.eventId).value();
+    this.eventType = dbEvent.eventType;
+    this.aggregateId = UUID.from(dbEvent.aggregateId).value();
+    this.timestamp = moment(dbEvent.timestamp).toDate();
+    this.details = JSON.parse(dbEvent.details);
+    return this;
+  }
+  toDbEvent(): IDomainEventProps {
+    return {
+      eventId: this.getEventId(),
+      eventType: this.getEventType(),
+      aggregateId: this.getAggregateId(),
+      aggregateType: this.getAggregateType(),
+      timestamp: this.timestamp,
+      details: JSON.stringify({ ...this.details }),
+    };
+  }
 }

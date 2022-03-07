@@ -15,13 +15,16 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     restart: unless-stopped
-    command: yarn start:dev
+    command: yarn run start:dev:docker
     env_file:
       - .env
     depends_on:
       - db
     networks:
       - de-network
+    environment:
+      # DEBUG: "*"
+      NODE_ENV: "development"
   db:
     image: postgres:13
     container_name: de_psql_docker

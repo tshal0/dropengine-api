@@ -1,0 +1,39 @@
+{
+  "uuid": "00000000-0000-0000-0000-000000000001",
+  "id": 1,
+  "name": "MetalArt",
+  "productionData": {
+    "material": "Mild Steel",
+    "thickness": "0.06",
+    "route": "1"
+  },
+  "option1": {
+    "name": "Color",
+    "options": [
+      { "name": "Color", "value": "Black", "enabled": true },
+      { "name": "Color", "value": "White", "enabled": true },
+      { "name": "Color", "value": "Gold", "enabled": true },
+      { "name": "Color", "value": "Copper", "enabled": true },
+      { "name": "Color", "value": "Silver", "enabled": true }
+    ]
+  },
+  "option2": {
+    "name": "Size",
+    "options": [
+      { "name": "Size", "value": "12", "enabled": true },
+      { "name": "Size", "value": "15", "enabled": true },
+      { "name": "Size", "value": "18", "enabled": true },
+      { "name": "Size", "value": "24", "enabled": true },
+      { "name": "Size", "value": "30", "enabled": true }
+    ]
+  },
+  "option3": null,
+  "livePreview": {
+    "enabled": true,
+    "script": {
+      "name": "Live Preview Script - MetalArt",
+      "link": "link",
+      "version": "1.0.8"
+    }
+  }
+}

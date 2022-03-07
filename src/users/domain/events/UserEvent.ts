@@ -3,14 +3,12 @@ import {
   BaseDomainEvent,
   IDomainEventProps,
 } from "@shared/domain/events/BaseDomainEvents";
-import { UUID } from "@shared/domain/ValueObjects";
-import { DbUserEvent } from "@shared/modules/prisma/models/User";
-import * as moment from "moment";
+import { UUID } from "@shared/domain/valueObjects";
+import moment from "moment";
 import {
   CreateAuth0UserResponseDto,
   CreateUserDto,
 } from "../../dto/CreateUserDto";
-import { User } from "../entities/User";
 export const UserEventType = {
   Unknown: "Unknown",
   UserSignedUp: "UserSignedUp",
@@ -23,15 +21,15 @@ export class UserEvent extends BaseDomainEvent {
   public readonly aggregateType = AggregateType.User;
   public eventType = UserEventType.Unknown;
   public details: any;
-  fromDbEvent(dbEvent: DbUserEvent) {
-    this.eventId = UUID.from(dbEvent.eventId);
+  fromDbEvent(dbEvent: any) {
+    this.eventId = UUID.from(dbEvent.eventId).value();
     this.eventType = UserEventType[dbEvent.eventType];
-    this.aggregateId = UUID.from(dbEvent.aggregateId);
+    this.aggregateId = UUID.from(dbEvent.aggregateId).value();
     this.timestamp = moment(dbEvent.timestamp).toDate();
     this.details = JSON.parse(dbEvent.details);
     return this;
   }
-  toDbEvent(): DbUserEvent {
+  toDbEvent(): any {
     return {
       eventId: this.getEventId(),
       eventType: this.getEventType(),

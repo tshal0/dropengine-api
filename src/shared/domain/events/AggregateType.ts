@@ -1,5 +1,7 @@
 export enum AggregateType {
-  User = 'User',
-  ShopifyAccount = 'ShopifyAccount',
-  ShopifyAccountInstall = 'ShopifyAccountInstall',
+  User = "User",
+  Product = "Product",
+  ProductType = "ProductType",
+  ShopifyAccount = "ShopifyAccount",
+  ShopifyAccountInstall = "ShopifyAccountInstall",
 }

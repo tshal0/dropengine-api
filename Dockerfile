@@ -4,17 +4,16 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 COPY yarn.lock ./
-COPY prisma ./prisma/
+COPY migrations ./
 # COPY .npmrc ./
 # COPY .npmrc ./prisma
 
 RUN yarn add glob rimraf
 RUN yarn --only=development
-RUN yarn prisma:generate
 
 COPY . .
 
-RUN yarn build
+RUN yarn build:docker
 
 FROM node:16.13.1-alpine3.14 as production
 

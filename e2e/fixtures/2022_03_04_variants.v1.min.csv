@@ -1,0 +1,5 @@
+ProductUuid,ProductId,ProductSku,VariantUuid,VariantId,VariantSku,Option1Value,Option2Value,Option3Value,VariantImage,DimensionUnits,HeightValue,WidthValue,WeightUnits,WeightValue,Currency,ManufacturingCost,ShippingCost,TotalCost
+,,MU-C001-00,,,MU-C001-00-12-Copper,12,Copper,,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-12-Copper,in,11.5,11.5,g,365,USD,25,25,25
+,,MU-C004-00,,,MU-C004-00-12-Copper,12,Copper,,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C004-00-12-Copper,in,11.5,11.5,g,365,USD,21,7.5,28.5
+,,MU-C116-00,,,MU-C116-00-30-White,30,White,,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C116-00-30-White,in,29.5,29.5,g,2300,USD,65.75,15.5,81.25
+,,MEM-27-00,,,MEM-27-00-12-Copper,12,Copper,,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MEM-27-00-12-Copper,in,11.5,11.5,g,365,USD,21,7.5,28.5

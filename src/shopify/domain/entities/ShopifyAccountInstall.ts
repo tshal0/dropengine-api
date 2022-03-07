@@ -1,19 +1,12 @@
-import { UUID } from '@shared/domain/ValueObjects';
-import * as moment from 'moment';
-import { AcceptShopifyInstallDto } from '../../dto/AcceptShopifyInstallDto';
-import { InstallShopifyAccountDto } from '../../dto/InstallShopifyAccountDto';
-import { ShopifyAccountInstallStatus } from './ShopifyAccountInstallStatus';
-import * as crypto from 'crypto';
-import { UnprocessableEntityException } from '@nestjs/common';
-import {
-  DbShopifyAccountInstall,
-  DbShopifyAccountInstallFailedReason,
-  DbShopifyAccountInstallStatus,
-} from '@shared/modules/prisma/models/ShopifyAccount';
-import { isInteger, parseInt } from 'lodash';
-import {
-  ShopifyAccountInstallInitiated,
-} from '../events/ShopifyAccountEvent';
+import { UUID } from "@shared/domain/valueObjects";
+import moment from "moment";
+import { AcceptShopifyInstallDto } from "../../dto/AcceptShopifyInstallDto";
+import { InstallShopifyAccountDto } from "../../dto/InstallShopifyAccountDto";
+import { ShopifyAccountInstallStatus } from "./ShopifyAccountInstallStatus";
+import * as crypto from "crypto";
+import { UnprocessableEntityException } from "@nestjs/common";
+import { isInteger, parseInt } from "lodash";
+import { ShopifyAccountInstallInitiated } from "../events/ShopifyAccountEvent";
 export interface IShopifyAccountInstall {
   id: string;
   shopifyAccountId: string;
@@ -28,9 +21,9 @@ export interface IShopifyAccountInstall {
   accessTokenLink: string;
   accessToken: string;
 
-  status: DbShopifyAccountInstallStatus;
+  status: any;
 
-  failedReason: DbShopifyAccountInstallFailedReason;
+  failedReason: any;
 
   createdAt: Date;
   updatedAt: Date;
@@ -51,8 +44,8 @@ export interface ShopifyAccountInstallProps {
   accessTokenLink: string;
   accessToken: string;
 
-  status: DbShopifyAccountInstallStatus;
-  failedReason: DbShopifyAccountInstallFailedReason;
+  status: any;
+  failedReason: any;
 
   completedAt?: Date | undefined;
 
@@ -61,73 +54,73 @@ export interface ShopifyAccountInstallProps {
 }
 
 export class ShopifyAccountInstall {
-  protected props: ShopifyAccountInstallProps;
+  protected _props: ShopifyAccountInstallProps;
   private constructor(props: ShopifyAccountInstallProps) {
-    this.props = props;
+    this._props= props;
   }
 
   get status() {
-    return this.props.status;
+    return this._props.status;
   }
 
   get installLink() {
-    return this.props.installLink;
+    return this._props.installLink;
   }
   get accessTokenLink() {
-    return this.props.accessTokenLink;
+    return this._props.accessTokenLink;
   }
 
   get failed() {
     return this.status == ShopifyAccountInstallStatus.FAILED;
   }
 
-  getProps(): IShopifyAccountInstall {
+  props(): IShopifyAccountInstall {
     const props: IShopifyAccountInstall = {
-      id: this.props.id.value,
-      shop: this.props.shop,
-      accessToken: this.props.accessToken,
-      timestamp: this.props.timestamp,
-      hmac: this.props.hmac,
-      nonce: this.props.nonce,
-      status: this.props.status,
-      scopes: this.props.scopes,
-      authorizationCode: this.props.authorizationCode,
-      shopifyAccountId: this.props.shopifyAccountId.value,
-      installLink: this.props.installLink,
-      accessTokenLink: this.props.accessTokenLink,
-      failedReason: this.props.failedReason,
-      createdAt: this.props.createdAt,
-      updatedAt: this.props.updatedAt,
+      id: this._props.id.value(),
+      shop: this._props.shop,
+      accessToken: this._props.accessToken,
+      timestamp: this._props.timestamp,
+      hmac: this._props.hmac,
+      nonce: this._props.nonce,
+      status: this._props.status,
+      scopes: this._props.scopes,
+      authorizationCode: this._props.authorizationCode,
+      shopifyAccountId: this._props.shopifyAccountId.value(),
+      installLink: this._props.installLink,
+      accessTokenLink: this._props.accessTokenLink,
+      failedReason: this._props.failedReason,
+      createdAt: this._props.createdAt,
+      updatedAt: this._props.updatedAt,
     };
     return props;
   }
-  toDb(): DbShopifyAccountInstall {
-    const props: DbShopifyAccountInstall = {
-      id: this.props.id.value,
-      shop: this.props.shop,
-      accessToken: this.props.accessToken,
-      timestamp: this.props.timestamp,
-      hmac: this.props.hmac,
-      nonce: this.props.nonce,
-      status: this.props.status,
-      scopes: this.props.scopes,
-      authorizationCode: this.props.authorizationCode,
+  toDb(): any {
+    const props: any = {
+      id: this._props.id.value(),
+      shop: this._props.shop,
+      accessToken: this._props.accessToken,
+      timestamp: this._props.timestamp,
+      hmac: this._props.hmac,
+      nonce: this._props.nonce,
+      status: this._props.status,
+      scopes: this._props.scopes,
+      authorizationCode: this._props.authorizationCode,
       shopifyAccountId: undefined,
-      installLink: this.props.installLink,
-      accessTokenLink: this.props.accessTokenLink,
-      failedReason: this.props.failedReason,
-      createdAt: this.props.createdAt,
-      updatedAt: this.props.updatedAt,
+      installLink: this._props.installLink,
+      accessTokenLink: this._props.accessTokenLink,
+      failedReason: this._props.failedReason,
+      createdAt: this._props.createdAt,
+      updatedAt: this._props.updatedAt,
     };
     return props;
   }
   public static fromDb(
-    dbInstall: DbShopifyAccountInstall,
+    dbInstall: any
   ): ShopifyAccountInstall {
     try {
       const props: ShopifyAccountInstallProps = {
-        id: UUID.from(dbInstall.id),
-        shopifyAccountId: UUID.from(dbInstall.shopifyAccountId),
+        id: UUID.from(dbInstall.id).value(),
+        shopifyAccountId: UUID.from(dbInstall.shopifyAccountId).value(),
         shop: dbInstall.shop,
         timestamp: dbInstall.timestamp,
         hmac: dbInstall.hmac,
@@ -147,12 +140,12 @@ export class ShopifyAccountInstall {
     } catch (error) {
       console.log(error);
       throw new UnprocessableEntityException(
-        `Unable To Load ShopifyAccount From Db`,
+        `Unable To Load ShopifyAccount From Db`
       );
     }
   }
   public static create(): ShopifyAccountInstall {
-    const na = 'NOT_AVAILABLE';
+    const na = "NOT_AVAILABLE";
     const now = moment().toDate();
     const defaultDate = moment().toDate().valueOf();
     const id = UUID.generate();
@@ -162,8 +155,8 @@ export class ShopifyAccountInstall {
       shop: na,
       hmac: na,
       timestamp: defaultDate,
-      status: 'PENDING',
-      failedReason: 'NONE',
+      status: "PENDING",
+      failedReason: "NONE",
       nonce: 0,
       scopes: na,
       authorizationCode: na,
@@ -185,7 +178,7 @@ export class ShopifyAccountInstall {
       throw new UnprocessableEntityException(`TimestampIsNonInteger`);
     }
     const timestamp = parseInt(dto.timestamp as any);
-    this.forShopifyAccount(shopifyAccountId)
+    this.forShopifyAccount(shopifyAccountId.value())
       .forShop(dto.shop)
       .initiatedAt(timestamp)
       .withScopes(dto.scopes)
@@ -196,31 +189,31 @@ export class ShopifyAccountInstall {
   }
 
   public initiatedAt(timestamp: any) {
-    this.props.timestamp = parseInt(timestamp);
+    this._props.timestamp = parseInt(timestamp);
     return this;
   }
   public forShop(shop: string) {
-    this.props.shop = shop;
+    this._props.shop = shop;
     return this;
   }
 
   public withHmac(hmac: string) {
-    if (hmac) this.props.hmac = hmac;
+    if (hmac) this._props.hmac = hmac;
     return this;
   }
 
   public forShopifyAccount(id: UUID) {
-    this.props.shopifyAccountId = id;
+    this._props.shopifyAccountId = id;
     return this;
   }
 
   public withScopes(scopes: string) {
-    this.props.scopes = scopes;
+    this._props.scopes = scopes;
     return this;
   }
   public generateNonce() {
-    this.props.nonce = moment(this.props.timestamp).valueOf();
-    if (!isInteger(this.props.nonce)) {
+    this._props.nonce = moment(this._props.timestamp).valueOf();
+    if (!isInteger(this._props.nonce)) {
       throw new UnprocessableEntityException(`NonceIsNotNumber`);
     }
     return this;
@@ -228,21 +221,21 @@ export class ShopifyAccountInstall {
 
   public confirmInstall(
     dto: AcceptShopifyInstallDto,
-    SHOPIFY_API_SECRET: string,
+    SHOPIFY_API_SECRET: string
   ) {
-    if (dto.state != this.props.nonce) {
+    if (dto.state != this._props.nonce) {
       throw new UnprocessableEntityException(
-        `Unable to accept install: Invalid Nonce`,
+        `Unable to accept install: Invalid Nonce`
       );
     }
     const message = `code=${dto.code}&shop=${dto.shop}&state=${dto.state}&timestamp=${dto.timestamp}`;
-    const providedHmac = Buffer.from(dto.hmac, 'utf-8');
+    const providedHmac = Buffer.from(dto.hmac, "utf-8");
     const generatedHash = Buffer.from(
       crypto
-        .createHmac('sha256', SHOPIFY_API_SECRET)
+        .createHmac("sha256", SHOPIFY_API_SECRET)
         .update(message)
-        .digest('hex'),
-      'utf-8',
+        .digest("hex"),
+      "utf-8"
     );
 
     let hashEquals = false;
@@ -251,55 +244,55 @@ export class ShopifyAccountInstall {
       hashEquals = crypto.timingSafeEqual(generatedHash, providedHmac);
     } catch (e) {
       throw new UnprocessableEntityException(
-        `Unable to accept install: Invalid HMAC`,
+        `Unable to accept install: Invalid HMAC`
       );
     }
     return this;
   }
 
   accept(dto: AcceptShopifyInstallDto) {
-    this.props.status = 'ACCEPTED';
-    this.props.authorizationCode = dto.code;
+    this._props.status = "ACCEPTED";
+    this._props.authorizationCode = dto.code;
     this.generateAccessTokenRequestLink();
     return this;
   }
 
   public withAccessToken(token: string) {
-    this.props.accessToken = token;
+    this._props.accessToken = token;
     return this;
   }
 
   public pending() {
-    this.props.status = 'PENDING';
+    this._props.status = "PENDING";
     return this;
   }
 
   public pendingShopifyAccept() {
-    this.props.status = 'PENDING_SHOPIFY_ACCEPT';
+    this._props.status = "PENDING_SHOPIFY_ACCEPT";
     return this;
   }
 
   public pendingAccessToken() {
-    this.props.status = 'ACCEPTED';
+    this._props.status = "ACCEPTED";
     return this;
   }
   public complete() {
-    this.props.status = 'COMPLETE';
+    this._props.status = "COMPLETE";
     return this;
   }
-  public fail(reason: DbShopifyAccountInstallFailedReason) {
-    this.props.status = 'FAILED';
-    this.props.failedReason = reason;
+  public fail(reason: any) {
+    this._props.status = "FAILED";
+    this._props.failedReason = reason;
     return this;
   }
 
   public generateInstallLink(API_KEY: string, BASE_API_URL: string) {
-    this.props.installLink = `https://${this.props.shop}/admin/oauth/authorize?client_id=${API_KEY}&scope=${this.props.scopes}&state=${this.props.nonce}&redirect_uri=${BASE_API_URL}/shopify/install`;
-    this.props.status = 'PENDING_SHOPIFY_ACCEPT';
+    this._props.installLink = `https://${this._props.shop}/admin/oauth/authorize?client_id=${API_KEY}&scope=${this._props.scopes}&state=${this._props.nonce}&redirect_uri=${BASE_API_URL}/shopify/install`;
+    this._props.status = "PENDING_SHOPIFY_ACCEPT";
     return this;
   }
   public generateAccessTokenRequestLink() {
-    this.props.accessTokenLink = `https://${this.props.shop}/admin/oauth/access_token`;
+    this._props.accessTokenLink = `https://${this._props.shop}/admin/oauth/access_token`;
     return this;
   }
 }

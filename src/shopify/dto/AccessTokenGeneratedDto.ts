@@ -1,4 +1,4 @@
-import { UUID } from '@shared/domain/ValueObjects';
+import { UUID } from '@shared/domain/valueObjects';
 import { Type } from 'class-transformer';
 import { IsInt } from 'class-validator';
 

@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UseCase } from '@shared/domain/UseCase';
-import * as moment from 'moment';
+import moment from "moment";
 import { Result } from '@shared/domain/Result';
-import { UUID } from '@shared/domain/ValueObjects';
+import { UUID } from '@shared/domain/valueObjects';
 import { ConnectShopifyAccountDto } from '../dto/ConnectShopifyAccountDto';
 import { ShopifyAccount } from '../domain/entities/ShopifyAccount';
 import {

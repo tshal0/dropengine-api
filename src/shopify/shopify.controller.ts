@@ -10,7 +10,7 @@ import {
 import { Request, Response } from "express";
 import { AcceptShopifyInstallDto } from "./dto/AcceptShopifyInstallDto";
 import { ConnectShopifyAccountDto } from "./dto/ConnectShopifyAccountDto";
-import * as moment from "moment";
+import moment from "moment";
 import { ConfigService } from "@nestjs/config";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { AcceptShopifyInstallUseCase } from "./useCases/AcceptShopifyInstallUseCase";
@@ -41,16 +41,16 @@ export class ShopifyController {
     if (!dto.timestamp) dto.timestamp = moment().valueOf();
 
     let result = await this.createShopifyAccount.execute(query);
-    let account = result.getValue().getProps();
-    res.cookie("state", account.installation.nonce);
-    res.redirect(account.installation.installLink);
+    // let account = result.value().props();
+    // res.cookie("state", account.installation.nonce);
+    // res.redirect(account.installation.installLink);
   }
   @Get("/install")
   public async shopifyInstall(@Req() req: Request, @Res() res: Response) {
     let dto: AcceptShopifyInstallDto =
       req.query as unknown as AcceptShopifyInstallDto;
     let result = await this.acceptShopifyInstall.execute(dto);
-    let account = result.getValue().getProps();
+    // let account = result.value().props();
 
     try {
       res.redirect(`/home`);

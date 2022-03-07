@@ -10,17 +10,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model UserEvent {
-  @@map("user_events")
-  eventId   String  @id @default(uuid()) @map("event_id")
-  eventType String @map("event_type")
-  aggregateId String? @map("aggregate_id")
-  aggregateType String @map("aggregate_type")
-  timestamp DateTime @default(now())
-  details String
+  eventId       String   @id @default(uuid()) @map("event_id")
+  eventType     String   @map("event_type")
+  aggregateId   String?  @map("aggregate_id")
+  aggregateType String   @map("aggregate_type")
+  timestamp     DateTime @default(now())
+  details       String
 
   user User? @relation(fields: [aggregateId], references: [id], onDelete: Cascade)
+  @@map("user_events")
 }
 
 enum UserStatus {
@@ -28,24 +27,23 @@ enum UserStatus {
   DEACTIVATED
   DISABLED
 }
-model User {
-  @@map("users")
-  id   String  @id @default(uuid())
-  email String  @unique
-  picture String?
-  externalUserId String? @map("external_user_id")
-  status UserStatus @default(DEACTIVATED)
 
-  firstName  String?  @map("first_name")
-  lastName String?  @map("last_name")
+model User {
+  id             String     @id @default(uuid())
+  email          String     @unique
+  picture        String?
+  externalUserId String?    @map("external_user_id")
+  status         UserStatus @default(DEACTIVATED)
+
+  firstName String? @map("first_name")
+  lastName  String? @map("last_name")
 
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
   events UserEvent[]
+  @@map("users")
 }
-
-
 
 enum ShopifyAccountInstallStatus {
   PENDING
@@ -54,6 +52,7 @@ enum ShopifyAccountInstallStatus {
   COMPLETE
   FAILED
 }
+
 enum ShopifyAccountInstallFailedReason {
   NONE
   INSTALL_LINK_EXPIRED
@@ -65,40 +64,41 @@ enum ShopifyAccountInstallFailedReason {
   SCOPES_INVALID
   SCOPES_MISSING
 }
+
 model ShopifyAccountInstall {
-  @@map("shopify_account_installs")
-  id   String  @id @default(uuid())
-  shopifyAccountId String 
+  id               String @id @default(uuid())
+  shopifyAccountId String @unique @map("shopify_account_id")
 
-  shop String
-  timestamp Int
-  hmac String
-  nonce Int
-  scopes String
-  authorizationCode String
-  installLink String
-  accessTokenLink String
-  accessToken String
+  shop              String
+  timestamp         Int
+  hmac              String
+  nonce             Int
+  scopes            String
+  authorizationCode String @map("authorization_code")
+  installLink       String @map("install_link")
+  accessTokenLink   String @map("access_token_link")
+  accessToken       String @map("access_token")
 
-  status ShopifyAccountInstallStatus @default(PENDING)
-  failedReason ShopifyAccountInstallFailedReason @default(NONE)
+  status       ShopifyAccountInstallStatus       @default(PENDING)
+  failedReason ShopifyAccountInstallFailedReason @default(NONE) @map("failed_reason")
 
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
   account ShopifyAccount? @relation(fields: [shopifyAccountId], references: [id], onDelete: Cascade)
+  @@map("shopify_account_installs")
 }
 
 model ShopifyAccountEvent {
-  @@map("shopify_account_events")
-  eventId   String  @id @default(uuid()) @map("event_id")
-  eventType String @map("event_type")
-  aggregateId String? @map("aggregate_id")
-  aggregateType String @map("aggregate_type")
-  timestamp DateTime @default(now())
-  details String
+  eventId       String   @id @default(uuid()) @map("event_id")
+  eventType     String   @map("event_type")
+  aggregateId   String?  @map("aggregate_id")
+  aggregateType String   @map("aggregate_type")
+  timestamp     DateTime @default(now())
+  details       String
 
   account ShopifyAccount? @relation(fields: [aggregateId], references: [id], onDelete: Cascade)
+  @@map("shopify_account_events")
 }
 
 enum ShopifyAccountStatus {
@@ -108,13 +108,13 @@ enum ShopifyAccountStatus {
   PENDING
   PENDING_INSTALL
 }
+
 model ShopifyAccount {
-  @@map("shopify_accounts")
-  id   String  @id @default(uuid())
-  userId String?
-  shopOrigin String @unique()
-  accessToken String
-  scopes String
+  id          String  @id @default(uuid())
+  userId      String? @map("user_id")
+  shopOrigin  String  @unique() @map("shop_origin")
+  accessToken String  @map("access_token")
+  scopes      String
 
   status ShopifyAccountStatus @default(PENDING_INSTALL)
 
@@ -122,5 +122,57 @@ model ShopifyAccount {
   updatedAt DateTime? @updatedAt @map("updated_at")
 
   installation ShopifyAccountInstall?
-  events ShopifyAccountEvent[]
+  events       ShopifyAccountEvent[]
+  @@map("shopify_accounts")
+}
+
+model Event {
+  eventId       String   @id @default(uuid()) @map("event_id")
+  eventType     String   @map("event_type")
+  aggregateId   String?  @map("aggregate_id")
+  aggregateType String   @map("aggregate_type")
+  timestamp     DateTime @default(now())
+  details       Json
+
+  @@map("events")
+}
+
+model ProductType {
+  uuid String @id @default(uuid())
+  id   Int    @unique @default(autoincrement())
+
+  name                 String @map("name")
+  manufacturingDetails Json   @map("manufacturing_details")
+  option1              Json?  @map("option_1")
+  option2              Json?  @map("option_2")
+  option3              Json?  @map("option_3")
+  livePreview          Json   @map("live_preview")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+
+
+  Product Product[]
+  @@map("product_types")
+}
+
+model Product {
+  uuid String @id @default(uuid())
+  id   Int    @unique @default(autoincrement())
+
+  sku           String   @map("sku")
+  productTypeId String   @map("product_type_id")
+  tags          String[] @map("tags")
+  categories    String[] @map("categories")
+  image         String?  @map("image")
+  svg           String?  @map("svg")
+  customOptions Json[]   @map("custom_options")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  productType ProductType @relation(fields: [productTypeId], references: [uuid], onDelete: Cascade)
+
+  @@map("products")
 }

@@ -13,9 +13,13 @@
     "incremental": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "esModuleInterop": true,
     "paths": {
       "@shared/*": [
         "shared/*"
+      ],
+      "@catalog/*": [
+        "catalog/*"
       ],
       "@users/*": [
         "users/*"

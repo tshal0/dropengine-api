@@ -1,10 +1,13 @@
-import { UnprocessableEntityException } from '@nestjs/common';
-import { Request } from 'express';
-import { extractUser } from '../utils/extractUserFromRequest';
+import { UnprocessableEntityException } from "@nestjs/common";
+import { Request } from "express";
+export const extractUser = (req: Request): IAuthorizedUser => {
+  const user: IAuthorizedUser = req["user"] as any;
+  return user;
+};
 
 export interface IAuthorizedUser {
-  'https://www.myeasymonogram.com/email': string;
-  'https://www.myeasymonogram.com/app_metadata': IAppMetadata;
+  "https://www.myeasymonogram.com/email": string;
+  "https://www.myeasymonogram.com/app_metadata": IAppMetadata;
   sub: string;
   permissions: string[];
 }
@@ -35,14 +38,14 @@ export class AuthorizedUser {
   }
 
   get primaryUserId() {
-    return this.props['https://www.myeasymonogram.com/app_metadata']
+    return this.props["https://www.myeasymonogram.com/app_metadata"]
       ?.primary_user_id;
   }
 
   get roles() {
-    return this['https://www.myeasymonogram.com/app_metadata'].roles;
+    return this["https://www.myeasymonogram.com/app_metadata"].roles;
   }
   get email() {
-    return this['https://www.myeasymonogram.com/email'];
+    return this["https://www.myeasymonogram.com/email"];
   }
 }

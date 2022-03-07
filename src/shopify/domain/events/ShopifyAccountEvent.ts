@@ -1,9 +1,9 @@
 import { UnprocessableEntityException } from '@nestjs/common';
 import { AggregateType } from '@shared/domain/events/AggregateType';
 import { BaseDomainEvent } from '@shared/domain/events/BaseDomainEvents';
-import { UUID } from '@shared/domain/ValueObjects';
+import { UUID } from '@shared/domain/valueObjects';
 import { isNull } from 'lodash';
-import * as moment from 'moment';
+import moment from "moment";
 import { AcceptShopifyInstallDto } from '../../dto/AcceptShopifyInstallDto';
 import { AccessTokenGeneratedDto } from '../../dto/AccessTokenGeneratedDto';
 import { ConnectShopifyAccountDto } from '../../dto/ConnectShopifyAccountDto';
@@ -30,9 +30,9 @@ export class ShopifyAccountEvent extends BaseDomainEvent {
   public eventType = ShopifyAccountEventType.Unknown;
   public details: any;
   fromDbEvent(dbEvent: any) {
-    this.eventId = UUID.from(dbEvent.eventId);
+    this.eventId = UUID.from(dbEvent.eventId).value();
     this.eventType = dbEvent.eventType;
-    this.aggregateId = UUID.from(dbEvent.aggregateId);
+    this.aggregateId = UUID.from(dbEvent.aggregateId).value();
     this.timestamp = moment(dbEvent.timestamp).toDate();
     this.details = JSON.parse(dbEvent.details);
     return this;
@@ -141,7 +141,7 @@ export class ShopifyAccountInstallAccepted extends ShopifyAccountEvent {
   public static generate(dto: AcceptShopifyInstallDto) {
     const event = new ShopifyAccountInstallAccepted();
     const aggregateId = UUID.from(dto.installId);
-    event.new().forAggregate(aggregateId);
+    event.new().forAggregate(aggregateId.value());
     event.details = dto;
     return event;
   }

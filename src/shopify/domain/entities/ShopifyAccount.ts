@@ -1,26 +1,22 @@
-import { IDomainEventProps } from '@shared/domain/events/BaseDomainEvents';
-import { InvalidUuidException, UUID } from '@shared/domain/ValueObjects';
-import * as moment from 'moment';
-import { ConnectShopifyAccountDto } from '../../dto/ConnectShopifyAccountDto';
+import { IDomainEventProps } from "@shared/domain/events/BaseDomainEvents";
+import { InvalidUuidException, UUID } from "@shared/domain/valueObjects";
+import moment from "moment";
+import { ConnectShopifyAccountDto } from "../../dto/ConnectShopifyAccountDto";
 import {
   IShopifyAccountInstall,
   ShopifyAccountInstall,
-} from './ShopifyAccountInstall';
-import { ShopifyAccountStatus } from './ShopifyAccountStatus';
+} from "./ShopifyAccountInstall";
+import { ShopifyAccountStatus } from "./ShopifyAccountStatus";
 import {
   ShopifyAccountAccessTokenGenerated,
   ShopifyAccountCreated,
   ShopifyAccountEvent,
   ShopifyAccountInstallInitiated,
-} from '../events/ShopifyAccountEvent';
-import {
-  DbShopifyAccount,
-  DbShopifyAccountStatus,
-} from '@shared/modules/prisma/models/ShopifyAccount';
-import { UnprocessableEntityException } from '@nestjs/common';
-import { InstallShopifyAccountDto } from '../../dto/InstallShopifyAccountDto';
-import { AcceptShopifyInstallDto } from '../../dto/AcceptShopifyInstallDto';
-import { isNull } from 'lodash';
+} from "../events/ShopifyAccountEvent";
+import { UnprocessableEntityException } from "@nestjs/common";
+import { InstallShopifyAccountDto } from "../../dto/InstallShopifyAccountDto";
+import { AcceptShopifyInstallDto } from "../../dto/AcceptShopifyInstallDto";
+import { isNull } from "lodash";
 
 export interface IShopifyAccount {
   id: string;
@@ -29,7 +25,7 @@ export interface IShopifyAccount {
   accessToken: string;
   scopes: string;
 
-  status: DbShopifyAccountStatus;
+  status: any;
 
   installation?: IShopifyAccountInstall | undefined;
 
@@ -45,7 +41,7 @@ export interface ShopifyAccountProps {
   accessToken: string;
   scopes: string;
 
-  status: DbShopifyAccountStatus;
+  status: any;
   installation?: ShopifyAccountInstall | undefined;
 
   createdAt: Date;
@@ -53,66 +49,66 @@ export interface ShopifyAccountProps {
   events: ShopifyAccountEvent[];
 }
 export class ShopifyAccount {
-  protected props: ShopifyAccountProps;
+  protected _props: ShopifyAccountProps;
   private constructor(props: ShopifyAccountProps) {
-    this.props = props;
+    this._props = props;
   }
 
   public get id() {
-    return this.props.id;
+    return this._props.id;
   }
 
   public get accessTokenLink() {
-    return this.props.installation?.accessTokenLink;
+    return this._props.installation?.accessTokenLink;
   }
   public get authorizationCode() {
-    return this.props.installation?.getProps().authorizationCode;
+    return this._props.installation?.props().authorizationCode;
   }
 
-  getProps(): IShopifyAccount {
+  props(): IShopifyAccount {
     const props: IShopifyAccount = {
-      id: this.props.id.value,
-      userId: this.props.userId.value,
-      shopOrigin: this.props.shopOrigin,
-      accessToken: this.props.accessToken,
-      scopes: this.props.scopes,
-      status: this.props.status,
-      createdAt: this.props.createdAt,
-      updatedAt: this.props.updatedAt,
-      events: this.props.events?.map((e) => e.getProps()) || [],
-      installation: this.props.installation?.getProps(),
+      id: this._props.id.value(),
+      userId: this._props.userId.value(),
+      shopOrigin: this._props.shopOrigin,
+      accessToken: this._props.accessToken,
+      scopes: this._props.scopes,
+      status: this._props.status,
+      createdAt: this._props.createdAt,
+      updatedAt: this._props.updatedAt,
+      events: this._props.events?.map((e) => e.props()) || [],
+      installation: this._props.installation?.props(),
     };
     return props;
   }
-  toDb(): DbShopifyAccount {
-    const props: DbShopifyAccount = {
-      id: this.props.id.value,
-      userId: this.props.userId.value,
-      shopOrigin: this.props.shopOrigin,
-      accessToken: this.props.accessToken,
-      scopes: this.props.scopes,
-      status: this.props.status,
-      createdAt: this.props.createdAt,
-      updatedAt: this.props.updatedAt,
-      events: this.props.events?.map((e) => e.toDbEvent()) || [],
-      installation: this.props.installation?.toDb(),
+  toDb(): any {
+    const props: any = {
+      id: this._props.id.value(),
+      userId: this._props.userId.value(),
+      shopOrigin: this._props.shopOrigin,
+      accessToken: this._props.accessToken,
+      scopes: this._props.scopes,
+      status: this._props.status,
+      createdAt: this._props.createdAt,
+      updatedAt: this._props.updatedAt,
+      events: this._props.events?.map((e) => e.toDbEvent()) || [],
+      installation: this._props.installation?.toDb(),
     };
     return props;
   }
-  public static init(dbShopifyAccount: DbShopifyAccount): ShopifyAccount {
+  public static init(dbShopifyAccount: any): ShopifyAccount {
     try {
       const id = UUID.from(dbShopifyAccount.id);
       const userId = UUID.from(dbShopifyAccount.userId);
       const installation = ShopifyAccountInstall.fromDb(
-        dbShopifyAccount.installation,
+        dbShopifyAccount.installation
       );
       const events =
         dbShopifyAccount.events?.map((e) =>
-          new ShopifyAccountEvent().fromDbEvent(e),
+          new ShopifyAccountEvent().fromDbEvent(e)
         ) || [];
       const props: ShopifyAccountProps = {
-        id: id,
-        userId: userId,
+        id: id.value(),
+        userId: userId.value(),
         shopOrigin: dbShopifyAccount.shopOrigin,
         accessToken: dbShopifyAccount.accessToken,
         scopes: dbShopifyAccount.scopes,
@@ -127,12 +123,12 @@ export class ShopifyAccount {
     } catch (error) {
       console.log(error);
       throw new UnprocessableEntityException(
-        `Unable To Load ShopifyAccount From Db`,
+        `Unable To Load ShopifyAccount From Db`
       );
     }
   }
   public static create(): ShopifyAccount {
-    const na = 'NOT_AVAILABLE';
+    const na = "NOT_AVAILABLE";
     const now = moment().toDate();
     const id = UUID.generate();
     const props: ShopifyAccountProps = {
@@ -141,7 +137,7 @@ export class ShopifyAccount {
       shopOrigin: na,
       accessToken: na,
       scopes: na,
-      status: 'PENDING',
+      status: "PENDING",
       createdAt: now,
       updatedAt: now,
       events: [],
@@ -151,31 +147,31 @@ export class ShopifyAccount {
     return account;
   }
   public beginConnectionProcess(
-    created: ShopifyAccountCreated,
+    created: ShopifyAccountCreated
   ): ShopifyAccount {
     const dto = created.details;
 
     const shopifyAccountId = created.aggregateId;
-    this.props.id = shopifyAccountId;
+    this._props.id = shopifyAccountId;
 
     const userId = UUID.from(dto.userId);
     if (isNull(dto.userId?.length)) {
       throw new InvalidUuidException(
         `UserID is null or empty.`,
         dto?.userId,
-        `INVALID_USER_ID`,
+        `INVALID_USER_ID`
       );
     }
     const defaultScopes =
-      'read_orders,read_price_rules,read_products,read_order_edits';
+      "read_orders,read_price_rules,read_products,read_order_edits";
 
     const installDto: InstallShopifyAccountDto = {
       ...dto,
-      shopifyAccountId: shopifyAccountId.value,
+      shopifyAccountId: shopifyAccountId.value(),
       scopes: defaultScopes,
     };
 
-    this.forUser(userId)
+    this.forUser(userId.value())
       .forShopOrigin(dto.shop)
       .setScopes(defaultScopes)
       .raiseEvent(created)
@@ -184,27 +180,27 @@ export class ShopifyAccount {
   }
 
   public raiseEvent(event: ShopifyAccountEvent) {
-    this.props.events.push(event);
+    this._props.events.push(event);
     return this;
   }
   public forUser(id: UUID) {
-    this.props.userId = id;
+    this._props.userId = id;
     return this;
   }
 
   public forShopOrigin(shop: string) {
-    this.props.shopOrigin = `${shop}`;
+    this._props.shopOrigin = `${shop}`;
     return this;
   }
 
   public setScopes(scopes: string) {
-    this.props.scopes = scopes;
+    this._props.scopes = scopes;
     return this;
   }
   public generateAccessToken(event: ShopifyAccountAccessTokenGenerated) {
     // validate scope, token, raise event
-    this.props.accessToken = event.details.access_token;
-    this.props.installation.withAccessToken(event.details.access_token);
+    this._props.accessToken = event.details.access_token;
+    this._props.installation.withAccessToken(event.details.access_token);
     this.raiseEvent(event);
     return this;
   }
@@ -214,20 +210,20 @@ export class ShopifyAccount {
     installation.init(dto);
     const installInitiated = ShopifyAccountInstallInitiated.generate(dto);
     //TODO: handle pre-existing installation?
-    this.props.installation = installation;
-    this.props.status = 'PENDING_INSTALL';
+    this._props.installation = installation;
+    this._props.status = "PENDING_INSTALL";
     this.raiseEvent(installInitiated);
     return this;
   }
   public generateInstallLink(key: string, baseUrl: string) {
-    let install = this.props.installation;
+    let install = this._props.installation;
     if (install) {
       install.generateInstallLink(key, baseUrl);
     }
     return this;
   }
   acceptShopifyInstall(dto: AcceptShopifyInstallDto) {
-    let install = this.props.installation;
+    let install = this._props.installation;
     if (install) {
       install.accept(dto);
       install.generateAccessTokenRequestLink();
@@ -235,22 +231,22 @@ export class ShopifyAccount {
     return this;
   }
   getInstallLink() {
-    return this.props.installation?.installLink;
+    return this._props.installation?.installLink;
   }
   public pending() {
-    this.props.status = 'PENDING';
+    this._props.status = "PENDING";
     return this;
   }
   public activate() {
-    this.props.status = 'ACTIVE';
+    this._props.status = "ACTIVE";
     return this;
   }
   public deactivate() {
-    this.props.status = 'INACTIVE';
+    this._props.status = "INACTIVE";
     return this;
   }
   public disable() {
-    this.props.status = 'DISABLED';
+    this._props.status = "DISABLED";
     return this;
   }
 }

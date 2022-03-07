@@ -1,5 +1,7 @@
 export class CreateUserDto {
+  id?: string | undefined;
   email: string;
+  picture?: string | undefined
   firstName: string;
   lastName: string;
   password: string;

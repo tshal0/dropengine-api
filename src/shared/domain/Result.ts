@@ -52,7 +52,7 @@ export class Result<T> {
     Object.freeze(this);
   }
 
-  public getValue(): T {
+  public value(): T {
     if (!this.isSuccess) {
       throw new Error(`Cant retrieve the value from a failed result.`);
     }

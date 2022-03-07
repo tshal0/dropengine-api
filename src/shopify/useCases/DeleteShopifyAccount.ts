@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UseCase } from '@shared/domain/UseCase';
-import * as moment from 'moment';
+import moment from "moment";
 import { Result } from '@shared/domain/Result';
-import { UUID } from '@shared/domain/ValueObjects';
+import { UUID } from '@shared/domain/valueObjects';
 import { ConnectShopifyAccountDto } from '../dto/ConnectShopifyAccountDto';
 import { ShopifyAccount } from '../domain/entities/ShopifyAccount';
 import {
@@ -47,7 +47,7 @@ export class DeleteShopifyAccountUseCase implements UseCase<UUID, any> {
         let account = await this._repo.delete(id);
         return Result.ok();
       } else {
-        throw new ShopifyAccountNotFoundException(id.value);
+        throw new ShopifyAccountNotFoundException(id.value());
       }
     } catch (error: any) {
       this.logger.error(`${this.llog} ${error?.message}`);

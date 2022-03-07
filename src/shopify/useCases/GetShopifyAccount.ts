@@ -1,25 +1,18 @@
 import {
   Injectable,
   Scope,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UseCase } from '@shared/domain/UseCase';
-import * as moment from 'moment';
+import moment from "moment";
 import { Result } from '@shared/domain/Result';
-import { UUID } from '@shared/domain/ValueObjects';
-import { ConnectShopifyAccountDto } from '../dto/ConnectShopifyAccountDto';
+import { UUID } from '@shared/domain/valueObjects';
 import { ShopifyAccount } from '../domain/entities/ShopifyAccount';
-import {
-  ShopifyAccountCreated,
-  ShopifyAccountEventType,
-} from '../domain/events/ShopifyAccountEvent';
 import { ConfigService } from '@nestjs/config';
 import { Constants } from '@shared/Constants';
 import { AzureLoggerService } from '@shared/modules/azure-logger/azure-logger.service';
 import {
   DbShopifyAccountsRepository,
-  ShopifyAccountDuplicateShopOrigin,
   ShopifyAccountNotFoundException,
 } from '../database/DbShopifyAccountsRepository';
 
@@ -47,7 +40,7 @@ export class GetShopifyAccountUseCase implements UseCase<UUID, any> {
         let account = await this._repo.findById(id);
         return Result.ok(account);
       } else {
-        throw new ShopifyAccountNotFoundException(id.value);
+        throw new ShopifyAccountNotFoundException(id.value());
       }
     } catch (error: any) {
       this.logger.error(`${this.llog} ${error?.message}`);

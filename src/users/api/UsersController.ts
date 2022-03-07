@@ -12,10 +12,11 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { UUID } from "@shared/domain/ValueObjects";
+import { UUID } from "@shared/domain/valueObjects";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { IUser, IUserProps } from "@users/domain/interfaces/IUser";
 import { Request, Response } from "express";
-import { IUser } from "../domain/entities/User";
+
 import { CreateUserDto } from "../dto/CreateUserDto";
 import { CreateUserUseCase } from "../useCases/CreateUser";
 import { DeleteUserUseCase } from "../useCases/DeleteUser";
@@ -35,35 +36,36 @@ export class UsersController {
   @UseGuards(AuthGuard())
   async get(@Param("id") id: string) {
     let uuid = UUID.from(id);
-    let result = await this.getUser.execute(uuid);
+    let result = await this.getUser.execute(uuid.value());
     if (result.isSuccess) {
-      return result.getValue().getProps();
+      return result.value().props();
     }
   }
   @Delete(":id")
   @UseGuards(AuthGuard())
   async delete(@Param("id") id: string) {
     let uuid = UUID.from(id);
-    let result = await this.deleteUser.execute(uuid);
+    let result = await this.deleteUser.execute(uuid.value());
     if (result.isSuccess) {
-      return result.getValue();
+      return result.value();
     }
   }
   @Post()
-  async post(@Body() dto: CreateUserDto): Promise<IUser> {
+  async post(@Body() dto: CreateUserDto): Promise<IUserProps> {
     let result = await this.createUser.execute(dto);
     if (result.isSuccess) {
-      return result.getValue();
+      let props = result.value().props();
+      return props;
     } else {
       throw new UnprocessableEntityException(result.error);
     }
   }
   @Get()
   @UseGuards(AuthGuard())
-  async getAllUsers(): Promise<IUser[]> {
+  async getAllUsers(): Promise<IUserProps[]> {
     let result = await this.getAll.execute();
     if (result.isSuccess) {
-      return result.getValue();
+      return result.value().map((v) => v.props());
     }
   }
 }

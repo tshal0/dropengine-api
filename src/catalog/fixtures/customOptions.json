@@ -1,0 +1,46 @@
+[
+  {
+    "name": "name",
+    "label": "Name",
+    "placeholder": "Enter up to 20 characters",
+    "required": true,
+    "type": "input",
+
+    "maxLength": 20,
+    "pattern": "^[a-zA-Z0-9\\s.,'/&]*"
+  },
+  {
+    "name": "initial",
+    "label": "Initial",
+    "placeholder": "Select your initial here",
+    "required": true,
+    "type": "dropdown",
+
+    "options": "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
+  },
+  {
+    "required": true,
+    "maxLength": "16",
+    "pattern": "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
+    "type": "input",
+    "label": "Top Text",
+
+    "placeholder": "Up to 16 Characters"
+  },
+  {
+    "required": true,
+    "maxLength": "16",
+    "pattern": "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
+    "type": "input",
+    "label": "Middle Text",
+    "placeholder": "Up to 16 Characters"
+  },
+  {
+    "required": true,
+    "maxLength": "16",
+    "pattern": "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
+    "type": "input",
+    "label": "Bottom Text",
+    "placeholder": "Up to 16 Characters"
+  }
+]

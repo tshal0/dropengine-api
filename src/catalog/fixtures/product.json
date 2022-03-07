@@ -1,0 +1,85 @@
+{
+  "uuid": "00000000-0000-0000-0000-000000000001",
+  "id": 1,
+  "sku": "MEM-268-2",
+  "name": "",
+  "productTypeId": "00000000-0000-0000-0000-000000000001",
+  "type": {
+    "uuid": "00000000-0000-0000-0000-000000000001",
+    "id": 1,
+    "name": "MetalArt",
+    "manufacturingDetails": {
+      "material": "Mild Steel",
+      "thickness": "0.06",
+      "route": "1"
+    },
+    "livePreview": {
+      "enabled": true,
+      "script": {
+        "name": "Live Preview Script - MetalArt",
+        "link": "link",
+        "version": "1.0.8"
+      }
+    }
+  },
+  "tags": ["MEAD", "Steel"],
+  "categories": [
+    "Nautical Designs",
+    "freedom",
+    "top sellers",
+    "monogram",
+    "stock",
+    "For Him",
+    "For Her",
+    "New Arrivals"
+  ],
+  "image": "img",
+  "svg": "svg",
+  "customOptions": [
+    {
+      "name": "name",
+      "label": "Name",
+      "placeholder": "Enter up to 20 characters",
+      "required": true,
+      "type": "input",
+
+      "maxLength": 20,
+      "pattern": "^[a-zA-Z0-9\\s.,'/&]*"
+    },
+    {
+      "name": "initial",
+      "label": "Initial",
+      "placeholder": "Select your initial here",
+      "required": true,
+      "type": "dropdown",
+
+      "options": "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
+    }
+  ],
+  "variants": [
+    {
+      "uuid": "00000000-0000-0000-0000-000000000001",
+      "id": 1,
+      "sku": "MEM-268-2-12-Black",
+      "image": "",
+      "options": {
+        "option1": { "name": "Color", "value": "Black", "enabled": true },
+        "option2": { "name": "Size", "value": "12", "enabled": true },
+        "option3": null
+      },
+      "dimensions": {
+        "height": { "value": 30, "units": "in" },
+        "width": { "value": 15, "units": "in" },
+        "weight": { "value": 120, "units": "oz" }
+      },
+      "pricing": {
+        "baseCost": { "value": 11, "currency": "USD" },
+        "colorCost": { "value": 11, "currency": "USD" },
+        "manufacturingCost": { "value": 11, "currency": "USD" },
+        "shippingCost": { "value": 11, "currency": "USD" },
+        "basePrice": { "value": 11, "currency": "USD" },
+        "compareAtPrice": { "value": 11, "currency": "USD" }
+      }
+    }
+  ]
+}

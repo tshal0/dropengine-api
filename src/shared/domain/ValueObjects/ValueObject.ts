@@ -14,10 +14,10 @@ export abstract class ValueObject<T> {
   static isValueObject(obj: unknown): obj is ValueObject<unknown> {
     return obj instanceof ValueObject;
   }
-  protected readonly props: Readonly<ValueObjectProps<T>>;
+  protected readonly _props: Readonly<ValueObjectProps<T>>;
 
   protected constructor(props: ValueObjectProps<T>) {
-    this.props = Object.freeze(props);
+    this._props = Object.freeze(props);
   }
 
   /**
@@ -33,20 +33,22 @@ export abstract class ValueObject<T> {
   /**
    * Get raw props object or value.
    */
-  public getRawProps(): T {
-    if (this.isDomainPrimitive(this.props)) {
-      return this.props.value;
+  public value(): T {
+    if ([null, undefined].includes(this._props)) {
+      return null;
     }
-
-    const propsCopy = convertPropsToObject(this.props);
+    if (this.isDomainPrimitive(this._props)) {
+      return this._props.value;
+    }
+    const propsCopy = convertPropsToObject(this._props);
 
     return Object.freeze(propsCopy);
   }
 
   private isDomainPrimitive(
-    obj: unknown,
+    obj: unknown
   ): obj is DomainPrimitive<T & (Primitives | Date)> {
-    if (Object.prototype.hasOwnProperty.call(obj, 'value')) {
+    if (Object.prototype.hasOwnProperty.call(obj, "value")) {
       return true;
     }
     return false;
@@ -55,7 +57,7 @@ export abstract class ValueObject<T> {
 
 export function convertToPlainObject(item: any): any {
   if (ValueObject.isValueObject(item)) {
-    return item.getRawProps();
+    return item.value();
   }
   return item;
 }

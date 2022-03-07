@@ -11,8 +11,8 @@ export class DateValueObjectValidationError extends Error {
 export type DateValueObjectProp = string | number | Date;
 
 export class DateValueObject extends ValueObject<DateValueObjectProp> {
-  get value(): Date {
-    return moment(this.props.value).toDate();
+  value(): Date {
+    return moment(this._props.value).toDate();
   }
 
   // Can't use the `new` keyword from outside the scope of the class.

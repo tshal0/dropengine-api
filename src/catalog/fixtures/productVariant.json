@@ -1,0 +1,24 @@
+{
+  "uuid": "00000000-0000-0000-0000-000000000001",
+  "id": 1,
+  "sku": "MEM-268-2-30-Black",
+  "image": { "name": "img", "link": "link" },
+  "options": {
+    "option1": { "name": "Color", "value": "Black", "enabled": true },
+    "option2": { "name": "Size", "value": "12", "enabled": true },
+    "option3": null
+  },
+  "dimensions": {
+    "height": { "value": 30, "units": "in" },
+    "width": { "value": 15, "units": "in" },
+    "weight": { "value": 120, "units": "oz" }
+  },
+  "pricing": {
+    "baseCost": { "value": 11, "currency": "USD" },
+    "colorCost": { "value": 11, "currency": "USD" },
+    "manufacturingCost": { "value": 11, "currency": "USD" },
+    "shippingCost": { "value": 11, "currency": "USD" },
+    "basePrice": { "value": 11, "currency": "USD" },
+    "compareAtPrice": { "value": 11, "currency": "USD" }
+  }
+}

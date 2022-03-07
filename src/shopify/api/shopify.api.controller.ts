@@ -10,7 +10,7 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthorizedUser } from "@shared/domain/Auth0User";
-import { UUID } from "@shared/domain/ValueObjects";
+import { UUID } from "@shared/domain/valueObjects";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { IsNotEmpty, IsInt } from "class-validator";
 import { Request } from "express";
@@ -88,14 +88,14 @@ export class ShopifyApiController {
   @Get(":id")
   async get(@Param("id") id: string) {
     let uuid = UUID.from(id);
-    let result = await this.getAccount.execute(uuid);
-    let account = result.getValue();
-    return account.getProps();
+    let result = await this.getAccount.execute(uuid.value());
+    let account = result.value();
+    return account.props();
   }
   @Delete(":id")
   async delete(@Param("id") id: string) {
     let uuid = UUID.from(id);
-    let result = await this.deleteAccount.execute(uuid);
+    let result = await this.deleteAccount.execute(uuid.value());
 
     return { message: `Deleted ${id}: ${result.isSuccess}` };
   }
@@ -108,8 +108,8 @@ export class ShopifyApiController {
     if (result.isFailure) {
       throw new BadRequestException(result.error);
     }
-    let val = result.getValue();
-    let accounts = val.map((v) => v.getProps());
+    let val = result.value();
+    let accounts = val.map((v) => v.props());
     return accounts;
   }
 }
