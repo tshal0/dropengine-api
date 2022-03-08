@@ -146,7 +146,7 @@ stages:
     jobs:
       - job: BuildAndPushDockerImage
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'windows-latest'
         steps:
           - task: PowerShell@2
             displayName: 'ACR Host Name and imageName'

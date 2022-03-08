@@ -1,8 +1,4 @@
 name: $(Build.DefinitionName).$(Build.BuildId)__$(Date:yyyy.MM.dd)$(Rev:.rr)
-trigger:
-  branches:
-    include:
-      - main
 variables:
   buildConfiguration: 'Release'
   azureServiceConnection: 'DropEngineRM'
