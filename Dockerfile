@@ -13,7 +13,7 @@ RUN yarn --only=development
 
 COPY . .
 
-RUN yarn build:docker
+RUN yarn build
 
 FROM node:16.13.1-alpine3.14 as production
 

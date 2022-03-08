@@ -1,0 +1,65 @@
+name: $(Build.DefinitionName).$(Build.BuildId)__$(Date:yyyy.MM.dd)$(Rev:.rr)
+trigger:
+  branches:
+    include:
+      - main
+variables:
+  buildConfiguration: 'Release'
+  azureServiceConnection: 'DropEngineRM'
+  azureSubscription: 'DropEngine-Primary(0eaeda16-3a81-428c-a7d4-427b1354dc02)'
+  vmImageName: 'ubuntu-latest'
+  location: 'eastus'
+  postgresDatabaseUrl: ''
+  service: 'dropengine'
+  env: 'dev'
+  tag: '$(Build.BuildId)'
+  imageName: 'dropengine-api'
+  acrHostName: ${{ format('acrdropengine{0}.azurecr.io', variables.env)}}
+  keyVaultName: ${{ format('kv-{0}-{1}', variables.service, variables.env)}}
+  serviceImage: $[ format('{0}:{1}', variables.imageName, variables['Build.BuildId'])]
+  webAppUrl: ${{ format('https://app-{0}-{1}.azurewebsites.net/api', variables.service, variables.env)}}
+stages:
+  - stage: BuildAndRunTests
+    jobs:
+      - job: BuildAndRunTests
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: AzureKeyVault@2
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              KeyVaultName: '$(keyVaultName)'
+              SecretsFilter: '*'
+              RunAsPreJob: true
+          # - task: PowerShell@2
+          #   displayName: 'Set the DATABASE_URL env variable to PostgresDatabaseUrl from the KeyVault'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: 'Write-Host "##vso[task.setvariable variable=database.url]$(PostgresDatabaseUrl)"'
+          #     showWarnings: true
+          #     pwsh: true
+          - task: Npm@1
+            displayName: npm install
+            inputs:
+              command: 'install'
+              workingDir: $(System.DefaultWorkingDirectory)
+          - task: Npm@1
+            displayName: npm run build
+            inputs:
+              command: 'custom'
+              workingDir: '$(System.DefaultWorkingDirectory)'
+              customCommand: 'run build'
+            continueOnError: false
+          - task: Npm@1
+            displayName: npm run test (Unit Tests)
+            inputs:
+              command: 'custom'
+              workingDir: '$(System.DefaultWorkingDirectory)'
+              customCommand: 'run test'
+            continueOnError: true
+          - task: PublishTestResults@2
+            displayName: 'Publish NestJS Unit Test Results'
+            inputs:
+              testResultsFiles: '**/junit.xml'
+              failTaskOnFailedTests: true
+              testRunTitle: 'NestJS Unit Tests (Staging)'
