@@ -23,7 +23,7 @@ stages:
     jobs:
       - job: BuildAndRunTests
         pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'windows-latest'
         steps:
           - task: AzureKeyVault@2
             inputs:

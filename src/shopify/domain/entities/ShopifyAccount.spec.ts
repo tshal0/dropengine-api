@@ -41,7 +41,7 @@ describe(`ShopifyAccount`, () => {
       account = account.beginConnectionProcess(ev);
       expect(spy).toBeCalled();
 
-      let props = account._props();
+      let props = account.props();
 
       const expectedScopes =
         "read_orders,read_price_rules,read_products,read_order_edits";
@@ -170,7 +170,7 @@ describe(`ShopifyAccount`, () => {
         state: ts.valueOf(),
         timestamp: ts,
         url: `/shopify/install?code=1282f67b9bc4c651c3e6331a47aa1526&hmac=141c3668c228aa13f30ab51eec91de35c65d8aebc2423ae31222dd64e32629d1&host=ZGUtdGVtcGxhdGUtbG9jYWwubXlzaG9waWZ5LmNvbS9hZG1pbg&shop=mock-origin.myshopify.com&state=1642525557&timestamp=1642525568`,
-        installId: account._props()?.installation?.id,
+        installId: account.props()?.installation?.id,
       });
     });
   });

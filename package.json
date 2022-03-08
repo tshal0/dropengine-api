@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
+    "tsc":"tsc",
     "build": "nest build",
     "build:local": "dotenv -e .env.local -- nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -114,8 +115,7 @@
   "mikro-orm": {
     "useTsNode": true,
     "configPaths": [
-      "./src/mikro-orm.config.ts",
-      "./mikro-orm.config.js"
+      "./src/mikro-orm.config.ts"
     ]
   }
 }
