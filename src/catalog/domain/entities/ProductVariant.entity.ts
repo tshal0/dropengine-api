@@ -1,5 +1,5 @@
 import { Entity, Property, PrimaryKey, ManyToOne, wrap } from "@mikro-orm/core";
-import { IDimension, IWeight, IMoney } from "@shared/domain";
+import { IDimension, IMoney, IWeight } from "@shared/domain";
 import {
   IProductVariantProps,
   IVariantOption,
