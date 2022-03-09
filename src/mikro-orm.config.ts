@@ -6,7 +6,7 @@ import { DbUser } from "@users/domain/entities/User.entity";
 
 const config: Options = {
   entities: [DbProduct, DbProductType, DbProductVariant, DbUser],
-
+  clientUrl: process.env.DATABASE_URL,
   dbName: process.env.POSTGRES_DB || "dropengine",
   host: process.env.POSTGRES_HOST || "localhost",
   port: parseInt(process.env.POSTGRES_PORT) || 5432,
