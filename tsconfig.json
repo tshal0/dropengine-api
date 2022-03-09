@@ -9,7 +9,7 @@
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "incremental": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -17,16 +17,16 @@
     "moduleResolution": "node",
     "paths": {
       "@shared/*": [
-        "shared/*"
+        "src/shared/*"
       ],
       "@catalog/*": [
-        "catalog/*"
+        "src/catalog/*"
       ],
       "@users/*": [
-        "users/*"
+        "src/users/*"
       ],
       "@shopify/*": [
-        "shopify/*"
+        "src/shopify/*"
       ]
     },
   },

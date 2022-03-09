@@ -63,9 +63,9 @@ stages:
               testResultsFiles: '**/junit.xml'
               failTaskOnFailedTests: true
               testRunTitle: 'NestJS Unit Tests (Staging)'
-  - stage: PublishPrismaArtifact
+  - stage: PublishArtifact
     jobs:
-      - job: PublishPrismaArtifact
+      - job: PublishArtifact
         pool:
           vmImage: 'ubuntu-latest'
         steps:
@@ -73,11 +73,27 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                Copy-Item -Path "./package.json" -Destination "./prisma"
+                Get-ChildItem -Path "./_artifact" -Recurse | Remove-Item -Force -Recurse
+                New-Item -Path "./" -Name "_artifact" -ItemType "directory" -Force
+                New-Item -Path "./_artifact" -Name "src" -ItemType "directory" -Force
+                New-Item -Path "./_artifact" -Name "postman" -ItemType "directory" -Force
+                New-Item -Path "./_artifact" -Name "migrations" -ItemType "directory" -Force
+                New-Item -Path "./_artifact" -Name "azure" -ItemType "directory" -Force
+                New-Item -Path "./_artifact" -Name "dist" -ItemType "directory" -Force
+
+                Copy-Item -Path "./src/*" -Destination "./_artifact/src" -Recurse -Force
+                Copy-Item -Path "./postman/*" -Destination "./_artifact/postman" -Recurse -Force
+                Copy-Item -Path "./migrations/*" -Destination "./_artifact/migrations" -Recurse -Force
+                Copy-Item -Path "./azure/*" -Destination "./_artifact/azure" -Recurse -Force
+                Copy-Item -Path "./dist/*" -Destination "./_artifact/dist" -Recurse -Force
+
+                Copy-Item -Path "./package.json" -Destination "./_artifact"
+                Copy-Item -Path "./tsconfig.json" -Destination "./_artifact"
+
                 $compress = @{
-                  Path = "./prisma/*"
+                  Path = "./_artifact/*"
                   CompressionLevel = "Fastest"
-                  DestinationPath = "./_prisma"
+                  DestinationPath = "./artifact"
                 }
                 Compress-Archive @compress
               showWarnings: true
@@ -85,63 +101,63 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: '$(System.DefaultWorkingDirectory)/_prisma.zip'
-              artifact: '_prisma'
+              targetPath: '$(System.DefaultWorkingDirectory)/artifact.zip'
+              artifact: '_artifact'
               publishLocation: 'pipeline'
-  - stage: PublishARMTemplates
-    jobs:
-      - job: PublishARMTemplates
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: CmdLine@2
-            inputs:
-              script: 'dir'
-          - task: AzureKeyVault@2 
-            inputs:
-              azureSubscription: '$(azureSubscription)'
-              KeyVaultName: '$(keyVaultName)'
-              SecretsFilter: '*'
-          - task: ArchiveFiles@2
-            inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/azure'
-              includeRootFolder: true
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_azure.zip'
-              replaceExistingArchive: true
-              verbose: true
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_azure.zip'
-              artifact: '$(Build.BuildNumber)_azure'
-              publishLocation: 'pipeline'
-  - stage: PublishPostmanAPITests
-    jobs:
-      - job: PublishPostmanAPITests
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: CmdLine@2
-            inputs:
-              script: 'dir'
-          - task: AzureKeyVault@2 
-            inputs:
-              azureSubscription: '$(azureSubscription)'
-              KeyVaultName: '$(keyVaultName)'
-              SecretsFilter: '*'
-          - task: ArchiveFiles@2
-            inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/postman'
-              includeRootFolder: true
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_postman.zip'
-              replaceExistingArchive: true
-              verbose: true
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_postman.zip'
-              artifact: '$(Build.BuildNumber)_postman'
-              publishLocation: 'pipeline'
+  # - stage: PublishARMTemplates
+  #   jobs:
+  #     - job: PublishARMTemplates
+  #       pool:
+  #         vmImage: 'ubuntu-latest'
+  #       steps:
+  #         - task: CmdLine@2
+  #           inputs:
+  #             script: 'dir'
+  #         - task: AzureKeyVault@2 
+  #           inputs:
+  #             azureSubscription: '$(azureSubscription)'
+  #             KeyVaultName: '$(keyVaultName)'
+  #             SecretsFilter: '*'
+  #         - task: ArchiveFiles@2
+  #           inputs:
+  #             rootFolderOrFile: '$(System.DefaultWorkingDirectory)/azure'
+  #             includeRootFolder: true
+  #             archiveType: 'zip'
+  #             archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_azure.zip'
+  #             replaceExistingArchive: true
+  #             verbose: true
+  #         - task: PublishPipelineArtifact@1
+  #           inputs:
+  #             targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_azure.zip'
+  #             artifact: '$(Build.BuildNumber)_azure'
+  #             publishLocation: 'pipeline'
+  # - stage: PublishPostmanAPITests
+  #   jobs:
+  #     - job: PublishPostmanAPITests
+  #       pool:
+  #         vmImage: 'ubuntu-latest'
+  #       steps:
+  #         - task: CmdLine@2
+  #           inputs:
+  #             script: 'dir'
+  #         - task: AzureKeyVault@2 
+  #           inputs:
+  #             azureSubscription: '$(azureSubscription)'
+  #             KeyVaultName: '$(keyVaultName)'
+  #             SecretsFilter: '*'
+  #         - task: ArchiveFiles@2
+  #           inputs:
+  #             rootFolderOrFile: '$(System.DefaultWorkingDirectory)/postman'
+  #             includeRootFolder: true
+  #             archiveType: 'zip'
+  #             archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_postman.zip'
+  #             replaceExistingArchive: true
+  #             verbose: true
+  #         - task: PublishPipelineArtifact@1
+  #           inputs:
+  #             targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)_postman.zip'
+  #             artifact: '$(Build.BuildNumber)_postman'
+  #             publishLocation: 'pipeline'
   - stage: BuildAndPushDockerImage
     jobs:
       - job: BuildAndPushDockerImage
@@ -156,7 +172,7 @@ stages:
               showWarnings: true
               pwsh: true
           - task: Docker@2
-            displayName: 'Build MyProject image'
+            displayName: 'Build dropengine-api image'
             inputs:
               repository: '$(imageName)'
               command: build
