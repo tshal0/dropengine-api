@@ -6,10 +6,9 @@ import { Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { ProductTypesRepository } from "catalog/database/ProductTypesRepository";
-import { IProductType } from "catalog/domain/interfaces/IProductType";
-import { ProductType } from "catalog/domain/aggregates/ProductType";
 import { CreateProductTypeDto } from "@catalog/dto/CreateProductTypeDto";
+import { ProductTypesRepository } from "@catalog/database/ProductTypesRepository";
+import { ProductType } from "@catalog/domain/aggregates/ProductType";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class UpdateProductType

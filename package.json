@@ -8,6 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "tsc":"tsc",
+    "tsc:debug":"tsc --showConfig --listFilesOnly",
     "build": "nest build",
     "build:local": "dotenv -e .env.local -- nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -110,7 +111,8 @@
   "_moduleAliases": {
     "@shared": "dist/shared",
     "@users": "dist/users",
-    "@catalog": "dist/catalog"
+    "@catalog": "dist/catalog",
+    "@shopify": "dist/shopify"
   },
   "mikro-orm": {
     "useTsNode": true,

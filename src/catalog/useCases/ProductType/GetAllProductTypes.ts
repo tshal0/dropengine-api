@@ -6,12 +6,9 @@ import { Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import {
-  IProductType,
-  IProductTypeProps,
-} from "catalog/domain/interfaces/IProductType";
-import { ProductTypesRepository } from "catalog/database/ProductTypesRepository";
 import { result } from "lodash";
+import { ProductTypesRepository } from "@catalog/database/ProductTypesRepository";
+import { IProductTypeProps } from "@catalog/domain";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class GetAllProductTypes implements UseCase<any, IProductTypeProps[]> {

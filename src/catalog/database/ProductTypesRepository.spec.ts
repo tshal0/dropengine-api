@@ -1,11 +1,10 @@
 import { ProductTypesRepository } from "./ProductTypesRepository";
-import { Product } from "catalog/domain";
 import {
   baseCreateProductTypeDto,
   baseDbProdTypeProps,
   baseDbProductType,
 } from "./fixtures/productTypesRepo.mocks";
-import { ProductType } from "catalog/domain/aggregates/ProductType";
+import { ProductType } from "@catalog/domain/aggregates/ProductType";
 
 jest
   .spyOn(global.Date, "now")

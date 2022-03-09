@@ -8,15 +8,13 @@ import { Result, ResultError } from "@shared/domain/Result";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import { IProductType } from "catalog/domain/interfaces/IProductType";
 import { Readable } from "stream";
 import csv from "csvtojson";
-import { IProductProps } from "catalog/domain/interfaces";
-import { CsvProductDto, ICsvProductDto } from "catalog/dto/CsvProductDto";
-import { Product, ProductTypeName } from "@catalog/domain";
+import { IProductProps, Product, ProductTypeName } from "@catalog/domain";
 import { CreateProductDto } from "@catalog/dto/CreateProductDto";
 import { ProductsRepository } from "@catalog/database/ProductsRepository";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
+import { CsvProductDto } from "@catalog/dto/CsvProductDto";
 
 //TODO: Extract CsvProductDtos from stream, load into Products, save to DB
 /**

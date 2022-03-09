@@ -8,7 +8,7 @@ import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { Injectable, Scope, CACHE_MANAGER, Inject } from "@nestjs/common";
 import { Cache } from "cache-manager";
-import { ProductVariantsRepository } from "catalog/database/ProductVariantsRepository";
+import { ProductVariantsRepository } from "@catalog/database/ProductVariantsRepository";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class DeleteProductVariant implements UseCase<UUID, any> {

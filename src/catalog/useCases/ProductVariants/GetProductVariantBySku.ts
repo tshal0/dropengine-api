@@ -5,10 +5,9 @@ import moment from "moment";
 import { Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { ProductsRepository } from "catalog/database/ProductsRepository";
-import { Product, VariantSKU } from "catalog/domain";
-import { ProductVariant } from "catalog/domain/aggregates/ProductVariant";
-import { ProductVariantsRepository } from "catalog/database/ProductVariantsRepository";
+import { ProductVariantsRepository } from "@catalog/database/ProductVariantsRepository";
+import { VariantSKU } from "@catalog/domain";
+import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class GetProductVariantBySku

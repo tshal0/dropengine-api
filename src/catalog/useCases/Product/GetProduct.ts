@@ -5,8 +5,8 @@ import moment from "moment";
 import { Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { ProductsRepository } from "catalog/database/ProductsRepository";
-import { Product } from "catalog/domain";
+import { ProductsRepository } from "@catalog/database/ProductsRepository";
+import { Product } from "@catalog/domain";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class GetProduct implements UseCase<UUID, Product> {

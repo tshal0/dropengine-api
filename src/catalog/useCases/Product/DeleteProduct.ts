@@ -13,7 +13,7 @@ import {
   Inject,
 } from "@nestjs/common";
 import { Cache } from "cache-manager";
-import { ProductsRepository } from "catalog/database/ProductsRepository";
+import { ProductsRepository } from "@catalog/database/ProductsRepository";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class DeleteProduct implements UseCase<UUID, any> {

@@ -1,5 +1,4 @@
 import { Result, ValueObject } from "@shared/domain";
-import { CustomOptionDto } from "catalog/dto/CreateProductDto";
 import { toLower } from "lodash";
 import { InvalidCustomOptionType } from "./CustomOptionErrors";
 

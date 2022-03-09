@@ -1,16 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { ResultError, Result } from "@shared/domain/Result";
-import { NumberID, UUID } from "@shared/domain/valueObjects";
+import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 
 import moment from "moment";
 import { ProductVariant } from "../domain/aggregates/ProductVariant";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { IProductVariantProps } from "catalog/domain/interfaces";
-import { DbProductVariant } from "catalog/domain/entities/ProductVariant.entity";
-import { Collection, EntityManager, EntityRepository } from "@mikro-orm/core";
-import { VariantSKU } from "catalog/domain";
-import { FailedToCreateError, FailedToSaveError } from "@shared/database";
+import { EntityManager } from "@mikro-orm/core";
+import { DbProductVariant, IProductVariantProps, VariantSKU } from "@catalog/domain";
 
 /**
  * ProductVariantsRepository should have methods for

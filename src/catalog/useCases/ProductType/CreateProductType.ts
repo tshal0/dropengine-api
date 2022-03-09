@@ -8,10 +8,9 @@ import { Result, ResultError } from "@shared/domain/Result";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import { CreateProductTypeDto } from "catalog/dto/CreateProductTypeDto";
-import { IProductType } from "catalog/domain/interfaces/IProductType";
-import { ProductType } from "catalog/domain/aggregates/ProductType";
 import { ProductTypeName } from "@catalog/domain";
+import { ProductType } from "@catalog/domain/aggregates/ProductType";
+import { CreateProductTypeDto } from "@catalog/dto/CreateProductTypeDto";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateProductType

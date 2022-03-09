@@ -1,5 +1,5 @@
+import { CustomOptionDto } from "@catalog/dto/CreateProductDto";
 import { Result, ValueObject } from "@shared/domain";
-import { CustomOptionDto } from "catalog/dto/CreateProductDto";
 import { InvalidCustomOptionPattern } from "./CustomOptionErrors";
 
 export class CustomOptionPattern extends ValueObject<RegExp> {

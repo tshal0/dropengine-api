@@ -1,7 +1,7 @@
 import { Collection, UuidType } from "@mikro-orm/core";
 import moment from "moment";
-import { IProductTypeProps } from "catalog/domain/interfaces";
-import { CreateProductTypeDto } from "catalog/dto/CreateProductTypeDto";
+import { IProductTypeProps } from "@catalog/domain/interfaces";
+import { CreateProductTypeDto } from "@catalog/dto/CreateProductTypeDto";
 import { DbProductType } from "../../domain/entities/ProductType.entity";
 import { DbProduct } from "@catalog/domain/entities/Product.entity";
 jest

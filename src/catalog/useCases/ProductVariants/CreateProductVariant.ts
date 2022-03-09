@@ -7,11 +7,10 @@ import { Result, ResultError } from "@shared/domain/Result";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import { CreateProductVariantDto } from "catalog/dto/CreateProductVariantDto";
-import { IProductVariant } from "catalog/domain/interfaces/IProductVariant";
-import { ProductVariant } from "catalog/domain/aggregates/ProductVariant";
-import { ProductsRepository } from "catalog/database/ProductsRepository";
 import { UUID } from "@shared/domain";
+import { ProductsRepository } from "@catalog/database/ProductsRepository";
+import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
+import { CreateProductVariantDto } from "@catalog/dto/CreateProductVariantDto";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateProductVariant

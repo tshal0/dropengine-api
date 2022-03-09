@@ -1,4 +1,3 @@
-import { InvalidProduct } from "catalog/domain";
 
 export const productGenFailVariantResult = {
   inner: [

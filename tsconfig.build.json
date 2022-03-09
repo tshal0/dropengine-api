@@ -6,6 +6,7 @@
     "dist",
     "**/*spec.ts",
     "**/*jest*.ts",
-    "client"
+    "client",
+    "migrations"
   ]
 }

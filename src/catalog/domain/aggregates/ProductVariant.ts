@@ -2,23 +2,20 @@ import {
   Dimension,
   IMoney,
   Money,
-  NumberID,
   Result,
   ResultError,
   UUID,
   Weight,
 } from "@shared/domain";
 import { IAggregate } from "@shared/domain/IAggregate";
-import { CreateProductVariantDto } from "catalog/dto/CreateProductVariantDto";
+import { CreateProductVariantDto } from "@catalog/dto/CreateProductVariantDto";
 import { IProductVariant, IProductVariantProps } from "../interfaces";
 import moment from "moment";
-import { Product, ProductImage, ProductTypeUUID, VariantSKU } from "..";
+import { Product, ProductImage, VariantSKU } from "..";
 import { VariantOption } from "../valueObjects/ProductVariant/VariantOption";
 import { cloneDeep } from "lodash";
 import { DbProductVariant } from "../entities/ProductVariant.entity";
 import { ProductVariantUUID } from "../valueObjects/ProductVariant/VariantUUID";
-import { ProductVariantNID } from "../valueObjects/ProductVariant/VariantID";
-import { DbProduct } from "../entities/Product.entity";
 
 export enum ProductVariantError {
   InvalidProductVariant = "InvalidProductVariant",

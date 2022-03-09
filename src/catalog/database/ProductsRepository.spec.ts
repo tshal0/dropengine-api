@@ -1,11 +1,11 @@
 import { ProductsRepository } from "./ProductsRepository";
-import { Product } from "catalog/domain";
 import {
   baseDbProduct,
   baseProductProps,
   newDbProduct,
   newProductProps,
 } from "./fixtures/productsRepository.mocks";
+import { Product } from "@catalog/domain";
 jest
   .spyOn(global.Date, "now")
   .mockImplementation(() => new Date("2021-01-01T00:00:00.000Z").valueOf());

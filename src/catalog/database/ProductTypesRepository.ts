@@ -5,15 +5,13 @@ import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.excep
 import moment from "moment";
 import { ProductType } from "../domain/aggregates/ProductType";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { IProductTypeProps } from "catalog/domain/interfaces";
 
 import { EntityManager } from "@mikro-orm/postgresql";
 import { EntityRepository, MikroORM } from "@mikro-orm/core";
 import { NumberID, UUID } from "@shared/domain";
-import { DbProductType } from "catalog/domain/entities/ProductType.entity";
 
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
-import { ProductTypeName } from "@catalog/domain";
+import { DbProductType, IProductTypeProps, ProductTypeName } from "@catalog/domain";
 import { CreateProductTypeDto } from "@catalog/dto/CreateProductTypeDto";
 
 export class ProductTypeNotFoundException extends EntityNotFoundException {

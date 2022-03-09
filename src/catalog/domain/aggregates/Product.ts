@@ -2,10 +2,6 @@ import { Result, ResultError, UUID } from "@shared/domain";
 import { ProductEvent } from "../events";
 
 import moment from "moment";
-import {
-  CreateProductDto,
-  CustomOptionDto,
-} from "catalog/dto/CreateProductDto";
 
 import { IProduct, IProductProps } from "../interfaces";
 import {
@@ -14,7 +10,6 @@ import {
 } from "../errors/ProductErrors";
 import { IAggregate } from "@shared/domain/IAggregate";
 import { ProductVariant } from "./ProductVariant";
-import { CreateProductVariantDto } from "catalog/dto/CreateProductVariantDto";
 import { CustomOption } from "../valueObjects/CustomOption/CustomOption";
 import { DbProduct } from "../entities/Product.entity";
 import { cloneDeep } from "lodash";
@@ -29,6 +24,8 @@ import {
   ProductTypeName,
 } from "../valueObjects";
 import { ProductType } from "./ProductType";
+import { CreateProductDto, CustomOptionDto } from "@catalog/dto/CreateProductDto";
+import { CreateProductVariantDto } from "@catalog/dto/CreateProductVariantDto";
 /**
  * Aggregates need: events, domain methods, initializers, converters
  */

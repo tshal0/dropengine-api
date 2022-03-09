@@ -1,8 +1,8 @@
 import { Collection } from "@mikro-orm/core";
 import moment from "moment";
-import { DbProduct } from "catalog/domain/entities/Product.entity";
-import { DbProductVariant } from "catalog/domain/entities/ProductVariant.entity";
-import { IProductProps } from "catalog/domain/interfaces";
+import { DbProduct } from "@catalog/domain/entities/Product.entity";
+import { DbProductVariant } from "@catalog/domain/entities/ProductVariant.entity";
+import { IProductProps } from "@catalog/domain/interfaces";
 import { DbProductType } from "@catalog/domain/entities/ProductType.entity";
 
 jest

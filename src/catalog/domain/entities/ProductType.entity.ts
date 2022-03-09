@@ -10,11 +10,7 @@ import {
   Collection,
   OneToMany,
 } from "@mikro-orm/core";
-import {
-  IProductTypeProductionData,
-  IProductTypeOption,
-  IProductTypeLivePreview,
-} from "catalog/domain";
+import { IProductTypeProductionData, IProductTypeOption, IProductTypeLivePreview } from "..";
 import { IProductTypeProps } from "../interfaces";
 import { DbProduct } from "./Product.entity";
 

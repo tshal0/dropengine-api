@@ -9,20 +9,19 @@ import {
   UnprocessableEntityException,
   UseGuards,
 } from "@nestjs/common";
+import { UUID } from "@shared/domain";
 import { AuthGuard } from "@nestjs/passport";
-import { UUID } from "@shared/domain/valueObjects";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import {
-  IProductTypeProps,
-} from "catalog/domain/interfaces/IProductType";
-import { CreateProductTypeDto } from "catalog/dto/CreateProductTypeDto";
+import { AzureLoggerService } from "@shared/modules";
+import { IProductTypeProps } from "@catalog/domain";
+import { CreateProductTypeDto } from "@catalog/dto";
 import {
   DeleteProductType,
   GetAllProductTypes,
   GetProductType,
   CreateProductType,
-} from "catalog/useCases";
-import { RenameProductType } from "catalog/useCases/ProductType/RenameProductType";
+  RenameProductType,
+} from "@catalog/useCases";
+
 
 @Controller("/api/productTypes")
 export class ProductTypesController {

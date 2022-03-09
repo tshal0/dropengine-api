@@ -1,6 +1,6 @@
+import { InvalidCustomOption } from "@catalog/domain/errors/ProductErrors";
+import { CustomOptionDto } from "@catalog/dto/CreateProductDto";
 import { convertToPlainObject, Result, ValueObject } from "@shared/domain";
-import { InvalidCustomOption } from "catalog/domain/errors/ProductErrors";
-import { CustomOptionDto } from "catalog/dto/CreateProductDto";
 import { toLower } from "lodash";
 
 import { CustomOptionMaxLength } from "./CustomOptionMaxLength";

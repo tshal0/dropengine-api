@@ -23,7 +23,7 @@ stages:
     jobs:
       - job: BuildAndRunTests
         pool:
-          vmImage: 'windows-latest'
+          vmImage: 'ubuntu-latest'
         steps:
           - task: AzureKeyVault@2
             inputs:
@@ -146,7 +146,7 @@ stages:
     jobs:
       - job: BuildAndPushDockerImage
         pool:
-          vmImage: 'windows-latest'
+          vmImage: 'ubuntu-latest'
         steps:
           - task: PowerShell@2
             displayName: 'ACR Host Name and imageName'

@@ -8,10 +8,9 @@ import { Result, ResultError } from "@shared/domain/Result";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import { CreateProductDto } from "catalog/dto/CreateProductDto";
-import { IProduct } from "catalog/domain/interfaces/IProduct";
-import { Product } from "catalog/domain/aggregates/Product";
 import { ProductTypesRepository } from "@catalog/database/ProductTypesRepository";
+import { Product } from "@catalog/domain";
+import { CreateProductDto } from "@catalog/dto/CreateProductDto";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateProduct implements UseCase<CreateProductDto, Product> {

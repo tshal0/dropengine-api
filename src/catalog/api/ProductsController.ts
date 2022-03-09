@@ -15,15 +15,15 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { IProductProps } from "catalog/domain/interfaces/IProduct";
-import { CreateProductDto } from "catalog/dto/CreateProductDto";
+import { IProductProps } from "@catalog/domain/interfaces/IProduct";
+import { CreateProductDto } from "@catalog/dto/CreateProductDto";
 import {
   DeleteProduct,
   GetAllProducts,
   GetProduct,
   CreateProduct,
   ImportProductCsv,
-} from "catalog/useCases";
+} from "@catalog/useCases";
 import "multer";
 import { AzureStorageService } from "@shared/modules";
 import csv from "csvtojson";

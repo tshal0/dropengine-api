@@ -1,8 +1,8 @@
+import { DbProduct } from "@catalog/domain/entities/Product.entity";
+import { DbProductType } from "@catalog/domain/entities/ProductType.entity";
+import { DbProductVariant } from "@catalog/domain/entities/ProductVariant.entity";
 import { Options } from "@mikro-orm/core";
 import { DbUser } from "@users/domain/entities/User.entity";
-import { DbProduct } from "catalog/domain/entities/Product.entity";
-import { DbProductType } from "catalog/domain/entities/ProductType.entity";
-import { DbProductVariant } from "catalog/domain/entities/ProductVariant.entity";
 
 const config: Options = {
   entities: [DbProduct, DbProductType, DbProductVariant, DbUser],

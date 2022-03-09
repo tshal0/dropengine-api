@@ -1,9 +1,6 @@
 import { Entity, Property, PrimaryKey, ManyToOne, wrap } from "@mikro-orm/core";
 import { IDimension, IMoney, IWeight } from "@shared/domain";
-import {
-  IProductVariantProps,
-  IVariantOption,
-} from "catalog/domain/interfaces";
+import { IVariantOption, IProductVariantProps } from "..";
 import { DbProduct } from "./Product.entity";
 
 @Entity({ tableName: "product_variants" })

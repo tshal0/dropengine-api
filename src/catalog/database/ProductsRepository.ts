@@ -6,8 +6,6 @@ import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.excep
 import moment from "moment";
 import { Product } from "../domain/aggregates/Product";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { IProductProps } from "catalog/domain/interfaces";
-import { DbProduct } from "catalog/domain/entities/Product.entity";
 import {
   Collection,
   EntityManager,
@@ -15,8 +13,7 @@ import {
   wrap,
 } from "@mikro-orm/core";
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
-import { DbProductVariant } from "catalog/domain/entities/ProductVariant.entity";
-import { ProductSKU, ProductUUID } from "@catalog/domain";
+import { DbProduct, DbProductVariant, IProductProps, ProductSKU, ProductUUID } from "@catalog/domain";
 import { CreateProductDto } from "@catalog/dto/CreateProductDto";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
 

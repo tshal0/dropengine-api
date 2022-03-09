@@ -4,8 +4,8 @@ import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result } from "@shared/domain/Result";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { IProductProps } from "catalog/domain/interfaces/IProduct";
-import { ProductsRepository } from "catalog/database/ProductsRepository";
+import { ProductsRepository } from "@catalog/database/ProductsRepository";
+import { IProductProps } from "@catalog/domain";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class GetAllProducts implements UseCase<any, IProductProps[]> {

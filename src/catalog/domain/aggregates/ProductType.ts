@@ -9,7 +9,7 @@ import moment from "moment";
 
 import { UnprocessableEntityException } from "@nestjs/common";
 import { ProductTypeEvent } from "../events/ProductTypeEvent";
-import { CreateProductTypeDto } from "catalog/dto/CreateProductTypeDto";
+import { CreateProductTypeDto } from "@catalog/dto/CreateProductTypeDto";
 import {
   Product,
   ProductTypeLivePreview,

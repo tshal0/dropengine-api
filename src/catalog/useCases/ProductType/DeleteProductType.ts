@@ -15,7 +15,7 @@ import {
   NotImplementedException,
 } from "@nestjs/common";
 import { Cache } from "cache-manager";
-import { ProductTypesRepository } from "catalog/database/ProductTypesRepository";
+import { ProductTypesRepository } from "@catalog/database/ProductTypesRepository";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class DeleteProductType implements UseCase<UUID, any> {
