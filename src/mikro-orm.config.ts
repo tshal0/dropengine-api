@@ -9,7 +9,7 @@ const config: Options<PostgreSqlDriver> = {
   entities: [DbProduct, DbProductType, DbProductVariant, DbUser],
   clientUrl: process.env.DATABASE_URL || undefined,
   driverOptions: {
-    connection: { ssl: process.env.PRODUCTION },
+    connection: { ssl: process.env.POSTGRES_SSL || true },
   },
   migrations: { disableForeignKeys: false },
   // dbName: process.env.POSTGRES_DB || "dropengine",
