@@ -1,0 +1,19 @@
+{
+  "name": "dropengine-api",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:postman": "newman run drop-engine-api-tests.postman_collection.json -e dev.postman_environment.json --reporters cli,junitfull --reporter-junitfull-export junit.postman.xml --insecure"
+  },
+  "dependencies": {
+    "newman": "^5.3.2",
+    "newman-reporter-htmlextra": "^1.22.7",
+    "newman-reporter-json": "^1.0.0",
+    "newman-reporter-junitfull": "^1.1.1"
+  },
+  "devDependencies": {}
+}
