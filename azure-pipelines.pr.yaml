@@ -63,6 +63,11 @@ stages:
               testResultsFiles: '**/junit.xml'
               failTaskOnFailedTests: true
               testRunTitle: 'NestJS Unit Tests (Staging)'
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: 'Cobertura'
+              summaryFileLocation: 'cobertura-coverage.xml'
+              failIfCoverageEmpty: true
   - stage: PublishArtifact
     jobs:
       - job: PublishArtifact
