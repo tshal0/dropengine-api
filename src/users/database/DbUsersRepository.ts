@@ -77,8 +77,10 @@ export class DbUsersRepository implements IDbUserRepository {
     } else {
       //TODO: InvalidUser: MissingIdentifier
     }
-
-    return User.create(dto);
+    if (!dbe) {
+      return User.create(dto);
+    }
+    return User.db(dbe);
   }
   private async loadByUuid(id: UUID, repo: EntityRepository<DbUser>) {
     let dbe = await repo.findOne({ id: id.value() });

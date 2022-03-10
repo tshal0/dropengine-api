@@ -54,7 +54,8 @@ export class UsersController {
   async post(@Body() dto: CreateUserDto): Promise<IUserProps> {
     let result = await this.createUser.execute(dto);
     if (result.isSuccess) {
-      let props = result.value().props();
+      let value = result.value();
+      let props = value?.props();
       return props;
     } else {
       throw new UnprocessableEntityException(result.error);

@@ -10,7 +10,7 @@ import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { ProductTypeName } from "@catalog/domain";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
-import { CreateProductTypeDto } from "@catalog/dto/ProductType/CreateProductTypeDto";
+import { CreateProductTypeDto } from "@catalog/dto";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateProductType
@@ -29,11 +29,7 @@ export class CreateProductType
 
   async execute(dto: CreateProductTypeDto): Promise<Result<ProductType>> {
     try {
-      //TODO: Load ProductType by Name or UUID
-      //TODO: If exists, Update
-      //TODO: If not exists, Create
-      //TODO: Save
-      this.logger.warn(`${this.llog} '${this.config.get('POSTGRES_HOST')}'`)
+      this.logger.warn(`${this.llog} '${this.config.get("DATABASE_URL")}'`);
       let result = await this._repo.load(dto);
       if (result.isFailure) {
         return result;

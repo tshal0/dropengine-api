@@ -10,6 +10,7 @@ import {
   CreateAuth0UserDto,
   CreateAuth0UserResponseDto,
   CreateUserDto,
+  IAuth0ExtendedUser,
 } from "../dto/CreateUserDto";
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
@@ -19,7 +20,7 @@ import { UUID } from "@shared/domain/valueObjects";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import { lastValueFrom } from "rxjs";
+import { lastValueFrom, map } from "rxjs";
 import { getCircularReplacer } from "@shared/utils";
 import { User } from "@users/domain";
 
@@ -82,12 +83,13 @@ export class CreateUserUseCase implements UseCase<CreateUserDto, any> {
           //TODO: FailedToCreateAuth0User
           return Result.fail(result.error);
         }
+
         user = result.value();
         result = await this._repo.save(user);
         return result;
       } catch (error) {
         this.logger.error(error.response.data);
-        return Result.ok()
+        return Result.ok(user);
       }
     } catch (error) {
       return Result.fail(new ResultError(error, [error], { dto }));
