@@ -68,9 +68,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/api/users",
+									"raw": "{{baseUrl}}/api/users",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -99,9 +99,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/users/:id",
+									"raw": "{{baseUrl}}/api/users/:id",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -137,9 +137,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/users",
+									"raw": "{{baseUrl}}/api/users",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -168,9 +168,9 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/users/:id",
+									"raw": "{{baseUrl}}/api/users/:id",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -232,9 +232,9 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/api/productTypes",
+									"raw": "{{baseUrl}}/api/productTypes",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -365,9 +365,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/productTypes/:uuid",
+									"raw": "{{baseUrl}}/api/productTypes/:uuid",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -419,9 +419,9 @@
 									]
 								},
 								"url": {
-									"raw": "{{base_url}}/api/products/import",
+									"raw": "{{baseUrl}}/api/products/import",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -689,9 +689,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/products?productTypeName={{productTypeName}}",
+									"raw": "{{baseUrl}}/api/products?productTypeName={{productTypeName}}",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -739,9 +739,9 @@
 									]
 								},
 								"url": {
-									"raw": "{{base_url}}/api/productVariants/import",
+									"raw": "{{baseUrl}}/api/productVariants/import",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -885,9 +885,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/productVariants",
+									"raw": "{{baseUrl}}/api/productVariants",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -916,9 +916,9 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/productTypes/:uuid",
+									"raw": "{{baseUrl}}/api/productTypes/:uuid",
 									"host": [
-										"{{base_url}}"
+										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
@@ -945,13 +945,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/api/health",
+					"raw": "{{baseUrl}}/api",
 					"host": [
-						"{{base_url}}"
+						"{{baseUrl}}"
 					],
 					"path": [
-						"api",
-						"health"
+						"api"
 					]
 				}
 			},
@@ -1040,7 +1039,7 @@
 	],
 	"variable": [
 		{
-			"key": "base_url",
+			"key": "baseUrl",
 			"value": "http://localhost:8802"
 		},
 		{

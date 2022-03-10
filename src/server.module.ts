@@ -26,7 +26,7 @@ import { CatalogModule } from "./catalog/catalog.module";
       entitiesTs: ["./src/**/entities/*.entity.ts"],
       clientUrl: process.env.DATABASE_URL || undefined,
       driverOptions: {
-        connection: { ssl: process.env.PRODUCTION },
+        connection: { ssl: process.env.POSTGRES_SSL },
       },
       debug: true,
       // dbName: process.env.POSTGRES_DB || "dropengine",

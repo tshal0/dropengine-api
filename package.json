@@ -24,7 +24,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:postman": "newman run postman/drop-engine-api-tests.postman_collection.json -e postman/dev.postman_environment.json --reporters cli,junitfull --reporter-junitfull-export junit.postman.xml",
+    "test:postman": "newman run postman/drop-engine-api-tests.postman_collection.json -e postman/dev.postman_environment.json --reporters cli,junitfull --reporter-junitfull-export junit.postman.xml --insecure",
     "docker": "docker-compose --env-file .env up --build",
     "dbd:drop": "dotenv -e docker.migrate.env -- yarn mikro-orm schema:drop",
     "dbd:create": "dotenv -e docker.migrate.env -- yarn mikro-orm migration:create",

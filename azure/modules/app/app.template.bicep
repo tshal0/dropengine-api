@@ -239,6 +239,10 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
           value: PostgresDatabaseUrl
         }
         {
+          name: 'POSTGRES_SSL'
+          value: 'true'
+        }
+        {
           name: 'PORT'
           value: '8800'
         }
