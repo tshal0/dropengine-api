@@ -24,8 +24,9 @@ import { CatalogModule } from "./catalog/catalog.module";
     MikroOrmModule.forRoot({
       entities: ["./dist/**/entities/*.entity.js"],
       entitiesTs: ["./src/**/entities/*.entity.ts"],
+      clientUrl: process.env.DATABASE_URL || undefined,
       dbName: process.env.POSTGRES_DB || "dropengine",
-      host: process.env.POSTGRES_HOST || "localhost",
+      host: process.env.POSTGRES_HOST,
       port: parseInt(process.env.POSTGRES_PORT) || 5432,
       user: process.env.POSTGRES_USER || "postgres",
       password: process.env.POSTGRES_PASSWORD || "password",
