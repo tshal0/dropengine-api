@@ -1,4 +1,4 @@
-import { CustomOptionDto } from "@catalog/dto/CreateProductDto";
+import { CustomOptionDto } from "@catalog/dto/Product/CreateProductDto";
 import { Result, ValueObject } from "@shared/domain";
 import { InvalidCustomOptionPattern } from "./CustomOptionErrors";
 

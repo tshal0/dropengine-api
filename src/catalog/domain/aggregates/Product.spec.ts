@@ -1,7 +1,7 @@
 import { UUID } from "@shared/domain/valueObjects";
 import moment from "moment";
-import { CreateProductDto } from "@catalog/dto/CreateProductDto";
-import { CreateProductVariantDto } from "@catalog/dto/CreateProductVariantDto";
+import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
+import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProductVariantDto";
 import { Product } from "..";
 import { IProductProps } from "../interfaces";
 import {

@@ -10,7 +10,7 @@ import { ConfigService } from "@nestjs/config";
 import { UUID } from "@shared/domain";
 import { ProductsRepository } from "@catalog/database/ProductsRepository";
 import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
-import { CreateProductVariantDto } from "@catalog/dto/CreateProductVariantDto";
+import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProductVariantDto";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateProductVariant

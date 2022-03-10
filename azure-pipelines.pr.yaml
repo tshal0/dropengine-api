@@ -87,7 +87,8 @@ stages:
 
                 Copy-Item -Path "./package.json" -Destination "./_artifact"
                 Copy-Item -Path "./tsconfig.json" -Destination "./_artifact"
-
+                Copy-Item -Path "./yarn.lock" -Destination "./_artifact"
+                
                 $compress = @{
                   Path = "./_artifact/*"
                   CompressionLevel = "Fastest"

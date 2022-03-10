@@ -3,7 +3,7 @@ import { BaseDomainEvent } from "@shared/domain/events/BaseDomainEvents";
 import moment from "moment";
 import { IProductTypeProps } from "../interfaces";
 import { ProductType } from "./ProductType";
-import { CreateProductTypeDto } from "@catalog/dto/CreateProductTypeDto";
+import { CreateProductTypeDto } from "@catalog/dto/ProductType/CreateProductTypeDto";
 import { DbProductType } from "../entities/ProductType.entity";
 import { DbProduct } from "../entities/Product.entity";
 import { Collection } from "@mikro-orm/core";

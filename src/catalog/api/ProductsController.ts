@@ -16,7 +16,7 @@ import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { IProductProps } from "@catalog/domain/interfaces/IProduct";
-import { CreateProductDto } from "@catalog/dto/CreateProductDto";
+import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
 import {
   DeleteProduct,
   GetAllProducts,

@@ -1,21 +1,24 @@
 import { Injectable, Scope } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { UseCase } from "@shared/domain/UseCase";
-
-import moment from "moment";
-import { Result, ResultError } from "@shared/domain/Result";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { Readable } from "stream";
+import moment from "moment";
 import csv from "csvtojson";
-import { IProductVariantProps, Product, ProductSKU, ProductUUID } from "@catalog/domain";
-import { ProductsRepository } from "@catalog/database/ProductsRepository";
-import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
-import { CreateProductVariantDto } from "@catalog/dto/CreateProductVariantDto";
+
+import { UseCase } from "@shared/domain/UseCase";
+import { Result, ResultError } from "@shared/domain/Result";
+import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+
 import {
-  CsvProductVariantDto,
-} from "@catalog/dto/CsvProductVariantDto";
+  IProductVariantProps,
+  Product,
+  ProductSKU,
+  ProductUUID,
+  ProductVariant,
+} from "@catalog/domain";
+import { CreateProductVariantDto, CsvProductVariantDto } from "@catalog/dto";
+import { ProductsRepository } from "@catalog/database";
 
 //TODO: Extract CsvProductDtos from stream, load into Products, save to DB
 /**

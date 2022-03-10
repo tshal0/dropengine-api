@@ -137,11 +137,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/users",
+									"raw": "{{base_url}}/api/users",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
+										"api",
 										"users"
 									]
 								}
@@ -187,6 +188,754 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "ImportProductsAndVariants",
+					"item": [
+						{
+							"name": "CreateProductType",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const productTypeName = pm.collectionVariables.get('productTypeName')\r",
+											"pm.test(`POST: ProductType ${productTypeName} code is 201`, function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"pm.test(`Name should be '${productTypeName}'`, () => {\r",
+											"    pm.expect(resp.name).to.eq(productTypeName)\r",
+											"})\r",
+											"pm.test(`UUID should not be empty`, () => {\r",
+											"    pm.expect(resp.uuid.length).to.be.greaterThan(0)\r",
+											"})\r",
+											"pm.collectionVariables.set(`productTypeUuid`, resp.uuid)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"{{productTypeName}}\",\r\n    \"productionData\": {\r\n        \"material\": \"Mild Steel\",\r\n        \"thickness\": \"0.06\",\r\n        \"route\": \"1\"\r\n    },\r\n    \"option1\": {\r\n        \"name\": \"Size\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"12\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"15\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"18\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"24\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"30\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Color\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Black\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"White\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Gold\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Copper\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Silver\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option3\": null,\r\n    \"livePreview\": null\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/productTypes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"productTypes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetProductType",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(`GET: ProductType ${pm.collectionVariables.get('productTypeUuid')} code is 200`, function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"const productTypeName = pm.collectionVariables.get('productTypeName')\r",
+											"const uuid = pm.collectionVariables.get('productTypeUuid')\r",
+											"\r",
+											"const expected = {\r",
+											"    \"name\": \"APITestProductType\",\r",
+											"    \"productionData\": {\r",
+											"        \"route\": \"1\",\r",
+											"        \"material\": \"Mild Steel\",\r",
+											"        \"thickness\": \"0.06\"\r",
+											"    },\r",
+											"    \"option1\": {\r",
+											"        \"name\": \"Size\",\r",
+											"        \"values\": [\r",
+											"            {\r",
+											"                \"name\": \"Size\",\r",
+											"                \"value\": \"12\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Size\",\r",
+											"                \"value\": \"15\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Size\",\r",
+											"                \"value\": \"18\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Size\",\r",
+											"                \"value\": \"24\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Size\",\r",
+											"                \"value\": \"30\",\r",
+											"                \"enabled\": true\r",
+											"            }\r",
+											"        ]\r",
+											"    },\r",
+											"    \"option2\": {\r",
+											"        \"name\": \"Color\",\r",
+											"        \"values\": [\r",
+											"            {\r",
+											"                \"name\": \"Color\",\r",
+											"                \"value\": \"Black\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Color\",\r",
+											"                \"value\": \"White\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Color\",\r",
+											"                \"value\": \"Gold\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Color\",\r",
+											"                \"value\": \"Copper\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Color\",\r",
+											"                \"value\": \"Silver\",\r",
+											"                \"enabled\": true\r",
+											"            }\r",
+											"        ]\r",
+											"    },\r",
+											"    \"option3\": null,\r",
+											"    \"livePreview\": {\r",
+											"        \"link\": null,\r",
+											"        \"name\": null,\r",
+											"        \"enabled\": false,\r",
+											"        \"version\": null\r",
+											"    },\r",
+											"    \"products\": null\r",
+											"}\r",
+											"\r",
+											"pm.test(`ProductType ${uuid} should have Name: '${productTypeName}'`, () => {\r",
+											"    pm.expect(resp.name).to.eq(productTypeName)\r",
+											"})\r",
+											"pm.test(`ProductType ${uuid} should have been imported correctly`, () => {\r",
+											"    const keys = Object.keys(expected)\r",
+											"    console.info(keys)\r",
+											"    keys.forEach(k => {\r",
+											"        const testSet = { key: k, given: resp[k], expected: expected[k] }\r",
+											"        console.info(testSet)\r",
+											"        if (testSet.expected == null) {\r",
+											"            pm.test(`ProductType.${k} should equal null`, () => {\r",
+											"                pm.expect(resp[k]).to.eq(null)\r",
+											"            })\r",
+											"        } else {\r",
+											"            pm.test(`ProductType.${k} should equal ${JSON.stringify(testSet.expected)}`, () => {\r",
+											"                pm.expect(resp[k]).to.deep.include(expected[k])\r",
+											"            })\r",
+											"        }\r",
+											"    })\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/productTypes/:uuid",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"productTypes",
+										":uuid"
+									],
+									"variable": [
+										{
+											"key": "uuid",
+											"value": "{{productTypeUuid}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ImportProducts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(`IMPORT: Products code is 201`, function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const products = pm.response.json().imported\r",
+											"\r",
+											"const productUuids = products.map(p => p.uuid)\r",
+											"\r",
+											"pm.collectionVariables.set(`productUuids`, productUuids)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/DE/projects/drop-engine-api/e2e/fixtures/2022_03_01_products.v1.csv"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/products/import",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"products",
+										"import"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetProducts (ProductType)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(`GET: Products code is 200`, function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"console.info(pm.response)\r",
+											"const resp = pm.response.json()\r",
+											"pm.test(\"(6) Products should have been imported\", function () {\r",
+											"    console.info(`Response:`, { resp })\r",
+											"    pm.expect(resp).to.be.an('array')\r",
+											"    pm.expect(resp.length).to.eq(6)\r",
+											"});\r",
+											"const productTypeName = pm.collectionVariables.get('productTypeName')\r",
+											"\r",
+											"const expectedProducts = {\r",
+											"    \"MU-C001-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"1\",\r",
+											"        sku: \"MU-C001-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/7329271441/MU-C001-00.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"name\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Name\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 16,\r",
+											"                placeholder: \"Enter up to 16 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"initial\",\r",
+											"                type: \"dropdown\",\r",
+											"                label: \"Initial\",\r",
+											"                options: \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\",\r",
+											"                required: true,\r",
+											"                placeholder: \"Select Initial\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: null,\r",
+											"        productType: null,\r",
+											"    },\r",
+											"    \"MU-C004-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"2\",\r",
+											"        sku: \"MU-C004-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C004-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/1486874782/MU-C004-00.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"top_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Top Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"bottom_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Bottom Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"initial\",\r",
+											"                type: \"dropdown\",\r",
+											"                label: \"Initial\",\r",
+											"                options: \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\",\r",
+											"                required: true,\r",
+											"                placeholder: \"Select Initial\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: null,\r",
+											"        productType: null,\r",
+											"    },\r",
+											"    \"MU-C005-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"3\",\r",
+											"        sku: \"MU-C005-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C005-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7191694457/7636424154/MU-C005-00.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"top_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Top Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"bottom_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Bottom Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: null,\r",
+											"        productType: null,\r",
+											"    },\r",
+											"    \"MU-C116-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"3\",\r",
+											"        sku: \"MU-C116-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Outdoors\", \"Tree\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C116-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/1891427748/MU-C116-00.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"top_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Top Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"middle_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Middle Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 16,\r",
+											"                placeholder: \"Enter up to 16 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"bottom_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Bottom Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: null,\r",
+											"        productType: null,\r",
+											"    },\r",
+											"    \"MU-C017-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"2\",\r",
+											"        sku: \"MU-C017-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C017-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/5233468681/MU-C017-00.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"name\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Name\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 16,\r",
+											"                placeholder: \"Enter up to 16 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"initial\",\r",
+											"                type: \"dropdown\",\r",
+											"                label: \"Initial\",\r",
+											"                options: \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\",\r",
+											"                required: true,\r",
+											"                placeholder: \"Select Initial\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: null,\r",
+											"        productType: null,\r",
+											"    },\r",
+											"    \"MEM-27-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"2\",\r",
+											"        sku: \"MEM-27-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Nurse\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MEM-27-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3499663496/9643599499/27_04.20.2021.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"name\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Name\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 16,\r",
+											"                placeholder: \"Enter up to 16 characters\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: null,\r",
+											"        productType: null,\r",
+											"    },\r",
+											"}\r",
+											"\r",
+											"const skus = Object.keys(expectedProducts)\r",
+											"skus.forEach(sku => {\r",
+											"    pm.test(`Product ${sku} should have been imported correctly`, () => {\r",
+											"        const product = resp.find(r => r.sku == sku)\r",
+											"        const expected = expectedProducts[sku]\r",
+											"        // console.info(`Product ${sku}:`, { ...product })\r",
+											"        const keys = Object.keys(expected)\r",
+											"        // console.info(keys)\r",
+											"        keys.forEach(k => {\r",
+											"            const testSet = { key: k, given: product[k], expected: expected[k] }\r",
+											"            const isArray = Array.isArray(testSet.expected)\r",
+											"            const notEmpty = testSet.expected?.length > 0\r",
+											"            if ([null, undefined].includes(testSet.expected)) {\r",
+											"                pm.test(`Product.${k} should equal null`, () => {\r",
+											"                    pm.expect(testSet.given).to.eq(null)\r",
+											"                })\r",
+											"            } else if (isArray && notEmpty ) {\r",
+											"                testSet.expected.forEach(e => {\r",
+											"                    pm.test(`Product.${k} should include ${JSON.stringify(e, null, 2)}`, () => {\r",
+											"                        pm.expect(testSet.given).to.deep.include(e)\r",
+											"                    })\r",
+											"                })\r",
+											"            } else {\r",
+											"                pm.test(`Product.${k} should equal ${JSON.stringify(testSet.expected, null, 2)}`, () => {\r",
+											"                    pm.expect(testSet.given).to.deep.include(testSet.expected)\r",
+											"                })\r",
+											"            }\r",
+											"        })\r",
+											"    })\r",
+											"})\r",
+											"\r",
+											"const uuids = pm.collectionVariables.get(`productUuids`)\r",
+											"console.info(uuids)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/products?productTypeName={{productTypeName}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"products"
+									],
+									"query": [
+										{
+											"key": "productTypeName",
+											"value": "{{productTypeName}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ImportVariants",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(`IMPORT: ProductVariants code is 201`, function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"console.log(pm.response)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/DE/projects/drop-engine-api/e2e/fixtures/2022_03_01_variants.v1.csv"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/api/productVariants/import",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"productVariants",
+										"import"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetVariants (ProductType)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const productTypeName = pm.collectionVariables.get('productTypeName')\r",
+											"\r",
+											"pm.test(`GET: ProductVariants for ProductType: ${productTypeName} code is 200`, function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"const expectedVariants = {\r",
+											"    \"MU-C001-00\": {\r",
+											"         \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-12-Black\",\r",
+											"        \"sku\": \"MU-C001-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 16, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    },\r",
+											"    \"MU-C004-00\": {\r",
+											"        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C004-00-12-Black\",\r",
+											"        \"sku\": \"MU-C004-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 21, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    },\r",
+											"    \"MU-C005-00\": {\r",
+											"         \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C005-00-12-Black\",\r",
+											"        \"sku\": \"MU-C005-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 2550, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    },\r",
+											"    \"MU-C116-00\": {\r",
+											"        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C116-00-12-Black\",\r",
+											"        \"sku\": \"MU-C116-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 2550, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    },\r",
+											"    \"MU-C017-00\": {\r",
+											"        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C017-00-12-Black\",\r",
+											"        \"sku\": \"MU-C017-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 21, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    },\r",
+											"    \"MEM-27-00\": {\r",
+											"        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MEM-27-00-12-Black\",\r",
+											"        \"sku\": \"MEM-27-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 21, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    }\r",
+											"}\r",
+											"\r",
+											"const skus = Object.keys(expectedVariants)\r",
+											"skus.forEach(sku => {\r",
+											"    pm.test(`Product ${sku} should have imported a Variant: Black, 12 correctly`, () => {\r",
+											"        const variant = resp.find(r => r.sku == `${sku}-12-Black`)\r",
+											"        const expected = expectedVariants[sku]\r",
+											"        const keys = Object.keys(expected)\r",
+											"        keys.forEach(k => {\r",
+											"            const testSet = { key: k, given: variant[k], expected: expected[k] }\r",
+											"            const isArray = Array.isArray(testSet.expected)\r",
+											"            const notEmpty = testSet.expected?.length > 0\r",
+											"            if ([null, undefined].includes(testSet.expected)) {\r",
+											"                pm.test(`Product.${k} should equal null`, () => {\r",
+											"                    pm.expect(testSet.given).to.eq(null)\r",
+											"                })\r",
+											"            } else if (isArray && notEmpty) {\r",
+											"                testSet.expected.forEach(e => {\r",
+											"                    pm.test(`Product.${k} should include ${JSON.stringify(e, null, 2)}`, () => {\r",
+											"                        pm.expect(testSet.given).to.deep.include(e)\r",
+											"                    })\r",
+											"                })\r",
+											"            } else {\r",
+											"                pm.test(`Product.${k} should equal ${JSON.stringify(testSet.expected, null, 2)}`, () => {\r",
+											"                    pm.expect(testSet.given).to.deep.include(testSet.expected)\r",
+											"                })\r",
+											"            }\r",
+											"        })\r",
+											"    })\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/productVariants",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"productVariants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cleanup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(`DELETE: ProductType ${pm.collectionVariables.get('productTypeUuid')} code is 200`, function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/productTypes/:uuid",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"productTypes",
+										":uuid"
+									],
+									"variable": [
+										{
+											"key": "uuid",
+											"value": "{{productTypeUuid}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -225,42 +974,18 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					"// Potential Errors: ",
-					"// 500 No Default Connection. Go to Tenant > Settings > Default Directory, set to Username-Password-Authentication",
-					"// 403 Wrong email or password. Go create a user account on your tenant.",
-					"",
 					"const access_token = pm.environment.get('auth0_access_token');",
 					"const expiry = pm.environment.get('auth0_access_token_expiration');",
 					"const limitDate = new Date(new Date().getTime() - (12 * 60 * 60 * 1000));",
 					"const expiryDate = Date.parse(expiry)",
-					"",
-					"let noExpirySet = !expiryDate;",
-					"let expiryDateLessThanLimit = expiryDate < limitDate;",
-					"let noAccessToken = !access_token?.length",
-					"",
-					"let renewAccessToken = false;",
-					"if (noExpirySet) {",
-					"    console.warn(`[WARNING] No Expiry Date`)",
-					"    renewAccessToken = true;",
-					"}",
-					"if (expiryDateLessThanLimit) {",
-					"    console.warn(`[WARNING] Access Token Has Expired`)",
-					"    renewAccessToken = true;",
-					"}",
-					"if (noAccessToken) {",
-					"    console.warn(`[WARNING] No Access Token Found`)",
-					"    renewAccessToken = true;",
-					"}",
-					"",
-					"if (renewAccessToken) {",
-					"",
+					"console.warn({ limitDate, expiryDate, expiry })",
+					"if (!expiryDate || expiryDate < limitDate || expiryDate && !access_token?.length) {",
+					"    console.warn(`No Access Token. Loading new one now...`)",
 					"    const domain = pm.environment.get('auth0_domain')",
 					"    const authUrl = pm.environment.get('auth0_authUrl').replace('{{auth0_domain}}', domain)",
 					"    const tokenUrl = pm.environment.get('auth0_access_token_url').replace('{{auth0_domain}}', domain)",
 					"    pm.environment.set('auth0_authUrl', authUrl)",
 					"    pm.environment.set('auth0_access_token_url', tokenUrl)",
-					"    console.info(`[INFO] Set auth0_authUrl: ${authUrl}`)",
-					"    console.info(`[INFO] Set auth0_access_token_url: ${tokenUrl}`)",
 					"    const client_id = pm.environment.get('auth0_client_id')",
 					"    const client_secret = pm.environment.get('auth0_client_secret')",
 					"    const audience = pm.environment.get('auth0_audience')",
@@ -277,9 +1002,9 @@
 					"        \"scope\": scope,",
 					"        \"grant_type\": grant_type,",
 					"    }",
-					"    console.info(`[INFO] Loaded auth0 payload: `, authPayload)",
-					"    const authTokenUrl = pm.environment.get('auth0_access_token_url')",
 					"",
+					"    const authTokenUrl = pm.environment.get('auth0_access_token_url')",
+					"    console.log(authTokenUrl)",
 					"    const options = {",
 					"        url: authTokenUrl,",
 					"        method: 'POST',",
@@ -290,23 +1015,16 @@
 					"",
 					"        }",
 					"    };",
-					"    console.info(`[INFO] Loaded authentication request options: `, options)",
+					"    console.warn(authPayload, authTokenUrl)",
 					"    pm.sendRequest(options, function (err, response) {",
 					"        const resp = response.json()",
-					"        console.info(`[INFO] Auth0 Authentication Response: `, response)",
-					"        if (resp.error) {",
-					"            console.error(`[ERROR] Auth0 Authentication Request Failed With Status ${response.code} ${response.status}: ${resp.error} - ${resp.error_description}`)",
-					"            return;",
-					"        }",
-					"        let expiry = new Date(Date.now());",
 					"        pm.environment.set('auth0_access_token', resp.access_token);",
-					"        console.info(`[INFO] Set auth0_access_token: ${resp.access_token}`)",
-					"        pm.environment.set('auth0_access_token_expiration', `${expiry}`);",
-					"        console.info(`[INFO] Set auth0_access_token_expiration: ${expiry}`)",
+					"        pm.environment.set('auth0_access_token_expiration', `${new Date(Date.now())}`);",
+					"",
 					"    });",
-					"} else {",
-					"    console.info(`[INFO] No Authentication Problems Detected`)",
-					"}"
+					"}",
+					"",
+					"console.log(`Exiting PreRequest Script...`)"
 				]
 			}
 		},
@@ -323,7 +1041,7 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://localhost:3000"
+			"value": "http://localhost:8802"
 		},
 		{
 			"key": "createdUserId",
@@ -335,11 +1053,25 @@
 		},
 		{
 			"key": "testUserId",
-			"value": ""
+			"value": "989f3c49-0d4a-4130-a52b-6dd5186453b2"
 		},
 		{
 			"key": "userEmail",
+			"value": "test@sample.com"
+		},
+		{
+			"key": "productTypeUuid",
+			"value": "e3116ef2-87cd-496e-8c5a-e195d6832c15",
+			"type": "string"
+		},
+		{
+			"key": "productUuids",
 			"value": ""
+		},
+		{
+			"key": "productTypeName",
+			"value": "APITestProductType",
+			"type": "string"
 		}
 	]
 }

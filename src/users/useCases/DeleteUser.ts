@@ -39,6 +39,9 @@ export class DeleteUserUseCase implements UseCase<UUID, any> {
     this.logger.log(`${this.llog} Loading user...`);
     try {
       let result = await this._repo.load(id);
+      if (result.isFailure) {
+        return result;
+      }
       let user = result.value();
       // DeleteUser in Auth0
       let TOKEN = await this.cache.get("AUTH0_MGMT_ACCESS_TOKEN");

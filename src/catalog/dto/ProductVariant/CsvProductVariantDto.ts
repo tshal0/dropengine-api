@@ -1,6 +1,5 @@
 import { Result } from "@shared/domain";
 import { compact, toNumber } from "lodash";
-import { CreateProductDto, CustomOptionDto } from "./CreateProductDto";
 import {
   CreateProductVariantDto,
   VariantDimensionUnits,

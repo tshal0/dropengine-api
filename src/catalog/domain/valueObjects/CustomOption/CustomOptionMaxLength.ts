@@ -1,4 +1,4 @@
-import { CustomOptionDto } from "@catalog/dto/CreateProductDto";
+import { CustomOptionDto } from "@catalog/dto/Product/CreateProductDto";
 import { ValueObject, Result } from "@shared/domain";
 import { InvalidCustomOptionMaxLength } from "./CustomOptionErrors";
 

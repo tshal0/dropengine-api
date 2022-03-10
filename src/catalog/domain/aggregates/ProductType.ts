@@ -9,7 +9,7 @@ import moment from "moment";
 
 import { UnprocessableEntityException } from "@nestjs/common";
 import { ProductTypeEvent } from "../events/ProductTypeEvent";
-import { CreateProductTypeDto } from "@catalog/dto/CreateProductTypeDto";
+import { CreateProductTypeDto } from "@catalog/dto/ProductType/CreateProductTypeDto";
 import {
   Product,
   ProductTypeLivePreview,
@@ -21,7 +21,7 @@ import {
 import { DbProductType } from "../entities/ProductType.entity";
 import { IProductType, IProductTypeProps } from "../interfaces";
 import { cloneDeep } from "lodash";
-import { CreateProductDto } from "@catalog/dto/CreateProductDto";
+import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
 import {
   InvalidProducts,
   InvalidProductVariants,

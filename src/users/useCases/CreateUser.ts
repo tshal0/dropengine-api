@@ -86,8 +86,8 @@ export class CreateUserUseCase implements UseCase<CreateUserDto, any> {
         result = await this._repo.save(user);
         return result;
       } catch (error) {
-        this.logger.debug(error.response.data);
-        throw error;
+        this.logger.error(error.response.data);
+        return Result.ok()
       }
     } catch (error) {
       return Result.fail(new ResultError(error, [error], { dto }));

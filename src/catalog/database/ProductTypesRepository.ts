@@ -11,8 +11,13 @@ import { EntityRepository, MikroORM } from "@mikro-orm/core";
 import { NumberID, UUID } from "@shared/domain";
 
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
-import { DbProductType, IProductTypeProps, ProductTypeName } from "@catalog/domain";
-import { CreateProductTypeDto } from "@catalog/dto/CreateProductTypeDto";
+import { CreateProductTypeDto } from "@catalog/dto/ProductType/CreateProductTypeDto";
+import {
+  DbProduct,
+  DbProductType,
+  IProductTypeProps,
+  ProductTypeName,
+} from "@catalog/domain";
 
 export class ProductTypeNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -37,12 +42,34 @@ export class ProductTypesRepository {
 
   public async delete(uuid: UUID): Promise<Result<void>> {
     let repo = this.em.getRepository(DbProductType);
+
     let mp = await repo.findOne(uuid.value());
     if (mp == null) {
       //TODO: ProductTypeNotFound
       return Result.fail();
     }
     try {
+      if (!mp.products.isInitialized()) {
+        this.logger.log(
+          `${this.llog} Initializing products for type '${mp.name}'`
+        );
+        await mp.products.init();
+      }
+      for (const product of mp.products) {
+        if (!product.variants.isInitialized()) {
+          this.logger.log(
+            `${this.llog} Initializing variants for product '${product.sku}'`
+          );
+          await product.variants.init();
+        }
+        this.logger.log(
+          `${this.llog} Removing variants for product '${product.sku}'`
+        );
+        product.variants.removeAll();
+      }
+      this.logger.log(`${this.llog} Removing products for type '${mp.name}'`);
+      mp.products.removeAll();
+      this.logger.log(`${this.llog} Removing product type '${mp.name}'`);
       await repo.removeAndFlush(mp);
       return Result.ok();
     } catch (error) {

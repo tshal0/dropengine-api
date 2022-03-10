@@ -8,7 +8,7 @@ import {
   Weight,
 } from "@shared/domain";
 import { IAggregate } from "@shared/domain/IAggregate";
-import { CreateProductVariantDto } from "@catalog/dto/CreateProductVariantDto";
+import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProductVariantDto";
 import { IProductVariant, IProductVariantProps } from "../interfaces";
 import moment from "moment";
 import { Product, ProductImage, VariantSKU } from "..";

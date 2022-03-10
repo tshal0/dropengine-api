@@ -14,7 +14,7 @@ import {
 } from "@mikro-orm/core";
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
 import { DbProduct, DbProductVariant, IProductProps, ProductSKU, ProductUUID } from "@catalog/domain";
-import { CreateProductDto } from "@catalog/dto/CreateProductDto";
+import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
 
 /**

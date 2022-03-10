@@ -1,5 +1,5 @@
 import { CustomOption } from "./CustomOption";
-import { CustomOptionDto } from "@catalog/dto/CreateProductDto";
+import { CustomOptionDto } from "@catalog/dto/Product/CreateProductDto";
 import {
   CustomOptionLabel,
   CustomOptionName,

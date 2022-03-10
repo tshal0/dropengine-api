@@ -9,8 +9,13 @@ import {
   SerializedPrimaryKey,
   Collection,
   OneToMany,
+  Cascade,
 } from "@mikro-orm/core";
-import { IProductTypeProductionData, IProductTypeOption, IProductTypeLivePreview } from "..";
+import {
+  IProductTypeProductionData,
+  IProductTypeOption,
+  IProductTypeLivePreview,
+} from "..";
 import { IProductTypeProps } from "../interfaces";
 import { DbProduct } from "./Product.entity";
 
@@ -37,7 +42,10 @@ export class DbProductType {
   @Property({ onUpdate: () => new Date() })
   updatedAt: Date = new Date();
 
-  @OneToMany(() => DbProduct, (v) => v.productType)
+  @OneToMany(() => DbProduct, (v) => v.productType, {
+    cascade: [Cascade.ALL],
+    orphanRemoval: true
+  })
   products = new Collection<DbProduct>(this);
 
   props(maxDepth?: number | undefined): IProductTypeProps {

@@ -7,7 +7,12 @@ import moment from "moment";
 import { ProductVariant } from "../domain/aggregates/ProductVariant";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { EntityManager } from "@mikro-orm/core";
-import { DbProductVariant, IProductVariantProps, VariantSKU } from "@catalog/domain";
+import {
+  DbProductVariant,
+  IProductVariantProps,
+  VariantSKU,
+} from "@catalog/domain";
+import { VariantQueryDto } from "@catalog/dto";
 
 /**
  * ProductVariantsRepository should have methods for
@@ -81,6 +86,15 @@ export class ProductVariantsRepository {
   ) {}
   get llog() {
     return `[${moment()}][${ProductVariantsRepository.name}]`;
+  }
+
+  public async query(
+    query: VariantQueryDto
+  ): Promise<Result<ProductVariant>[]> {
+    let repo = this.em.getRepository(DbProductVariant);
+    let dbe = await repo.find({}, { populate: ["product"] });
+    let results = dbe.map((v) => ProductVariant.db(v));
+    return results;
   }
 
   public async findByUuid(uuid: UUID): Promise<Result<ProductVariant>> {

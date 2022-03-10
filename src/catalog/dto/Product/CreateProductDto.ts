@@ -1,5 +1,5 @@
 import { toLower } from "lodash";
-import { CreateProductVariantDto } from "./CreateProductVariantDto";
+import { CreateProductVariantDto } from "../ProductVariant/CreateProductVariantDto";
 
 export class CreateProductDto {
   uuid?:          string | undefined;

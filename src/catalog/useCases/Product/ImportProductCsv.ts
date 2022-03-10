@@ -11,10 +11,10 @@ import { ConfigService } from "@nestjs/config";
 import { Readable } from "stream";
 import csv from "csvtojson";
 import { IProductProps, Product, ProductTypeName } from "@catalog/domain";
-import { CreateProductDto } from "@catalog/dto/CreateProductDto";
+import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
 import { ProductsRepository } from "@catalog/database/ProductsRepository";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
-import { CsvProductDto } from "@catalog/dto/CsvProductDto";
+import { CsvProductDto } from "@catalog/dto/Product/CsvProductDto";
 
 //TODO: Extract CsvProductDtos from stream, load into Products, save to DB
 /**

@@ -1,4 +1,4 @@
-import { ImportProductVariantCsv } from "@catalog/useCases/ProductVariants/ImportProductVariantCsv";
+import { ImportProductVariantCsv } from "@catalog/useCases/ProductVariant/ImportProductVariantCsv";
 import {
   Body,
   Controller,
@@ -6,10 +6,12 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UnprocessableEntityException,
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  UsePipes,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -21,19 +23,22 @@ import { VariantSKU } from "@catalog/domain";
 import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
 import { IProductVariantProps } from "@catalog/domain/interfaces";
 import { IProductProps } from "@catalog/domain/interfaces/IProduct";
-import { CreateProductDto } from "@catalog/dto/CreateProductDto";
-import { CreateProductVariantDto } from "@catalog/dto/CreateProductVariantDto";
+import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
+import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProductVariantDto";
 import {
   DeleteProduct,
   GetAllProducts,
   GetProduct,
   CreateProduct,
+  QueryProductVariants,
 } from "@catalog/useCases";
-import { CreateProductVariant } from "@catalog/useCases/ProductVariants/CreateProductVariant";
-import { DeleteProductVariant } from "@catalog/useCases/ProductVariants/DeleteProductVariant";
-import { GetProductVariantBySku } from "@catalog/useCases/ProductVariants/GetProductVariantBySku";
-import { GetProductVariantByUuid } from "@catalog/useCases/ProductVariants/GetProductVariantByUuid";
+import { CreateProductVariant } from "@catalog/useCases/ProductVariant/CreateProductVariant";
+import { DeleteProductVariant } from "@catalog/useCases/ProductVariant/DeleteProductVariant";
+import { GetProductVariantBySku } from "@catalog/useCases/ProductVariant/GetProductVariantBySku";
+import { GetProductVariantByUuid } from "@catalog/useCases/ProductVariant/GetProductVariantByUuid";
 import { Readable } from "stream";
+import { VariantQueryTransformPipe } from "@catalog/middleware";
+import { VariantQueryDto } from "@catalog/dto";
 
 @Controller("/api/productVariants")
 export class ProductVariantsController {
@@ -43,7 +48,8 @@ export class ProductVariantsController {
     private readonly getByUuid: GetProductVariantByUuid,
     private readonly getBySku: GetProductVariantBySku,
     private readonly remove: DeleteProductVariant,
-    private readonly importCsv: ImportProductVariantCsv
+    private readonly importCsv: ImportProductVariantCsv,
+    private readonly query: QueryProductVariants
   ) {}
   @Get(":id")
   @UseGuards(AuthGuard())
@@ -95,12 +101,15 @@ export class ProductVariantsController {
       throw new UnprocessableEntityException(result.error);
     }
   }
-  // @Get()
-  // @UseGuards(AuthGuard())
-  // async getAll(): Promise<IProductVariantProps[]> {
-  //   let result = await this.find.execute();
-  //   if (result.isSuccess) {
-  //     return result.value();
-  //   }
-  // }
+  @Get()
+  @UseGuards(AuthGuard())
+  @UsePipes(new VariantQueryTransformPipe())
+  async getAll(@Query() query: VariantQueryDto) {
+    let result = await this.query.execute(query);
+    if (result.isSuccess) {
+      return result.value().map((v) => v.props());
+    } else {
+      throw new UnprocessableEntityException(result.error);
+    }
+  }
 }

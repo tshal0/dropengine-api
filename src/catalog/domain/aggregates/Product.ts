@@ -24,8 +24,8 @@ import {
   ProductTypeName,
 } from "../valueObjects";
 import { ProductType } from "./ProductType";
-import { CreateProductDto, CustomOptionDto } from "@catalog/dto/CreateProductDto";
-import { CreateProductVariantDto } from "@catalog/dto/CreateProductVariantDto";
+import { CreateProductDto, CustomOptionDto } from "@catalog/dto/Product/CreateProductDto";
+import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProductVariantDto";
 /**
  * Aggregates need: events, domain methods, initializers, converters
  */

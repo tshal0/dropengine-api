@@ -10,7 +10,7 @@ import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { ProductTypesRepository } from "@catalog/database/ProductTypesRepository";
 import { Product } from "@catalog/domain";
-import { CreateProductDto } from "@catalog/dto/CreateProductDto";
+import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateProduct implements UseCase<CreateProductDto, Product> {

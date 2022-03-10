@@ -6,7 +6,7 @@ import { Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { CreateProductTypeDto } from "@catalog/dto/CreateProductTypeDto";
+import { CreateProductTypeDto } from "@catalog/dto/ProductType/CreateProductTypeDto";
 import { ProductTypesRepository } from "@catalog/database/ProductTypesRepository";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
 

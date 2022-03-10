@@ -10,7 +10,7 @@ import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { ProductTypeName } from "@catalog/domain";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
-import { CreateProductTypeDto } from "@catalog/dto/CreateProductTypeDto";
+import { CreateProductTypeDto } from "@catalog/dto/ProductType/CreateProductTypeDto";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateProductType

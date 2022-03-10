@@ -6,6 +6,7 @@ import {
   Collection,
   OneToMany,
   wrap,
+  Cascade,
 } from "@mikro-orm/core";
 import { IProductProps } from "../interfaces";
 import { ICustomOptionProps } from "../valueObjects";
@@ -33,7 +34,10 @@ export class DbProduct {
   @Property({ type: "json" })
   customOptions: ICustomOptionProps[];
 
-  @OneToMany(() => DbProductVariant, (v) => v.product)
+  @OneToMany(() => DbProductVariant, (v) => v.product, {
+    cascade: [Cascade.ALL],
+    orphanRemoval: true
+  })
   variants = new Collection<DbProductVariant>(this);
 
   @ManyToOne(() => DbProductType)

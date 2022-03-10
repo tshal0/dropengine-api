@@ -19,13 +19,14 @@ import {
   CreateProduct,
   DeleteProduct,
   ImportProductCsv,
+  QueryProductVariants,
 } from "./useCases";
 import { RenameProductType } from "./useCases/ProductType/RenameProductType";
-import { CreateProductVariant } from "./useCases/ProductVariants/CreateProductVariant";
-import { DeleteProductVariant } from "./useCases/ProductVariants/DeleteProductVariant";
-import { GetProductVariantBySku } from "./useCases/ProductVariants/GetProductVariantBySku";
-import { GetProductVariantByUuid } from "./useCases/ProductVariants/GetProductVariantByUuid";
-import { ImportProductVariantCsv } from "./useCases/ProductVariants/ImportProductVariantCsv";
+import { CreateProductVariant } from "./useCases/ProductVariant/CreateProductVariant";
+import { DeleteProductVariant } from "./useCases/ProductVariant/DeleteProductVariant";
+import { GetProductVariantBySku } from "./useCases/ProductVariant/GetProductVariantBySku";
+import { GetProductVariantByUuid } from "./useCases/ProductVariant/GetProductVariantByUuid";
+import { ImportProductVariantCsv } from "./useCases/ProductVariant/ImportProductVariantCsv";
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { ImportProductVariantCsv } from "./useCases/ProductVariants/ImportProduc
     DeleteProductVariant,
     ImportProductCsv,
     ImportProductVariantCsv,
+    QueryProductVariants,
   ],
   controllers: [
     ProductTypesController,
