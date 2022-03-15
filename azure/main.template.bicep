@@ -78,6 +78,16 @@ module appService 'modules/app/app.template.bicep' = {
     PostgresDatabaseUrl: postgresDatabaseUrl
     Auth0M2MClientId: kv.getSecret('Auth0M2MClientId')
     Auth0M2MClientSecret: kv.getSecret('Auth0M2MClientSecret')
+    Auth0AccessTokenUrl:kv.getSecret('Auth0AccessTokenUrl')
+    Auth0BasicConnection:kv.getSecret('Auth0BasicConnection')
+    Auth0MgmtApiUrl:kv.getSecret('Auth0MgmtApiUrl')
+    Auth0MgmtAudience:kv.getSecret('Auth0MgmtAudience')
+    Auth0MgmtClientId:kv.getSecret('Auth0MgmtClientId')
+    Auth0MgmtClientSecret:kv.getSecret('Auth0MgmtClientSecret')
+    Auth0MgmtGrantType:kv.getSecret('Auth0MgmtGrantType')
+    Auth0ResourceServerId:kv.getSecret('Auth0ResourceServerId')
+    Auth0ResourceServerIdentifier:kv.getSecret('Auth0ResourceServerIdentifier')
+
   }
 }
 
