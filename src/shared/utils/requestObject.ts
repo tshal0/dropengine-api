@@ -13,7 +13,11 @@ export function requestObject(
           new Error(
             `Remote resource ${options.url} returned status code: ${
               response.statusCode
-            }: ${JSON.stringify(body)}`
+            }: ${JSON.stringify(body, null, 2)} ${JSON.stringify(
+              options,
+              null,
+              2
+            )}`
           )
         );
       } else {

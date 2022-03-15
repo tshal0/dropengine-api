@@ -10,6 +10,7 @@ import {
   CreateAuth0UserDto,
   CreateAuth0UserResponseDto,
   CreateUserDto,
+  IAuth0ExtendedUser,
 } from "@users/dto/CreateUserDto";
 import { cloneDeep } from "lodash";
 import { DbUser } from "../entities/User.entity";
@@ -108,6 +109,16 @@ export class User extends IAggregate<IUser, DbUser, IUserProps> {
 
     return Result.ok(this);
   }
+  applyAuth0User(dto: IAuth0ExtendedUser): Result<User> {
+    this.setExternalUserId(`${dto.user_id}`)
+      .setEmail(dto.email)
+      .setPicture(dto.picture)
+      .setFirstName(dto.given_name)
+      .setLastName(dto.family_name)
+      .activate();
+
+    return Result.ok(this);
+  }
 
   activate(): User {
     this._props.status = "ACTIVATED";
@@ -193,9 +204,9 @@ export class User extends IAggregate<IUser, DbUser, IUserProps> {
     return Result.ok(user);
   }
 
-  public static db(dto: DbUser): Result<User> {
+  public static db(dbe: DbUser): Result<User> {
     let results: { [key: string]: Result<any> } = {
-      id: UUID.from(dto.id),
+      id: UUID.from(dbe.id),
     };
     let errors = Object.values(results)
       .filter((r) => r.isFailure)
@@ -205,34 +216,23 @@ export class User extends IAggregate<IUser, DbUser, IUserProps> {
       return Result.fail(
         new InvalidUser(
           errors,
-          { ...dto },
+          { ...dbe },
           `Failed to generate User. See inner error for details.`
         )
       );
     }
     const props: IUser = {
       id: results.id.value(),
-      email: dto.email,
-      status: dto.status,
-      picture: dto.picture,
-      firstName: dto.firstName,
-      lastName: dto.lastName,
-      externalUserId: dto.externalUserId,
+      email: dbe.email,
+      status: dbe.status,
+      picture: dbe.picture,
+      firstName: dbe.firstName,
+      lastName: dbe.lastName,
+      externalUserId: dbe.externalUserId,
 
-      createdAt: dto.createdAt,
-      updatedAt: dto.updatedAt,
+      createdAt: dbe.createdAt,
+      updatedAt: dbe.updatedAt,
     };
-    const dbe: DbUser = new DbUser();
-    dbe.id = props.id.value();
-    dbe.email = props.email;
-    dbe.firstName = props.firstName;
-    dbe.lastName = props.lastName;
-    dbe.picture = props.picture;
-
-    dbe.createdAt = props.createdAt;
-    dbe.updatedAt = props.updatedAt;
-    dbe.status = props.status;
-    dbe.externalUserId = props.externalUserId;
     const user = new User(props, dbe);
     return Result.ok(user);
   }

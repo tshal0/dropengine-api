@@ -1,0 +1,1475 @@
+{
+	"info": {
+		"_postman_id": "08015fd7-4ec4-4633-924e-0632419cfed1",
+		"name": "Auth0 Management API MANUAL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "queries",
+			"item": [
+				{
+					"name": "GET users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users?per_page=20&include_totals=true&fields=identities&include_fields=false&page=1",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "20"
+								},
+								{
+									"key": "include_totals",
+									"value": "true"
+								},
+								{
+									"key": "fields",
+									"value": "identities"
+								},
+								{
+									"key": "include_fields",
+									"value": "false"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET thomas@myeasymfg.com",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/{{MES_FUNC_AUTH0_USER_ID}}/roles",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{{MES_FUNC_AUTH0_USER_ID}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET users by company code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users?q=app_metadata.companies:(southern_designs)",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "app_metadata.companies:(southern_designs)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET users by company code and read:orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users?q=app_metadata.companies.SOUTHERN_DESIGNS.read_orders:true",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "app_metadata.companies.SOUTHERN_DESIGNS.read_orders:true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Permissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/{{MES_FUNC_AUTH0_USER_ID}}/roles",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{{MES_FUNC_AUTH0_USER_ID}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RolePermissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles/rol_wCPQHKFUxn7Ych62/permissions",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles",
+								"rol_wCPQHKFUxn7Ych62",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST RolePermissions",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"permissions\": [\r\n        {\r\n            \"permission_name\": \"manufacturer:southern_designs:view:orders\",\r\n            \"resource_server_identifier\": \"dev.eqc.api\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles/rol_wCPQHKFUxn7Ych62/permissions",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles",
+								"rol_wCPQHKFUxn7Ych62",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Authenticating...\")",
+							"",
+							"const echoPostRequest = {",
+							"  url: pm.variables.get(\"auth0_accessTokenUrl\"),",
+							"  method: 'POST',",
+							"  header: 'Content-Type:application/json',",
+							"  body: {",
+							"    mode: 'application/json',",
+							"    raw: JSON.stringify(",
+							"        {",
+							"        \tclient_id:pm.variables.get(\"AUTH0_MGMT_CLIENT_ID\"),",
+							"        \tclient_secret:pm.variables.get(\"AUTH0_MGMT_CLIENT_SECRET\"),",
+							"        \taudience:pm.variables.get(\"AUTH0_MGMT_AUDIENCE\"),",
+							"        \tgrant_type:'client_credentials'",
+							"        })",
+							"  }",
+							"};",
+							"",
+							"var getToken = true;",
+							"",
+							"if (!pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY') || ",
+							"    !pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN')) {",
+							"    console.log('Token or expiry date are missing')",
+							"} else if (pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+							"    console.log('Token is expired')",
+							"} else {",
+							"    getToken = false;",
+							"    console.log('Token and expiry date are all good');",
+							"}",
+							"",
+							"if (getToken === true) {",
+							"    pm.sendRequest(echoPostRequest, function (err, res) {",
+							"    console.log(err ? err : res.json());",
+							"        if (err === null) {",
+							"            console.log('Saving the token and expiry date')",
+							"            var responseJson = res.json();",
+							"            pm.variables.set('AUTH0_MGMT_ACCESS_TOKEN', responseJson.access_token)",
+							"    ",
+							"            var expiryDate = new Date();",
+							"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+							"            pm.variables.set('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY', expiryDate.getTime());",
+							"        }",
+							"    });",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "patches",
+			"item": [
+				{
+					"name": "AddUserToCompany",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"app_metadata\":{\r\n        \"companies\":{\r\n            \"SOUTHERN_DESIGNS\": {\r\n                \"is_member\":true,\r\n                \"read_orders\": true\r\n            }\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/google-oauth2|115031645190169046616",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"google-oauth2|115031645190169046616"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveUserFromCompany",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"app_metadata\":{\r\n        \"companies\":{\r\n            \"SOUTHERN_DESIGNS\": {\r\n                \"is_member\":false\r\n            }\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/google-oauth2|115031645190169046616",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"google-oauth2|115031645190169046616"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddCompanyRoleToUser",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"app_metadata\":{\r\n        \"companies\":{\r\n            \"SOUTHERN_DESIGNS\": {\r\n                \"is_member\":true,\r\n                \"roles\":{\r\n                    \"company_admin\":true\r\n                }\r\n            }\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/google-oauth2|115031645190169046616",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"google-oauth2|115031645190169046616"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddCompanyPermissionToUser",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"app_metadata\":{\r\n        \"companies\":{\r\n            \"SOUTHERN_DESIGNS\": {\r\n                \"is_member\":true,\r\n                \"roles\":{\r\n                    \"company_admin\":true\r\n                },\r\n                \"permissions\":{\r\n                    \"read:orders\": true\r\n                }\r\n            }\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/google-oauth2|115031645190169046616",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"google-oauth2|115031645190169046616"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveCompanyRoleFromUser",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"app_metadata\":{\r\n        \"companies\":{\r\n            \"SOUTHERN_DESIGNS\": {\r\n                \"is_member\":true,\r\n                \"roles\":{\r\n                    \"company_admin\":false\r\n                }\r\n            }\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/google-oauth2|115031645190169046616",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"google-oauth2|115031645190169046616"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveCompanyPermissionFromUser",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"app_metadata\":{\r\n        \"companies\":{\r\n            \"SOUTHERN_DESIGNS\": {\r\n                \"is_member\":true,\r\n                \"roles\":{\r\n                    \"company_admin\":true,\r\n                    \"order_admin\":true\r\n                },\r\n                \"permissions\":{\r\n                    \"read_orders\": true,\r\n                    \"execute_part_mark_location\": false\r\n                }\r\n            }\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/google-oauth2|115031645190169046616",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"google-oauth2|115031645190169046616"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Authenticating...\")",
+							"",
+							"const echoPostRequest = {",
+							"  url: pm.variables.get(\"auth0_accessTokenUrl\"),",
+							"  method: 'POST',",
+							"  header: 'Content-Type:application/json',",
+							"  body: {",
+							"    mode: 'application/json',",
+							"    raw: JSON.stringify(",
+							"        {",
+							"        \tclient_id:pm.variables.get(\"AUTH0_MGMT_CLIENT_ID\"),",
+							"        \tclient_secret:pm.variables.get(\"AUTH0_MGMT_CLIENT_SECRET\"),",
+							"        \taudience:pm.variables.get(\"AUTH0_MGMT_AUDIENCE\"),",
+							"        \tgrant_type:'client_credentials'",
+							"        })",
+							"  }",
+							"};",
+							"",
+							"var getToken = true;",
+							"",
+							"if (!pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY') || ",
+							"    !pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN')) {",
+							"    console.log('Token or expiry date are missing')",
+							"} else if (pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+							"    console.log('Token is expired')",
+							"} else {",
+							"    getToken = false;",
+							"    console.log('Token and expiry date are all good');",
+							"}",
+							"",
+							"if (getToken === true) {",
+							"    pm.sendRequest(echoPostRequest, function (err, res) {",
+							"    console.log(err ? err : res.json());",
+							"        if (err === null) {",
+							"            console.log('Saving the token and expiry date')",
+							"            var responseJson = res.json();",
+							"            pm.variables.set('AUTH0_MGMT_ACCESS_TOKEN', responseJson.access_token)",
+							"    ",
+							"            var expiryDate = new Date();",
+							"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+							"            pm.variables.set('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY', expiryDate.getTime());",
+							"        }",
+							"    });",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "resource-servers",
+			"item": [
+				{
+					"name": "byId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/resource-servers/5cfca0a55711bf0685d57f67",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"resource-servers",
+								"5cfca0a55711bf0685d57f67"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/resource-servers",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"resource-servers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateResourceServerScopes",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scopes\": [\r\n        {\r\n            \"value\": \"manufacturer:southern_designs:view:orders\",\r\n            \"description\": \"Permission to view Southern Designs orders.\"\r\n        },\r\n        {\r\n            \"value\": \"manufacturer:southern_designs:manage:orders\",\r\n            \"description\": \"Permission to manage Southern Designs orders.\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/resource-servers/5cfca0a55711bf0685d57f67",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"resource-servers",
+								"5cfca0a55711bf0685d57f67"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Authenticating...\")",
+							"",
+							"const echoPostRequest = {",
+							"  url: pm.variables.get(\"auth0_accessTokenUrl\"),",
+							"  method: 'POST',",
+							"  header: 'Content-Type:application/json',",
+							"  body: {",
+							"    mode: 'application/json',",
+							"    raw: JSON.stringify(",
+							"        {",
+							"        \tclient_id:pm.variables.get(\"AUTH0_MGMT_CLIENT_ID\"),",
+							"        \tclient_secret:pm.variables.get(\"AUTH0_MGMT_CLIENT_SECRET\"),",
+							"        \taudience:pm.variables.get(\"AUTH0_MGMT_AUDIENCE\"),",
+							"        \tgrant_type:'client_credentials'",
+							"        })",
+							"  }",
+							"};",
+							"",
+							"var getToken = true;",
+							"",
+							"if (!pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY') || ",
+							"    !pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN')) {",
+							"    console.log('Token or expiry date are missing')",
+							"} else if (pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+							"    console.log('Token is expired')",
+							"} else {",
+							"    getToken = false;",
+							"    console.log('Token and expiry date are all good');",
+							"}",
+							"",
+							"if (getToken === true) {",
+							"    pm.sendRequest(echoPostRequest, function (err, res) {",
+							"    console.log(err ? err : res.json());",
+							"        if (err === null) {",
+							"            console.log('Saving the token and expiry date')",
+							"            var responseJson = res.json();",
+							"            pm.variables.set('AUTH0_MGMT_ACCESS_TOKEN', responseJson.access_token)",
+							"    ",
+							"            var expiryDate = new Date();",
+							"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+							"            pm.variables.set('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY', expiryDate.getTime());",
+							"        }",
+							"    });",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "roles",
+			"item": [
+				{
+					"name": "AllRoles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"manufacturer:southern_designs:order_admin2\",\r\n    \"description\": \"Order administrator for Southern Designs\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRoleById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles/rol_4eFxVa80djVZzZ8Q",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles",
+								"rol_4eFxVa80djVZzZ8Q"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteRole",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles/rol_92aIfvw02zkhIMqA",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles",
+								"rol_92aIfvw02zkhIMqA"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRolePermissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles/rol_4eFxVa80djVZzZ8Q/permissions",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles",
+								"rol_4eFxVa80djVZzZ8Q",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddPermissionToRole",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"permissions\": [\r\n        {\r\n            \"permission_name\": \"tenant:southern_designs:manage:nests\",\r\n            \"resource_server_identifier\": \"dev.eqc.api\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles/rol_7VwhLFaTZD1JuqtR/permissions",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles",
+								"rol_7VwhLFaTZD1JuqtR",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddPermissionToRole Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"permissions\": [\r\n        {\r\n            \"permission_name\": \"tenant:southern_designs:manage:nests\",\r\n            \"resource_server_identifier\": \"dev.eqc.api\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles/rol_7VwhLFaTZD1JuqtR/permissions",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles",
+								"rol_7VwhLFaTZD1JuqtR",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemovePermissionsFromRole",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"permissions\": [\r\n        {\r\n            \"permission_name\": \"manufacturer:southern_designs:view:orders\",\r\n            \"resource_server_identifier\":\"dev.eqc.api\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/roles/rol_bwZ6GECyvKNQplZz/permissions",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"roles",
+								"rol_bwZ6GECyvKNQplZz",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Authenticating...\")",
+							"",
+							"const echoPostRequest = {",
+							"  url: pm.variables.get(\"auth0_accessTokenUrl\"),",
+							"  method: 'POST',",
+							"  header: 'Content-Type:application/json',",
+							"  body: {",
+							"    mode: 'application/json',",
+							"    raw: JSON.stringify(",
+							"        {",
+							"        \tclient_id:pm.variables.get(\"AUTH0_MGMT_CLIENT_ID\"),",
+							"        \tclient_secret:pm.variables.get(\"AUTH0_MGMT_CLIENT_SECRET\"),",
+							"        \taudience:pm.variables.get(\"AUTH0_MGMT_AUDIENCE\"),",
+							"        \tgrant_type:'client_credentials'",
+							"        })",
+							"  }",
+							"};",
+							"",
+							"var getToken = true;",
+							"",
+							"if (!pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY') || ",
+							"    !pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN')) {",
+							"    console.log('Token or expiry date are missing')",
+							"} else if (pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+							"    console.log('Token is expired')",
+							"} else {",
+							"    getToken = false;",
+							"    console.log('Token and expiry date are all good');",
+							"}",
+							"",
+							"if (getToken === true) {",
+							"    pm.sendRequest(echoPostRequest, function (err, res) {",
+							"    console.log(err ? err : res.json());",
+							"        if (err === null) {",
+							"            console.log('Saving the token and expiry date')",
+							"            var responseJson = res.json();",
+							"            pm.variables.set('AUTH0_MGMT_ACCESS_TOKEN', responseJson.access_token)",
+							"    ",
+							"            var expiryDate = new Date();",
+							"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+							"            pm.variables.set('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY', expiryDate.getTime());",
+							"        }",
+							"    });",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "GetUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/{{MES_FUNC_AUTH0_USER_ID}}",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{{MES_FUNC_AUTH0_USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUsersByEmail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users-by-email?email=thomas@myeasymfg.com",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users-by-email"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "thomas@myeasymfg.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserRoles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/{{MES_FUNC_AUTH0_USER_ID}}/roles",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{{MES_FUNC_AUTH0_USER_ID}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserRoles Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/auth0|5ceefb7ccd6a5f110f3d577e/roles",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"auth0|5ceefb7ccd6a5f110f3d577e",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AssignRolesToUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roles\":[\r\n        \"rol_bwZ6GECyvKNQplZz\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/{{MES_FUNC_AUTH0_USER_ID}}/roles",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{{MES_FUNC_AUTH0_USER_ID}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemoveRolesFromUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roles\":[\r\n        \"rol_4eFxVa80djVZzZ8Q\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/{{MES_FUNC_AUTH0_USER_ID}}/roles",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{{MES_FUNC_AUTH0_USER_ID}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserPermissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/{{MES_FUNC_AUTH0_USER_ID}}/permissions",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{{MES_FUNC_AUTH0_USER_ID}}",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AssignPermissionsToUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"permissions\": [\r\n        {\r\n            \"permission_name\": \"manufacturer:southern_designs:view:orders\",\r\n            \"resource_server_identifier\": \"dev.eqc.api\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/{{MES_FUNC_AUTH0_USER_ID}}/permissions",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{{MES_FUNC_AUTH0_USER_ID}}",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RemovePermissionsFromUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"permissions\": [\r\n        {\r\n            \"permission_name\": \"manufacturer:southern_designs:view:orders\",\r\n            \"resource_server_identifier\": \"dev.eqc.api\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/{{MES_FUNC_AUTH0_USER_ID}}/permissions",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{{MES_FUNC_AUTH0_USER_ID}}",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"mattfulwell@gmail.com\",\r\n    \"user_metadata\": {},\r\n    \"blocked\": false,\r\n    \"email_verified\": false,\r\n    \"app_metadata\": {\r\n       \"companies\":[],\r\n       \"roles\":[]\r\n    },\r\n    \"password\": \"temp_pass123\",\r\n    \"verify_email\": false,\r\n    \"connection\":\"Username-Password-Authentication\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/users/auth0|60f77e574c6340006aa98949",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"auth0|60f77e574c6340006aa98949"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Password change ticket",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"result_url\": \"https://www.myeasysuite.co\",\r\n    \"email\": \"mattfulwell@gmail.com\",\r\n    \"connection_id\":\"con_XrNEQ1oA4utj48MM\",\r\n    \"ttl_sec\": 66000,\r\n    \"mark_email_as_verified\": true,\r\n    \"includeEmailInRedirect\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/api/v2/tickets/password-change",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"tickets",
+								"password-change"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password emai",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"client_id\": \"QJLBFNhQ63ZN3Wg9Sf8V0jEGZk46gfAI\",\r\n  \"email\": \"mattfulwell@gmail.com\",\r\n  \"connection\": \"Username-Password-Authentication\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/dbconnections/change_password",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"dbconnections",
+								"change_password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordless start",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"client_id\": \"QJLBFNhQ63ZN3Wg9Sf8V0jEGZk46gfAI\",\r\n    \"client_secret\": \"uB7Bip0sx-qGhfwUMI0n32WKYvGi5Ahu4tUHcJhJaBPk4-4VD9CZ22DYvcn0tt_D\",\r\n    \"connection\": \"email\",\r\n    \"email\": \"mattfulwell@gmail.com\",\r\n    \"send\": \"link\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/passwordless/start",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"passwordless",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordless verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"client_id\": \"QJLBFNhQ63ZN3Wg9Sf8V0jEGZk46gfAI\",\r\n    \"client_secret\": \"uB7Bip0sx-qGhfwUMI0n32WKYvGi5Ahu4tUHcJhJaBPk4-4VD9CZ22DYvcn0tt_D\",\r\n    \"connection\": \"email\",\r\n    \"email\": \"mattfulwell@gmail.com\",\r\n    \"send\": \"link\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{AUTH0_MGMT_API}}/passwordless/verify",
+							"host": [
+								"{{AUTH0_MGMT_API}}"
+							],
+							"path": [
+								"passwordless",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Authenticating...\")",
+							"",
+							"const echoPostRequest = {",
+							"  url: pm.variables.get(\"auth0_accessTokenUrl\"),",
+							"  method: 'POST',",
+							"  header: 'Content-Type:application/json',",
+							"  body: {",
+							"    mode: 'application/json',",
+							"    raw: JSON.stringify(",
+							"        {",
+							"        \tclient_id:pm.variables.get(\"AUTH0_MGMT_CLIENT_ID\"),",
+							"        \tclient_secret:pm.variables.get(\"AUTH0_MGMT_CLIENT_SECRET\"),",
+							"        \taudience:pm.variables.get(\"AUTH0_MGMT_AUDIENCE\"),",
+							"        \tgrant_type:'client_credentials'",
+							"        })",
+							"  }",
+							"};",
+							"",
+							"var getToken = true;",
+							"",
+							"if (!pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY') || ",
+							"    !pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN')) {",
+							"    console.log('Token or expiry date are missing')",
+							"} else if (pm.variables.get('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+							"    console.log('Token is expired')",
+							"} else {",
+							"    getToken = false;",
+							"    console.log('Token and expiry date are all good');",
+							"}",
+							"",
+							"if (getToken === true) {",
+							"    pm.sendRequest(echoPostRequest, function (err, res) {",
+							"    console.log(err ? err : res.json());",
+							"        if (err === null) {",
+							"            console.log('Saving the token and expiry date')",
+							"            var responseJson = res.json();",
+							"            pm.variables.set('AUTH0_MGMT_ACCESS_TOKEN', responseJson.access_token)",
+							"    ",
+							"            var expiryDate = new Date();",
+							"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+							"            pm.variables.set('AUTH0_MGMT_ACCESS_TOKEN_EXPIRY', expiryDate.getTime());",
+							"        }",
+							"    });",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resp = pm.response.json();\r",
+							"var token = resp.access_token;\r",
+							"pm.variables.set(\"AUTH0_MGMT_ACCESS_TOKEN\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"grant_type\": \"client_credentials\",\r\n    \"client_id\": \"0dPZi56q7A9RLAjlIDDe2aLiFw3H2iDn\",\r\n    \"client_secret\": \"AX0AAhiEwpeAEVHuAuMVkgW-iXT-ScznywSHaPXncaB78C-BmCzlFXZD7-VWNfoO\",\r\n    \"audience\": \"https://myeasysuite-dev.us.auth0.com/api/v2/\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://myeasysuite-dev.us.auth0.com/oauth/token",
+					"protocol": "https",
+					"host": [
+						"myeasysuite-dev",
+						"us",
+						"auth0",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjByM2V1cEJuYU5lTUxRdlZpSU5wNyJ9.eyJpc3MiOiJodHRwczovL215ZWFzeXN1aXRlLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiMGRQWmk1NnE3QTlSTEFqbElERGUyYUxpRnczSDJpRG5AY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vbXllYXN5c3VpdGUtZGV2LnVzLmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNjM5ODk2NzUyLCJleHAiOjE2Mzk5ODMxNTIsImF6cCI6IjBkUFppNTZxN0E5UkxBamxJRERlMmFMaUZ3M0gyaURuIiwic2NvcGUiOiJyZWFkOmNsaWVudF9ncmFudHMgY3JlYXRlOmNsaWVudF9ncmFudHMgZGVsZXRlOmNsaWVudF9ncmFudHMgdXBkYXRlOmNsaWVudF9ncmFudHMgcmVhZDp1c2VycyB1cGRhdGU6dXNlcnMgZGVsZXRlOnVzZXJzIGNyZWF0ZTp1c2VycyByZWFkOnVzZXJzX2FwcF9tZXRhZGF0YSB1cGRhdGU6dXNlcnNfYXBwX21ldGFkYXRhIGRlbGV0ZTp1c2Vyc19hcHBfbWV0YWRhdGEgY3JlYXRlOnVzZXJzX2FwcF9tZXRhZGF0YSByZWFkOnVzZXJfY3VzdG9tX2Jsb2NrcyBjcmVhdGU6dXNlcl9jdXN0b21fYmxvY2tzIGRlbGV0ZTp1c2VyX2N1c3RvbV9ibG9ja3MgY3JlYXRlOnVzZXJfdGlja2V0cyByZWFkOmNsaWVudHMgdXBkYXRlOmNsaWVudHMgZGVsZXRlOmNsaWVudHMgY3JlYXRlOmNsaWVudHMgcmVhZDpjbGllbnRfa2V5cyB1cGRhdGU6Y2xpZW50X2tleXMgZGVsZXRlOmNsaWVudF9rZXlzIGNyZWF0ZTpjbGllbnRfa2V5cyByZWFkOmNvbm5lY3Rpb25zIHVwZGF0ZTpjb25uZWN0aW9ucyBkZWxldGU6Y29ubmVjdGlvbnMgY3JlYXRlOmNvbm5lY3Rpb25zIHJlYWQ6cmVzb3VyY2Vfc2VydmVycyB1cGRhdGU6cmVzb3VyY2Vfc2VydmVycyBkZWxldGU6cmVzb3VyY2Vfc2VydmVycyBjcmVhdGU6cmVzb3VyY2Vfc2VydmVycyByZWFkOmRldmljZV9jcmVkZW50aWFscyB1cGRhdGU6ZGV2aWNlX2NyZWRlbnRpYWxzIGRlbGV0ZTpkZXZpY2VfY3JlZGVudGlhbHMgY3JlYXRlOmRldmljZV9jcmVkZW50aWFscyByZWFkOnJ1bGVzIHVwZGF0ZTpydWxlcyBkZWxldGU6cnVsZXMgY3JlYXRlOnJ1bGVzIHJlYWQ6cnVsZXNfY29uZmlncyB1cGRhdGU6cnVsZXNfY29uZmlncyBkZWxldGU6cnVsZXNfY29uZmlncyByZWFkOmhvb2tzIHVwZGF0ZTpob29rcyBkZWxldGU6aG9va3MgY3JlYXRlOmhvb2tzIHJlYWQ6YWN0aW9ucyB1cGRhdGU6YWN0aW9ucyBkZWxldGU6YWN0aW9ucyBjcmVhdGU6YWN0aW9ucyByZWFkOmVtYWlsX3Byb3ZpZGVyIHVwZGF0ZTplbWFpbF9wcm92aWRlciBkZWxldGU6ZW1haWxfcHJvdmlkZXIgY3JlYXRlOmVtYWlsX3Byb3ZpZGVyIGJsYWNrbGlzdDp0b2tlbnMgcmVhZDpzdGF0cyByZWFkOmluc2lnaHRzIHJlYWQ6dGVuYW50X3NldHRpbmdzIHVwZGF0ZTp0ZW5hbnRfc2V0dGluZ3MgcmVhZDpsb2dzIHJlYWQ6bG9nc191c2VycyByZWFkOnNoaWVsZHMgY3JlYXRlOnNoaWVsZHMgdXBkYXRlOnNoaWVsZHMgZGVsZXRlOnNoaWVsZHMgcmVhZDphbm9tYWx5X2Jsb2NrcyBkZWxldGU6YW5vbWFseV9ibG9ja3MgdXBkYXRlOnRyaWdnZXJzIHJlYWQ6dHJpZ2dlcnMgcmVhZDpncmFudHMgZGVsZXRlOmdyYW50cyByZWFkOmd1YXJkaWFuX2ZhY3RvcnMgdXBkYXRlOmd1YXJkaWFuX2ZhY3RvcnMgcmVhZDpndWFyZGlhbl9lbnJvbGxtZW50cyBkZWxldGU6Z3VhcmRpYW5fZW5yb2xsbWVudHMgY3JlYXRlOmd1YXJkaWFuX2Vucm9sbG1lbnRfdGlja2V0cyByZWFkOnVzZXJfaWRwX3Rva2VucyBjcmVhdGU6cGFzc3dvcmRzX2NoZWNraW5nX2pvYiBkZWxldGU6cGFzc3dvcmRzX2NoZWNraW5nX2pvYiByZWFkOmN1c3RvbV9kb21haW5zIGRlbGV0ZTpjdXN0b21fZG9tYWlucyBjcmVhdGU6Y3VzdG9tX2RvbWFpbnMgdXBkYXRlOmN1c3RvbV9kb21haW5zIHJlYWQ6ZW1haWxfdGVtcGxhdGVzIGNyZWF0ZTplbWFpbF90ZW1wbGF0ZXMgdXBkYXRlOmVtYWlsX3RlbXBsYXRlcyByZWFkOm1mYV9wb2xpY2llcyB1cGRhdGU6bWZhX3BvbGljaWVzIHJlYWQ6cm9sZXMgY3JlYXRlOnJvbGVzIGRlbGV0ZTpyb2xlcyB1cGRhdGU6cm9sZXMgcmVhZDpwcm9tcHRzIHVwZGF0ZTpwcm9tcHRzIHJlYWQ6YnJhbmRpbmcgdXBkYXRlOmJyYW5kaW5nIGRlbGV0ZTpicmFuZGluZyByZWFkOmxvZ19zdHJlYW1zIGNyZWF0ZTpsb2dfc3RyZWFtcyBkZWxldGU6bG9nX3N0cmVhbXMgdXBkYXRlOmxvZ19zdHJlYW1zIGNyZWF0ZTpzaWduaW5nX2tleXMgcmVhZDpzaWduaW5nX2tleXMgdXBkYXRlOnNpZ25pbmdfa2V5cyByZWFkOmxpbWl0cyB1cGRhdGU6bGltaXRzIGNyZWF0ZTpyb2xlX21lbWJlcnMgcmVhZDpyb2xlX21lbWJlcnMgZGVsZXRlOnJvbGVfbWVtYmVycyByZWFkOmVudGl0bGVtZW50cyByZWFkOmF0dGFja19wcm90ZWN0aW9uIHVwZGF0ZTphdHRhY2tfcHJvdGVjdGlvbiByZWFkOm9yZ2FuaXphdGlvbnMgdXBkYXRlOm9yZ2FuaXphdGlvbnMgY3JlYXRlOm9yZ2FuaXphdGlvbnMgZGVsZXRlOm9yZ2FuaXphdGlvbnMgY3JlYXRlOm9yZ2FuaXphdGlvbl9tZW1iZXJzIHJlYWQ6b3JnYW5pemF0aW9uX21lbWJlcnMgZGVsZXRlOm9yZ2FuaXphdGlvbl9tZW1iZXJzIGNyZWF0ZTpvcmdhbml6YXRpb25fY29ubmVjdGlvbnMgcmVhZDpvcmdhbml6YXRpb25fY29ubmVjdGlvbnMgdXBkYXRlOm9yZ2FuaXphdGlvbl9jb25uZWN0aW9ucyBkZWxldGU6b3JnYW5pemF0aW9uX2Nvbm5lY3Rpb25zIGNyZWF0ZTpvcmdhbml6YXRpb25fbWVtYmVyX3JvbGVzIHJlYWQ6b3JnYW5pemF0aW9uX21lbWJlcl9yb2xlcyBkZWxldGU6b3JnYW5pemF0aW9uX21lbWJlcl9yb2xlcyBjcmVhdGU6b3JnYW5pemF0aW9uX2ludml0YXRpb25zIHJlYWQ6b3JnYW5pemF0aW9uX2ludml0YXRpb25zIGRlbGV0ZTpvcmdhbml6YXRpb25faW52aXRhdGlvbnMiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.gRlyOWZI6Y6qN5hHHSFxVAKTQV8qGo2Zdz6sw4643HhjCCCWrSo24wWXCIWbD6TtcwvJKpL6K2S2CG9cz0HLq_Ox3585fyvxdWHvJXOObW4ssLCMYc1NN3oTIPuzj6mlzGIYx2mF6Dv-3bxact2qquz6hGU1WUJk2UtEaLAxGC8FQBbvRMHbYupzN-i-fX1l2n3000ITcyLJLsjqk4s6Z064S4yz-y14rmj_aUdchlK-GGPkmweC5h54oj5LqKtRX4JZI3xZbsAc73cZHn6JBQBAFKEmgxeCx6EJBURE0ChFp8TX0VyxZ7BULGjC6Gim4WY85zxhZ4mCFAp_1ENybQ",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "AUTH0_MGMT_ACCESS_TOKEN",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjByM2V1cEJuYU5lTUxRdlZpSU5wNyJ9.eyJpc3MiOiJodHRwczovL215ZWFzeXN1aXRlLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiMGRQWmk1NnE3QTlSTEFqbElERGUyYUxpRnczSDJpRG5AY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vbXllYXN5c3VpdGUtZGV2LnVzLmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNjM5ODk2MTI5LCJleHAiOjE2Mzk5ODI1MjksImF6cCI6IjBkUFppNTZxN0E5UkxBamxJRERlMmFMaUZ3M0gyaURuIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.WfhfU9pB6w9u346fREx8gQ9K-jwH-Z__J6CMDkadz0EGPE1r2HdBkoSVwoxCd4Ha8leLJS1S513wjGDorlF8H7pAg4Cl5E8p020nIIwOERLdk51BIWrLx7ElfSki42d8GoO1z_mL5SkS2qUfodrfMmUduefN5d8m1K5BknVdPANmAP2pPHi_uJoCN84MqQnUwBeQF0RQaf8BLio_aNPzJHkTUDjTYn8HD0Du_1E4pB1fcZXR2RV71rQ8iVJRMiuWbIrF7Fm_GeyAwcg4dyj-0l9GUzWOQ7g655kZ3740nMI9ammG6gjvkw_CiraXJZ8RXYh4bJjVr8CknfEfGr7mag"
+		}
+	]
+}

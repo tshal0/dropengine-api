@@ -1,3 +1,4 @@
+import { Auth0Module } from "@auth0/auth0.module";
 import { HttpModule } from "@nestjs/axios";
 import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
@@ -17,6 +18,7 @@ import { GetUserUseCase } from "./useCases/GetUser";
     AzureLoggerModule,
     ConfigModule,
     CacheModule.register(),
+    Auth0Module,
   ],
   controllers: [UsersController],
   providers: [

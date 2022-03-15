@@ -16,6 +16,7 @@ import { join } from "path";
 import { PassportModule } from "@nestjs/passport";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { CatalogModule } from "./catalog/catalog.module";
+import { Auth0Module } from "@auth0/auth0.module";
 
 @Module({
   imports: [
@@ -26,15 +27,9 @@ import { CatalogModule } from "./catalog/catalog.module";
       entitiesTs: ["./src/**/entities/*.entity.ts"],
       clientUrl: process.env.DATABASE_URL || undefined,
       driverOptions: {
-        connection: { ssl: process.env.POSTGRES_SSL || true },
+        connection: { ssl: process.env.POSTGRES_SSL || false },
       },
       debug: true,
-      // dbName: process.env.POSTGRES_DB || "dropengine",
-      // host: process.env.POSTGRES_HOST,
-      // port: parseInt(process.env.POSTGRES_PORT) || 5432,
-      // user: process.env.POSTGRES_USER || "postgres",
-      // password: process.env.POSTGRES_PASSWORD || "password",
-      // schema: process.env.POSTGRES_SCHEMA || "public",
       type: "postgresql",
     }),
     AuthModule,
@@ -47,6 +42,7 @@ import { CatalogModule } from "./catalog/catalog.module";
     CacheModule.register(),
     // PrismaModule,
     AppModule,
+    Auth0Module,
     UsersModule,
     ShopifyModule,
     CatalogModule,

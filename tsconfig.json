@@ -27,7 +27,11 @@
       ],
       "@shopify/*": [
         "src/shopify/*"
+      ],
+      "@auth0/*": [
+        "src/auth0/*"
       ]
+
     },
   },
   "exclude": [

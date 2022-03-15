@@ -23,6 +23,8 @@ import { ConfigService } from "@nestjs/config";
 import { lastValueFrom, map } from "rxjs";
 import { getCircularReplacer } from "@shared/utils";
 import { User } from "@users/domain";
+import { Auth0MgmtApiClient } from "@auth0/auth0-mgmt-api.service";
+import { Auth0ExtendedUser } from "@auth0/domain/Auth0ExtendedUser";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateUserUseCase implements UseCase<CreateUserDto, any> {
@@ -31,7 +33,8 @@ export class CreateUserUseCase implements UseCase<CreateUserDto, any> {
     private logger: AzureLoggerService,
     private readonly http: HttpService,
     private readonly config: ConfigService,
-    private _repo: DbUsersRepository
+    private _repo: DbUsersRepository,
+    private auth0: Auth0MgmtApiClient
   ) {}
   get llog() {
     return `[${moment()}][${CreateUserUseCase.name}]`;
@@ -40,6 +43,7 @@ export class CreateUserUseCase implements UseCase<CreateUserDto, any> {
   async execute(dto: CreateUserDto): Promise<Result<User>> {
     try {
       let result = await this._repo.load(dto);
+      
       if (result.isFailure) {
         result = User.create(dto);
         if (result.isFailure) {
@@ -48,43 +52,17 @@ export class CreateUserUseCase implements UseCase<CreateUserDto, any> {
       }
       let user = result.value();
 
-      // this.eventEmitter.emit(UserEventType.UserSignedUp, event);
-      // user = await this._repo.loadAggregate(user.id);
-
-      const AUTH0_CLIENT_ID = this.config.get(`AUTH0_CLIENT_ID`);
-      const AUTH0_DOMAIN = this.config.get(`AUTH0_DOMAIN`);
-      const CONNECTION = `Username-Password-Authentication`;
-
-      const url = `https://${AUTH0_DOMAIN}/dbconnections/signup`;
-
-      // Generate Auth0 CreateUser payload
-      let payload: CreateAuth0UserDto = {
-        client_id: AUTH0_CLIENT_ID,
-        connection: CONNECTION,
-        email: dto.email,
-        password: dto.password,
-        given_name: dto.firstName,
-        family_name: dto.lastName,
-      };
-
-      // CreateUser in Auth0
       try {
-        const resp$ = await this.http.post<CreateAuth0UserResponseDto>(
-          url,
-          payload
-        );
-        // Save response (externalUserId)
-        const resp = await lastValueFrom(resp$);
-        this.logger.log(`${this.llog} Auth0 Response:`, {
-          resp: JSON.stringify(resp.data, null, 2),
-        });
-        result = user.applyAuth0Response(resp.data);
-        if (result.isFailure) {
-          //TODO: FailedToCreateAuth0User
-          return Result.fail(result.error);
+        const auth0Users = await this.auth0.getUsersByEmail(dto.email);
+        if (auth0Users.length) {
+          const auth0User = auth0Users[0];
+          user.applyAuth0User(auth0User);
+        } else {
+          const auth0User = Auth0ExtendedUser.fromUser(user);
+          const resp = await this.auth0.createUser(auth0User);
+          user.applyAuth0User(resp.props());
         }
 
-        user = result.value();
         result = await this._repo.save(user);
         return result;
       } catch (error) {

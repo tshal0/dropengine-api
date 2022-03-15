@@ -117,7 +117,8 @@
     "@shared": "dist/shared",
     "@users": "dist/users",
     "@catalog": "dist/catalog",
-    "@shopify": "dist/shopify"
+    "@shopify": "dist/shopify",
+    "@auth0": "dist/auth0"
   },
   "mikro-orm": {
     "useTsNode": true,

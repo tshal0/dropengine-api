@@ -19,14 +19,16 @@ import {
   CreateProduct,
   DeleteProduct,
   ImportProductCsv,
-  QueryProductVariants,
 } from "./useCases";
 import { RenameProductType } from "./useCases/ProductType/RenameProductType";
-import { CreateProductVariant } from "./useCases/ProductVariant/CreateProductVariant";
-import { DeleteProductVariant } from "./useCases/ProductVariant/DeleteProductVariant";
-import { GetProductVariantBySku } from "./useCases/ProductVariant/GetProductVariantBySku";
-import { GetProductVariantByUuid } from "./useCases/ProductVariant/GetProductVariantByUuid";
-import { ImportProductVariantCsv } from "./useCases/ProductVariant/ImportProductVariantCsv";
+import {
+  CreateProductVariant,
+  GetProductVariantByUuid,
+  GetProductVariantBySku,
+  DeleteProductVariant,
+  ImportProductVariantCsv,
+  QueryProductVariants,
+} from "./useCases/ProductVariant";
 
 @Module({
   imports: [
