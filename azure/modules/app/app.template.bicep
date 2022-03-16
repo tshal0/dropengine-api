@@ -92,6 +92,10 @@ param Auth0ResourceServerId string
 @secure()
 param Auth0BasicConnection string
 
+@description('The client secret for the Auth0 integration')
+@secure()
+param PostgresSSL string
+
 resource userAssignedIdentities 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
   name: 'id-acr-${env}'
   location: location
@@ -494,12 +498,52 @@ resource appSlot1 'Microsoft.Web/sites/slots@2021-02-01' = {
           value: PostgresDatabaseUrl
         }
         {
+          name: 'POSTGRES_SSL'
+          value: 'true'
+        }
+        {
           name: 'PORT'
           value: '8800'
         }
         {
           name: 'WEBSITES_PORT'
           value: '8800'
+        }
+        {
+          name: 'AUTH0_ACCESS_TOKEN_URL'
+          value: Auth0AccessTokenUrl
+        }
+        {
+          name: 'AUTH0_MGMT_CLIENT_ID'
+          value: Auth0MgmtClientId
+        }
+        {
+          name: 'AUTH0_MGMT_CLIENT_SECRET'
+          value: Auth0MgmtClientSecret
+        }
+        {
+          name: 'AUTH0_MGMT_AUDIENCE'
+          value: Auth0MgmtAudience
+        }
+        {
+          name: 'AUTH0_MGMT_GRANT_TYPE'
+          value: Auth0MgmtGrantType
+        }
+        {
+          name: 'AUTH0_MGMT_API_URL'
+          value: Auth0MgmtApiUrl
+        }
+        {
+          name: 'AUTH0_RESOURCE_SERVER_IDENTIFIER'
+          value: Auth0ResourceServerIdentifier
+        }
+        {
+          name: 'AUTH0_RESOURCE_SERVER_ID'
+          value: Auth0ResourceServerId
+        }
+        {
+          name: 'AUTH0_BASIC_CONNECTION'
+          value: Auth0BasicConnection
         }
       ]
     }

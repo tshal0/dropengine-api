@@ -24,13 +24,13 @@ import { Cache } from "cache-manager";
       imports: [ConfigModule, CacheModule.register()],
       useFactory: async (config: ConfigService, cache: Cache) => {
         const URL = config.get("AUTH0_MGMT_API_URL");
-        const AUTH0_MGMT_ACCESS_TOKEN_URL = config.get("AUTH0_ACCESS_TOKEN_URL");
+        const AUTH0_ACCESS_TOKEN_URL = config.get("AUTH0_ACCESS_TOKEN_URL");
         const AUTH0_MGMT_CLIENT_ID = config.get("AUTH0_MGMT_CLIENT_ID");
         const AUTH0_MGMT_CLIENT_SECRET = config.get("AUTH0_MGMT_CLIENT_SECRET");
         const AUTH0_MGMT_AUDIENCE = config.get("AUTH0_MGMT_AUDIENCE");
         const AUTH0_MGMT_GRANT_TYPE = config.get("AUTH0_MGMT_GRANT_TYPE");
         const ENVIRONMENT = config.get("ENVIRONMENT");
-        console.log(AUTH0_MGMT_ACCESS_TOKEN_URL);
+        console.log(AUTH0_ACCESS_TOKEN_URL);
         console.log(AUTH0_MGMT_CLIENT_ID);
         console.log(AUTH0_MGMT_CLIENT_SECRET);
         console.log(AUTH0_MGMT_AUDIENCE);
@@ -40,7 +40,7 @@ import { Cache } from "cache-manager";
         if (!TOKEN) {
           const options = {
             method: "POST",
-            url: AUTH0_MGMT_ACCESS_TOKEN_URL,
+            url: AUTH0_ACCESS_TOKEN_URL,
             headers: { "content-type": "application/json" },
             body: {
               client_id: AUTH0_MGMT_CLIENT_ID,

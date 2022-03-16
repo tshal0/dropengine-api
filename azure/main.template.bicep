@@ -87,7 +87,7 @@ module appService 'modules/app/app.template.bicep' = {
     Auth0MgmtGrantType:kv.getSecret('Auth0MgmtGrantType')
     Auth0ResourceServerId:kv.getSecret('Auth0ResourceServerId')
     Auth0ResourceServerIdentifier:kv.getSecret('Auth0ResourceServerIdentifier')
-
+    PostgresSSL:kv.getSecret('PostgresSSL')
   }
 }
 
