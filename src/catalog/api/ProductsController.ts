@@ -28,6 +28,8 @@ import "multer";
 import { AzureStorageService } from "@shared/modules";
 import csv from "csvtojson";
 import { Readable } from "stream";
+import { ProductResponseDto } from "@catalog/dto/Product/ProductResponseDto";
+import { QueryProductResponseDto } from "@catalog/dto/Product/QueryProductResponseDto";
 @Controller("/api/products")
 export class ProductsController {
   constructor(
@@ -84,10 +86,19 @@ export class ProductsController {
   }
   @Get()
   @UseGuards(AuthGuard())
-  async getAll(): Promise<IProductProps[]> {
+  async getAll(): Promise<QueryProductResponseDto> {
     let result = await this.find.execute();
     if (result.isSuccess) {
-      return result.value();
+      let props = result.value();
+      let data = props.map((prop) => ProductResponseDto.from(prop));
+      let resp = new QueryProductResponseDto();
+      resp.data = data;
+      resp.page = 0;
+      resp.pages = 1;
+      resp.query = "";
+      resp.size = data.length;
+      resp.total = data.length;
+      return resp;
     }
   }
 }
