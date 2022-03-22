@@ -100,14 +100,14 @@ export class ProductResponseDto {
       return target;
     });
     // TODO: HandleProductVariants
-    dto.variants = props.variants?.map((co) => {
-      let target = new ProductResponseProductVariant();
-      Object.assign(target, co);
-      return target;
-    });
+    dto.variants =
+      props.variants?.map((co) => {
+        let target = new ProductResponseProductVariant();
+        Object.assign(target, co);
+        return target;
+      }) || [];
     // TODO: HandleProductType
-    dto.productType = new ProductResponseProductType();
-    Object.assign(dto.productType, props.productType);
+    dto.productType = null;
     return dto;
   }
 }
