@@ -1,6 +1,6 @@
-import { Auth0Identity } from '../dto/Auth0Identity';
-import { Auth0AppMetadata } from '../dto/Auth0AppMetadata';
-import { User, UserSignedUp } from '@users/domain';
+import { Auth0Identity } from "../dto/Auth0Identity";
+import { Auth0AppMetadata } from "../dto/Auth0AppMetadata";
+import { User, UserSignedUp } from "@users/domain";
 
 export interface IAuth0ExtendedUser {
   email?: string;
@@ -19,6 +19,7 @@ export interface IAuth0ExtendedUser {
   last_ip?: string;
   last_login?: Date;
   logins_count?: number;
+  password: string;
 }
 
 export class Auth0ExtendedUser {
@@ -48,6 +49,7 @@ export class Auth0ExtendedUser {
       given_name: u.firstName,
       family_name: u.lastName,
       picture: u.picture,
+      password: null,
     };
     return new Auth0ExtendedUser(props);
   }
@@ -69,6 +71,7 @@ export class Auth0ExtendedUser {
       family_name: u.lastName,
       name: u.name,
       picture: u.picture,
+      password: null,
     };
     return new Auth0ExtendedUser(props);
   }
@@ -83,6 +86,7 @@ export class Auth0ExtendedUser {
         roles: [],
         sellers: [],
       },
+      password: null,
     };
     return new Auth0ExtendedUser(props);
   }
@@ -138,6 +142,9 @@ export class Auth0ExtendedUser {
   }
   public get logins_count() {
     return this._props.logins_count;
+  }
+  public get password() {
+    return this._props.password;
   }
 
   addMerchant(code: string) {

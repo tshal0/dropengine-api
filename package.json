@@ -33,6 +33,7 @@
     "dbl:drop": "dotenv -e .env.local -- yarn mikro-orm schema:drop",
     "dbl:create": "dotenv -e .env.local -- yarn mikro-orm migration:create",
     "dbl:up": "dotenv -e .env.local -- yarn mikro-orm migration:up",
+    "dbl:down": "dotenv -e .env.local -- yarn mikro-orm migration:down",
     "migrate:deploy": "mikro-orm migration:up"
   },
   "dependencies": {

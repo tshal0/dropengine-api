@@ -1,6 +1,7 @@
 export class CreateProductTypeDto {
-  uuid?: string | undefined
+  uuid?: string | undefined;
   name: string;
+  image?: string | undefined;
   productionData: MetalArtManufacturingDetailsDto;
   option1: ProductTypeOptionDto;
   option2: ProductTypeOptionDto;

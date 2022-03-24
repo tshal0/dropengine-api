@@ -26,6 +26,8 @@ export class DbProductType {
 
   @Property()
   name: string;
+  @Property({ nullable: true })
+  image?: string | undefined;
   @Property({ type: "json" })
   productionData: IProductTypeProductionData;
   @Property({ type: "json", nullable: true })
@@ -44,7 +46,7 @@ export class DbProductType {
 
   @OneToMany(() => DbProduct, (v) => v.productType, {
     cascade: [Cascade.ALL],
-    orphanRemoval: true
+    orphanRemoval: true,
   })
   products = new Collection<DbProduct>(this);
 
@@ -52,6 +54,7 @@ export class DbProductType {
     let props: IProductTypeProps = {
       uuid: this.uuid,
       name: this.name,
+      image: this.image,
       productionData: this.productionData,
       option1: this.option1,
       option2: this.option2,

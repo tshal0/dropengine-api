@@ -20,6 +20,7 @@ describe(`ProductType`, () => {
   const now = moment().toDate();
   const dto: CreateProductTypeDto = {
     name: "MetalArt",
+    image: "MockImage",
     productionData: {
       material: "Mild Steel",
       route: "1",
@@ -54,6 +55,7 @@ describe(`ProductType`, () => {
   };
   const baseDbProdTypeProps: IProductTypeProps = {
     name: "MetalArt",
+    image: "MockImage",
     uuid: mockProdTypeUuidStr,
     createdAt: now,
     updatedAt: now,

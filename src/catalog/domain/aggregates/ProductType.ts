@@ -187,6 +187,7 @@ export class ProductType extends IAggregate<
     const props: IProductType = {
       uuid: results.uuid.value(),
       name: results.name.value(),
+      image: dbe.image,
       productionData: results.productionData.value(),
       option1: results.option1.value(),
       option2: results.option2.value(),
@@ -236,6 +237,7 @@ export class ProductType extends IAggregate<
     const props: IProductType = {
       uuid: results.uuid.value(),
       name: results.name.value(),
+      image: dto.image,
       productionData: results.productionData.value(),
       option1: results.option1.value(),
       option2: results.option2.value(),
@@ -247,6 +249,7 @@ export class ProductType extends IAggregate<
     };
     const dbe = new DbProductType();
     dbe.uuid = props.uuid.value();
+    dbe.image = props.image;
     dbe.name = props.name.value();
     dbe.productionData = props.productionData.value();
     dbe.option1 = props.option1.value();

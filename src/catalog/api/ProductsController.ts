@@ -5,10 +5,13 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UnprocessableEntityException,
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -30,6 +33,13 @@ import csv from "csvtojson";
 import { Readable } from "stream";
 import { ProductResponseDto } from "@catalog/dto/Product/ProductResponseDto";
 import { QueryProductResponseDto } from "@catalog/dto/Product/QueryProductResponseDto";
+
+export class ProductsQueryDto {
+  page: number;
+  size: number;
+  productTypeId: string;
+}
+
 @Controller("/api/products")
 export class ProductsController {
   constructor(
@@ -86,8 +96,17 @@ export class ProductsController {
   }
   @Get()
   @UseGuards(AuthGuard())
-  async getAll(): Promise<QueryProductResponseDto> {
-    let result = await this.find.execute();
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    })
+  )
+  async getAll(
+    @Query() query: ProductsQueryDto
+  ): Promise<QueryProductResponseDto> {
+    this.logger.debug(`[ProductsController]`, { query });
+    let result = await this.find.execute(query);
     if (result.isSuccess) {
       let props = result.value();
       let data = props.map((prop) => ProductResponseDto.from(prop));

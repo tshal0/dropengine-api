@@ -213,6 +213,7 @@
 											"pm.test(`UUID should not be empty`, () => {\r",
 											"    pm.expect(resp.uuid.length).to.be.greaterThan(0)\r",
 											"})\r",
+											"\r",
 											"pm.collectionVariables.set(`productTypeUuid`, resp.uuid)"
 										],
 										"type": "text/javascript"
@@ -224,7 +225,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"{{productTypeName}}\",\r\n    \"productionData\": {\r\n        \"material\": \"Mild Steel\",\r\n        \"thickness\": \"0.06\",\r\n        \"route\": \"1\"\r\n    },\r\n    \"option1\": {\r\n        \"name\": \"Size\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"12\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"15\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"18\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"24\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"30\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Color\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Black\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"White\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Gold\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Copper\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Silver\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option3\": null,\r\n    \"livePreview\": null\r\n}",
+									"raw": "{\r\n    \"name\": \"{{productTypeName}}\",\r\n    \"image\":\"MockImage\",\r\n    \"productionData\": {\r\n        \"material\": \"Mild Steel\",\r\n        \"thickness\": \"0.06\",\r\n        \"route\": \"1\"\r\n    },\r\n    \"option1\": {\r\n        \"name\": \"Size\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"12\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"15\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"18\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"24\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"30\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Color\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Black\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"White\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Gold\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Copper\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Silver\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option3\": null,\r\n    \"livePreview\": null\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -261,6 +262,7 @@
 											"\r",
 											"const expected = {\r",
 											"    \"name\": \"APITestProductType\",\r",
+											"    \"image\": \"MockImage\",\r",
 											"    \"productionData\": {\r",
 											"        \"route\": \"1\",\r",
 											"        \"material\": \"Mild Steel\",\r",
@@ -694,7 +696,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/products?productTypeName={{productTypeName}}",
+									"raw": "{{base_url}}/api/products?productTypeId={{productTypeUuid}}",
 									"host": [
 										"{{base_url}}"
 									],
@@ -704,8 +706,8 @@
 									],
 									"query": [
 										{
-											"key": "productTypeName",
-											"value": "{{productTypeName}}"
+											"key": "productTypeId",
+											"value": "{{productTypeUuid}}"
 										}
 									]
 								}

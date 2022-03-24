@@ -10,12 +10,20 @@ import {
   Collection,
   EntityManager,
   EntityRepository,
+  FilterQuery,
   wrap,
 } from "@mikro-orm/core";
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
-import { DbProduct, DbProductVariant, IProductProps, ProductSKU, ProductUUID } from "@catalog/domain";
+import {
+  DbProduct,
+  DbProductVariant,
+  IProductProps,
+  ProductSKU,
+  ProductUUID,
+} from "@catalog/domain";
 import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
+import { ProductsQueryDto } from "@catalog/api/ProductsController";
 
 /**
  * ProductsRepository should have methods for
@@ -207,10 +215,17 @@ export class ProductsRepository {
     );
   }
 
-  public async findAll(): Promise<Result<IProductProps[]>> {
+  public async findAll(
+    dto: ProductsQueryDto
+  ): Promise<Result<IProductProps[]>> {
     try {
       let repo = this.em.getRepository(DbProduct);
-      let entities = await repo.findAll({ populate: ["productType"] });
+      const query: FilterQuery<DbProduct> = {};
+      if (dto.productTypeId?.length) {
+        query.productType = { uuid: { $eq: dto.productTypeId } };
+      }
+      let entities = await repo.find(query);
+
       let props = entities.map((e) => e.props());
       return Result.ok(props);
     } catch (error) {

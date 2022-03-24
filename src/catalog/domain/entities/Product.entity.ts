@@ -36,9 +36,12 @@ export class DbProduct {
 
   @OneToMany(() => DbProductVariant, (v) => v.product, {
     cascade: [Cascade.ALL],
-    orphanRemoval: true
+    orphanRemoval: true,
   })
   variants = new Collection<DbProductVariant>(this);
+
+  // @Property()
+  // productTypeId: string;
 
   @ManyToOne(() => DbProductType)
   productType: DbProductType;

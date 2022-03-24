@@ -118,19 +118,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/v2/users?email=test@example.com",
+							"raw": "{{base_url}}/api/users?email=thomas@valknot.co",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
-								"v2",
 								"users"
 							],
 							"query": [
 								{
 									"key": "email",
-									"value": "test@example.com"
+									"value": "thomas@valknot.co"
 								}
 							]
 						}
@@ -166,9 +165,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/productTypes/:id",
+							"raw": "{{base_url}}/api/productTypes/:id",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"api",
@@ -187,12 +186,30 @@
 				},
 				{
 					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"const resp = pm.response.json()\r",
+									"\r",
+									"pm.test(`UUID should not be empty`, () => {\r",
+									"    pm.expect(resp.uuid.length).to.be.greaterThan(0)\r",
+									"})\r",
+									"\r",
+									"pm.collectionVariables.set(`productTypeUuid`, resp.uuid)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"2DMetalArt\",\r\n    \"productionData\": {\r\n        \"material\": \"Mild Steel\",\r\n        \"thickness\": \"0.06\",\r\n        \"route\": \"1\"\r\n    },\r\n    \"option1\": {\r\n        \"name\": \"Color\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Black\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"White\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Gold\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Copper\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Silver\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Size\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"12\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"15\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"18\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"24\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"30\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option3\": null,\r\n    \"livePreview\": null\r\n}",
+							"raw": "{\r\n    \"name\": \"2DMetalArt\",\r\n    \"image\": \"imageurl\",\r\n    \"productionData\": {\r\n        \"material\": \"Mild Steel\",\r\n        \"thickness\": \"0.06\",\r\n        \"route\": \"1\"\r\n    },\r\n    \"option1\": {\r\n        \"name\": \"Size\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"12\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"15\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"18\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"24\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"30\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Color\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Black\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"White\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Gold\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Copper\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Silver\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option3\": null,\r\n    \"livePreview\": null\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -200,9 +217,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/productTypes",
+							"raw": "{{base_url}}/api/productTypes",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"api",
@@ -218,9 +235,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/productTypes/:id",
+							"raw": "{{base_url}}/api/productTypes/:id",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"api",
@@ -230,7 +247,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "cc21f7c5-1596-48c3-b550-e61a32c52add"
+									"value": "201eadac-15e3-4900-9be1-6123bb13ee9b"
 								}
 							]
 						}
@@ -243,9 +260,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/v2/productTypes?id=1",
+							"raw": "{{base_url}}/api/v2/productTypes?id=1",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"api",
@@ -268,9 +285,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/productTypes",
+							"raw": "{{base_url}}/api/productTypes",
 							"host": [
-								"{{baseUrl}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"api",
@@ -425,16 +442,40 @@
 				{
 					"name": "All",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiaXNzIjoiaHR0cHM6Ly9kcm9wLWVuZ2luZS1kZXYudXMuYXV0aDAuY29tLyJ9..BHiK9JtBRrxGF8x5.c2Vvd5EK4dEplyk2GR_te38XdNleb5UmC-YbO7FVM3EyDQwFxRq507a4ycITidRoAMN8lCNZ5a_awe6a3b97rVe2FhJRnuyq1DBomPP7c3Z_ABc3pgfWoAt79oLvBs9uuC-soudfZpcFv9TJoqJ9DXBR99ZWYIMfWBiuaT99zVomDSJplzRozJF8PmU4sic_nTNtQnqUSVD4FEDLkUxplT0MAu2k2PO9BQxuIRXqkZdusexTmGPk9o6K2eZWpWQPRtdnM13Dd85odHvw-88sR9RLA89S_AIQSr-5L1d2mrosqDJZrqhouB3JWgxD-DDu6Wjrh1U-zho.F0tzjqBoP7uWgwfh5G26WA",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/products",
+							"raw": "{{base_url}}/api/products?page=0&size=100&productTypeId={{productTypeId}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"products"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "100"
+								},
+								{
+									"key": "productTypeId",
+									"value": "{{productTypeId}}"
+								}
 							]
 						}
 					},
@@ -494,7 +535,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/DE/projects/drop-engine-api/e2e/fixtures/2022_03_01_products.v1.csv"
+									"src": "/C:/DE/projects/drop-engine-api/e2e/fixtures/2022_03_18_product_with_images_fixed.csv"
 								}
 							]
 						},
@@ -769,7 +810,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/DE/projects/drop-engine-api/e2e/fixtures/2022_03_01_variants.v1.csv"
+									"src": "/C:/DE/projects/drop-engine-api/e2e/fixtures/2022_03_18_variants_with_images_fixed.csv"
 								}
 							]
 						},
@@ -899,6 +940,15 @@
 		},
 		{
 			"key": "testUserId",
+			"value": ""
+		},
+		{
+			"key": "productTypeId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "productTypeUuid",
 			"value": ""
 		}
 	]

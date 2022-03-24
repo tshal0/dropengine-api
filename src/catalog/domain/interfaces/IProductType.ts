@@ -18,6 +18,7 @@ import {
 export interface IProductType {
   uuid: ProductTypeUUID;
   name: ProductTypeName;
+  image?: string | undefined;
   productionData: ProductTypeManufacturing;
   option1: ProductTypeOption;
   option2: ProductTypeOption;
@@ -31,6 +32,7 @@ export interface IProductType {
 export interface IProductTypeProps {
   uuid: string;
   name: string;
+  image?: string | undefined;
   productionData: IProductTypeProductionData;
   option1: IProductTypeOption;
   option2: IProductTypeOption;

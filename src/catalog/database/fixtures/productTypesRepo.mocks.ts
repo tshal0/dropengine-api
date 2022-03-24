@@ -12,6 +12,7 @@ const now = moment().toDate();
 export const baseDbProdTypeProps: IProductTypeProps = {
   uuid: "00000000-0000-0000-0000-000000000001",
   name: "MetalArt",
+  image: "MockImage",
   productionData: {
     material: "Mild Steel",
     thickness: "0.06",
@@ -58,6 +59,7 @@ export const baseDbProductType: DbProductType = {
 
 export const baseCreateProductTypeDto: CreateProductTypeDto = {
   name: "MetalArt",
+  image: "MockImage",
   productionData: {
     material: "Mild Steel",
     thickness: "0.06",
@@ -89,6 +91,7 @@ export const baseCreateProductTypeDto: CreateProductTypeDto = {
 export const baseDbProductType2Props: IProductTypeProps = {
   uuid: "00000000-0000-0000-0000-000000000001",
   name: "MetalArt",
+  image: "MockImage",
   productionData: {
     material: "Mild Steel",
     thickness: "0.06",

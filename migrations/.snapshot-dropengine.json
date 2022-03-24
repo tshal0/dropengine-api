@@ -126,6 +126,15 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "image": {
+          "name": "image",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
         "production_data": {
           "name": "production_data",
           "type": "jsonb",

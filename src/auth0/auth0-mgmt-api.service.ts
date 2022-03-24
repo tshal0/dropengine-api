@@ -81,12 +81,15 @@ export class Auth0MgmtApiClient implements IAuth0MgmtApiClient {
     const users = resp.map((user) => Auth0ExtendedUser.from(user));
     return users;
   }
-  async createUser(user: Auth0ExtendedUser): Promise<Auth0ExtendedUser> {
+  async createUser(
+    user: Auth0ExtendedUser,
+    password: string
+  ): Promise<Auth0ExtendedUser> {
     const props = user.props();
     const payload = {
       ...props,
       connection: "Username-Password-Authentication",
-      password: `${props.family_name}@11!!`,
+      password: password,
     };
     this.logger.debug(`[Auth0MgmtApiClient][CreateUser]`, { payload });
     const resp$ = await this.http
