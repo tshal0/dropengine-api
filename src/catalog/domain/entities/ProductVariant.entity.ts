@@ -5,7 +5,7 @@ import { DbProduct } from "./Product.entity";
 
 @Entity({ tableName: "product_variants" })
 export class DbProductVariant {
-  @PrimaryKey({ type: "uuid", default: UUID.generate().value() })
+  @PrimaryKey({ type: "uuid", defaultRaw: "uuid_generate_v4()" })
   id!: string;
 
   @Property()

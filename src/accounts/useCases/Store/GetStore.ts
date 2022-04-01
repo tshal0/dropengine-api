@@ -4,29 +4,29 @@ import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { Account } from "@accounts/domain/aggregates/Account";
-import { AccountsRepository } from "@accounts/database/AccountsRepository";
-import { AccountId } from "@accounts/domain/valueObjects/AccountId";
+import { Store } from "@accounts/domain/aggregates/Store";
+import { StoresRepository } from "@accounts/database/StoresRepository";
+import { StoreId } from "@accounts/domain/valueObjects/StoreId";
 import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 
 @Injectable({ scope: Scope.DEFAULT })
-export class GetAccountUseCase implements UseCase<string, Account> {
+export class GetStoreUseCase implements UseCase<string, Store> {
   constructor(
     private eventEmitter: EventEmitter2,
     private logger: AzureLoggerService,
-    private _repo: AccountsRepository,
+    private _repo: StoresRepository,
     private auth0: Auth0MgmtApiClient
   ) {}
   get llog() {
-    return `[${moment()}][${GetAccountUseCase.name}]`;
+    return `[${moment()}][${GetStoreUseCase.name}]`;
   }
 
-  async execute(val: string): Promise<Result<Account>> {
+  async execute(val: string): Promise<Result<Store>> {
     try {
-      let idResult = AccountId.from(val);
+      let idResult = StoreId.from(val);
       if (idResult.isFailure) {
         return Result.fail(
-          new ResultError(new Error(`ID is not a valid AccountId.`))
+          new ResultError(new Error(`ID is not a valid StoreId.`))
         );
       }
       let id = idResult.value();

@@ -1,4 +1,5 @@
 import { CreateAccountDto } from "@accounts/dto/CreateAccountDto";
+import { CreateStoreDto } from "@accounts/dto/CreateStoreDto";
 import { IAggregate, Result, ResultError } from "@shared/domain";
 import { cloneDeep } from "lodash";
 import { User } from ".";
@@ -7,27 +8,9 @@ import { CompanyCode } from "../valueObjects/CompanyCode";
 import moment from "moment";
 import { DbAccount } from "../entities/Account.entity";
 import { AccountId } from "../valueObjects/AccountId";
+import { IAccount, IAccountProps } from "../interfaces/IAccount";
+import { InvalidStore, Store } from "./Store";
 
-export interface IAccount {
-  id: AccountId;
-  name: string;
-
-  ownerId: string;
-  companyCode: CompanyCode;
-
-  updatedAt: Date;
-  createdAt: Date;
-}
-
-export interface IAccountProps {
-  id: string;
-  name: string;
-  ownerId: string;
-  companyCode: string;
-
-  updatedAt: Date;
-  createdAt: Date;
-}
 /**
  * Aggregates need: events, domain methods, initializers, converters
  */
@@ -55,8 +38,8 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
   }
 
   /**
-   * Get the value object of the Product
-   * @returns Product
+   * Get the value object of the Store
+   * @returns Store
    */
   public value(): IAccount {
     const props: IAccount = cloneDeep(this._props);
@@ -103,10 +86,36 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
     return this;
   }
 
-  // public addStore(val: IStore) {
-  //   throw new NotImplementedException();
-  //   return this;
-  // }
+  public addStore(dto: CreateStoreDto): Result<Store> {
+    let result = Store.create(dto);
+    if (result.isFailure) {
+      //TODO: FailedToAddStore
+      return Result.fail(result.error);
+    }
+    let store = result.value();
+    try {
+      store.setAccount(this);
+      this._props.stores.push(store);
+      this._entity.stores.add(store.entity());
+      return Result.ok<Store>(store);
+    } catch (err) {
+      //TODO: FailedToAddStore
+      return Result.fail(err, dto.storeName);
+    }
+  }
+
+  public removeStore(store: Store): Result<Account> {
+    try {
+      this._props.stores = this._props.stores.filter(
+        (v) => v.props().id == store.props().id
+      );
+      let dbe = store.entity();
+      if (dbe) this._entity.stores.remove(dbe);
+      return Result.ok(this);
+    } catch (err) {
+      return Result.fail(err, store.props().id);
+    }
+  }
 
   // public removeStore(val: IStore) {
   //   throw new NotImplementedException();
@@ -142,6 +151,7 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
       name: dto.name,
       ownerId: User.from(dto.owner).props().id,
       companyCode: results.companyCode.value(),
+      stores: [],
       createdAt: now,
       updatedAt: now,
     };
@@ -167,6 +177,7 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
     let results = {
       id: AccountId.from(dbe.id),
       companyCode: CompanyCode.from(dbe.companyCode),
+      stores: Account.loadStores(dbe),
     };
     // Errors
     let errors = Object.values(results)
@@ -190,6 +201,7 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
       name: dbe.name,
       ownerId: dbe.ownerId,
       companyCode: results.companyCode.value(),
+      stores: results.stores.value(),
       createdAt: now,
       updatedAt: now,
     };
@@ -198,5 +210,26 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
     const account = new Account(props, dbe);
 
     return Result.ok(account);
+  }
+  private static loadStores(dbe: DbAccount): Result<Store[]> {
+    if (dbe.stores.isInitialized()) {
+      const vItems = dbe.stores.getItems();
+      const result = vItems.map((v) => Store.db(v));
+      const errors = result.filter((co) => co.isFailure).map((e) => e.error);
+      if (errors.length) {
+        return Result.fail(
+          new InvalidStore(
+            errors,
+            dbe,
+            `Errors found loading Stores into Account.`
+          )
+        );
+      }
+      const stores = result.map((r) => r.value());
+
+      return Result.ok(stores);
+    } else {
+      return Result.ok(null);
+    }
   }
 }

@@ -88,6 +88,85 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "uuid"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "account_id": {
+          "name": "account_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "stores",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "stores_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "stores_account_id_foreign": {
+          "constraintName": "stores_account_id_foreign",
+          "columnNames": [
+            "account_id"
+          ],
+          "localTableName": "public.stores",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.accounts",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
           "default": "uuid_generate_v4()",
           "mappedType": "uuid"
         },
@@ -200,7 +279,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "'8c0b1bc6-aa44-4134-b078-45f636e54ed7'",
+          "default": "uuid_generate_v4()",
           "mappedType": "uuid"
         },
         "type": {
@@ -334,7 +413,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "'62b2f50d-19fd-440e-a946-0e726f4958a5'",
+          "default": "uuid_generate_v4()",
           "mappedType": "uuid"
         },
         "sku": {

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6b955f41-a929-408f-91d5-ba81ef65dc7a",
+		"_postman_id": "1b5ccfa1-d6ee-478e-9992-64a7ca5967ee",
 		"name": "drop-engine-api-tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -241,6 +241,119 @@
 									"path": [
 										"api",
 										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AddStore",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AddStore Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const account = pm.response.json()\r",
+											"const store = account.stores.find(s => s.name == pm.collectionVariables.get('storeName'))\r",
+											"const storeId = store?.id\r",
+											"pm.test(`Created Store should have valid storeId`, () => {\r",
+											"    pm.expect(storeId?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set(`storeId`, storeId)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"storeName\": \"Test Store 1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/accounts/:id/stores",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"accounts",
+										":id",
+										"stores"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RemoveStore",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"RemoveStore Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const account = pm.response.json()\r",
+											"const store = account.stores.find(s => s.name == pm.collectionVariables.get('storeName'))\r",
+											"pm.test(`Removed Store should be undefined`, () => {\r",
+											"    pm.expect(store).to.eq(undefined)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/accounts/:id/stores/:storeId",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"accounts",
+										":id",
+										"stores",
+										":storeId"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										},
+										{
+											"key": "storeId",
+											"value": "{{storeId}}"
+										}
 									]
 								}
 							},
@@ -1448,7 +1561,7 @@
 		},
 		{
 			"key": "testUserId",
-			"value": "auth0|62474b7c91276b006983bf58"
+			"value": "auth0|62476f564bf50d006af01379"
 		},
 		{
 			"key": "testUserPicture",
@@ -1461,18 +1574,18 @@
 		},
 		{
 			"key": "productTypeUuid",
-			"value": "e96cba98-fb6f-4478-8e12-485a40e4283f",
+			"value": "f3d6d75f-6d39-4cd8-ab41-2f65d8a5c522",
 			"type": "string"
 		},
 		{
 			"key": "productIds",
 			"value": [
-				"910e0118-81bf-46b1-a72b-7a49ff0d1852",
-				"294915ab-950a-464a-935d-71a5197b3f9e",
-				"035be37f-9f15-43b1-925a-61930d353af6",
-				"f2f4c418-e956-4518-8b24-d165c17f8656",
-				"84785321-943d-4168-9dae-253c154258d9",
-				"99717640-e017-4449-a96f-af59b675ca94"
+				"954d8beb-cfb0-46fd-9d77-570cab6ad2ed",
+				"4d710180-3408-47fe-b3a0-4bfada9174d4",
+				"a88c433f-7b3b-48b9-9160-e872a609275a",
+				"5af27fe6-252a-49af-8fca-b0de7b24f49b",
+				"0497474b-40ce-4168-bc03-ab46243dd2ca",
+				"5e266a28-c5e7-4557-887e-611838217e7b"
 			]
 		},
 		{
@@ -1482,22 +1595,32 @@
 		},
 		{
 			"key": "accountId",
-			"value": "5ed32928-55cc-4955-be5e-025ffda7ee53",
+			"value": "afdc3bdd-66a5-4eba-83c0-4aa02174d12f",
 			"type": "string"
 		},
 		{
 			"key": "newUserId",
-			"value": "",
+			"value": "auth0|62474d5bf7b105007088bb6c",
 			"type": "string"
 		},
 		{
 			"key": "newUserEmail",
-			"value": "",
+			"value": "new@sample.com",
 			"type": "string"
 		},
 		{
 			"key": "newUserPicture",
-			"value": "",
+			"value": "https://s.gravatar.com/avatar/f07fb651991b8923f6751cbb79907323?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fne.png",
+			"type": "string"
+		},
+		{
+			"key": "storeId",
+			"value": "afdc3bdd-66a5-4eba-83c0-4aa02174d12f",
+			"type": "string"
+		},
+		{
+			"key": "storeName",
+			"value": "Test Store 1",
 			"type": "string"
 		}
 	]

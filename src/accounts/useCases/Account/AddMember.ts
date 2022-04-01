@@ -10,8 +10,8 @@ import { Account } from "@accounts/domain/aggregates/Account";
 import { AccountId } from "@accounts/domain/valueObjects/AccountId";
 import { AccountsRepository } from "@accounts/database/AccountsRepository";
 import { User } from "@accounts/domain";
-import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 import { IUpdateAccountMembersDto } from "@accounts/dto/UpdateAccountMembersDto";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class AddMembersUseCase

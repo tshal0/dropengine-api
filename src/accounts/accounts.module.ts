@@ -7,6 +7,7 @@ import { AzureLoggerModule, AzureStorageModule } from "@shared/modules";
 import { AccountsController } from "./api/AccountsController";
 import { UsersController } from "./api/UsersController";
 import { AccountsRepository } from "./database/AccountsRepository";
+import { StoresRepository } from "./database/StoresRepository";
 import {
   GetUserUseCase,
   GetAllUsersUseCase,
@@ -14,15 +15,18 @@ import {
   CreateUserUseCase,
 } from "./useCases";
 import { AddMembersUseCase } from "./useCases/Account/AddMember";
+import { AddStoreUseCase } from "./useCases/Store/AddStore";
 import { CreateAccountUseCase } from "./useCases/Account/CreateAccount";
 import { DeleteAccountUseCase } from "./useCases/Account/DeleteAccount";
 import { GetAccountUseCase } from "./useCases/Account/GetAccount";
 import { GetAccountsUseCase } from "./useCases/Account/GetAllAccounts";
 import { RemoveMembersUseCase } from "./useCases/Account/RemoveMember";
 import { RemoveAllUserAccountsUseCase } from "./useCases/User/RemoveAllUserAccounts";
+import { RemoveStoreUseCase } from "./useCases/Account/RemoveStore";
+import { StoresController } from "./api/StoresController";
 
 @Module({
-  controllers: [UsersController, AccountsController],
+  controllers: [UsersController, AccountsController, StoresController],
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
     HttpModule,
@@ -34,6 +38,7 @@ import { RemoveAllUserAccountsUseCase } from "./useCases/User/RemoveAllUserAccou
   ],
   providers: [
     AccountsRepository,
+    StoresRepository,
     CreateUserUseCase,
     GetUserUseCase,
     GetAllUsersUseCase,
@@ -45,6 +50,8 @@ import { RemoveAllUserAccountsUseCase } from "./useCases/User/RemoveAllUserAccou
     RemoveAllUserAccountsUseCase,
     AddMembersUseCase,
     RemoveMembersUseCase,
+    AddStoreUseCase,
+    RemoveStoreUseCase,
   ],
 })
 export class AccountsModule {}

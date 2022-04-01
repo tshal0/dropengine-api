@@ -4,7 +4,6 @@ import { NumberID, UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 
 import moment from "moment";
-import { Account, IAccountProps } from "../domain/aggregates/Account";
 import { DbAccount } from "../domain/entities/Account.entity";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import {
@@ -18,6 +17,8 @@ import { FailedToCreateError, FailedToSaveError } from "@shared/database";
 import { CreateAccountDto } from "@accounts/dto/CreateAccountDto";
 import { CompanyCode } from "@accounts/domain/valueObjects/CompanyCode";
 import { AccountId } from "@accounts/domain/valueObjects/AccountId";
+import { Account } from "@accounts/domain/aggregates/Account";
+import { IAccountProps } from "@accounts/domain/interfaces/IAccount";
 
 /**
  * AccountsRepository should have methods for
@@ -235,9 +236,12 @@ export class AccountsRepository {
   }
   public async loadById(id: AccountId) {
     let repo = this.em.getRepository(DbAccount);
-    let dbe = await repo.findOne({ id: id.value() });
+    let dbe = await repo.findOne({ id: id.value() }, { populate: ["stores"] });
 
     if (dbe) {
+      if (!dbe.stores.isInitialized()) {
+        await dbe.stores.init();
+      }
       return Account.db(dbe);
     }
 
@@ -245,7 +249,10 @@ export class AccountsRepository {
   }
   public async loadByCompanyCode(companyCode: CompanyCode) {
     let repo = this.em.getRepository(DbAccount);
-    let dbe = await repo.findOne({ companyCode: companyCode.value() });
+    let dbe = await repo.findOne(
+      { companyCode: companyCode.value() },
+      { populate: ["stores"] }
+    );
 
     if (dbe) {
       return Account.db(dbe);

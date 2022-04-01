@@ -1,4 +1,3 @@
-import { Account, IAccountProps } from "@accounts/domain/aggregates/Account";
 import { AccountId } from "@accounts/domain/valueObjects/AccountId";
 import { CreateAccountApiDto } from "@accounts/dto/CreateAccountDto";
 import { IAddMemberDto } from "@accounts/dto/UpdateAccountMembersDto";
@@ -28,7 +27,16 @@ import {
 import { EntityNotFoundException } from "@shared/exceptions";
 import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 import { User } from "@accounts/domain";
-import { Result } from "@shared/domain";
+import { Account } from "@accounts/domain/aggregates/Account";
+import { AddStoreUseCase } from "@accounts/useCases/Store/AddStore";
+import { RemoveStoreUseCase } from "@accounts/useCases/Account/RemoveStore";
+import { StoreId } from "@accounts/domain/valueObjects/StoreId";
+import { CreateStoreDto } from "@accounts/dto/CreateStoreDto";
+import {
+  IStoreResponseDto,
+  StoreResponseDto,
+} from "@accounts/dto/StoreResponseDto";
+import { Store } from "@accounts/domain/aggregates/Store";
 
 @Controller("/api/accounts")
 export class AccountsController {
@@ -40,7 +48,9 @@ export class AccountsController {
     private readonly deleteAccount: DeleteAccountUseCase,
     private readonly createAccount: CreateAccountUseCase,
     private readonly addMember: AddMembersUseCase,
-    private readonly removeMember: RemoveMembersUseCase
+    private readonly removeMember: RemoveMembersUseCase,
+    private readonly removeStore: RemoveStoreUseCase,
+    private readonly addStore: AddStoreUseCase
   ) {}
   @Get(":id")
   @UseGuards(AuthGuard())
@@ -115,6 +125,42 @@ export class AccountsController {
       throw new UnprocessableEntityException(
         result.error,
         `Failed to Add User '${dto.userId}' to Account '${id}'`
+      );
+    }
+    return await this.generateAccountResponse(result.value());
+  }
+  @Post(":id/stores")
+  async postStore(
+    @Param("id") id: string,
+    @Body() dto: CreateStoreDto
+  ): Promise<IAccountResponseDto> {
+    if (!dto.accountId) {
+      dto.accountId = id;
+    }
+    let result = await this.addStore.execute(dto);
+    if (result.isFailure) {
+      throw new UnprocessableEntityException(
+        result.error,
+        `Failed to create Store '${dto.storeName}'`
+      );
+    }
+    return await this.generateAccountResponse(result.value());
+  }
+  @Delete(":id/stores/:storeId")
+  @UseGuards(AuthGuard())
+  async deleteStore(
+    @Param("id") id: string,
+    @Param("storeId") storeId: string
+  ): Promise<IAccountResponseDto> {
+    const dto = {
+      accountId: id,
+      storeId,
+    };
+    let result = await this.removeStore.execute(dto);
+    if (result.isFailure) {
+      throw new UnprocessableEntityException(
+        result.error,
+        `Failed to Remove Store '${storeId}' from Account '${id}'`
       );
     }
     return await this.generateAccountResponse(result.value());

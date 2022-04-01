@@ -1,0 +1,83 @@
+import { Injectable, Scope } from "@nestjs/common";
+import { EventEmitter2 } from "@nestjs/event-emitter";
+import { UseCase } from "@shared/domain/UseCase";
+import moment from "moment";
+import { Result, ResultError } from "@shared/domain/Result";
+import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { Account } from "@accounts/domain/aggregates/Account";
+import { AccountsRepository } from "@accounts/database/AccountsRepository";
+import { User } from "@accounts/domain";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
+import { CreateStoreDto } from "@accounts/dto/CreateStoreDto";
+import { AccountId } from "@accounts/domain/valueObjects/AccountId";
+import { Store } from "@accounts/domain/aggregates/Store";
+import { StoresRepository } from "@accounts/database/StoresRepository";
+import { RemoveStoreDto } from "@accounts/dto/RemoveStoreDto";
+import { StoreId } from "@accounts/domain/valueObjects/StoreId";
+
+@Injectable({ scope: Scope.DEFAULT })
+export class RemoveStoreUseCase implements UseCase<RemoveStoreDto, Account> {
+  constructor(
+    private eventEmitter: EventEmitter2,
+    private logger: AzureLoggerService,
+    private auth0: Auth0MgmtApiClient,
+    private _storesRepo: StoresRepository,
+    private _repo: AccountsRepository
+  ) {}
+  get llog() {
+    return `[${moment()}][${RemoveStoreUseCase.name}]`;
+  }
+
+  async execute(dto: RemoveStoreDto): Promise<Result<Account>> {
+    // Load Account, CreateStore, Save
+    try {
+      let accountResult = await this.loadAccount(dto.accountId);
+      if (accountResult.isFailure) {
+        return Result.fail(accountResult.error, dto.accountId);
+      }
+      let account = accountResult.value();
+      let storeResult = await this.loadStore(dto.storeId);
+      if (storeResult.isFailure) {
+        return Result.fail(storeResult.error, dto.storeId);
+      }
+      let store = storeResult.value();
+
+      accountResult = account.removeStore(store);
+      if (accountResult.isFailure) {
+        return Result.fail(accountResult.error, dto.accountId);
+      }
+
+      accountResult = await this._repo.save(account);
+      if (accountResult.isFailure) {
+        return Result.fail(accountResult.error, dto.accountId);
+      }
+      return Result.ok(accountResult.value());
+    } catch (error) {
+      return Result.fail(new ResultError(error, [error], {}));
+    }
+  }
+
+  private async loadAccount(id: string): Promise<Result<Account>> {
+    let idResult = AccountId.from(id);
+    if (idResult.isFailure) {
+      return Result.fail(idResult.error, id);
+    }
+    let result = await this._repo.loadById(idResult.value());
+    if (result.isFailure) {
+      return Result.fail(result.error, id);
+    }
+    return result;
+  }
+
+  private async loadStore(id: string): Promise<Result<Store>> {
+    let idResult = StoreId.from(id);
+    if (idResult.isFailure) {
+      return Result.fail(idResult.error, id);
+    }
+    let result = await this._storesRepo.loadById(idResult.value());
+    if (result.isFailure) {
+      return Result.fail(result.error, id);
+    }
+    return result;
+  }
+}

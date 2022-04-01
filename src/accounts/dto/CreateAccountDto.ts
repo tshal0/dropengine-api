@@ -17,7 +17,3 @@ export class CreateAccountDto {
 }
 
 export class CreateAccountResponseDto {}
-
-export class CreateStoreDto {
-  name: string;
-}

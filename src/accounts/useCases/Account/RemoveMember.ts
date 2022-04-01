@@ -10,8 +10,8 @@ import { Account } from "@accounts/domain/aggregates/Account";
 import { User } from "@accounts/domain";
 import { AccountId } from "@accounts/domain/valueObjects/AccountId";
 import { AccountsRepository } from "@accounts/database/AccountsRepository";
-import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 import { IUpdateAccountMembersDto } from "@accounts/dto/UpdateAccountMembersDto";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class RemoveMembersUseCase
@@ -27,7 +27,7 @@ export class RemoveMembersUseCase
     return `[${moment()}][${RemoveMembersUseCase.name}]`;
   }
 
-  async execute(dto:IUpdateAccountMembersDto): Promise<Result<Account>> {
+  async execute(dto: IUpdateAccountMembersDto): Promise<Result<Account>> {
     try {
       let resp = await this.auth0.getUser(dto.userId);
       let owner = User.fromAuth0User(resp);

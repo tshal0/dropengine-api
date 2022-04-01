@@ -1,6 +1,15 @@
-import { Entity, Property, PrimaryKey, wrap } from "@mikro-orm/core";
+import {
+  Entity,
+  Property,
+  PrimaryKey,
+  wrap,
+  Cascade,
+  Collection,
+  OneToMany,
+} from "@mikro-orm/core";
+import { IAccountProps } from "../interfaces/IAccount";
 import { IUser } from "../interfaces/IUser";
-import { IAccountProps } from "../aggregates/Account";
+import { DbStore } from "./Store.entity";
 
 @Entity({ tableName: "accounts" })
 export class DbAccount {
@@ -14,11 +23,22 @@ export class DbAccount {
   @Property()
   companyCode: string;
 
+  @OneToMany(() => DbStore, (v) => v.account, {
+    cascade: [Cascade.ALL],
+    orphanRemoval: true,
+  })
+  stores = new Collection<DbStore>(this);
+
   @Property({ onCreate: () => new Date() })
   createdAt: Date;
   @Property({ onUpdate: () => new Date() })
   updatedAt: Date;
 
+  /**
+   * Returns props to be converted to DTOs.
+   * @param maxDepth Max depth to expand nested properties.
+   * @returns {IAccountProps}
+   */
   props(maxDepth?: number | undefined): IAccountProps {
     let props: IAccountProps = {
       id: this.id,
@@ -27,6 +47,10 @@ export class DbAccount {
       createdAt: this.createdAt,
       ownerId: this.ownerId,
       companyCode: this.companyCode,
+      stores:
+        this.stores && this.stores.isInitialized() && maxDepth > 0
+          ? this.stores.getItems().map((v) => v.props(maxDepth - 1))
+          : undefined,
     };
     return props;
   }

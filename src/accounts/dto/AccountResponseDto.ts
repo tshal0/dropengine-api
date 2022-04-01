@@ -1,6 +1,13 @@
 import { User } from "@accounts/domain";
-import { Account, IAccountProps } from "@accounts/domain/aggregates/Account";
+import { Account } from "@accounts/domain/aggregates/Account";
 
+export interface IAccountStoreDto {
+  id: string;
+  name: string;
+}
+export class AccountStoreDto {
+  constructor(props: any) {}
+}
 export class AccountMemberDto {
   constructor(u: User) {
     let props = u.props();
@@ -22,6 +29,7 @@ export interface IAccountResponseDto {
   ownerId: string;
   companyCode: string;
   members: AccountMemberDto[];
+  stores: IAccountStoreDto[];
 }
 export class AccountResponseDto {
   private _props: IAccountResponseDto;
@@ -36,13 +44,15 @@ export class AccountResponseDto {
     return Object.seal(this._props);
   }
   public static from(acct: Account) {
-    const props = acct.props();
+    const props = acct.entity().props(1);
     let dto = new AccountResponseDto({
       id: props.id,
       name: props.name,
       ownerId: props.ownerId,
       companyCode: props.companyCode,
       members: [],
+      stores:
+        props.stores?.map((s) => ({ id: s.id, name: s.name })) || undefined,
     });
     return dto;
   }
