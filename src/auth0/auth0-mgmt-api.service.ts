@@ -9,23 +9,27 @@ import { Auth0RolesPayload } from "./dto/Auth0RolesPayload";
 import { Auth0Role } from "./dto/Auth0Role";
 import { Auth0AppMetadataPayload } from "./dto/Auth0AppMetadataPayload";
 import { Auth0PermissionsPayload } from "./dto/Auth0PermissionsPayload";
-import {
-  Auth0ExtendedUser,
-  IAuth0ExtendedUser,
-} from "./domain/Auth0ExtendedUser";
+import { Auth0User, IAuth0User } from "./domain/Auth0ExtendedUser";
 import { AzureLoggerService } from "@shared/modules";
 
 export interface PaginatedAuth0UserResponse {
   start: number;
   limit: number;
   length: number;
-  users: IAuth0ExtendedUser[];
+  users: IAuth0User[];
+}
+interface IAuth0GetPaginatedUsersResponseDto {
+  length: number;
+  limit: number;
+  start: number;
+  total: number;
+  users: IAuth0User[];
 }
 export interface IAuth0MgmtApiClient {
-  getUsersByEmail(email: string): Promise<IAuth0ExtendedUser[]>;
+  getUsersByEmail(email: string): Promise<IAuth0User[]>;
 
   // fetchUsersPage(page: number): Promise<PaginatedAuth0UserResponse>;
-  // fetchAllUsers(): Promise<IAuth0ExtendedUser[]>;
+  // fetchAllUsers(): Promise<IAuth0User[]>;
   // getResourceServers(): Promise<Auth0ResourceServer[]>;
   // getResourceServer(id: string): Promise<Auth0ResourceServer>;
   // patchResourceServer(
@@ -48,15 +52,15 @@ export interface IAuth0MgmtApiClient {
   //   payload: Auth0PermissionsPayload
   // ): Promise<Auth0PermissionsPayload>;
 
-  // getUser(id: string): Promise<IAuth0ExtendedUser>;
+  // getUser(id: string): Promise<IAuth0User>;
   // patchUserAppMetadata(
   //   id: string,
   //   app_metadata: { companies?: string[] }
-  // ): Promise<IAuth0ExtendedUser>;
+  // ): Promise<IAuth0User>;
   // getUsersByTenant(
   //   tenant_code: string,
   //   page: number
-  // ): Promise<IAuth0ExtendedUser[]>;
+  // ): Promise<IAuth0User[]>;
   // getUserRoles(id: string): Promise<Auth0Role[]>;
   // addUserRoles(id: string, payload: Auth0RolesPayload): Promise<Auth0Role[]>;
   // removeUserRoles(id: string, payload: Auth0RolesPayload): Promise<Auth0Role[]>;
@@ -68,75 +72,129 @@ export class Auth0MgmtApiClient implements IAuth0MgmtApiClient {
     private readonly logger: AzureLoggerService,
     private http: HttpService
   ) {}
-  async getUsersByEmail(email: string): Promise<Auth0ExtendedUser[]> {
+  async getUsersByEmail(email: string): Promise<Auth0User[]> {
     const resp$ = await this.http
       .get(`/api/v2/users-by-email?email=${email}`)
       .pipe(
-        map((r) => r.data as IAuth0ExtendedUser[]),
+        map((r) => r.data as IAuth0User[]),
         catchError((e) => {
-          return this.handleArrayAuth0MgmtApiError<IAuth0ExtendedUser>(e);
+          return this.handleArrayAuth0MgmtApiError<IAuth0User>(e);
         })
       );
     const resp = await lastValueFrom(resp$);
-    const users = resp.map((user) => Auth0ExtendedUser.from(user));
+    const users = resp.map((user) => Auth0User.from(user));
     return users;
   }
-  async createUser(
-    user: Auth0ExtendedUser,
-    password: string
-  ): Promise<Auth0ExtendedUser> {
+  async createUser(user: Auth0User, password: string): Promise<Auth0User> {
     const props = user.props();
     const payload = {
       ...props,
       connection: "Username-Password-Authentication",
       password: password,
     };
-    this.logger.debug(`[Auth0MgmtApiClient][CreateUser]`, { payload });
     const resp$ = await this.http
       .post(`/api/v2/users`, {
         ...payload,
       })
       .pipe(
-        map((r) => r.data as IAuth0ExtendedUser),
+        map((r) => r.data as IAuth0User),
         catchError((e) => {
-          return this.handleAuth0MgmtApiError<IAuth0ExtendedUser>(e);
+          return this.handleAuth0MgmtApiError<IAuth0User>(e);
         })
       );
     const resp = await lastValueFrom(resp$);
-    return Auth0ExtendedUser.from(resp);
+    return Auth0User.from(resp);
   }
 
-  // async fetchUsersPage(page: number): Promise<PaginatedAuth0UserResponse> {
-  //   await this.guardAuth0Enabled();
-  //   const resp$ = await this.http
-  //     .get(
-  //       `/api/v2/users?per_page=100&include_totals=true&fields=identities&include_fields=false&page=${page}`
-  //     )
-  //     .pipe(
-  //       map((r) => r.data as PaginatedAuth0UserResponse),
-  //       catchError((e) => {
-  //         return this.handleAuth0MgmtApiError<PaginatedAuth0UserResponse>(e);
-  //       })
-  //     );
-  //   const resp = await lastValueFrom(resp$);
-  //   return resp;
-  // }
+  async fetchUsersPage(page: number): Promise<PaginatedAuth0UserResponse> {
+    await this.guardAuth0Enabled();
+    const resp$ = await this.http
+      .get(
+        `/api/v2/users?per_page=100&include_totals=true&fields=identities&include_fields=false&page=${page}`
+      )
+      .pipe(
+        map((r) => r.data as PaginatedAuth0UserResponse),
+        catchError((e) => {
+          return this.handleAuth0MgmtApiError<PaginatedAuth0UserResponse>(e);
+        })
+      );
+    const resp = await lastValueFrom(resp$);
+    return resp;
+  }
 
-  // async fetchAllUsers(): Promise<IAuth0ExtendedUser[]> {
-  //   await this.guardAuth0Enabled();
-  //   let users = [] as IAuth0ExtendedUser[];
-  //   let page = 0;
-  //   let resp: PaginatedAuth0UserResponse = {
-  //     length: 0,
-  //     limit: 0,
-  //   } as PaginatedAuth0UserResponse;
-  //   while (resp.limit == resp.length) {
-  //     resp = await this.fetchUsersPage(page);
-  //     users = users.concat(resp.users);
-  //     page++;
-  //   }
-  //   return users;
-  // }
+  async fetchAllUsers(): Promise<IAuth0User[]> {
+    await this.guardAuth0Enabled();
+    let users = [] as IAuth0User[];
+    let page = 0;
+    let resp: PaginatedAuth0UserResponse = {
+      length: 0,
+      limit: 0,
+    } as PaginatedAuth0UserResponse;
+    while (resp.limit == resp.length) {
+      resp = await this.fetchUsersPage(page);
+      users = users.concat(resp.users);
+      page++;
+    }
+    return users;
+  }
+
+  async getUser(id: string): Promise<IAuth0User> {
+    await this.guardAuth0Enabled();
+    const resp$ = await this.http.get(`/api/v2/users/${id}`).pipe(
+      map((r) => r.data as IAuth0User),
+      catchError((e) => {
+        return this.handleAuth0MgmtApiError<IAuth0User>(e);
+      })
+    );
+    const resp = await lastValueFrom(resp$);
+    return resp;
+  }
+  async deleteUser(id: string): Promise<any> {
+    await this.guardAuth0Enabled();
+    const resp$ = await this.http.delete(`/api/v2/users/${id}`).pipe(
+      map((r) => r.data as IAuth0User),
+      catchError((e) => {
+        return this.handleAuth0MgmtApiError<IAuth0User>(e);
+      })
+    );
+    const resp = await lastValueFrom(resp$);
+    return resp;
+  }
+  async patchUserAppMetadata(
+    id: string,
+    app_metadata: Auth0AppMetadataPayload
+  ): Promise<IAuth0User> {
+    await this.guardAuth0Enabled();
+    const resp$ = await this.http
+      .patch(`/api/v2/users/${id}`, { app_metadata: app_metadata })
+      .pipe(
+        map((r) => r.data as IAuth0User),
+        catchError((e) => {
+          return this.handleAuth0MgmtApiError<IAuth0User>(e);
+        })
+      );
+    const resp = await lastValueFrom(resp$);
+    return resp;
+  }
+  async getAccountUsers(
+    accountId: string,
+    page: number
+  ): Promise<IAuth0User[]> {
+    const resp$ = await this.http
+      .get(
+        `/api/v2/users?q=app_metadata.accounts.id:"${accountId}"&per_page=100&include_totals=true&fields=identities&include_fields=false&page=${page}`
+      )
+      .pipe(
+        map((r) => r.data as IAuth0GetPaginatedUsersResponseDto),
+        catchError((e) => {
+          return this.handleAuth0MgmtApiError<IAuth0GetPaginatedUsersResponseDto>(
+            e
+          );
+        })
+      );
+    const resp = await lastValueFrom(resp$);
+    return resp.users;
+  }
   // async getResourceServers(): Promise<Auth0ResourceServer[]> {
   //   await this.guardAuth0Enabled();
   //   const resp$ = await this.http.get(`/api/v2/resource-servers`).pipe(
@@ -266,46 +324,20 @@ export class Auth0MgmtApiClient implements IAuth0MgmtApiClient {
   //   const resp = await lastValueFrom(resp$);
   //   return resp;
   // }
-  // async getUser(id: string): Promise<IAuth0ExtendedUser> {
-  //   await this.guardAuth0Enabled();
-  //   const resp$ = await this.http.get(`/api/v2/users/${id}`).pipe(
-  //     map((r) => r.data as IAuth0ExtendedUser),
-  //     catchError((e) => {
-  //       return this.handleAuth0MgmtApiError<IAuth0ExtendedUser>(e);
-  //     })
-  //   );
-  //   const resp = await lastValueFrom(resp$);
-  //   return resp;
-  // }
-  // async patchUserAppMetadata(
-  //   id: string,
-  //   app_metadata: Auth0AppMetadataPayload
-  // ): Promise<IAuth0ExtendedUser> {
-  //   await this.guardAuth0Enabled();
-  //   const resp$ = await this.http
-  //     .patch(`/api/v2/users/${id}`, { app_metadata: app_metadata })
-  //     .pipe(
-  //       map((r) => r.data as IAuth0ExtendedUser),
-  //       catchError((e) => {
-  //         return this.handleAuth0MgmtApiError<IAuth0ExtendedUser>(e);
-  //       })
-  //     );
-  //   const resp = await lastValueFrom(resp$);
-  //   return resp;
-  // }
+
   // async getUsersByTenant(
   //   tenant_code: string,
   //   page: number
-  // ): Promise<IAuth0ExtendedUser[]> {
+  // ): Promise<IAuth0User[]> {
   //   await this.guardAuth0Enabled();
   //   const resp$ = await this.http
   //     .get(
   //       `/api/v2/users?q=app_metadata.companies:(${tenant_code})&per_page=100&include_totals=true&fields=identities&include_fields=false&page=${page}`
   //     )
   //     .pipe(
-  //       map((r) => r.data as IAuth0ExtendedUser[]),
+  //       map((r) => r.data as IAuth0User[]),
   //       catchError((e) => {
-  //         return this.handleArrayAuth0MgmtApiError<IAuth0ExtendedUser>(e);
+  //         return this.handleArrayAuth0MgmtApiError<IAuth0User>(e);
   //       })
   //     );
   //   const resp = await lastValueFrom(resp$);
@@ -360,7 +392,7 @@ export class Auth0MgmtApiClient implements IAuth0MgmtApiClient {
     this.logger.error(e.message, e.stack, {
       url: `${e.config?.baseURL}${e.config?.url}`,
       method: e.config?.method,
-      headers: e.config?.headers,
+      response: e?.response?.data,
     });
 
     return of({} as T);
@@ -369,7 +401,7 @@ export class Auth0MgmtApiClient implements IAuth0MgmtApiClient {
     this.logger.error(e.message, e.stack, {
       url: `${e.config?.baseURL}${e.config?.url}`,
       method: e.config?.method,
-      headers: e.config?.headers,
+      response: e?.response?.data,
     });
 
     return of([] as T[]);

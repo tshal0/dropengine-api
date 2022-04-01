@@ -22,8 +22,8 @@
       "@catalog/*": [
         "src/catalog/*"
       ],
-      "@users/*": [
-        "src/users/*"
+      "@accounts/*": [
+        "src/accounts/*"
       ],
       "@shopify/*": [
         "src/shopify/*"

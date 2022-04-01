@@ -1,8 +1,8 @@
 import { Auth0Identity } from "../dto/Auth0Identity";
 import { Auth0AppMetadata } from "../dto/Auth0AppMetadata";
-import { User, UserSignedUp } from "@users/domain";
+import { CreateUserDto } from "src/accounts/dto/CreateUserDto";
 
-export interface IAuth0ExtendedUser {
+export interface IAuth0User {
   email?: string;
   email_verified?: boolean;
   name?: string;
@@ -19,76 +19,43 @@ export interface IAuth0ExtendedUser {
   last_ip?: string;
   last_login?: Date;
   logins_count?: number;
-  password: string;
+  password?: string;
 }
 
-export class Auth0ExtendedUser {
-  protected readonly _props: IAuth0ExtendedUser;
+export class Auth0User {
+  protected readonly _props: IAuth0User;
 
-  private constructor(props: IAuth0ExtendedUser) {
+  private constructor(props: IAuth0User) {
     this._props = props;
   }
 
-  public static from(props: IAuth0ExtendedUser) {
-    return new Auth0ExtendedUser(props);
+  public static from(props: IAuth0User) {
+    return new Auth0User(props);
+  }
+  public static create(dto: CreateUserDto) {
+    let props: IAuth0User = {
+      password: dto.password,
+      email: dto.email,
+      family_name: dto.lastName,
+      given_name: dto.firstName,
+      app_metadata: {
+        authorization: {},
+        accounts: [],
+        roles: [],
+      },
+    };
+    return new Auth0User(props);
   }
 
-  public static fromUser(user: User) {
-    const u = user.props();
-    let props: IAuth0ExtendedUser = {
-      app_metadata: {
-        primary_user_id: u.id,
-        authorization: { groups: [], permissions: [], roles: [] },
-        companies: [],
-        manufacturers: [],
-        merchants: [],
-        roles: [],
-        sellers: [],
-      },
-      email: u.email,
-      given_name: u.firstName,
-      family_name: u.lastName,
-      picture: u.picture,
-      password: null,
-    };
-    return new Auth0ExtendedUser(props);
-  }
-  public static fromUserSignUp(event: UserSignedUp) {
-    const u = event.props().details;
-
-    let props: IAuth0ExtendedUser = {
-      app_metadata: {
-        primary_user_id: u.id,
-        authorization: { groups: [], permissions: [], roles: [] },
-        companies: [],
-        manufacturers: [],
-        merchants: [],
-        roles: [],
-        sellers: [],
-      },
-      email: u.email,
-      given_name: u.firstName,
-      family_name: u.lastName,
-      name: u.name,
-      picture: u.picture,
-      password: null,
-    };
-    return new Auth0ExtendedUser(props);
-  }
   public static init() {
-    let props: IAuth0ExtendedUser = {
+    let props: IAuth0User = {
       app_metadata: {
-        primary_user_id: null,
         authorization: { groups: [], permissions: [], roles: [] },
-        companies: [],
-        manufacturers: [],
-        merchants: [],
-        roles: [],
-        sellers: [],
+        accounts: [],
       },
       password: null,
     };
-    return new Auth0ExtendedUser(props);
+    return new Auth0User(props);
   }
 
   public props() {
@@ -145,24 +112,5 @@ export class Auth0ExtendedUser {
   }
   public get password() {
     return this._props.password;
-  }
-
-  addMerchant(code: string) {
-    let lowered = code?.toLowerCase();
-    this._props.app_metadata.companies =
-      this._props.app_metadata.companies.filter((c) => !c.includes(lowered));
-    this._props.app_metadata.merchants =
-      this._props.app_metadata.merchants.filter((c) => !c.includes(lowered));
-    this._props.app_metadata.companies.push(lowered);
-    this._props.app_metadata.merchants.push(lowered);
-    return this;
-  }
-  removeMerchant(code: string) {
-    let lowered = code?.toLowerCase();
-    this._props.app_metadata.companies =
-      this._props.app_metadata.companies.filter((c) => !c.includes(lowered));
-    this._props.app_metadata.merchants =
-      this._props.app_metadata.merchants.filter((c) => !c.includes(lowered));
-    return this;
   }
 }

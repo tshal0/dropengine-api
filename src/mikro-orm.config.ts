@@ -1,12 +1,12 @@
+import { DbAccount } from "@accounts/domain/entities/Account.entity";
 import { DbProduct } from "@catalog/domain/entities/Product.entity";
 import { DbProductType } from "@catalog/domain/entities/ProductType.entity";
 import { DbProductVariant } from "@catalog/domain/entities/ProductVariant.entity";
 import { Options } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { DbUser } from "@users/domain/entities/User.entity";
 
 const config: Options<PostgreSqlDriver> = {
-  entities: [DbProduct, DbProductType, DbProductVariant, DbUser],
+  entities: [DbProduct, DbProductType, DbProductVariant, DbAccount],
   clientUrl: process.env.DATABASE_URL || undefined,
   driverOptions: {
     connection: { ssl: process.env.POSTGRES_SSL || false },

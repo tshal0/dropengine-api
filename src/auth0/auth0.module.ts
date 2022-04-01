@@ -12,11 +12,10 @@ import { AzureLoggerModule, AzureLoggerService } from "@shared/modules";
 import { requestObject } from "@shared/utils";
 import https from "https";
 import { Auth0MgmtApiClient } from "./auth0-mgmt-api.service";
-import { HandleUserSignedUpUseCase } from "./useCases/HandleUserSignedUp";
 import { Cache } from "cache-manager";
 
 @Module({
-  providers: [Auth0MgmtApiClient, HandleUserSignedUpUseCase],
+  providers: [Auth0MgmtApiClient],
   exports: [Auth0MgmtApiClient],
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),

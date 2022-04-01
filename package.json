@@ -117,7 +117,7 @@
   },
   "_moduleAliases": {
     "@shared": "dist/shared",
-    "@users": "dist/users",
+    "@accounts": "dist/accounts",
     "@catalog": "dist/catalog",
     "@shopify": "dist/shopify",
     "@auth0": "dist/auth0"

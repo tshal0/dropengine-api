@@ -9,7 +9,7 @@
 			"name": "scenarios",
 			"item": [
 				{
-					"name": "User Account Registration",
+					"name": "UserRegistration",
 					"item": [
 						{
 							"name": "SignUp",
@@ -38,18 +38,22 @@
 											"\r",
 											"const userId = resp.id;\r",
 											"const email = resp.email;\r",
+											"const pic = resp.picture\r",
 											"\r",
 											"pm.test(`Created User should have a valid email`, () => {\r",
 											"    pm.expect(email).to.eq(`test@sample.com`)\r",
 											"    pm.collectionVariables.set(`userEmail`, email)\r",
 											"})\r",
-											"pm.test(`Created User should be ACTIVATED`, () => {\r",
-											"    pm.expect(resp.status).to.eq(`ACTIVATED`)\r",
-											"})\r",
+											"\r",
 											"pm.test(`Created User should have valid UserId`, () => {\r",
 											"    pm.expect(userId?.length).greaterThan(0)\r",
 											"    pm.collectionVariables.set(`testUserId`, userId)\r",
-											"})"
+											"})\r",
+											"pm.test(`Created User should have Picture`, () => {\r",
+											"    pm.expect(pic?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set('testUserPicture', pic)\r",
+											"})\r",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -144,6 +148,386 @@
 									"path": [
 										"api",
 										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateAccount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"CreateAccount Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const account = pm.response.json()\r",
+											"\r",
+											"const accountId = account?.id\r",
+											"pm.test(`Created Account should have valid AccountId`, () => {\r",
+											"    pm.expect(accountId?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set(`accountId`, accountId)\r",
+											"})\r",
+											"\r",
+											"const testUserId = pm.collectionVariables.get('testUserId')\r",
+											"const testUserEmail = pm.collectionVariables.get('testUserEmail')\r",
+											"const testUserPic = pm.collectionVariables.get('testUserPicture')\r",
+											"const expected = {\r",
+											"    \"name\": \"Test Account\",\r",
+											"    \"ownerId\": testUserId,\r",
+											"    \"companyCode\": \"TEST_ACCOUNT\",\r",
+											"    \"members\": [\r",
+											"        {\r",
+											"            \"email\": testUserEmail,\r",
+											"            \"picture\": testUserPic,\r",
+											"            \"userId\": testUserId\r",
+											"        }\r",
+											"    ]\r",
+											"}\r",
+											"pm.test(`CreateAccount response should match Expected Account`, () => {\r",
+											"    const keys = Object.keys(expected)\r",
+											"    keys.forEach(k => {\r",
+											"        const testSet = { key: k, given: account[k], expected: expected[k] }\r",
+											"        const isArray = Array.isArray(testSet.expected)\r",
+											"        const notEmpty = testSet.expected?.length > 0\r",
+											"        if ([null, undefined].includes(testSet.expected)) {\r",
+											"            pm.test(`Account.${k} should equal null`, () => {\r",
+											"                pm.expect(testSet.given).to.eq(null)\r",
+											"            })\r",
+											"        } else if (isArray && notEmpty) {\r",
+											"            testSet.expected.forEach(e => {\r",
+											"                pm.test(`Account.${k} should include ${JSON.stringify(e, null, 2)}`, () => {\r",
+											"                    pm.expect(testSet.given).to.deep.include(e)\r",
+											"                })\r",
+											"            })\r",
+											"        } else if (isArray && !notEmpty) {\r",
+											"            pm.test(`Account.${k} should be an empty Array`, () => {\r",
+											"                pm.expect(testSet.given).to.have.length(0)\r",
+											"            })\r",
+											"        } else {\r",
+											"            pm.test(`Account.${k} should equal ${JSON.stringify(testSet.expected, null, 2)}`, () => {\r",
+											"                pm.expect(testSet.given).to.deep.include(testSet.expected)\r",
+											"            })\r",
+											"        }\r",
+											"    })\r",
+											"})\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Test Account\",\r\n    \"companyCode\": \"TEST_ACCOUNT\",\r\n    \"ownerId\": \"{{testUserId}}\",\r\n    \"defaultStoreName\": \"Store 1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/accounts",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GetAccount Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/accounts/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"accounts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccounts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GetAccounts Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/accounts",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateNewUser",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"\r",
+											"const userId = resp.id;\r",
+											"const email = resp.email;\r",
+											"const pic = resp.picture\r",
+											"\r",
+											"pm.test(`Created User should have a valid email`, () => {\r",
+											"    pm.expect(email).to.eq(`new@sample.com`)\r",
+											"    pm.collectionVariables.set(`newUserEmail`, email)\r",
+											"})\r",
+											"\r",
+											"pm.test(`Created User should have valid UserId`, () => {\r",
+											"    pm.expect(userId?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set(`newUserId`, userId)\r",
+											"})\r",
+											"pm.test(`Created User should have Picture`, () => {\r",
+											"    pm.expect(pic?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set('newUserPicture', pic)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"new@sample.com\",\r\n    \"firstName\": \"New\",\r\n    \"lastName\": \"User\",\r\n    \"password\": \"password123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AddMember",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AddMember Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const account = pm.response.json()\r",
+											"\r",
+											"const members = account.members;\r",
+											"const newUserId = pm.collectionVariables.get('newUserId')\r",
+											"const newUserEmail = pm.collectionVariables.get('newUserEmail')\r",
+											"const newUserPic = pm.collectionVariables.get('newUserPicture')\r",
+											"const expected = {\r",
+											"    \"email\": newUserEmail,\r",
+											"    \"picture\": newUserPic,\r",
+											"    \"userId\": newUserId\r",
+											"}\r",
+											"pm.test(`Account should have new Member with UserId, Email, and Picture matching the NewUser`, () => {\r",
+											"    const newUser = members.find(m => m.userId == newUserId)\r",
+											"    console.log({ newUser, expected })\r",
+											"    pm.expect(newUser).to.deep.include(expected)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":\"{{newUserId}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/accounts/:id/members",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"accounts",
+										":id",
+										"members"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RemoveMember",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"RemoveMember Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const account = pm.response.json()\r",
+											"\r",
+											"const members = account.members;\r",
+											"const newUserId = pm.collectionVariables.get('newUserId')\r",
+											"\r",
+											"pm.test(`Account should have new Member with UserId, Email, and Picture matching the NewUser`, () => {\r",
+											"    const newUser = members.find(m => m.userId == newUserId)\r",
+											"    pm.expect(newUser).to.eq(undefined)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/accounts/:id/members/:userId",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"accounts",
+										":id",
+										"members",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										},
+										{
+											"key": "userId",
+											"value": "{{newUserId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteAccount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DeleteAccount Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/accounts/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"accounts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										}
 									]
 								}
 							},
@@ -943,6 +1327,10 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "AccountCreation",
+					"item": []
 				}
 			]
 		},
@@ -1060,7 +1448,12 @@
 		},
 		{
 			"key": "testUserId",
-			"value": "989f3c49-0d4a-4130-a52b-6dd5186453b2"
+			"value": "auth0|62474b7c91276b006983bf58"
+		},
+		{
+			"key": "testUserPicture",
+			"value": "https://s.gravatar.com/avatar/a265d5b83f09a26f759f09a931601b8f?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png",
+			"type": "string"
 		},
 		{
 			"key": "userEmail",
@@ -1068,16 +1461,43 @@
 		},
 		{
 			"key": "productTypeUuid",
-			"value": "e3116ef2-87cd-496e-8c5a-e195d6832c15",
+			"value": "e96cba98-fb6f-4478-8e12-485a40e4283f",
 			"type": "string"
 		},
 		{
 			"key": "productUuids",
-			"value": ""
+			"value": [
+				"910e0118-81bf-46b1-a72b-7a49ff0d1852",
+				"294915ab-950a-464a-935d-71a5197b3f9e",
+				"035be37f-9f15-43b1-925a-61930d353af6",
+				"f2f4c418-e956-4518-8b24-d165c17f8656",
+				"84785321-943d-4168-9dae-253c154258d9",
+				"99717640-e017-4449-a96f-af59b675ca94"
+			]
 		},
 		{
 			"key": "productTypeName",
 			"value": "APITestProductType",
+			"type": "string"
+		},
+		{
+			"key": "accountId",
+			"value": "5ed32928-55cc-4955-be5e-025ffda7ee53",
+			"type": "string"
+		},
+		{
+			"key": "newUserId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "newUserEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "newUserPicture",
+			"value": "",
 			"type": "string"
 		}
 	]

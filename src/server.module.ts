@@ -10,13 +10,13 @@ import { AzureStorageModule } from "@shared/modules/azure-storage/azure-storage.
 import { AuthModule } from "@shared/modules/auth/auth.module";
 import { AppModule } from "./app/app.module";
 import { ShopifyModule } from "./shopify/shopify.module";
-import { UsersModule } from "./users/user.module";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { PassportModule } from "@nestjs/passport";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { CatalogModule } from "./catalog/catalog.module";
 import { Auth0Module } from "@auth0/auth0.module";
+import { AccountsModule } from "./accounts/accounts.module";
 
 @Module({
   imports: [
@@ -43,7 +43,7 @@ import { Auth0Module } from "@auth0/auth0.module";
     // PrismaModule,
     AppModule,
     Auth0Module,
-    UsersModule,
+    AccountsModule,
     ShopifyModule,
     CatalogModule,
   ],
