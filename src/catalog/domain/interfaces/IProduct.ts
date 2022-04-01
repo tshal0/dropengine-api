@@ -34,7 +34,7 @@ import {
  */
 
 export interface IProduct {
-  uuid: ProductUUID;
+  id: ProductUUID;
   sku: ProductSKU;
 
   type: ProductTypeName;
@@ -59,7 +59,7 @@ export interface IProduct {
  * Product: Raw properties, for testing and serialization
  */
 export interface IProductProps {
-  uuid: string;
+  id: string;
   sku: string;
 
   type: string;

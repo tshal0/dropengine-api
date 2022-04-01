@@ -50,8 +50,8 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
   private constructor(props: IProduct, entity: DbProduct) {
     super(props, entity);
   }
-  public get uuid(): ProductUUID {
-    return this._props.uuid;
+  public get id(): ProductUUID {
+    return this._props.id;
   }
 
   public get sku(): ProductSKU {
@@ -175,7 +175,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
 
   public importVariant(dto: CreateProductVariantDto): Result<ProductVariant> {
     let pv = this._props.variants.find(
-      (v) => v.sku == dto.sku || v.uuid == dto.uuid
+      (v) => v.sku == dto.sku || v.id == dto.id
     );
     if (pv) {
       return pv.update(dto);
@@ -208,7 +208,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
   public removeVariant(variant: ProductVariant): Result<Product> {
     try {
       this._props.variants = this._props.variants.filter(
-        (v) => v.props().uuid == variant.props().uuid
+        (v) => v.props().id == variant.props().id
       );
       let dbe = variant.entity();
       if (dbe) this._entity.variants.remove(dbe);
@@ -228,7 +228,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
   public static create(dto: CreateProductDto): Result<Product> {
     // Validate DTO
     let results = {
-      uuid: dto.uuid ? ProductUUID.from(dto.uuid) : Product.generateUuid(),
+      uuid: dto.id ? ProductUUID.from(dto.id) : Product.generateUuid(),
       id: ProductNID.from(dto.id),
       customOptions: Product.createCustomOptions(dto.customOptions),
       pricingTier: PricingTier.from(dto.pricingTier),
@@ -253,7 +253,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
     const now = moment().toDate();
     // Props
     const props: IProduct = {
-      uuid: results.uuid.value(),
+      id: results.uuid.value(),
       type: results.type.value(),
       pricingTier: results.pricingTier.value(),
       createdAt: now,
@@ -271,7 +271,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
     // DBEntity
     const dbe: DbProduct = new DbProduct();
 
-    dbe.uuid = props.uuid.value();
+    dbe.id = props.id.value();
     dbe.sku = props.sku.value();
 
     dbe.pricingTier = props.pricingTier.value();
@@ -295,7 +295,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
       customOptions: Product.createCustomOptions(dbe.customOptions),
       variants: Product.loadVariants(dbe),
       pricingTier: PricingTier.from(dbe.pricingTier),
-      uuid: ProductUUID.from(dbe.uuid),
+      uuid: ProductUUID.from(dbe.id),
       type: ProductTypeName.from(dbe.type),
     };
 
@@ -314,7 +314,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
     }
 
     const props: IProduct = {
-      uuid: results.uuid.value(),
+      id: results.uuid.value(),
       pricingTier: results.pricingTier.value(),
       type: results.type.value(),
       sku: ProductSKU.from(dbe.sku),

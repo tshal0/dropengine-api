@@ -15,7 +15,7 @@ import { VariantOption } from "../valueObjects/ProductVariant/VariantOption";
 import { ProductVariantUUID } from "../valueObjects/ProductVariant/VariantUUID";
 
 export interface IProductVariant {
-  uuid: ProductVariantUUID;
+  id: ProductVariantUUID;
   sku: VariantSKU;
   image?: ProductImage;
 
@@ -34,7 +34,7 @@ export interface IProductVariant {
   updatedAt: Date;
 }
 export interface IProductVariantProps {
-  uuid: string;
+  id: string;
   sku: string;
   image: string;
   height: IDimension;

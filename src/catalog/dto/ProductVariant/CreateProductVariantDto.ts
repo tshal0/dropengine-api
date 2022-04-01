@@ -31,12 +31,10 @@ export class CreateProductVariantDtoMoney {
 }
 export class CreateProductVariantDto {
   @IsOptional()
-  uuid?: string | undefined;
-  @IsOptional()
   id?: string | undefined;
 
   @IsNotEmpty()
-  productUuid: string;
+  productId: string;
   @IsOptional()
   productSku?: string | undefined;
 

@@ -7,7 +7,7 @@ import { Result, ResultError } from "@shared/domain/Result";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import { Auth0MgmtApiClient } from "@auth0/auth0-mgmt-api.service";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 import { Auth0User } from "@auth0/domain/Auth0ExtendedUser";
 import { User } from "../../domain/aggregates/User";
 

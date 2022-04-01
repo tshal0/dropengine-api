@@ -103,8 +103,8 @@ export class ImportProductVariantCsv implements UseCase<any, any> {
             return resolve();
           }
           let dto = result.value();
-          if (dto.uuid?.length) {
-            variantsByProductUuid.set(dto.productUuid, dto);
+          if (dto.id?.length) {
+            variantsByProductUuid.set(dto.productId, dto);
           } else if (dto.productSku?.length) {
             variantsByProductSku.set(dto.productSku, dto);
           } else {
@@ -195,7 +195,7 @@ export class ImportProductVariantCsv implements UseCase<any, any> {
     let importResults: Result<ProductVariant>[] = [];
     let saveResults: Result<Product>[] = [];
     for (const product of products) {
-      const puuid = product.uuid.value();
+      const puuid = product.id.value();
       let dtos = variantsByProductUuid.get(puuid);
       for (const variant of dtos) {
         let result = await product.importVariant(variant);

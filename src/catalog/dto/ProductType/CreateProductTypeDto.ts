@@ -1,5 +1,5 @@
 export class CreateProductTypeDto {
-  uuid?: string | undefined;
+  id?: string | undefined;
   name: string;
   image?: string | undefined;
   productionData: MetalArtManufacturingDetailsDto;

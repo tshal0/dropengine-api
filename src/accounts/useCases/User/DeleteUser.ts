@@ -12,7 +12,7 @@ import {
   Inject,
 } from "@nestjs/common";
 import { Cache } from "cache-manager";
-import { Auth0MgmtApiClient } from "@auth0/auth0-mgmt-api.service";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class DeleteUserUseCase implements UseCase<string, any> {

@@ -56,7 +56,7 @@ describe(`ProductType`, () => {
   const baseDbProdTypeProps: IProductTypeProps = {
     name: "MetalArt",
     image: "MockImage",
-    uuid: mockProdTypeUuidStr,
+    id: mockProdTypeUuidStr,
     createdAt: now,
     updatedAt: now,
     livePreview: {

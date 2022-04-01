@@ -7,7 +7,7 @@ import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { Injectable, Scope, CACHE_MANAGER, Inject } from "@nestjs/common";
 import { Cache } from "cache-manager";
-import { Auth0MgmtApiClient } from "@auth0/auth0-mgmt-api.service";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 import { AccountId } from "@accounts/domain/valueObjects/AccountId";
 import { AccountsRepository } from "@accounts/database/AccountsRepository";
 import { User } from "@accounts/domain";

@@ -67,7 +67,7 @@ export class ProductResponseProductType {
   createdAt: Date;
 }
 export class ProductResponseDto {
-  uuid: string;
+  id: string;
   sku: string;
   type: string;
   pricingTier: string;
@@ -82,7 +82,7 @@ export class ProductResponseDto {
 
   public static from(props: IProductProps) {
     let dto = new ProductResponseDto();
-    dto.uuid = props.uuid;
+    dto.id = props.id;
     dto.sku = props.sku;
     dto.type = props.type;
     dto.pricingTier = props.pricingTier;

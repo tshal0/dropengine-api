@@ -11,7 +11,7 @@ jest
 const now = moment().toDate();
 
 export const baseDbProduct: DbProduct = {
-  uuid: "00000000-0000-0000-0000-000000000002",
+  id: "00000000-0000-0000-0000-000000000002",
   sku: "MEM-001-01",
   type: "2DMetalArt",
   pricingTier: "1",
@@ -66,7 +66,7 @@ export const baseDbProduct: DbProduct = {
   createdAt: now,
   props: function (): IProductProps {
     return {
-      uuid: "00000000-0000-0000-0000-000000000002",
+      id: "00000000-0000-0000-0000-000000000002",
       type: "2DMetalArt",
       pricingTier: "1",
       sku: "MEM-001-01",
@@ -124,7 +124,7 @@ export const baseDbProduct: DbProduct = {
   productType: new DbProductType(),
 };
 export const baseProductProps: IProductProps = {
-  uuid: "00000000-0000-0000-0000-000000000002",
+  id: "00000000-0000-0000-0000-000000000002",
   pricingTier: "1",
   sku: "MEM-001-01",
   type: "2DMetalArt",
@@ -180,7 +180,7 @@ export const baseProductProps: IProductProps = {
 };
 
 export const newProductProps: IProductProps = {
-  uuid: "00000000-0000-0000-0000-000000000002",
+  id: "00000000-0000-0000-0000-000000000002",
   sku: "MEM-001-01",
   pricingTier: "1",
   type: "2DMetalArt",
@@ -234,7 +234,7 @@ export const newProductProps: IProductProps = {
   variants: [],
 };
 export const newDbProduct: DbProduct = {
-  uuid: "00000000-0000-0000-0000-000000000002",
+  id: "00000000-0000-0000-0000-000000000002",
   pricingTier: "1",
   sku: "MEM-001-01",
   type: "2DMetalArt",

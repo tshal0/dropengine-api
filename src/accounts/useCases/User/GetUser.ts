@@ -7,7 +7,7 @@ import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { Auth0User } from "@auth0/domain/Auth0ExtendedUser";
-import { Auth0MgmtApiClient } from "@auth0/auth0-mgmt-api.service";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 import { User } from "@accounts/domain";
 
 @Injectable({ scope: Scope.DEFAULT })

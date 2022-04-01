@@ -35,7 +35,7 @@ describe(`ProductVariant`, () => {
         // colorCost: { total: 11, currency: "USD" },
         manufacturingCost: { total: 11, currency: "USD" },
         shippingCost: { total: 11, currency: "USD" },
-        productUuid: undefined,
+        productId: undefined,
       };
       it(`should generate a valid ProductVariant`, () => {
         ProductVariant.generateUuid = mockGenerateProdId;
@@ -44,7 +44,7 @@ describe(`ProductVariant`, () => {
         let props = result.value().props();
         console.log(JSON.stringify(props, null, 2));
         expect(props).toEqual({
-          uuid: "00000000-0000-0000-0000-000000000001",
+          id: "00000000-0000-0000-0000-000000000001",
           sku: "MEM-000-01-12-Black",
           image: "img",
           option1: {

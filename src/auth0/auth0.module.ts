@@ -11,7 +11,7 @@ import { PassportModule } from "@nestjs/passport";
 import { AzureLoggerModule, AzureLoggerService } from "@shared/modules";
 import { requestObject } from "@shared/utils";
 import https from "https";
-import { Auth0MgmtApiClient } from "./auth0-mgmt-api.service";
+import { Auth0MgmtApiClient } from "./Auth0MgmtApiClient";
 import { Cache } from "cache-manager";
 
 @Module({

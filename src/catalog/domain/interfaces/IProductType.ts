@@ -16,7 +16,7 @@ import {
 } from "../valueObjects/ProductType/ProductTypeLivePreview";
 
 export interface IProductType {
-  uuid: ProductTypeUUID;
+  id: ProductTypeUUID;
   name: ProductTypeName;
   image?: string | undefined;
   productionData: ProductTypeManufacturing;
@@ -30,7 +30,7 @@ export interface IProductType {
 }
 
 export interface IProductTypeProps {
-  uuid: string;
+  id: string;
   name: string;
   image?: string | undefined;
   productionData: IProductTypeProductionData;

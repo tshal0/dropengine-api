@@ -64,8 +64,8 @@ export class ProductVariant extends IAggregate<
     return Object.seal(entity.props());
   }
 
-  public get uuid(): string {
-    return this._entity.uuid;
+  public get id(): string {
+    return this._entity.id;
   }
   public get sku(): string {
     return this._entity.sku;
@@ -190,8 +190,8 @@ export class ProductVariant extends IAggregate<
     // dto.option3.name = pt.option3?.name;
 
     let results = {
-      uuid: dto.uuid
-        ? ProductVariantUUID.from(dto.uuid)
+      uuid: dto.id
+        ? ProductVariantUUID.from(dto.id)
         : ProductVariant.generateUuid(),
       image: ProductImage.from(dto.image),
       sku: VariantSKU.from(dto.sku),
@@ -231,7 +231,7 @@ export class ProductVariant extends IAggregate<
 
     // Props
     let props: IProductVariant = {
-      uuid: results.uuid.value(),
+      id: results.uuid.value(),
       image: results.image.value(),
       sku: results.sku.value(),
 
@@ -250,7 +250,7 @@ export class ProductVariant extends IAggregate<
     // DBEntity
 
     const dbe = new DbProductVariant();
-    dbe.uuid = props.uuid.value();
+    dbe.id = props.id.value();
     dbe.image = props.image.value();
     dbe.sku = props.sku.value();
 
@@ -274,7 +274,7 @@ export class ProductVariant extends IAggregate<
   }
   public static db(dbe: DbProductVariant): Result<ProductVariant> {
     let results = {
-      uuid: ProductVariantUUID.from(dbe.uuid),
+      uuid: ProductVariantUUID.from(dbe.id),
       image: ProductImage.from(dbe.image),
       sku: VariantSKU.from(dbe.sku),
 
@@ -306,7 +306,7 @@ export class ProductVariant extends IAggregate<
       );
     }
     let props: IProductVariant = {
-      uuid: results.uuid.value(),
+      id: results.uuid.value(),
       image: results.image.value(),
       sku: results.sku.value(),
 

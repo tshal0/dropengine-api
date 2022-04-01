@@ -6,7 +6,7 @@ import { Result } from "@shared/domain/Result";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { Account } from "@accounts/domain/aggregates/Account";
 import { AccountsRepository } from "@accounts/database/AccountsRepository";
-import { Auth0MgmtApiClient } from "@auth0/auth0-mgmt-api.service";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class GetAccountsUseCase implements UseCase<any, Account[]> {

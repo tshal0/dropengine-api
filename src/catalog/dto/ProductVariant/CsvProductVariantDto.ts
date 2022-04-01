@@ -52,10 +52,10 @@ export class CsvProductVariantDto {
       );
       let dto = new CreateProductVariantDto();
 
-      dto.productUuid = this._props.ProductUuid;
+      dto.productId = this._props.ProductUuid;
       dto.productSku = this._props.ProductSku;
 
-      dto.uuid = this._props.VariantUuid;
+      dto.id = this._props.VariantUuid;
       dto.sku = this._props.VariantSku;
       
       dto.image = this._props.VariantImage;

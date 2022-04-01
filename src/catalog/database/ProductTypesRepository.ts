@@ -88,7 +88,7 @@ export class ProductTypesRepository {
     let result: Result<ProductType> = null;
     const props = agg?.props();
     try {
-      if (props.uuid?.length) {
+      if (props.id?.length) {
         result = await this.upsertByUuid(agg);
       }
       if (props.name?.length) {
@@ -152,7 +152,7 @@ export class ProductTypesRepository {
     return Result.fail<ProductType>(
       new FailedToCreateError(
         {
-          id: props.uuid,
+          id: props.id,
           type: ProductType.name,
           name: props.name,
         },
@@ -165,7 +165,7 @@ export class ProductTypesRepository {
     return Result.fail<ProductType>(
       new FailedToSaveError(
         {
-          id: props.uuid,
+          id: props.id,
           type: ProductType.name,
           name: props.name,
         },
@@ -208,8 +208,8 @@ export class ProductTypesRepository {
     repo: EntityRepository<DbProductType>
   ) {
     let dbe: DbProductType = null;
-    if (dto.uuid?.length) {
-      dbe = await repo.findOne({ uuid: dto.uuid }, { populate: ["products"] });
+    if (dto.id?.length) {
+      dbe = await repo.findOne({ id: dto.id }, { populate: ["products"] });
     } else if (dto.name?.length) {
       dbe = await repo.findOne({ name: dto.name }, { populate: ["products"] });
     } else {
@@ -224,7 +224,7 @@ export class ProductTypesRepository {
     return ProductType.create(dto);
   }
   private async loadByUuid(uuid: UUID, repo: EntityRepository<DbProductType>) {
-    let dbe = await repo.findOne({ uuid: uuid.value() });
+    let dbe = await repo.findOne({ id: uuid.value() });
 
     if (dbe) {
       if (!dbe.products.isInitialized()) {

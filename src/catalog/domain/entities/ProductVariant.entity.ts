@@ -1,12 +1,12 @@
 import { Entity, Property, PrimaryKey, ManyToOne, wrap } from "@mikro-orm/core";
-import { IDimension, IMoney, IWeight } from "@shared/domain";
+import { IDimension, IMoney, IWeight, UUID } from "@shared/domain";
 import { IVariantOption, IProductVariantProps } from "..";
 import { DbProduct } from "./Product.entity";
 
 @Entity({ tableName: "product_variants" })
 export class DbProductVariant {
-  @PrimaryKey()
-  uuid!: string;
+  @PrimaryKey({ type: "uuid", default: UUID.generate().value() })
+  id!: string;
 
   @Property()
   sku: string;
@@ -49,7 +49,7 @@ export class DbProductVariant {
 
   public props(maxDepth?: number | undefined): IProductVariantProps {
     const props: IProductVariantProps = {
-      uuid: this.uuid,
+      id: this.id,
       option1: this.option1,
       option2: this.option2,
       option3: this.option3,
@@ -77,7 +77,7 @@ export class DbProductVariant {
    */
   public static copy(source: DbProductVariant, target: DbProductVariant) {
     try {
-      source.uuid = target.uuid;
+      source.id = target.id;
       source.createdAt = target.createdAt;
       wrap(target).assign(source, { merge: true, mergeObjects: true });
       return target;

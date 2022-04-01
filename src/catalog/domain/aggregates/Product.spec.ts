@@ -82,10 +82,10 @@ describe(`Product`, () => {
     // colorCost: { total: 11, currency: "USD" },
     manufacturingCost: { total: 11, currency: "USD" },
     shippingCost: { total: 11, currency: "USD" },
-    productUuid: undefined,
+    productId: undefined,
   };
   const baseProductRawProps: IProductProps = {
-    uuid: "00000000-0000-0000-0000-000000000002",
+    id: "00000000-0000-0000-0000-000000000002",
     sku: "MEM-001-01",
     type: "2DMetalArt",
 

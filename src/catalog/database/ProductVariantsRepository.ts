@@ -57,7 +57,7 @@ export class FailedToLoadProductVariantFromDb implements ResultError {
   ) {
     this.message =
       `[${ProductVariantRepositoryError.FailedToLoadProductVariantFromDb}]` +
-      `[${value.uuid}]` +
+      `[${value.id}]` +
       `[${value.sku}]: ${reason}`;
   }
 }
@@ -73,7 +73,7 @@ export class FailedToConvertProductVariantToDb implements ResultError {
   ) {
     this.message =
       `[${ProductVariantRepositoryError.FailedToConvertProductVariantToDb}]` +
-      `[${value.uuid}]` +
+      `[${value.id}]` +
       `[${value.sku}]: ${reason}`;
   }
 }

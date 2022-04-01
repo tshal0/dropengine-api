@@ -2,8 +2,7 @@ import { toLower } from "lodash";
 import { CreateProductVariantDto } from "../ProductVariant/CreateProductVariantDto";
 
 export class CreateProductDto {
-  uuid?:          string | undefined;
-  id?:            string | undefined;
+  id?:          string | undefined;
   type:         string;
   productTypeId: string;
   sku:           string;

@@ -29,7 +29,7 @@ export class CreateProductVariant
 
   async execute(dto: CreateProductVariantDto): Promise<Result<ProductVariant>> {
     try {
-      let uuid = UUID.from(dto.productUuid);
+      let uuid = UUID.from(dto.productId);
       let result = await this._repo.loadByUuid(uuid.value());
       if (result.isFailure) return Result.fail(result.error);
       let product = result.value();

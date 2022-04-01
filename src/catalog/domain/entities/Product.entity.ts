@@ -8,6 +8,7 @@ import {
   wrap,
   Cascade,
 } from "@mikro-orm/core";
+import { UUID } from "@shared/domain";
 import { IProductProps } from "../interfaces";
 import { ICustomOptionProps } from "../valueObjects";
 import { DbProductType } from "./ProductType.entity";
@@ -15,8 +16,8 @@ import { DbProductVariant } from "./ProductVariant.entity";
 
 @Entity({ tableName: "products" })
 export class DbProduct {
-  @PrimaryKey()
-  uuid!: string;
+  @PrimaryKey({ type: "uuid", default: UUID.generate().value() })
+  id!: string;
   @Property()
   type: string;
   @Property()
@@ -54,7 +55,7 @@ export class DbProduct {
   public props(maxDepth?: number | undefined): IProductProps {
     const newMaxDepth = maxDepth - 1;
     const props: IProductProps = {
-      uuid: this.uuid,
+      id: this.id,
       type: this.type,
       pricingTier: this.pricingTier,
       sku: this.sku,
@@ -84,7 +85,7 @@ export class DbProduct {
    */
   public static copy(props: IProductProps, e: DbProduct) {
     try {
-      props.uuid = e.uuid;
+      props.id = e.id;
       props.createdAt = e.createdAt;
       e.variants.getItems().forEach((v) => {
         v.product = e;

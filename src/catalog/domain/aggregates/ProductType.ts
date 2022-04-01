@@ -119,7 +119,7 @@ export class ProductType extends IAggregate<
 
   public importProduct(dto: CreateProductDto): Result<Product> {
     let p = this._props.products.find(
-      (v) => v.sku.value() == dto.sku || v.uuid.value() == dto.uuid
+      (v) => v.sku.value() == dto.sku || v.id.value() == dto.id
     );
     if (p) {
       return p.update(dto);
@@ -154,7 +154,7 @@ export class ProductType extends IAggregate<
 
   public static db(dbe: DbProductType): Result<ProductType> {
     let results: { [key: string]: Result<any> } = {};
-    results.uuid = ProductTypeUUID.from(dbe.uuid);
+    results.uuid = ProductTypeUUID.from(dbe.id);
     results.name = ProductTypeName.from(dbe.name);
     results.productionData = ProductTypeManufacturing.from(dbe.productionData);
     results.option1 = ProductTypeOption.from(dbe.option1);
@@ -185,7 +185,7 @@ export class ProductType extends IAggregate<
     }
 
     const props: IProductType = {
-      uuid: results.uuid.value(),
+      id: results.uuid.value(),
       name: results.name.value(),
       image: dbe.image,
       productionData: results.productionData.value(),
@@ -235,7 +235,7 @@ export class ProductType extends IAggregate<
     }
 
     const props: IProductType = {
-      uuid: results.uuid.value(),
+      id: results.uuid.value(),
       name: results.name.value(),
       image: dto.image,
       productionData: results.productionData.value(),
@@ -248,7 +248,7 @@ export class ProductType extends IAggregate<
       products: [],
     };
     const dbe = new DbProductType();
-    dbe.uuid = props.uuid.value();
+    dbe.id = props.id.value();
     dbe.image = props.image;
     dbe.name = props.name.value();
     dbe.productionData = props.productionData.value();

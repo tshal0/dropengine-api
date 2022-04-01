@@ -595,10 +595,10 @@
 											"    pm.expect(resp.name).to.eq(productTypeName)\r",
 											"})\r",
 											"pm.test(`UUID should not be empty`, () => {\r",
-											"    pm.expect(resp.uuid.length).to.be.greaterThan(0)\r",
+											"    pm.expect(resp.id.length).to.be.greaterThan(0)\r",
 											"})\r",
 											"\r",
-											"pm.collectionVariables.set(`productTypeUuid`, resp.uuid)"
+											"pm.collectionVariables.set(`productTypeUuid`, resp.id)"
 										],
 										"type": "text/javascript"
 									}
@@ -783,9 +783,9 @@
 											"\r",
 											"const products = pm.response.json().imported\r",
 											"\r",
-											"const productUuids = products.map(p => p.uuid)\r",
+											"const productIds = products.map(p => p.id)\r",
 											"\r",
-											"pm.collectionVariables.set(`productUuids`, productUuids)"
+											"pm.collectionVariables.set(`productIds`, productIds)"
 										],
 										"type": "text/javascript"
 									}
@@ -1069,7 +1069,7 @@
 											"    })\r",
 											"})\r",
 											"\r",
-											"const uuids = pm.collectionVariables.get(`productUuids`)\r",
+											"const uuids = pm.collectionVariables.get(`productIds`)\r",
 											"console.info(uuids)"
 										],
 										"type": "text/javascript"
@@ -1465,7 +1465,7 @@
 			"type": "string"
 		},
 		{
-			"key": "productUuids",
+			"key": "productIds",
 			"value": [
 				"910e0118-81bf-46b1-a72b-7a49ff0d1852",
 				"294915ab-950a-464a-935d-71a5197b3f9e",

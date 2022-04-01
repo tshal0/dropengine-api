@@ -26,7 +26,7 @@ import {
   IAccountResponseDto,
 } from "@accounts/dto/AccountResponseDto";
 import { EntityNotFoundException } from "@shared/exceptions";
-import { Auth0MgmtApiClient } from "@auth0/auth0-mgmt-api.service";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 import { User } from "@accounts/domain";
 import { Result } from "@shared/domain";
 

@@ -10,7 +10,7 @@ jest
 const now = moment().toDate();
 
 export const baseDbProdTypeProps: IProductTypeProps = {
-  uuid: "00000000-0000-0000-0000-000000000001",
+  id: "00000000-0000-0000-0000-000000000001",
   name: "MetalArt",
   image: "MockImage",
   productionData: {
@@ -89,7 +89,7 @@ export const baseCreateProductTypeDto: CreateProductTypeDto = {
   livePreview: null,
 };
 export const baseDbProductType2Props: IProductTypeProps = {
-  uuid: "00000000-0000-0000-0000-000000000001",
+  id: "00000000-0000-0000-0000-000000000001",
   name: "MetalArt",
   image: "MockImage",
   productionData: {

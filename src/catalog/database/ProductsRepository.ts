@@ -67,7 +67,7 @@ export class FailedToLoadProductFromDb implements ResultError {
   ) {
     this.message =
       `[${ProductRepositoryError.FailedToLoadProductFromDb}]` +
-      `[${value.uuid}]` +
+      `[${value.id}]` +
       `[${value.sku}]: ${reason}`;
   }
 }
@@ -83,7 +83,7 @@ export class FailedToConvertProductToDb implements ResultError {
   ) {
     this.message =
       `[${ProductRepositoryError.FailedToConvertProductToDb}]` +
-      `[${value.uuid}]` +
+      `[${value.id}]` +
       `[${value.sku}]: ${reason}`;
   }
 }
@@ -126,7 +126,7 @@ export class ProductsRepository {
     let result: Result<Product> = null;
     const props = agg?.props();
     try {
-      if (props.uuid?.length) {
+      if (props.id?.length) {
         result = await this.upsertByUuid(agg);
       } else if (props.sku?.length) {
         result = await this.upsertBySku(props);
@@ -193,7 +193,7 @@ export class ProductsRepository {
     return Result.fail<Product>(
       new FailedToSaveError(
         {
-          id: props.uuid,
+          id: props.id,
           type: Product.name,
           name: props.sku,
         },
@@ -206,7 +206,7 @@ export class ProductsRepository {
     return Result.fail<Product>(
       new FailedToCreateError(
         {
-          id: props.uuid,
+          id: props.id,
           type: Product.name,
           name: props.sku,
         },
@@ -222,7 +222,7 @@ export class ProductsRepository {
       let repo = this.em.getRepository(DbProduct);
       const query: FilterQuery<DbProduct> = {};
       if (dto.productTypeId?.length) {
-        query.productType = { uuid: { $eq: dto.productTypeId } };
+        query.productType = { id: { $eq: dto.productTypeId } };
       }
       let entities = await repo.find(query);
 
@@ -254,9 +254,9 @@ export class ProductsRepository {
   public async loadByDto(dto: CreateProductDto) {
     let repo = this.em.getRepository(DbProduct);
     let dbe: DbProduct = null;
-    if (dto.uuid?.length) {
+    if (dto.id?.length) {
       dbe = await repo.findOne(
-        { uuid: dto.uuid },
+        { id: dto.id },
         { populate: ["productType"] }
       );
     } else if (dto.sku?.length) {
@@ -275,7 +275,7 @@ export class ProductsRepository {
   public async loadByUuid(uuid: ProductUUID) {
     let repo = this.em.getRepository(DbProduct);
     let dbe = await repo.findOne(
-      { uuid: uuid.value() },
+      { id: uuid.value() },
       { populate: ["productType"] }
     );
 
@@ -309,7 +309,7 @@ export class ProductsRepository {
     const product = agg.value();
     let dbe = new DbProduct();
 
-    dbe.uuid = product.uuid.value();
+    dbe.id = product.id.value();
     dbe.sku = product.sku.value();
     dbe.pricingTier = product.pricingTier.value();
     dbe.tags = product.tags.value();

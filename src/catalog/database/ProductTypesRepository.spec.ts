@@ -31,7 +31,10 @@ describe("ProductTypesRepository", () => {
           let dbProductResult = ProductTypesRepository.toDb(product);
           expect(dbProductResult.isFailure).toBe(false);
           let dbProduct = dbProductResult.value();
-          expect(dbProduct).toEqual({ ...baseDbProductType, id: undefined });
+          expect(dbProduct).toEqual({
+            ...baseDbProductType,
+            id: "00000000-0000-0000-0000-000000000001",
+          });
         });
       });
       describe("given existing Product", () => {

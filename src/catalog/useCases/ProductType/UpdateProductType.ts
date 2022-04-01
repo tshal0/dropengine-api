@@ -26,7 +26,7 @@ export class UpdateProductType
   async execute(dto: CreateProductTypeDto): Promise<Result<ProductType>> {
     this.logger.log(`${this.llog} Loading productType...`);
     try {
-      const uuid = UUID.from(dto.uuid).value();
+      const uuid = UUID.from(dto.id).value();
       let result = await this._repo.load(uuid);
       if (result.isFailure) {
         //TODO: EntityNotFound:ProductType

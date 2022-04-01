@@ -11,6 +11,7 @@ import {
   OneToMany,
   Cascade,
 } from "@mikro-orm/core";
+import { UUID } from "@shared/domain";
 import {
   IProductTypeProductionData,
   IProductTypeOption,
@@ -21,8 +22,8 @@ import { DbProduct } from "./Product.entity";
 
 @Entity({ tableName: "product_types" })
 export class DbProductType {
-  @PrimaryKey()
-  uuid!: string;
+  @PrimaryKey({ type: "uuid", defaultRaw: "uuid_generate_v4()" })
+  id!: string;
 
   @Property()
   name: string;
@@ -52,7 +53,7 @@ export class DbProductType {
 
   props(maxDepth?: number | undefined): IProductTypeProps {
     let props: IProductTypeProps = {
-      uuid: this.uuid,
+      id: this.id,
       name: this.name,
       image: this.image,
       productionData: this.productionData,

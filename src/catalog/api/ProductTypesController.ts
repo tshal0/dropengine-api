@@ -59,7 +59,7 @@ export class ProductTypesController {
   ): Promise<IProductTypeProps> {
     let uuid = UUID.from(id);
     let result = await this.rename.execute({
-      uuid: uuid.value(),
+      id: uuid.value(),
       name: dto.name,
     });
     if (result.isSuccess) {

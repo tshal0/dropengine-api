@@ -10,7 +10,7 @@ import { Account } from "@accounts/domain/aggregates/Account";
 import { AccountsRepository } from "@accounts/database/AccountsRepository";
 import { CompanyCode } from "@accounts/domain/valueObjects/CompanyCode";
 import { AccountId } from "@accounts/domain/valueObjects/AccountId";
-import { Auth0MgmtApiClient } from "@auth0/auth0-mgmt-api.service";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 import { User } from "@accounts/domain";
 import { Auth0User } from "@auth0/domain/Auth0ExtendedUser";
 

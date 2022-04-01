@@ -195,10 +195,10 @@
 									"const resp = pm.response.json()\r",
 									"\r",
 									"pm.test(`UUID should not be empty`, () => {\r",
-									"    pm.expect(resp.uuid.length).to.be.greaterThan(0)\r",
+									"    pm.expect(resp.id.length).to.be.greaterThan(0)\r",
 									"})\r",
 									"\r",
-									"pm.collectionVariables.set(`productTypeUuid`, resp.uuid)"
+									"pm.collectionVariables.set(`productTypeUuid`, resp.id)"
 								],
 								"type": "text/javascript"
 							}

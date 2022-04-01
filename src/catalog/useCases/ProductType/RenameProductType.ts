@@ -11,7 +11,7 @@ import { ProductType } from "@catalog/domain/aggregates/ProductType";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class RenameProductType
-  implements UseCase<{ uuid: UUID; name: string }, ProductType>
+  implements UseCase<{ id: UUID; name: string }, ProductType>
 {
   constructor(
     private eventEmitter: EventEmitter2,
@@ -22,13 +22,10 @@ export class RenameProductType
     return `[${moment()}][${RenameProductType.name}]`;
   }
 
-  async execute(dto: {
-    uuid: UUID;
-    name: string;
-  }): Promise<Result<ProductType>> {
+  async execute(dto: { id: UUID; name: string }): Promise<Result<ProductType>> {
     this.logger.log(`${this.llog} Loading productType...`);
     try {
-      let result = await this._repo.load(dto.uuid);
+      let result = await this._repo.load(dto.id);
       if (result.isFailure) {
         //TODO: EntityNotFound:ProductType
         return Result.fail(result.error);
