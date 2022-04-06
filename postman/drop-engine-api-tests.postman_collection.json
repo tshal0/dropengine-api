@@ -928,7 +928,7 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": "/C:/DE/projects/drop-engine-api/postman/products.v1.csv"
+											"src": ".\\products.v1.csv"
 										}
 									]
 								},
@@ -1255,7 +1255,7 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": "/C:/DE/projects/drop-engine-api/postman/variants.v1.csv"
+											"src": ".\\variants.v1.csv"
 										}
 									]
 								},
