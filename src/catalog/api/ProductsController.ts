@@ -40,7 +40,7 @@ export class ProductsQueryDto {
   productTypeId: string;
 }
 
-@Controller("/api/products")
+@Controller("/products")
 export class ProductsController {
   constructor(
     private readonly logger: AzureLoggerService,

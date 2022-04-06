@@ -72,12 +72,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/api/users",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/users",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"users"
 									]
 								}
@@ -103,12 +104,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/users/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/users/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"users",
 										":id"
 									],
@@ -141,12 +143,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/users",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/users",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"users"
 									]
 								}
@@ -234,12 +237,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/api/accounts",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"accounts"
 									]
 								}
@@ -282,12 +286,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/api/accounts/:id/stores",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id/stores",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"accounts",
 										":id",
 										"stores"
@@ -327,12 +332,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/accounts/:id/stores/:storeId",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id/stores/:storeId",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"accounts",
 										":id",
 										"stores",
@@ -378,12 +384,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/accounts/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"accounts",
 										":id"
 									],
@@ -416,12 +423,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/accounts",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"accounts"
 									]
 								}
@@ -477,12 +485,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/api/users",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/users",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"users"
 									]
 								}
@@ -534,12 +543,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/api/accounts/:id/members",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id/members",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"accounts",
 										":id",
 										"members"
@@ -583,12 +593,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/accounts/:id/members/:userId",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id/members/:userId",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"accounts",
 										":id",
 										"members",
@@ -627,12 +638,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/accounts/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"accounts",
 										":id"
 									],
@@ -665,12 +677,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/users/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/users/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"users",
 										":id"
 									],
@@ -730,12 +743,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/api/productTypes",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"productTypes"
 									]
 								}
@@ -864,12 +878,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/productTypes/:uuid",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes/:uuid",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"productTypes",
 										":uuid"
 									],
@@ -913,17 +928,18 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": ".\\products.v1.csv"
+											"src": "/C:/DE/projects/drop-engine-api/postman/products.v1.csv"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{base_url}}/api/products/import",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/products/import",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"products",
 										"import"
 									]
@@ -1193,12 +1209,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/products?productTypeId={{productTypeUuid}}",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/products?productTypeId={{productTypeUuid}}",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"products"
 									],
 									"query": [
@@ -1238,17 +1255,18 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": ".\\variants.v1.csv"
+											"src": "/C:/DE/projects/drop-engine-api/postman/variants.v1.csv"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{base_url}}/api/productVariants/import",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/productVariants/import",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"productVariants",
 										"import"
 									]
@@ -1389,12 +1407,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/productVariants",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/productVariants",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"productVariants"
 									]
 								}
@@ -1420,12 +1439,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/api/productTypes/:uuid",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes/:uuid",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"api",
+										"{{prefix}}",
+										"{{version}}",
 										"productTypes",
 										":uuid"
 									],
@@ -1442,8 +1462,310 @@
 					]
 				},
 				{
-					"name": "AccountCreation",
-					"item": []
+					"name": "PlaceOrder",
+					"item": [
+						{
+							"name": "Setup",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Create User\r",
+											"// Create Account\r",
+											"// Add Store\r",
+											"// Get Account\r",
+											"const token = pm.collectionVariables.get(\"auth0_access_token\")\r",
+											"const hostUrl = pm.collectionVariables.get(\"base_url\")\r",
+											"const prefix = pm.collectionVariables.get(\"prefix\")\r",
+											"const version = pm.collectionVariables.get(\"version\")\r",
+											"const baseUrl = `${hostUrl}/${prefix}/${version}`\r",
+											"const createUserUrl = `${baseUrl}/users`\r",
+											"const createAccountUrl = `${baseUrl}/accounts`\r",
+											"const addStoreUrl = `${baseUrl}/accounts/{{accountId}}/stores`\r",
+											"\r",
+											"const placeOrderVariables = {\r",
+											"    userId: \"\",\r",
+											"    accountId: \"\",\r",
+											"    storeId: \"\",\r",
+											"}\r",
+											"const headers = { 'content-type': 'application/json', 'Authorization': `Bearer ${token}` }\r",
+											"const createUserPayload = {\r",
+											"    \"email\": \"test@sample.com\",\r",
+											"    \"firstName\": \"Test\",\r",
+											"    \"lastName\": \"Sample\",\r",
+											"    \"password\": \"password123!\",\r",
+											"    \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14GhKJE3lkI5CMtaZH6J1MQVd7Hbp5-MxcwwmQCQl=s96-c\"\r",
+											"}\r",
+											"\r",
+											"const createUserOptions = {\r",
+											"    url: createUserUrl,\r",
+											"    method: 'POST',\r",
+											"    header: headers,\r",
+											"    body: {\r",
+											"        mode: 'raw',\r",
+											"        raw: JSON.stringify(createUserPayload)\r",
+											"    }\r",
+											"};\r",
+											"\r",
+											"\r",
+											"pm.sendRequest(createUserOptions, function (err, response) {\r",
+											"    const resp = response.json()\r",
+											"    const userId = resp.id;\r",
+											"    placeOrderVariables.userId = userId;\r",
+											"    pm.collectionVariables.set(`placeOrder_userId`, userId)\r",
+											"    const createAccountPayload = {\r",
+											"        \"name\": \"Test Account\",\r",
+											"        \"companyCode\": \"TEST_ACCOUNT\",\r",
+											"        \"ownerId\": userId,\r",
+											"        \"defaultStoreName\": \"Store 1\"\r",
+											"    }\r",
+											"    const createAccountOptions = {\r",
+											"        url: createAccountUrl,\r",
+											"        method: 'POST',\r",
+											"        header: headers,\r",
+											"        body: {\r",
+											"            mode: 'raw',\r",
+											"            raw: JSON.stringify(createAccountPayload)\r",
+											"        }\r",
+											"    };\r",
+											"    pm.sendRequest(createAccountOptions, function (err, response) {\r",
+											"        const resp = response.json()\r",
+											"        const accountId = resp.id;\r",
+											"        placeOrderVariables.accountId = accountId;\r",
+											"        pm.collectionVariables.set(`placeOrder_accountId`, accountId)\r",
+											"\r",
+											"    });\r",
+											"\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"accounts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{placeOrder_accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "QueryOrders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"const sample = {\r",
+											"    \"total\": 0,\r",
+											"    \"page\": 0,\r",
+											"    \"pages\": 0,\r",
+											"    \"size\": 100,\r",
+											"    \"options\": [],\r",
+											"    \"data\": []\r",
+											"}\r",
+											"\r",
+											"pm.test(`QueryOrders response should match expected response`, () => {\r",
+											"    pm.expect(resp).to.deep.include(sample)\r",
+											"})\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/orders?page=0&size=100",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteOrder",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"const sample = {\r",
+											"    \"id\": \"test\",\r",
+											"    \"message\": \"SalesOrder 'test' has been deleted.\",\r",
+											"}\r",
+											"\r",
+											"pm.test(`DeleteOrder 'test' response should match expected response`, () => {\r",
+											"    pm.expect(resp).to.deep.include(sample)\r",
+											"})\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/orders/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"orders",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "test"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteAccount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DeleteAccount Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"accounts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{placeOrder_accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteUser",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DeleteUser Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/users/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{placeOrder_userId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -1453,12 +1775,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/api/",
+					"raw": "{{base_url}}/{{prefix}}/{{version}}/",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"api",
+						"{{prefix}}",
+						"{{version}}",
 						""
 					]
 				}
@@ -1622,6 +1945,24 @@
 			"key": "storeName",
 			"value": "Test Store 1",
 			"type": "string"
+		},
+		{
+			"key": "prefix",
+			"value": "api",
+			"type": "string"
+		},
+		{
+			"key": "version",
+			"value": "v1",
+			"type": "string"
+		},
+		{
+			"key": "placeOrder_userId",
+			"value": ""
+		},
+		{
+			"key": "placeOrder_accountId",
+			"value": ""
 		}
 	]
 }

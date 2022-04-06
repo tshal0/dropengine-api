@@ -20,7 +20,7 @@ import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.se
 import { CreateUserDto } from "../dto/CreateUserDto";
 import { CreateUserUseCase } from "../useCases/User/CreateUser";
 
-@Controller("/api/users")
+@Controller("/users")
 export class UsersController {
   constructor(
     private readonly createUser: CreateUserUseCase,

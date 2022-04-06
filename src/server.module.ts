@@ -17,6 +17,7 @@ import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { CatalogModule } from "./catalog/catalog.module";
 import { Auth0Module } from "@auth0/auth0.module";
 import { AccountsModule } from "./accounts/accounts.module";
+import { SalesModule } from './sales/sales.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { AccountsModule } from "./accounts/accounts.module";
     AccountsModule,
     ShopifyModule,
     CatalogModule,
+    SalesModule,
   ],
 })
 export class ServerModule {}

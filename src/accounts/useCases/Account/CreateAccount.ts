@@ -10,10 +10,10 @@ import { Result, ResultError } from "@shared/domain/Result";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 import { Account } from "../../domain/aggregates/Account";
 import { User } from "@accounts/domain";
 import { AccountsRepository } from "@accounts/database/AccountsRepository";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateAccountUseCase implements UseCase<CreateAccountApiDto, any> {
@@ -35,6 +35,7 @@ export class CreateAccountUseCase implements UseCase<CreateAccountApiDto, any> {
       let owner = User.fromAuth0User(resp);
 
       let createDto: CreateAccountDto = {
+        id: dto.id,
         name: dto.name,
         companyCode: dto.companyCode,
         owner: owner.props(),

@@ -127,6 +127,9 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
   public static create(dto: CreateAccountDto): Result<Account> {
     // Validate DTO
     let results = {
+      id: dto.id
+        ? AccountId.from(dto.id)
+        : AccountId.from(AccountId.generate()),
       companyCode: CompanyCode.from(dto.companyCode),
     };
     // Errors
@@ -147,7 +150,7 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
     const now = moment().toDate();
     // Props
     const props: IAccount = {
-      id: undefined,
+      id: results.id.value(),
       name: dto.name,
       ownerId: User.from(dto.owner).props().id,
       companyCode: results.companyCode.value(),
@@ -159,7 +162,7 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
     // DBEntity
     const dbe: DbAccount = new DbAccount();
 
-    dbe.id = AccountId.generate().value();
+    dbe.id = props.id.value();
     dbe.name = props.name;
     dbe.ownerId = props.ownerId;
     dbe.companyCode = props.companyCode.value();

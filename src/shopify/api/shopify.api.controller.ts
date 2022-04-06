@@ -28,7 +28,7 @@ export class ConnectShopifyQuery {
   timestamp?: number | undefined;
 }
 
-@Controller("api/shopify")
+@Controller("shopify")
 export class ShopifyApiController {
   constructor(
     private readonly shopify: ShopifyApiClient,

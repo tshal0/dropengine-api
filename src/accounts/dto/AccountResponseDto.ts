@@ -5,6 +5,14 @@ export interface IAccountStoreDto {
   id: string;
   name: string;
 }
+export interface IAccountResponseDto {
+  id: string;
+  name: string;
+  ownerId: string;
+  companyCode: string;
+  members: AccountMemberDto[];
+  stores: IAccountStoreDto[];
+}
 export class AccountStoreDto {
   constructor(props: any) {}
 }
@@ -23,14 +31,7 @@ export class AccountMemberDto {
   permissions: string[];
   lastLogin: Date;
 }
-export interface IAccountResponseDto {
-  id: string;
-  name: string;
-  ownerId: string;
-  companyCode: string;
-  members: AccountMemberDto[];
-  stores: IAccountStoreDto[];
-}
+
 export class AccountResponseDto {
   private _props: IAccountResponseDto;
   protected constructor(props: IAccountResponseDto) {

@@ -26,7 +26,7 @@ import {
 } from "@accounts/dto/StoreResponseDto";
 import { CreateStoreDto } from "@accounts/dto/CreateStoreDto";
 
-@Controller("/api/stores")
+@Controller("/stores")
 export class StoresController {
   constructor(
     private readonly logger: AzureLoggerService,

@@ -2,6 +2,7 @@ import { IUser } from "@accounts/domain/interfaces/IUser";
 import { User } from "../domain/aggregates";
 
 export class CreateAccountApiDto {
+  id?: string | undefined;
   name: string;
   companyCode: string;
   ownerId: string;
@@ -10,6 +11,7 @@ export class CreateAccountApiDto {
 }
 
 export class CreateAccountDto {
+  id?: string | undefined;
   name: string;
   companyCode: string;
   owner: IUser;

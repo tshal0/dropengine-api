@@ -40,7 +40,7 @@ import { Readable } from "stream";
 import { VariantQueryTransformPipe } from "@catalog/middleware";
 import { VariantQueryDto } from "@catalog/dto";
 
-@Controller("/api/productVariants")
+@Controller("/productVariants")
 export class ProductVariantsController {
   constructor(
     private readonly logger: AzureLoggerService,

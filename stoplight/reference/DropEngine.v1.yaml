@@ -277,24 +277,6 @@ paths:
           $ref: '#/components/responses/ImportVariantsResponseDto'
       description: ''
     parameters: []
-  '/productVariants/{id}':
-    get:
-      summary: Get ProductVariant
-      tags: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductVariant'
-      operationId: get-productVariants
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
 components:
   schemas:
     User:

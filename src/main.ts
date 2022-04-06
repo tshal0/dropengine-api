@@ -4,6 +4,7 @@ import {
   VERSION_NEUTRAL,
   ValidationPipe,
   BadRequestException,
+  RequestMethod,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
@@ -11,6 +12,7 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { ValidationError } from "class-validator";
 import { ServerModule } from "./server.module";
+import { Versions } from "./shared";
 async function bootstrap() {
   const app = await NestFactory.create(ServerModule);
   app.enableCors();
@@ -18,7 +20,7 @@ async function bootstrap() {
   const config_service = app.get<ConfigService>(ConfigService);
 
   app.useLogger(await app.resolve(AzureLoggerService));
-  
+
   const logger = await app.resolve<AzureLoggerService>(AzureLoggerService);
   logger.debug(`POSTGRES_DB: ${process.env.POSTGRES_DB}`);
   logger.debug(`POSTGRES_USER: ${process.env.POSTGRES_USER}`);
@@ -31,7 +33,7 @@ async function bootstrap() {
 
   app.enableVersioning({
     type: VersioningType.URI,
-    defaultVersion: VERSION_NEUTRAL,
+    defaultVersion: Versions.v1,
   });
   // app.useGlobalFilters(new AllExceptionsFilter(logger));
   app.useGlobalPipes(
@@ -55,8 +57,14 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config, {
     ignoreGlobalPrefix: true,
   });
-  SwaggerModule.setup("swagger", app, document);
-
+  SwaggerModule.setup("api/docs", app, document);
+  app.setGlobalPrefix("api", {
+    exclude: [
+      { path: "", method: RequestMethod.GET },
+      { path: "/", method: RequestMethod.GET },
+      { path: "/api/docs", method: RequestMethod.GET },
+    ],
+  });
   const port = config_service.get("PORT");
   await app.listen(`${Number(port)}`);
 

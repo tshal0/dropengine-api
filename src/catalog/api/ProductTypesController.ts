@@ -23,7 +23,7 @@ import {
 } from "@catalog/useCases";
 
 
-@Controller("/api/productTypes")
+@Controller("/productTypes")
 export class ProductTypesController {
   constructor(
     private readonly logger: AzureLoggerService,

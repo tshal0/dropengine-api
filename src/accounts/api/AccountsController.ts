@@ -30,15 +30,9 @@ import { User } from "@accounts/domain";
 import { Account } from "@accounts/domain/aggregates/Account";
 import { AddStoreUseCase } from "@accounts/useCases/Store/AddStore";
 import { RemoveStoreUseCase } from "@accounts/useCases/Account/RemoveStore";
-import { StoreId } from "@accounts/domain/valueObjects/StoreId";
 import { CreateStoreDto } from "@accounts/dto/CreateStoreDto";
-import {
-  IStoreResponseDto,
-  StoreResponseDto,
-} from "@accounts/dto/StoreResponseDto";
-import { Store } from "@accounts/domain/aggregates/Store";
 
-@Controller("/api/accounts")
+@Controller("/accounts")
 export class AccountsController {
   constructor(
     private readonly logger: AzureLoggerService,

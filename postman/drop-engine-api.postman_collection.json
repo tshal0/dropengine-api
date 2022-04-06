@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e9ae99d1-8098-4666-93d2-f992c9ca1004",
+		"_postman_id": "ef1f555b-256d-4b42-91d4-50c1b31afc71",
 		"name": "drop-engine-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,12 +14,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/users/:id",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/users/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"users",
 								":id"
 							],
@@ -39,13 +40,13 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/v2/users/:id/activate",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/users/:id/activate",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
-								"v2",
+								"{{prefix}}",
+								"{{version}}",
 								"users",
 								":id",
 								"activate"
@@ -75,12 +76,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/users",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/users",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"users"
 							]
 						}
@@ -93,12 +95,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/users/:id",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/users/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"users",
 								":id"
 							],
@@ -118,12 +121,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/users?email=thomas@valknot.co",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/users?email=thomas@valknot.co",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"users"
 							],
 							"query": [
@@ -142,12 +146,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/users",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/users",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"users"
 							]
 						}
@@ -165,12 +170,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/productTypes/:id",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productTypes",
 								":id"
 							],
@@ -217,11 +223,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/productTypes",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/api/productTypes",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"{{prefix}}",
+								"{{version}}",
 								"api",
 								"productTypes"
 							]
@@ -235,12 +243,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/productTypes/:id",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productTypes",
 								":id"
 							],
@@ -260,13 +269,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/v2/productTypes?id=1",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes?id=1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
-								"v2",
+								"{{prefix}}",
+								"{{version}}",
 								"productTypes"
 							],
 							"query": [
@@ -285,12 +294,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/productTypes",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productTypes"
 							]
 						}
@@ -312,12 +322,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/productTypes/:id/rename",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes/:id/rename",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productTypes",
 								":id",
 								"rename"
@@ -343,12 +354,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/products/:id",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/products/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"products",
 								":id"
 							],
@@ -377,12 +389,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/products",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/products",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"products"
 							]
 						}
@@ -395,12 +408,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/products/:id",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/products/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"products",
 								":id"
 							],
@@ -420,13 +434,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/v2/products?id=1",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/products?id=1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
-								"v2",
+								"{{prefix}}",
+								"{{version}}",
 								"products"
 							],
 							"query": [
@@ -455,12 +469,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/products?page=0&size=100&productTypeId={{productTypeId}}",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/products?page=0&size=100&productTypeId={{productTypeId}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"products"
 							],
 							"query": [
@@ -496,12 +511,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/productTypes/:id/rename",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes/:id/rename",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productTypes",
 								":id",
 								"rename"
@@ -520,7 +536,18 @@
 					"name": "UpdateCustomOptions",
 					"request": {
 						"method": "PATCH",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"{{version}}",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -540,12 +567,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/api/products/import",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/products/import",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"products",
 								"import"
 							]
@@ -564,12 +592,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/shopify?shop=de-template-local&timestamp={{$timestamp}}",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/shopify?shop=de-template-local&timestamp={{$timestamp}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"shopify"
 							],
 							"query": [
@@ -592,12 +621,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/shopify/accept",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/shopify/accept",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"shopify",
 								"accept"
 							]
@@ -611,12 +641,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/shopify/:id",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/shopify/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"shopify",
 								":id"
 							],
@@ -636,12 +667,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/shopify",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/shopify",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"shopify"
 							]
 						}
@@ -654,12 +686,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/shopify/:id",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/shopify/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"shopify",
 								":id"
 							],
@@ -693,12 +726,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/productVariants",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productVariants",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productVariants"
 							]
 						}
@@ -711,12 +745,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/productVariants/:id",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productVariants/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productVariants",
 								":id"
 							],
@@ -736,12 +771,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/productVariants/:uuid",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productVariants/:uuid",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productVariants",
 								":uuid"
 							],
@@ -761,12 +797,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/productVariants/:id",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productVariants/:id",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productVariants",
 								":id"
 							],
@@ -786,12 +823,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/productVariants/MEM-000-01-12-Black",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productVariants/MEM-000-01-12-Black",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productVariants",
 								"MEM-000-01-12-Black"
 							]
@@ -815,12 +853,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/api/productVariants/import",
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/productVariants/import",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"api",
+								"{{prefix}}",
+								"{{version}}",
 								"productVariants",
 								"import"
 							]
@@ -950,6 +989,16 @@
 		{
 			"key": "productTypeUuid",
 			"value": ""
+		},
+		{
+			"key": "prefix",
+			"value": "api",
+			"type": "string"
+		},
+		{
+			"key": "version",
+			"value": "v1",
+			"type": "string"
 		}
 	]
 }

@@ -7,8 +7,8 @@ import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { Auth0User } from "@auth0/domain/Auth0ExtendedUser";
-import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 import { User } from "@accounts/domain";
+import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class GetUserUseCase implements UseCase<string, User> {
