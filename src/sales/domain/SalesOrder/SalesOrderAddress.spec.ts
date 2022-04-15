@@ -19,7 +19,6 @@ describe("SalesOrderAddress", () => {
       let result = await SalesOrderAddress.from(mock);
       expect(result.isFailure).toBe(true);
       const error = result.error;
-      console.log(JSON.stringify(error, null, 2));
       const expected = {
         inner: [],
         value: null,

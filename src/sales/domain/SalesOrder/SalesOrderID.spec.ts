@@ -7,7 +7,6 @@ describe("SalesOrderID", () => {
       const result = SalesOrderID.from(oid);
       expect(result.isFailure).toBe(false);
       const v = result.value();
-      console.log(v.value());
       expect(v.value()).toEqual("00000000515bd494ed80cfbd");
     });
   });
@@ -17,7 +16,6 @@ describe("SalesOrderID", () => {
       const result = SalesOrderID.from(oid);
       expect(result.isFailure).toBe(false);
       const v = result.value();
-      console.log(v.value());
       expect(v.value()).toEqual("00000000515bd494ed80cfbd");
     });
   });
@@ -27,7 +25,6 @@ describe("SalesOrderID", () => {
       const result = SalesOrderID.from(oid);
       expect(result.isFailure).toBe(false);
       const v = result.value();
-      console.log(v.value());
       expect(v.value()).toEqual(null);
     });
   });

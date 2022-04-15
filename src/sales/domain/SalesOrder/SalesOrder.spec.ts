@@ -67,9 +67,7 @@ describe("SalesOrder", () => {
         );
 
         let result = await SalesOrder.create(createOrderDto);
-        if (result.isFailure) {
-          console.log(JSON.stringify(result.error, null, 2));
-        }
+      
         expect(result.isFailure).toBe(false);
         let order = result.value();
 
@@ -158,7 +156,6 @@ describe("SalesOrder", () => {
         let result = await SalesOrder.create(createOrderDto);
         expect(result.isFailure).toBe(true);
         const error = result.error;
-        console.log(JSON.stringify(error, null, 2));
         const expected = {
           inner: [
             {
@@ -295,7 +292,6 @@ describe("SalesOrder", () => {
         const props = order.props();
         const entity = order.entity();
         const value = order.value();
-        console.log(JSON.stringify(props, null, 2));
         const expected = {
           id: orderId,
           accountId: mockUuid1,
@@ -508,7 +504,6 @@ describe("SalesOrder", () => {
         const result = await SalesOrder.load(mock);
         expect(result.isFailure).toBe(true);
         const error = result.error;
-        console.log(JSON.stringify(error, null, 2));
         const expected = {
           inner: [
             {

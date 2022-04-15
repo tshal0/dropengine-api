@@ -56,7 +56,7 @@ export interface ShopifyAccountInstallProps {
 export class ShopifyAccountInstall {
   protected _props: ShopifyAccountInstallProps;
   private constructor(props: ShopifyAccountInstallProps) {
-    this._props= props;
+    this._props = props;
   }
 
   get status() {
@@ -114,9 +114,7 @@ export class ShopifyAccountInstall {
     };
     return props;
   }
-  public static fromDb(
-    dbInstall: any
-  ): ShopifyAccountInstall {
+  public static fromDb(dbInstall: any): ShopifyAccountInstall {
     try {
       const props: ShopifyAccountInstallProps = {
         id: UUID.from(dbInstall.id).value(),
@@ -138,7 +136,6 @@ export class ShopifyAccountInstall {
       const install = new ShopifyAccountInstall(props);
       return install;
     } catch (error) {
-      console.log(error);
       throw new UnprocessableEntityException(
         `Unable To Load ShopifyAccount From Db`
       );

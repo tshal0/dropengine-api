@@ -124,7 +124,6 @@ describe("Money", () => {
         let moneyString = "12.50";
         let currency = "USD";
         let result = Money.fromString(moneyString, currency);
-        console.log(result);
         expect(result.isFailure).toBe(false);
         let value = result.value().value();
         expect(value).toMatchObject({ currency: "USD", total: 1250 });
@@ -134,7 +133,6 @@ describe("Money", () => {
       describe("empty string", () => {
         it(`should return InvalidMoneyTotal`, () => {
           let result = Money.fromString("", "USD");
-          console.log(result);
           expect(result.isFailure).toBe(true);
           let err = result.error;
           expect(err).toEqual({
@@ -150,7 +148,6 @@ describe("Money", () => {
       describe("null", () => {
         it(`should return InvalidMoneyTotal`, () => {
           let result = Money.fromString(null, "USD");
-          console.log(result);
           expect(result.isFailure).toBe(true);
           let err = result.error;
           expect(err).toEqual({

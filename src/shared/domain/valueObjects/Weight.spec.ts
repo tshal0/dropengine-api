@@ -31,7 +31,6 @@ describe("Weight", () => {
     it(`should return InvalidWeight: Not a number.`, () => {
       let dto: IWeight = { units: "g", dimension: "" as unknown as number };
       let result = Weight.from(dto);
-      console.log(result);
       expect(result.isFailure).toBe(true);
       let err = result.error;
       expect(err).toEqual({

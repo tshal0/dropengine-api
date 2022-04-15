@@ -6,9 +6,7 @@ describe("VariantSKU", () => {
       let skuString = "MEM-001-01-12-Black";
       let skuResult = VariantSKU.from(skuString);
 
-      if (skuResult.isFailure) {
-        console.log(skuResult);
-      }
+    
       expect(skuResult.isFailure).toBe(false);
       let sku = skuResult.value().value();
       expect(sku).toEqual(skuString);
@@ -20,9 +18,7 @@ describe("VariantSKU", () => {
         let skuString = null;
         let skuResult = VariantSKU.from(skuString);
 
-        if (skuResult.isSuccess) {
-          console.log(skuResult);
-        }
+       
         expect(skuResult.isFailure).toBe(true);
         let error = skuResult.error;
         expect(error).toEqual({
@@ -38,9 +34,7 @@ describe("VariantSKU", () => {
         let skuString = undefined;
         let skuResult = VariantSKU.from(skuString);
 
-        if (skuResult.isSuccess) {
-          console.log(skuResult);
-        }
+        
         expect(skuResult.isFailure).toBe(true);
         let error = skuResult.error;
         expect(error).toEqual({
@@ -56,9 +50,7 @@ describe("VariantSKU", () => {
         let skuString = "";
         let skuResult = VariantSKU.from(skuString);
 
-        if (skuResult.isSuccess) {
-          console.log(skuResult);
-        }
+       
         expect(skuResult.isFailure).toBe(true);
         let error = skuResult.error;
         expect(error).toEqual({
@@ -74,9 +66,7 @@ describe("VariantSKU", () => {
         let skuString = "MEM-000-01";
         let skuResult = VariantSKU.from(skuString);
 
-        if (skuResult.isSuccess) {
-          console.log(skuResult);
-        }
+       
         expect(skuResult.isFailure).toBe(true);
         let error = skuResult.error;
         expect(error).toEqual({

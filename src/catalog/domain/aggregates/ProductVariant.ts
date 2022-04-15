@@ -26,7 +26,7 @@ import {
   VariantSKU,
 } from "..";
 import { VariantOption } from "../valueObjects/ProductVariant/VariantOption";
-import { cloneDeep, toLower } from "lodash";
+import { cloneDeep, compact, toLower } from "lodash";
 import { DbProductVariant } from "../entities/ProductVariant.entity";
 import { ProductVariantUUID } from "../valueObjects/ProductVariant/VariantUUID";
 
@@ -283,7 +283,7 @@ export class ProductVariant extends IAggregate<
    * @returns
    */
   public static create(dto: CreateProductVariantDto): Result<ProductVariant> {
-    // Validate DTO
+    // TODO: Validate DTO, ProductType, Options
     const pt = dto.productType;
     console.debug(
       JSON.stringify({
@@ -303,7 +303,7 @@ export class ProductVariant extends IAggregate<
     if (productTypeOption3?.length && !dto.option3.name?.length)
       dto.option3.name = productTypeOption3;
 
-    const dtoOptions = [dto.option1, dto.option2, dto.option3].reduce(
+    const dtoOptions = compact([dto.option1, dto.option2, dto.option3]).reduce(
       (map, n) => ((map[toLower(n.name)] = n.option), map),
       {} as { [key: string]: string }
     );

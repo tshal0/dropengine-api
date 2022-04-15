@@ -1,7 +1,11 @@
 import { UUID } from "@shared/domain/valueObjects";
 import moment from "moment";
 import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProductVariantDto";
-import { IProductVariant, IProductVariantProps } from "../interfaces";
+import {
+  IProductTypeProps,
+  IProductVariant,
+  IProductVariantProps,
+} from "../interfaces";
 import { ProductVariant } from "./ProductVariant";
 import { ProductVariantUUID } from "../valueObjects/ProductVariant/VariantUUID";
 jest
@@ -22,12 +26,40 @@ describe(`ProductVariant`, () => {
 
   describe("create", () => {
     describe("with a valid DTO", () => {
+      const pt: IProductTypeProps = {
+        id: mockUuid,
+        name: "2DMetalArt",
+        productionData: { material: "", route: "", thickness: "" },
+        option1: {
+          name: "Size",
+          values: [
+            { enabled: true, name: "Size", value: "12" },
+            { enabled: true, name: "Size", value: "15" },
+            { enabled: true, name: "Size", value: "18" },
+            { enabled: true, name: "Size", value: "24" },
+          ],
+        },
+        option2: {
+          name: "Color",
+          values: [
+            { enabled: true, name: "Color", value: "Black" },
+            { enabled: true, name: "Color", value: "Silver" },
+            { enabled: true, name: "Color", value: "Copper" },
+            { enabled: true, name: "Color", value: "Gold" },
+          ],
+        },
+        option3: { name: null, values: null },
+        livePreview: undefined,
+        products: [],
+        updatedAt: undefined,
+        createdAt: undefined,
+      };
       const dto: CreateProductVariantDto = {
         sku: "MEM-000-01-12-Black",
         image: "img",
         option1: { name: "Color", option: "Black", enabled: true },
         option2: { name: "Size", option: "12", enabled: true },
-        option3: null,
+        option3: { name: null, enabled: false, option: null },
         height: { dimension: 30, units: "in" },
         width: { dimension: 15, units: "in" },
         weight: { dimension: 120, units: "oz" },
@@ -36,6 +68,7 @@ describe(`ProductVariant`, () => {
         manufacturingCost: { total: 11, currency: "USD" },
         shippingCost: { total: 11, currency: "USD" },
         productId: undefined,
+        productType: pt,
       };
       it(`should generate a valid ProductVariant`, () => {
         ProductVariant.generateUuid = mockGenerateProdId;
@@ -47,13 +80,13 @@ describe(`ProductVariant`, () => {
           sku: "MEM-000-01-12-Black",
           image: "img",
           option1: {
-            name: "Color",
-            option: "Black",
+            name: "Size",
+            option: "12",
             enabled: true,
           },
           option2: {
-            name: "Size",
-            option: "12",
+            name: "Color",
+            option: "Black",
             enabled: true,
           },
           option3: {

@@ -121,7 +121,6 @@ export class ShopifyAccount {
       const account = new ShopifyAccount(props);
       return account;
     } catch (error) {
-      console.log(error);
       throw new UnprocessableEntityException(
         `Unable To Load ShopifyAccount From Db`
       );
