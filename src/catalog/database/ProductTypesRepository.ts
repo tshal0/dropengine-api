@@ -41,12 +41,13 @@ export class ProductTypesRepository {
   }
 
   public async delete(uuid: UUID): Promise<Result<void>> {
+    this.logger.debug(`${this.llog} Deleting ProductType '${uuid.value()}'`);
     let repo = this.em.getRepository(DbProductType);
 
     let mp = await repo.findOne(uuid.value());
     if (mp == null) {
       //TODO: ProductTypeNotFound
-      return Result.fail();
+      return Result.ok();
     }
     try {
       if (!mp.products.isInitialized()) {

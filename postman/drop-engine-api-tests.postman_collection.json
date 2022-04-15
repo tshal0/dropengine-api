@@ -928,7 +928,7 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": ".\\products.v1.csv"
+											"src": ".//products.v1.csv"
 										}
 									]
 								},
@@ -1255,7 +1255,7 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": ".\\variants.v1.csv"
+											"src": ".//variants.v1.csv"
 										}
 									]
 								},
@@ -1595,14 +1595,40 @@
 											"    \"page\": 0,\r",
 											"    \"pages\": 0,\r",
 											"    \"size\": 100,\r",
-											"    \"options\": [],\r",
-											"    \"data\": []\r",
+											"    \"options\": []\r",
 											"}\r",
 											"\r",
 											"pm.test(`QueryOrders response should match expected response`, () => {\r",
 											"    pm.expect(resp).to.deep.include(sample)\r",
 											"})\r",
+											"pm.test(`QueryOrders response should contain 'data' array`, () => {\r",
+											"    pm.expect(resp.data).to.be.an(\"array\")\r",
 											"\r",
+											"})\r",
+											"const sampleOrder = {\r",
+											"    \"id\": \"6259b633276bcf24daa94645\",\r",
+											"    \"orderName\": \"SLI-3838315397200\",\r",
+											"    \"orderStatus\": \"OPEN\",\r",
+											"    \"orderDate\": \"2022-04-15T18:15:15.298Z\",\r",
+											"    \"orderNumber\": 1001,\r",
+											"    \"customer\": {\r",
+											"        \"email\": \"test@example.com\",\r",
+											"        \"name\": \"Test Example\"\r",
+											"    },\r",
+											"    \"shippingAddress\": {},\r",
+											"    \"billingAddress\": {},\r",
+											"    \"lineItems\": []\r",
+											"}\r",
+											"if (resp.data?.length) {\r",
+											"    const order = resp.data[0]\r",
+											"    pm.test(`If QueryOrders returns at least one Order, it should contain valid properties`, () => {\r",
+											"        Object.keys(sampleOrder).forEach(k => {\r",
+											"            pm.test(`QueryOrders > data > '${order.id}' '${order.orderName}' should contain prop '${k}'`, () => {\r",
+											"                pm.expect(order).to.haveOwnProperty(k)\r",
+											"            })\r",
+											"        })\r",
+											"    })\r",
+											"}\r",
 											""
 										],
 										"type": "text/javascript"
@@ -1643,19 +1669,19 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
+											"// pm.test(\"Status code is 200\", function () {\r",
+											"//     pm.response.to.have.status(200);\r",
+											"// });\r",
 											"\r",
-											"const resp = pm.response.json()\r",
-											"const sample = {\r",
-											"    \"id\": \"test\",\r",
-											"    \"message\": \"SalesOrder 'test' has been deleted.\",\r",
-											"}\r",
+											"// const resp = pm.response.json()\r",
+											"// const sample = {\r",
+											"//     \"id\": \"test\",\r",
+											"//     \"message\": \"SalesOrder 'test' has been deleted.\",\r",
+											"// }\r",
 											"\r",
-											"pm.test(`DeleteOrder 'test' response should match expected response`, () => {\r",
-											"    pm.expect(resp).to.deep.include(sample)\r",
-											"})\r",
+											"// pm.test(`DeleteOrder 'test' response should match expected response`, () => {\r",
+											"//     pm.expect(resp).to.deep.include(sample)\r",
+											"// })\r",
 											"\r",
 											""
 										],

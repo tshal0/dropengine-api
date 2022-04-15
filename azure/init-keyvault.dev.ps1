@@ -15,7 +15,7 @@ if ($(az group list --query "[?name=='$rgContainers'] | length(@)") -eq 0)
 Write-Output "################# DEPLOYING AZURE CONTAINER REGISTRY ##################"
 Write-Output "ResourceGroup - Containers    $rgContainers"
 Write-Output "Azure Container Registry:    $acrName"
-az deployment group create --resource-group $rgContainers --template-file .\modules\acr\acr.template.bicep --parameters acrName=$acrName
+# az deployment group create --resource-group $rgContainers --template-file .\modules\acr\acr.template.bicep --parameters acrName=$acrName
 Write-Output "################# FINISHED DEPLOYING AZURE CONTAINER REGISTRY ##################"
 
 if ($(az group list --query "[?name=='$rgService'] | length(@)") -eq 0)

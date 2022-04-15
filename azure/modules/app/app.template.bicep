@@ -92,6 +92,27 @@ param Auth0ResourceServerId string
 @secure()
 param Auth0BasicConnection string
 
+@secure()
+param MyEasySuiteApiUrl string
+@secure()
+param MyEasySuiteAuth0AccessTokenUrl string
+@secure()
+param MyEasySuiteAuth0ClientId string
+@secure()
+param MyEasySuiteAuth0ClientSecret string
+@secure()
+param MyEasySuiteAuth0Audience string
+@secure()
+param MyEasySuiteAuth0GrantType string
+@secure()
+param MyEasySuiteAuth0UserName string
+@secure()
+param MyEasySuiteAuth0UserPassword string
+
+@secure()
+param MongoConnectionString string
+
+
 @description('The client secret for the Auth0 integration')
 @secure()
 param PostgresSSL string
@@ -288,6 +309,42 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
         {
           name: 'AUTH0_BASIC_CONNECTION'
           value: Auth0BasicConnection
+        }
+        {
+          name: 'MES_API_URL'
+          value: MyEasySuiteApiUrl
+        }
+        {
+          name: 'MES_AUTH0_ACCESS_TOKEN_URL'
+          value: MyEasySuiteAuth0AccessTokenUrl
+        }
+        {
+          name: 'MES_AUTH0_CLIENT_ID'
+          value: MyEasySuiteAuth0ClientId
+        }
+        {
+          name: 'MES_AUTH0_CLIENT_SECRET'
+          value: MyEasySuiteAuth0ClientSecret
+        }
+        {
+          name: 'MES_AUTH0_AUDIENCE'
+          value: MyEasySuiteAuth0Audience
+        }
+        {
+          name: 'MES_AUTH0_GRANT_TYPE'
+          value: MyEasySuiteAuth0GrantType
+        }
+        {
+          name: 'MES_AUTH0_USERNAME'
+          value: MyEasySuiteAuth0UserName
+        }
+        {
+          name: 'MES_AUTH0_PASSWORD'
+          value: MyEasySuiteAuth0UserPassword
+        }
+        {
+          name: 'MONGO_CONNECTION_STRING'
+          value: MongoConnectionString
         }
       ]
     }
@@ -544,6 +601,42 @@ resource appSlot1 'Microsoft.Web/sites/slots@2021-02-01' = {
         {
           name: 'AUTH0_BASIC_CONNECTION'
           value: Auth0BasicConnection
+        }
+        {
+          name: 'MES_API_URL'
+          value: MyEasySuiteApiUrl
+        }
+        {
+          name: 'MES_AUTH0_ACCESS_TOKEN_URL'
+          value: MyEasySuiteAuth0AccessTokenUrl
+        }
+        {
+          name: 'MES_AUTH0_CLIENT_ID'
+          value: MyEasySuiteAuth0ClientId
+        }
+        {
+          name: 'MES_AUTH0_CLIENT_SECRET'
+          value: MyEasySuiteAuth0ClientSecret
+        }
+        {
+          name: 'MES_AUTH0_AUDIENCE'
+          value: MyEasySuiteAuth0Audience
+        }
+        {
+          name: 'MES_AUTH0_GRANT_TYPE'
+          value: MyEasySuiteAuth0GrantType
+        }
+        {
+          name: 'MES_AUTH0_USERNAME'
+          value: MyEasySuiteAuth0UserName
+        }
+        {
+          name: 'MES_AUTH0_PASSWORD'
+          value: MyEasySuiteAuth0UserPassword
+        }
+        {
+          name: 'MONGO_CONNECTION_STRING'
+          value: MongoConnectionString
         }
       ]
     }

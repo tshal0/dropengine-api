@@ -177,6 +177,7 @@ export class Product extends IAggregate<IProductProps, IProduct, DbProduct> {
   //TODO: Given ProductVariant, either Add (create), or Update
 
   public importVariant(dto: CreateProductVariantDto): Result<ProductVariant> {
+    dto.productType = this._entity.productType.props();
     let pv = this._value.variants.find(
       (v) => v.sku == dto.sku || v.id == dto.id
     );
@@ -191,7 +192,12 @@ export class Product extends IAggregate<IProductProps, IProduct, DbProduct> {
     const productTypeOption1 = this._entity.productType.option1?.name;
     const productTypeOption2 = this._entity.productType.option2?.name;
     const productTypeOption3 = this._entity.productType.option3?.name;
-
+    if (productTypeOption1?.length && !dto.option1.name?.length)
+      dto.option1.name = productTypeOption1;
+    if (productTypeOption2?.length && !dto.option2.name?.length)
+      dto.option2.name = productTypeOption2;
+    if (productTypeOption3?.length && !dto.option3.name?.length)
+      dto.option3.name = productTypeOption3;
     const dtoOptions = [dto.option1, dto.option2, dto.option3].reduce(
       (map, n) => ((map[toLower(n.name)] = n.option), map),
       {} as { [key: string]: string }

@@ -22,14 +22,8 @@ import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.se
 import { VariantSKU } from "@catalog/domain";
 import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
 import { IProductVariantProps } from "@catalog/domain/interfaces";
-import { IProductProps } from "@catalog/domain/interfaces/IProduct";
-import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
 import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProductVariantDto";
 import {
-  DeleteProduct,
-  GetAllProducts,
-  GetProduct,
-  CreateProduct,
   QueryProductVariants,
 } from "@catalog/useCases";
 import { CreateProductVariant } from "@catalog/useCases/ProductVariant/CreateProductVariant";

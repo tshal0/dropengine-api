@@ -69,11 +69,17 @@ export abstract class MES {
             grantType
           );
           const options = generateTokenRequestOptions(accessTokenUrl, payload);
-          const resp = await requestObject(options);
-
-          accessToken = extractAccessToken(resp);
-          cache.set(MES.MES_AUTH0_ACCESS_TOKEN, accessToken, { ttl: 3600 });
-          log.debug(`New MyEasySuite Access Token Acquired!`);
+          try {
+            accessToken = await loadAccessToken(options, accessToken);
+            cache.set(MES.MES_AUTH0_ACCESS_TOKEN, accessToken, { ttl: 3600 });
+            log.debug(`New MyEasySuite Access Token Acquired!`);
+          } catch (error) {
+            accessToken = "TOKEN_FAILED_TO_LOAD";
+            cache.set(MES.MES_AUTH0_ACCESS_TOKEN, accessToken, {
+              ttl: 3600,
+            });
+            log.error(`New MyEasySuite Access Token Failed To Load.`);
+          }
         }
         const myEasySuiteHeaders = {
           Authorization: `Bearer ${accessToken}`,
@@ -143,6 +149,30 @@ export class MyEasySuiteModule implements OnModuleInit {
     return `${config.method.toUpperCase()} ${config.url} ${duration}ms`;
   }
 }
+async function loadAccessToken(
+  options: {
+    method: string;
+    url: any;
+    headers: { "content-type": string };
+    body: {
+      client_id: any;
+      client_secret: any;
+      audience: any;
+      scope: string;
+      username: any;
+      password: any;
+      grant_type: any;
+    };
+    json: boolean;
+  },
+  accessToken: any
+) {
+  const resp = await requestObject(options);
+
+  accessToken = extractAccessToken(resp);
+  return accessToken;
+}
+
 function extractAccessToken(resp: {
   code: number;
   object: { access_token: string };

@@ -17,6 +17,7 @@ import {
   ICustomOption,
   ICustomOptionProps,
   IProductTypeProductionData,
+  IProductTypeProps,
   IVariantOption,
   Product,
   ProductImage,
@@ -134,11 +135,18 @@ export class ProductVariant extends IAggregate<
   // Domain methods
 
   public update(dto: CreateProductVariantDto): Result<ProductVariant> {
-    const pt = this._entity.product.props(1).productType;
+    const pt = dto.productType ?? this._entity.product.productType;
 
     const productTypeOption1 = pt.option1?.name;
     const productTypeOption2 = pt.option2?.name;
     const productTypeOption3 = pt.option3?.name;
+
+    if (productTypeOption1?.length && !dto.option1.name?.length)
+      dto.option1.name = productTypeOption1;
+    if (productTypeOption2?.length && !dto.option2.name?.length)
+      dto.option2.name = productTypeOption2;
+    if (productTypeOption3?.length && !dto.option3.name?.length)
+      dto.option3.name = productTypeOption3;
 
     const dtoOptions = [dto.option1, dto.option2, dto.option3].reduce(
       (map, n) => ((map[toLower(n.name)] = n.option), map),
@@ -276,11 +284,55 @@ export class ProductVariant extends IAggregate<
    */
   public static create(dto: CreateProductVariantDto): Result<ProductVariant> {
     // Validate DTO
+    const pt = dto.productType;
+    console.debug(
+      JSON.stringify({
+        option1: dto.option1,
+        option2: dto.option2,
+        option3: dto.option3,
+      })
+    );
+    const productTypeOption1 = pt.option1?.name;
+    const productTypeOption2 = pt.option2?.name;
+    const productTypeOption3 = pt.option3?.name;
 
-    // const pt = dto.productType;
-    // dto.option1.name = pt.option1.name;
-    // dto.option2.name = pt.option2.name;
-    // dto.option3.name = pt.option3?.name;
+    if (productTypeOption1?.length && !dto.option1.name?.length)
+      dto.option1.name = productTypeOption1;
+    if (productTypeOption2?.length && !dto.option2.name?.length)
+      dto.option2.name = productTypeOption2;
+    if (productTypeOption3?.length && !dto.option3.name?.length)
+      dto.option3.name = productTypeOption3;
+
+    const dtoOptions = [dto.option1, dto.option2, dto.option3].reduce(
+      (map, n) => ((map[toLower(n.name)] = n.option), map),
+      {} as { [key: string]: string }
+    );
+    const optionNames = [
+      productTypeOption1,
+      productTypeOption2,
+      productTypeOption3,
+    ];
+    const optionMap = optionNames.reduce(
+      (map, n) => ((map[toLower(n)] = n), map),
+      {} as { [key: string]: string }
+    );
+    Object.keys(optionMap).forEach((k) => {
+      optionMap[k] = dtoOptions[k];
+    });
+
+    dto.option1.name = productTypeOption1;
+    dto.option1.option = optionMap[toLower(productTypeOption1)];
+    dto.option2.name = productTypeOption2;
+    dto.option2.option = optionMap[toLower(productTypeOption2)];
+    dto.option3.name = productTypeOption3;
+    dto.option3.option = optionMap[toLower(productTypeOption3)];
+    console.log({
+      option1: dto.option1,
+      option2: dto.option2,
+      option3: dto.option3,
+      optionMap,
+      dtoOptions,
+    });
 
     let results = {
       uuid: dto.id
