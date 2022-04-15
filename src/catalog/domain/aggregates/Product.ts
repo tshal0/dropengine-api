@@ -12,7 +12,7 @@ import { IAggregate } from "@shared/domain/IAggregate";
 import { ProductVariant } from "./ProductVariant";
 import { CustomOption } from "../valueObjects/CustomOption/CustomOption";
 import { DbProduct } from "../entities/Product.entity";
-import { cloneDeep } from "lodash";
+import { cloneDeep, toLower } from "lodash";
 import {
   ProductImage,
   PricingTier,
@@ -24,7 +24,10 @@ import {
   ProductTypeName,
 } from "../valueObjects";
 import { ProductType } from "./ProductType";
-import { CreateProductDto, CustomOptionDto } from "@catalog/dto/Product/CreateProductDto";
+import {
+  CreateProductDto,
+  CustomOptionDto,
+} from "@catalog/dto/Product/CreateProductDto";
 import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProductVariantDto";
 /**
  * Aggregates need: events, domain methods, initializers, converters
@@ -45,21 +48,21 @@ export class InvalidProduct implements ResultError {
   }
 }
 
-export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
+export class Product extends IAggregate<IProductProps, IProduct, DbProduct> {
   protected _events: ProductEvent[];
   private constructor(props: IProduct, entity: DbProduct) {
     super(props, entity);
   }
   public get id(): ProductUUID {
-    return this._props.id;
+    return this._value.id;
   }
 
   public get sku(): ProductSKU {
-    return this._props.sku;
+    return this._value.sku;
   }
 
   public get type(): ProductTypeName {
-    return this._props.type;
+    return this._value.type;
   }
 
   /**
@@ -67,7 +70,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
    * @returns Product
    */
   public value(): IProduct {
-    const props: IProduct = cloneDeep(this._props);
+    const props: IProduct = cloneDeep(this._value);
     return Object.seal(props);
   }
 
@@ -128,42 +131,42 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
     return Result.ok(this);
   }
   public setProductType(value: ProductType) {
-    this._props.productType = value;
+    this._value.productType = value;
     this._entity.productType = value.entity();
     return this;
   }
   public setSku(value: ProductSKU) {
-    this._props.sku = value;
+    this._value.sku = value;
     this._entity.sku = value.value();
     return this;
   }
   public setType(value: ProductTypeName) {
-    this._props.type = value;
+    this._value.type = value;
     this._entity.type = value.value();
     return this;
   }
   public setPricingTier(value: PricingTier) {
-    this._props.pricingTier = value;
+    this._value.pricingTier = value;
     this._entity.pricingTier = value.value();
     return this;
   }
   public setTags(value: ProductTags) {
-    this._props.tags = value;
+    this._value.tags = value;
     this._entity.tags = value.value();
     return this;
   }
   public setImage(value: ProductImage) {
-    this._props.image = value;
+    this._value.image = value;
     this._entity.image = value.value();
     return this;
   }
   public setSvg(value: ProductSvg) {
-    this._props.svg = value;
+    this._value.svg = value;
     this._entity.svg = value.value();
     return this;
   }
   public setCustomOptions(value: CustomOption[]) {
-    this._props.customOptions = value;
+    this._value.customOptions = value;
     this._entity.customOptions = value.map((v) => v.props());
     return this;
   }
@@ -174,7 +177,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
   //TODO: Given ProductVariant, either Add (create), or Update
 
   public importVariant(dto: CreateProductVariantDto): Result<ProductVariant> {
-    let pv = this._props.variants.find(
+    let pv = this._value.variants.find(
       (v) => v.sku == dto.sku || v.id == dto.id
     );
     if (pv) {
@@ -185,9 +188,40 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
   }
 
   public addVariant(dto: CreateProductVariantDto): Result<ProductVariant> {
-    dto.option1.name = this._entity.productType.option1?.name;
-    dto.option2.name = this._entity.productType.option2?.name;
-    dto.option3.name = this._entity.productType.option3?.name;
+    const productTypeOption1 = this._entity.productType.option1?.name;
+    const productTypeOption2 = this._entity.productType.option2?.name;
+    const productTypeOption3 = this._entity.productType.option3?.name;
+
+    const dtoOptions = [dto.option1, dto.option2, dto.option3].reduce(
+      (map, n) => ((map[toLower(n.name)] = n.option), map),
+      {} as { [key: string]: string }
+    );
+    const optionNames = [
+      productTypeOption1,
+      productTypeOption2,
+      productTypeOption3,
+    ];
+    const optionMap = optionNames.reduce(
+      (map, n) => ((map[toLower(n)] = n), map),
+      {} as { [key: string]: string }
+    );
+    Object.keys(optionMap).forEach((k) => {
+      optionMap[k] = dtoOptions[k];
+    });
+
+    dto.option1.name = productTypeOption1;
+    dto.option1.option = optionMap[toLower(productTypeOption1)];
+    dto.option2.name = productTypeOption2;
+    dto.option2.option = optionMap[toLower(productTypeOption2)];
+    dto.option3.name = productTypeOption3;
+    dto.option3.option = optionMap[toLower(productTypeOption3)];
+    console.log({
+      option1: dto.option1,
+      option2: dto.option2,
+      option3: dto.option3,
+      optionMap,
+      dtoOptions,
+    });
     let result = ProductVariant.create(dto);
     if (result.isFailure) {
       //TODO: FailedToAddVariant
@@ -196,7 +230,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
     let variant = result.value();
     try {
       variant.setProduct(this);
-      this._props.variants.push(variant);
+      this._value.variants.push(variant);
       this._entity.variants.add(variant.entity());
       return Result.ok<ProductVariant>(variant);
     } catch (err) {
@@ -207,7 +241,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
 
   public removeVariant(variant: ProductVariant): Result<Product> {
     try {
-      this._props.variants = this._props.variants.filter(
+      this._value.variants = this._value.variants.filter(
         (v) => v.props().id == variant.props().id
       );
       let dbe = variant.entity();
@@ -228,8 +262,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
   public static create(dto: CreateProductDto): Result<Product> {
     // Validate DTO
     let results = {
-      uuid: dto.id ? ProductUUID.from(dto.id) : Product.generateUuid(),
-      id: ProductNID.from(dto.id),
+      id: dto.id ? ProductUUID.from(dto.id) : Product.generateUuid(),
       customOptions: Product.createCustomOptions(dto.customOptions),
       pricingTier: PricingTier.from(dto.pricingTier),
 
@@ -253,7 +286,7 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
     const now = moment().toDate();
     // Props
     const props: IProduct = {
-      id: results.uuid.value(),
+      id: results.id.value(),
       type: results.type.value(),
       pricingTier: results.pricingTier.value(),
       createdAt: now,
@@ -278,9 +311,9 @@ export class Product extends IAggregate<IProduct, DbProduct, IProductProps> {
     dbe.type = props.type.value();
     dbe.image = props.image.value();
     dbe.svg = props.svg.value();
-    dbe.tags = props.tags.value();
+    dbe.tags = props.tags?.value();
     // dbe.categories = props.categories.value();
-    dbe.customOptions = props.customOptions.map((c) => c.props());
+    dbe.customOptions = props.customOptions?.map((c) => c.props());
     dbe.createdAt = props.createdAt;
     dbe.updatedAt = props.updatedAt;
 

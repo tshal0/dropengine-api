@@ -42,7 +42,6 @@ describe(`ProductVariant`, () => {
         let result = ProductVariant.create(dto);
         expect(result.isFailure).toBe(false);
         let props = result.value().props();
-        console.log(JSON.stringify(props, null, 2));
         expect(props).toEqual({
           id: "00000000-0000-0000-0000-000000000001",
           sku: "MEM-000-01-12-Black",

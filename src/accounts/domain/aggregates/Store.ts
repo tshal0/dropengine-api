@@ -28,13 +28,13 @@ export class InvalidStore implements ResultError {
   }
 }
 
-export class Store extends IAggregate<IStore, DbStore, IStoreProps> {
+export class Store extends IAggregate<IStoreProps, IStore, DbStore> {
   protected constructor(val: IStore, dbe: DbStore) {
     super(val, dbe);
   }
 
   public get name(): string {
-    return this._props.name;
+    return this._value.name;
   }
 
   /**
@@ -42,7 +42,7 @@ export class Store extends IAggregate<IStore, DbStore, IStoreProps> {
    * @returns Product
    */
   public value(): IStore {
-    const props: IStore = cloneDeep(this._props);
+    const props: IStore = cloneDeep(this._value);
     return Object.seal(props);
   }
 
@@ -67,13 +67,13 @@ export class Store extends IAggregate<IStore, DbStore, IStoreProps> {
   /** DOMAIN METHODS */
 
   public setName(val: string) {
-    this._props.name = val;
+    this._value.name = val;
     this._entity.name = val;
     return this;
   }
 
   public setAccount(value: Account) {
-    this._props.account = value;
+    this._value.account = value;
     this._entity.account = value.entity();
     return this;
   }

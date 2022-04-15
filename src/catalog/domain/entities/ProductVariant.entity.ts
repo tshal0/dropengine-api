@@ -48,6 +48,7 @@ export class DbProductVariant {
   updatedAt: Date = new Date();
 
   public props(maxDepth?: number | undefined): IProductVariantProps {
+    const newDepth = maxDepth - 1;
     const props: IProductVariantProps = {
       id: this.id,
       option1: this.option1,
@@ -63,7 +64,9 @@ export class DbProductVariant {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       product:
-        this.product && maxDepth && maxDepth > 0 ? this.product.props() : null,
+        this.product && maxDepth && maxDepth > 0
+          ? this.product.props(newDepth)
+          : null,
     };
 
     return props;

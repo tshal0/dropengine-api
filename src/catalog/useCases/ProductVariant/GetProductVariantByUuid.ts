@@ -7,22 +7,24 @@ import { UUID } from "@shared/domain/valueObjects";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { ProductVariantsRepository } from "@catalog/database/ProductVariantsRepository";
 import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
+import { ProductVariantUUID } from "@catalog/domain/valueObjects/ProductVariant/VariantUUID";
 
 @Injectable({ scope: Scope.DEFAULT })
-export class GetProductVariantByUuid implements UseCase<UUID, ProductVariant> {
+export class GetProductVariantById
+  implements UseCase<ProductVariantUUID, ProductVariant>
+{
   constructor(
     private eventEmitter: EventEmitter2,
     private logger: AzureLoggerService,
     private _repo: ProductVariantsRepository
   ) {}
   get llog() {
-    return `[${moment()}][${GetProductVariantByUuid.name}]`;
+    return `[${moment()}][${GetProductVariantById.name}]`;
   }
 
-  async execute(id: UUID): Promise<Result<ProductVariant>> {
-    this.logger.log(`${this.llog} Loading productType...`);
+  async execute(id: ProductVariantUUID): Promise<Result<ProductVariant>> {
     try {
-      let result = await this._repo.findByUuid(id);
+      let result = await this._repo.findById(id);
       if (result.isFailure) {
         //TODO: EntityNotFound:ProductType
         return Result.fail();

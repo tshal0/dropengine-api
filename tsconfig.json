@@ -19,6 +19,9 @@
       "@shared/*": [
         "src/shared/*"
       ],
+      "@sales/*": [
+        "src/sales/*"
+      ],
       "@catalog/*": [
         "src/catalog/*"
       ],
@@ -31,7 +34,6 @@
       "@auth0/*": [
         "src/auth0/*"
       ]
-
     },
   },
   "exclude": [

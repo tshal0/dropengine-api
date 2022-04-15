@@ -17,12 +17,20 @@ import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { CatalogModule } from "./catalog/catalog.module";
 import { Auth0Module } from "@auth0/auth0.module";
 import { AccountsModule } from "./accounts/accounts.module";
-import { SalesModule } from './sales/sales.module';
+import { SalesModule } from "./sales/sales.module";
+import { MyEasySuiteModule } from './myeasysuite/MyEasySuiteModule';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>("MONGO_CONNECTION_STRING"),
+      }),
+      inject: [ConfigService],
+    }),
     MikroOrmModule.forRoot({
       entities: ["./dist/**/entities/*.entity.js"],
       entitiesTs: ["./src/**/entities/*.entity.ts"],
@@ -48,6 +56,7 @@ import { SalesModule } from './sales/sales.module';
     ShopifyModule,
     CatalogModule,
     SalesModule,
+    MyEasySuiteModule,
   ],
 })
 export class ServerModule {}

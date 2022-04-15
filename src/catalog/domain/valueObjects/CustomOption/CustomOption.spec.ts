@@ -444,7 +444,6 @@ describe(`CustomOption`, () => {
           });
 
           expect(result.isFailure).toBe(false);
-          console.log(JSON.stringify(result, null, 2));
           expect(result.value().value().source).toBe("^[a-zA-Z0-9\\s.,'/&]*");
         });
       });

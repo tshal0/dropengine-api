@@ -28,13 +28,13 @@ export class InvalidAccount implements ResultError {
   }
 }
 
-export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
+export class Account extends IAggregate<IAccountProps, IAccount, DbAccount> {
   protected constructor(val: IAccount, dbe: DbAccount) {
     super(val, dbe);
   }
 
   public get name(): string {
-    return this._props.name;
+    return this._value.name;
   }
 
   /**
@@ -42,7 +42,7 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
    * @returns Store
    */
   public value(): IAccount {
-    const props: IAccount = cloneDeep(this._props);
+    const props: IAccount = cloneDeep(this._value);
     return Object.seal(props);
   }
 
@@ -67,22 +67,22 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
   /** DOMAIN METHODS */
 
   public setName(val: string) {
-    this._props.name = val;
+    this._value.name = val;
     this._entity.name = val;
     return this;
   }
 
   //TODO: Validate CompanyCode
   public setCompanyCode(val: string) {
-    this._props.companyCode = CompanyCode.from(val).value();
+    this._value.companyCode = CompanyCode.from(val).value();
     this._entity.companyCode = val;
     return this;
   }
 
   //TODO: Validate Owner
   public setOwner(val: IUser) {
-    this._props.ownerId = User.from(val).props().id;
-    this._entity.ownerId = this._props.ownerId;
+    this._value.ownerId = User.from(val).props().id;
+    this._entity.ownerId = this._value.ownerId;
     return this;
   }
 
@@ -95,7 +95,7 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
     let store = result.value();
     try {
       store.setAccount(this);
-      this._props.stores.push(store);
+      this._value.stores.push(store);
       this._entity.stores.add(store.entity());
       return Result.ok<Store>(store);
     } catch (err) {
@@ -106,7 +106,7 @@ export class Account extends IAggregate<IAccount, DbAccount, IAccountProps> {
 
   public removeStore(store: Store): Result<Account> {
     try {
-      this._props.stores = this._props.stores.filter(
+      this._value.stores = this._value.stores.filter(
         (v) => v.props().id == store.props().id
       );
       let dbe = store.entity();

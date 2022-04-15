@@ -3,12 +3,14 @@ import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
 import { AzureLoggerModule, AzureStorageModule } from "@shared/modules";
+import { MyEasySuiteModule } from "src/myeasysuite/MyEasySuiteModule";
 import { ProductsController } from "./api/ProductsController";
 import { ProductTypesController } from "./api/ProductTypesController";
 import { ProductVariantsController } from "./api/ProductVariantsController";
 import { ProductsRepository } from "./database/ProductsRepository";
 import { ProductTypesRepository } from "./database/ProductTypesRepository";
 import { ProductVariantsRepository } from "./database/ProductVariantsRepository";
+import { CatalogService } from "./services";
 import {
   GetProductType,
   GetAllProductTypes,
@@ -23,12 +25,13 @@ import {
 import { RenameProductType } from "./useCases/ProductType/RenameProductType";
 import {
   CreateProductVariant,
-  GetProductVariantByUuid,
+  GetProductVariantById,
   GetProductVariantBySku,
   DeleteProductVariant,
   ImportProductVariantCsv,
   QueryProductVariants,
 } from "./useCases/ProductVariant";
+import { SyncVariant } from "./useCases/SyncVariant";
 
 @Module({
   imports: [
@@ -38,11 +41,13 @@ import {
     ConfigModule,
     CacheModule.register(),
     AzureStorageModule,
+    MyEasySuiteModule,
   ],
   providers: [
     ProductTypesRepository,
     ProductsRepository,
     ProductVariantsRepository,
+    CatalogService,
     GetProductType,
     GetAllProductTypes,
     CreateProductType,
@@ -53,13 +58,15 @@ import {
     CreateProduct,
     DeleteProduct,
     CreateProductVariant,
-    GetProductVariantByUuid,
+    GetProductVariantById,
     GetProductVariantBySku,
     DeleteProductVariant,
     ImportProductCsv,
     ImportProductVariantCsv,
     QueryProductVariants,
+    SyncVariant,
   ],
+  exports: [CatalogService],
   controllers: [
     ProductTypesController,
     ProductsController,

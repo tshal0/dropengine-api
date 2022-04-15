@@ -19,21 +19,21 @@ import { Cache } from "cache-manager";
   exports: [Auth0MgmtApiClient],
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
+    AzureLoggerModule,
     HttpModule.registerAsync({
-      imports: [ConfigModule, CacheModule.register()],
-      useFactory: async (config: ConfigService, cache: Cache) => {
+      imports: [ConfigModule, CacheModule.register(), AzureLoggerModule],
+      useFactory: async (
+        config: ConfigService,
+        cache: Cache,
+        log: AzureLoggerService
+      ) => {
         const URL = config.get("AUTH0_MGMT_API_URL");
         const AUTH0_ACCESS_TOKEN_URL = config.get("AUTH0_ACCESS_TOKEN_URL");
         const AUTH0_MGMT_CLIENT_ID = config.get("AUTH0_MGMT_CLIENT_ID");
         const AUTH0_MGMT_CLIENT_SECRET = config.get("AUTH0_MGMT_CLIENT_SECRET");
         const AUTH0_MGMT_AUDIENCE = config.get("AUTH0_MGMT_AUDIENCE");
         const AUTH0_MGMT_GRANT_TYPE = config.get("AUTH0_MGMT_GRANT_TYPE");
-        const ENVIRONMENT = config.get("ENVIRONMENT");
-        console.log(AUTH0_ACCESS_TOKEN_URL);
-        console.log(AUTH0_MGMT_CLIENT_ID);
-        console.log(AUTH0_MGMT_CLIENT_SECRET);
-        console.log(AUTH0_MGMT_AUDIENCE);
-        console.log(AUTH0_MGMT_GRANT_TYPE);
+
         let TOKEN = await cache.get("AUTH0_MGMT_ACCESS_TOKEN");
 
         if (!TOKEN) {
@@ -50,11 +50,9 @@ import { Cache } from "cache-manager";
             json: true,
           };
           const resp = await requestObject(options);
-          console.log(
-            `NEW AUTH0_MGMT_ACCESS_TOKEN: ${resp?.object?.access_token}`
-          );
           TOKEN = resp?.object?.access_token;
           cache.set("AUTH0_MGMT_ACCESS_TOKEN", TOKEN, { ttl: 3600 });
+          log.debug(`New Auth0 Management API Access Token Acquired!`);
         }
         const httpConfig = {
           baseURL: URL,
@@ -70,11 +68,10 @@ import { Cache } from "cache-manager";
 
         return httpConfig;
       },
-      inject: [ConfigService, CACHE_MANAGER],
+      inject: [ConfigService, CACHE_MANAGER, AzureLoggerService],
     }),
     ConfigModule,
     CacheModule.register(),
-    AzureLoggerModule,
   ],
   controllers: [],
 })

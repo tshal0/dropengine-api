@@ -1,7 +1,7 @@
-import moment from 'moment';
-import { isValidDate } from '../../utils/isValidDate.util';
-import { Result, ResultError } from '../Result';
-import { ValueObject } from './ValueObject';
+import moment from "moment";
+import { isValidDate } from "../../utils/isValidDate.util";
+import { Result, ResultError } from "../Result";
+import { ValueObject } from "./ValueObject";
 
 export class DateValueObjectValidationError extends Error {
   public readonly name: string = `DateValueObjectValidationError`;
@@ -22,7 +22,7 @@ export class DateValueObject extends ValueObject<DateValueObjectProp> {
   }
 
   public static create(prop: DateValueObjectProp): Result<DateValueObject> {
-    let result = this.validate(prop);
+    let result = DateValueObject.validate(prop);
     if (result.isFailure) {
       return result;
     } else {
@@ -35,7 +35,7 @@ export class DateValueObject extends ValueObject<DateValueObjectProp> {
       let error: ResultError = new ResultError(
         new DateValueObjectValidationError(msg),
         [],
-        prop?.toString(),
+        `${prop}`
       );
       return Result.fail<DateValueObject>(error);
     }

@@ -48,16 +48,6 @@ async function bootstrap() {
       },
     })
   );
-
-  const config = new DocumentBuilder()
-    .setTitle("DropEngine")
-    .setDescription("The DropEngine API")
-    .setVersion("1.0")
-    .build();
-  const document = SwaggerModule.createDocument(app, config, {
-    ignoreGlobalPrefix: true,
-  });
-  SwaggerModule.setup("api/docs", app, document);
   app.setGlobalPrefix("api", {
     exclude: [
       { path: "", method: RequestMethod.GET },
@@ -65,6 +55,17 @@ async function bootstrap() {
       { path: "/api/docs", method: RequestMethod.GET },
     ],
   });
+  const config = new DocumentBuilder()
+    .setTitle("DropEngine")
+    .setDescription("The DropEngine API")
+    .setVersion("1.0")
+    .setBasePath("api")
+    .build();
+  const document = SwaggerModule.createDocument(app, config, {
+    ignoreGlobalPrefix: false,
+  });
+  SwaggerModule.setup("api/docs", app, document);
+
   const port = config_service.get("PORT");
   await app.listen(`${Number(port)}`);
 

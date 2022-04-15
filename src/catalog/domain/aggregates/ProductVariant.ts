@@ -1,6 +1,8 @@
 import {
   Dimension,
+  IDimension,
   IMoney,
+  IWeight,
   Money,
   Result,
   ResultError,
@@ -11,9 +13,19 @@ import { IAggregate } from "@shared/domain/IAggregate";
 import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProductVariantDto";
 import { IProductVariant, IProductVariantProps } from "../interfaces";
 import moment from "moment";
-import { Product, ProductImage, VariantSKU } from "..";
+import {
+  ICustomOption,
+  ICustomOptionProps,
+  IProductTypeProductionData,
+  IVariantOption,
+  Product,
+  ProductImage,
+  ProductTypeUUID,
+  ProductUUID,
+  VariantSKU,
+} from "..";
 import { VariantOption } from "../valueObjects/ProductVariant/VariantOption";
-import { cloneDeep } from "lodash";
+import { cloneDeep, toLower } from "lodash";
 import { DbProductVariant } from "../entities/ProductVariant.entity";
 import { ProductVariantUUID } from "../valueObjects/ProductVariant/VariantUUID";
 
@@ -35,16 +47,16 @@ export class InvalidProductVariant implements ResultError {
 }
 
 export class ProductVariant extends IAggregate<
+  IProductVariantProps,
   IProductVariant,
-  DbProductVariant,
-  IProductVariantProps
+  DbProductVariant
 > {
   /**
    * Get the value of the Product
    * @returns Product
    */
   public value(): IProductVariant {
-    const props: IProductVariant = cloneDeep(this._props);
+    const props: IProductVariant = cloneDeep(this._value);
     return Object.seal(props);
   }
   /**
@@ -59,9 +71,9 @@ export class ProductVariant extends IAggregate<
    * Returns the raw props.
    * @returns {IProductProps}
    */
-  public props(): IProductVariantProps {
+  public props(maxDepth?: number | undefined): IProductVariantProps {
     const entity = this._entity;
-    return Object.seal(entity.props());
+    return Object.seal(entity.props(maxDepth));
   }
 
   public get id(): string {
@@ -71,13 +83,94 @@ export class ProductVariant extends IAggregate<
     return this._entity.sku;
   }
 
+  public get productId(): ProductUUID {
+    return ProductUUID.from(this._entity.product?.id).value();
+  }
+
+  public get productTypeId(): ProductTypeUUID {
+    return ProductTypeUUID.from(this._entity.product?.productType?.id).value();
+  }
+
+  public get productionData(): IProductTypeProductionData {
+    return this._entity.product?.productType?.productionData;
+  }
+  public get personalizationRules(): ICustomOptionProps[] {
+    return this._entity.product.customOptions;
+  }
+  public get weight(): IWeight {
+    return this._value.weight.value();
+  }
+  public get height(): IDimension {
+    return this._value.height.value();
+  }
+  public get width(): IDimension {
+    return this._value.width.value();
+  }
+  public get manufacturingCost(): IMoney {
+    return this._value.manufacturingCost.value();
+  }
+  public get shippingCost(): IMoney {
+    return this._value.shippingCost.value();
+  }
+  public get option1(): IVariantOption {
+    return this._value.option1.value();
+  }
+  public get option2(): IVariantOption {
+    return this._value.option2.value();
+  }
+  public get option3(): IVariantOption {
+    return this._value.option3.value();
+  }
+  public get image(): string {
+    return this._entity.product.image;
+  }
+  public get svg(): string {
+    return this._entity.product.svg;
+  }
+  public get type(): string {
+    return this._entity.product.type;
+  }
+
   // Domain methods
 
   public update(dto: CreateProductVariantDto): Result<ProductVariant> {
     const pt = this._entity.product.props(1).productType;
-    dto.option1.name = pt.option1.name;
-    dto.option2.name = pt.option2.name;
-    dto.option3.name = pt.option3?.name;
+
+    const productTypeOption1 = pt.option1?.name;
+    const productTypeOption2 = pt.option2?.name;
+    const productTypeOption3 = pt.option3?.name;
+
+    const dtoOptions = [dto.option1, dto.option2, dto.option3].reduce(
+      (map, n) => ((map[toLower(n.name)] = n.option), map),
+      {} as { [key: string]: string }
+    );
+    const optionNames = [
+      productTypeOption1,
+      productTypeOption2,
+      productTypeOption3,
+    ];
+    const optionMap = optionNames.reduce(
+      (map, n) => ((map[toLower(n)] = n), map),
+      {} as { [key: string]: string }
+    );
+    Object.keys(optionMap).forEach((k) => {
+      optionMap[k] = dtoOptions[k];
+    });
+
+    dto.option1.name = productTypeOption1;
+    dto.option1.option = optionMap[toLower(productTypeOption1)];
+    dto.option2.name = productTypeOption2;
+    dto.option2.option = optionMap[toLower(productTypeOption2)];
+    dto.option3.name = productTypeOption3;
+    dto.option3.option = optionMap[toLower(productTypeOption3)];
+    console.log({
+      option1: dto.option1,
+      option2: dto.option2,
+      option3: dto.option3,
+      optionMap,
+      dtoOptions,
+    });
+
     let results = {
       image: ProductImage.from(dto.image),
       option1: VariantOption.from(dto.option1),
@@ -125,52 +218,52 @@ export class ProductVariant extends IAggregate<
   }
 
   public setSku(sku: VariantSKU) {
-    this._props.sku = sku;
+    this._value.sku = sku;
     this._entity.sku = sku.value();
     return this;
   }
   public setImage(value: ProductImage) {
-    this._props.image = value;
+    this._value.image = value;
     this._entity.image = value.value();
     return this;
   }
   public setHeight(value: Dimension) {
-    this._props.height = value;
+    this._value.height = value;
     this._entity.height = value.value();
     return this;
   }
   public setWidth(value: Dimension) {
-    this._props.width = value;
+    this._value.width = value;
     this._entity.width = value.value();
     return this;
   }
   public setWeight(value: Weight) {
-    this._props.weight = value;
+    this._value.weight = value;
     this._entity.weight = value.value();
     return this;
   }
   public setoption1(value: VariantOption) {
-    this._props.option1 = value;
+    this._value.option1 = value;
     this._entity.option1 = value.value();
     return this;
   }
   public setoption2(value: VariantOption) {
-    this._props.option2 = value;
+    this._value.option2 = value;
     this._entity.option2 = value.value();
     return this;
   }
   public setoption3(value: VariantOption) {
-    this._props.option3 = value;
+    this._value.option3 = value;
     this._entity.option3 = value.value();
     return this;
   }
   public setManufacturingCost(value: Money) {
-    this._props.manufacturingCost = value;
+    this._value.manufacturingCost = value;
     this._entity.manufacturingCost = value.value();
     return this;
   }
   public setShippingCost(value: Money) {
-    this._props.shippingCost = value;
+    this._value.shippingCost = value;
     this._entity.shippingCost = value.value();
     return this;
   }
@@ -274,7 +367,7 @@ export class ProductVariant extends IAggregate<
   }
   public static db(dbe: DbProductVariant): Result<ProductVariant> {
     let results = {
-      uuid: ProductVariantUUID.from(dbe.id),
+      id: ProductVariantUUID.from(dbe.id),
       image: ProductImage.from(dbe.image),
       sku: VariantSKU.from(dbe.sku),
 
@@ -306,7 +399,7 @@ export class ProductVariant extends IAggregate<
       );
     }
     let props: IProductVariant = {
-      id: results.uuid.value(),
+      id: results.id.value(),
       image: results.image.value(),
       sku: results.sku.value(),
 

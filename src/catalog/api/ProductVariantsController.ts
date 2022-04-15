@@ -15,7 +15,7 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { Result } from "@shared/domain";
+import { Result, ResultError } from "@shared/domain";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
@@ -35,38 +35,65 @@ import {
 import { CreateProductVariant } from "@catalog/useCases/ProductVariant/CreateProductVariant";
 import { DeleteProductVariant } from "@catalog/useCases/ProductVariant/DeleteProductVariant";
 import { GetProductVariantBySku } from "@catalog/useCases/ProductVariant/GetProductVariantBySku";
-import { GetProductVariantByUuid } from "@catalog/useCases/ProductVariant/GetProductVariantByUuid";
+import { GetProductVariantById } from "@catalog/useCases/ProductVariant/GetProductVariantByUuid";
 import { Readable } from "stream";
 import { VariantQueryTransformPipe } from "@catalog/middleware";
 import { VariantQueryDto } from "@catalog/dto";
+import { SyncVariant } from "@catalog/useCases/SyncVariant";
+
+export class SyncVariantResponseDto {
+  constructor(sku: string, result: Result<ProductVariant>) {
+    this.sku = sku;
+    if ([null, undefined, ""].includes(sku)) {
+      this.message = `Failed to SyncVariant: '${sku}'. SKU was not defined.`;
+    } else if (result?.isSuccess) {
+      this.variant = result.value().props();
+      this.message = `Synced variant '${sku}'.`;
+    } else {
+      this.error = result.error;
+      this.message = `Failed to SyncVariant: '${sku}': ${result.error.message}`;
+    }
+  }
+  sku: string;
+  message: string;
+  error: ResultError;
+  variant: IProductVariantProps;
+}
 
 @Controller("/productVariants")
 export class ProductVariantsController {
   constructor(
     private readonly logger: AzureLoggerService,
     private readonly create: CreateProductVariant,
-    private readonly getByUuid: GetProductVariantByUuid,
+    private readonly getById: GetProductVariantById,
     private readonly getBySku: GetProductVariantBySku,
     private readonly remove: DeleteProductVariant,
     private readonly importCsv: ImportProductVariantCsv,
-    private readonly query: QueryProductVariants
+    private readonly query: QueryProductVariants,
+    private readonly syncVariant: SyncVariant
   ) {}
   @Get(":id")
   @UseGuards(AuthGuard())
   async get(@Param("id") id: string) {
     let result: Result<ProductVariant> = null;
     const skuResult = VariantSKU.from(id);
-    if (skuResult.isSuccess) {
+
+    const idValid = UUID.validate(id);
+    let uuid = UUID.from(id);
+    if (idValid) {
+      result = await this.getById.execute(uuid.value());
+    } else if (skuResult.isSuccess) {
       let sku = skuResult.value();
       result = await this.getBySku.execute(sku);
-    } else if (UUID.validate(id)) {
-      let uuid = UUID.from(id);
-      result = await this.getByUuid.execute(uuid.value());
     }
     if (result.isSuccess) {
-      return result.value().props();
+      return result.value().props(3);
     }
-    throw new EntityNotFoundException(`ProductVariantNotFound`, id);
+    throw new EntityNotFoundException(
+      `ProductVariantNotFound`,
+      id,
+      result.error.message
+    );
   }
   @Delete(":id")
   @UseGuards(AuthGuard())
@@ -77,6 +104,15 @@ export class ProductVariantsController {
       return result.value();
     }
     return { message: result.error.message };
+  }
+
+  @Post("sync")
+  async postSync(@Query("sku") sku: string): Promise<any> {
+    if (sku?.length) {
+      let result = await this.syncVariant.execute({ sku });
+      return new SyncVariantResponseDto(sku, result);
+    }
+    return new SyncVariantResponseDto(sku, null);
   }
 
   @Post("import")

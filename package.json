@@ -47,7 +47,7 @@
     "@nestjs/config": "^1.1.6",
     "@nestjs/core": "^8.0.0",
     "@nestjs/event-emitter": "^1.0.0",
-    "@nestjs/mongoose": "^9.0.2",
+    "@nestjs/mongoose": "^9.0.3",
     "@nestjs/passport": "^8.1.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/schedule": "^1.0.2",
@@ -67,7 +67,7 @@
     "lodash": "^4.17.21",
     "module-alias": "^2.2.2",
     "moment": "^2.29.1",
-    "mongoose": "^6.1.7",
+    "mongoose": "^6.2.10",
     "multer": "^1.4.4",
     "newman": "^5.3.2",
     "newman-reporter-htmlextra": "^1.22.7",
@@ -93,6 +93,7 @@
     "@types/express": "^4.17.13",
     "@types/jest": "27.0.2",
     "@types/lodash": "^4.14.178",
+    "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.7",
     "@types/node": "^16.0.0",
     "@types/supertest": "^2.0.11",
@@ -120,7 +121,8 @@
     "@accounts": "dist/accounts",
     "@catalog": "dist/catalog",
     "@shopify": "dist/shopify",
-    "@auth0": "dist/auth0"
+    "@auth0": "dist/auth0",
+    "@sales": "dist/sales"
   },
   "mikro-orm": {
     "useTsNode": true,

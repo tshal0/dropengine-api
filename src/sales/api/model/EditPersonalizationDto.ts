@@ -1,4 +1,4 @@
-import { LineItemPropertyDto } from "./LineItemPropertyDto";
+import { LineItemPropertyDto } from "@sales/dto";
 
 export class EditPersonalizationDto {
   lineItemProperties: LineItemPropertyDto[];

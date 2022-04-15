@@ -1,4 +1,3 @@
-
 import { isFinite } from "lodash";
 import { Result, ResultError } from "../Result";
 import { ValueObject } from "./ValueObject";
@@ -23,6 +22,10 @@ export class InvalidDimension implements ResultError {
 }
 export class Dimension extends ValueObject<IDimension> {
   static from(dto: IDimension): Result<Dimension> {
+    if (`${dto?.units}` == "cm") {
+      dto.units = "mm";
+      dto.dimension = 10 * +dto.dimension;
+    }
     if (!["in", "mm"].includes(dto?.units)) {
       return Result.fail(
         new InvalidDimension(dto, `'${dto?.units}' must be 'in' or 'mm'.`)

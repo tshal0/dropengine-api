@@ -1,7 +1,7 @@
-import * as qs from 'querystring';
+import * as qs from "querystring";
 
 const builtInCasters = {
-  boolean: (val) => val === 'true',
+  boolean: (val) => val === "true",
   date: (val) => new Date(val),
   null: () => null,
   number: (val) => Number(val),
@@ -19,7 +19,7 @@ const parseValue = (value, key, options) => {
 
   // Handle comma-separated values
   const regexes = value.match(/\/.*?\/(?:[igm]*)/g);
-  const parts = regexes || value.split(',');
+  const parts = regexes || value.split(",");
   if (parts && parts.length > 1) {
     return parts.map((part) => parseValue(part, key, options));
   }
@@ -40,12 +40,12 @@ const parseValue = (value, key, options) => {
   }
 
   // Match boolean values
-  if (value === 'true' || value === 'false') {
+  if (value === "true" || value === "false") {
     return casters.boolean(value);
   }
 
   // Match null
-  if (value === 'null') {
+  if (value === "null") {
     return casters.null(value);
   }
 
@@ -60,7 +60,7 @@ const parseValue = (value, key, options) => {
 
   // Match YYYY-MM-DDTHH:mm:ssZ format dates
   const date = value.match(
-    /^[12]\d{3}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)(T| )?(([01][0-9]|2[0-3]):[0-5]\d(:[0-5]\d(\.\d+)?)?(Z|[+-]\d{2}:\d{2})?)?$/,
+    /^[12]\d{3}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)(T| )?(([01][0-9]|2[0-3]):[0-5]\d(:[0-5]\d(\.\d+)?)?(Z|[+-]\d{2}:\d{2})?)?$/
   );
   if (date) {
     return casters.date(value);
@@ -71,31 +71,31 @@ const parseValue = (value, key, options) => {
 };
 
 const parseOperator = (operator) => {
-  if (operator === '=') {
-    return '$eq';
+  if (operator === "=") {
+    return "$eq";
   }
 
-  if (operator === '!=') {
-    return '$ne';
+  if (operator === "!=") {
+    return "$ne";
   }
 
-  if (operator === '>') {
-    return '$gt';
+  if (operator === ">") {
+    return "$gt";
   }
 
-  if (operator === '>=') {
-    return '$gte';
+  if (operator === ">=") {
+    return "$gte";
   }
 
-  if (operator === '<') {
-    return '$lt';
+  if (operator === "<") {
+    return "$lt";
   }
 
-  if (operator === '<=') {
-    return '$lte';
+  if (operator === "<=") {
+    return "$lte";
   }
 
-  return '$exists';
+  return "$exists";
 };
 
 /**
@@ -104,12 +104,12 @@ const parseOperator = (operator) => {
  */
 const parseUnaries = (unaries, values = { plus: 1, minus: -1 }) => {
   const unariesAsArray =
-    typeof unaries === 'string' ? unaries.split(',') : unaries;
+    typeof unaries === "string" ? unaries.split(",") : unaries;
 
   return unariesAsArray
     .map((unary) => unary.match(/^(\+|-)?(.*)/))
     .reduce((result, [, val, key]) => {
-      result[key.trim()] = val === '-' ? values.minus : values.plus;
+      result[key.trim()] = val === "-" ? values.minus : values.plus;
       return result;
     }, {});
 };
@@ -134,7 +134,7 @@ const getProjection = (projection) => {
   */
   const hasMixedValues =
     Object.keys(fields).reduce((set, key) => {
-      if (key !== '_id' && (fields[key] === 0 || fields[key] === 1)) {
+      if (key !== "_id" && (fields[key] === 0 || fields[key] === 1)) {
         set.add(fields[key]);
       }
       return set;
@@ -160,7 +160,7 @@ const getPopulation = (population) => {
     const topLevel = levels.shift();
     prevLevels.push(topLevel);
 
-    const cacheKey = prevLevels.join('.');
+    const cacheKey = prevLevels.join(".");
     if (cache[cacheKey]) {
       path = cache[cacheKey];
     } else {
@@ -177,8 +177,8 @@ const getPopulation = (population) => {
     return path;
   }
 
-  const populations = population.split(',').map((path) => {
-    return iterateLevels(path.split('.'));
+  const populations = population.split(",").map((path) => {
+    return iterateLevels(path.split("."));
   });
 
   return [...new Set(populations)]; // Deduplicate array
@@ -191,7 +191,7 @@ const getSkip = (skip) => Number(skip);
 const getLimit = (limit) => Number(limit);
 
 const parseFilter = (filter) => {
-  if (typeof filter === 'object') {
+  if (typeof filter === "object") {
     return filter;
   }
 
@@ -210,7 +210,7 @@ const getFilter = (filter, params, options) => {
       const join = params[val] ? `${val}=${params[val]}` : val;
       // Separate key, operators and value
       const [, prefix, key, op, value] = join.match(
-        /(!?)([^><!=]+)([><]=?|!?=|)(.*)/,
+        /(!?)([^><!=]+)([><]=?|!?=|)(.*)/
       );
       return {
         prefix,
@@ -222,7 +222,7 @@ const getFilter = (filter, params, options) => {
     .filter(
       ({ key }) =>
         options.blacklist.indexOf(key) === -1 &&
-        (!options.whitelist || options.whitelist.indexOf(key) !== -1),
+        (!options.whitelist || options.whitelist.indexOf(key) !== -1)
     )
     .reduce((result, { prefix, key, op, value }) => {
       if (!result[key]) {
@@ -230,12 +230,12 @@ const getFilter = (filter, params, options) => {
       }
 
       if (Array.isArray(value)) {
-        result[key][op === '$ne' ? '$nin' : '$in'] = value;
-      } else if (op === '$exists') {
-        result[key][op] = prefix !== '!';
-      } else if (op === '$eq') {
+        result[key][op === "$ne" ? "$nin" : "$in"] = value;
+      } else if (op === "$exists") {
+        result[key][op] = prefix !== "!";
+      } else if (op === "$eq") {
         result[key] = value;
-      } else if (op === '$ne' && typeof value === 'object' && value !== null) {
+      } else if (op === "$ne" && typeof value === "object" && value !== null) {
         result[key].$not = value;
       } else {
         result[key][op] = value;
@@ -246,13 +246,13 @@ const getFilter = (filter, params, options) => {
 };
 
 const mergeProjectionAndPopulation = (result) => {
-  function iteratePopulation(population, prevPrefix = '') {
+  function iteratePopulation(population, prevPrefix = "") {
     population.forEach((row) => {
       const prefix = `${prevPrefix}${row.path}.`;
       Object.keys(result.projection).forEach((key) => {
         if (key.startsWith(prefix)) {
-          const unprefixedKey = key.replace(prefix, '');
-          if (unprefixedKey.indexOf('.') === -1) {
+          const unprefixedKey = key.replace(prefix, "");
+          if (unprefixedKey.indexOf(".") === -1) {
             row.select = {
               ...row.select,
               [unprefixedKey]: result.projection[key],
@@ -273,20 +273,20 @@ const mergeProjectionAndPopulation = (result) => {
 };
 
 const operators = [
-  { operator: 'population', method: getPopulation, defaultKey: 'populate' },
-  { operator: 'projection', method: getProjection, defaultKey: 'fields' },
-  { operator: 'sort', method: getSort, defaultKey: 'sort' },
-  { operator: 'skip', method: getSkip, defaultKey: 'skip' },
-  { operator: 'limit', method: getLimit, defaultKey: 'limit' },
-  { operator: 'filter', method: getFilter, defaultKey: 'filter' },
+  { operator: "population", method: getPopulation, defaultKey: "populate" },
+  { operator: "projection", method: getProjection, defaultKey: "fields" },
+  { operator: "sort", method: getSort, defaultKey: "sort" },
+  { operator: "skip", method: getSkip, defaultKey: "skip" },
+  { operator: "limit", method: getLimit, defaultKey: "limit" },
+  { operator: "filter", method: getFilter, defaultKey: "filter" },
 ];
 
 export const aqp = (
-  query = '',
-  options: { blacklist: string[] } = { blacklist: [] },
+  query = "",
+  options: { blacklist: string[] } = { blacklist: [] }
 ): any => {
   const result = {};
-  const params = typeof query === 'string' ? qs.parse(query) : query;
+  const params = typeof query === "string" ? qs.parse(query) : query;
 
   options.blacklist = options.blacklist || [];
 
@@ -295,7 +295,7 @@ export const aqp = (
     const value = params[key];
     options.blacklist.push(key);
 
-    if (value || operator === 'filter') {
+    if (value || operator === "filter") {
       result[operator] = method(value, params, options);
     }
   });
@@ -305,16 +305,3 @@ export const aqp = (
   return result;
 };
 
-export class MongoQueryParams {
-  filter?: any;
-  skip?: number;
-  limit?: number;
-  sort?: any;
-  projection?: any;
-}
-
-export const convert_url_to_mongo_query = (url: string): MongoQueryParams => {
-  let query = url.split('?')[1];
-  const params: MongoQueryParams = aqp(query);
-  return params;
-};

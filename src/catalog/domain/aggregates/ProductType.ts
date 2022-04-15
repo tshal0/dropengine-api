@@ -34,6 +34,7 @@ import {
 export enum ProductTypeError {
   InvalidProductType = "InvalidProductType",
   ProductTypeRenameFailed = "ProductTypeRenameFailed",
+  FailedToImportProduct = "FailedToImportProduct",
 }
 
 export class InvalidProductType implements ResultError {
@@ -48,6 +49,18 @@ export class InvalidProductType implements ResultError {
     this.message = `${this.name} '${value.name}': ${reason}`;
   }
 }
+export class FailedToImportProductError implements ResultError {
+  public stack: string;
+  public name = ProductTypeError.FailedToImportProduct;
+  public message: string;
+  constructor(
+    public inner: ResultError[],
+    public value: CreateProductDto,
+    reason: string
+  ) {
+    this.message = `${this.name} '${value.sku}': ${reason}`;
+  }
+}
 export class ProductTypeRenameFailed implements ResultError {
   public stack: string;
   public name = ProductTypeError.ProductTypeRenameFailed;
@@ -60,9 +73,9 @@ export class ProductTypeRenameFailed implements ResultError {
 }
 
 export class ProductType extends IAggregate<
+  IProductTypeProps,
   IProductType,
-  DbProductType,
-  IProductTypeProps
+  DbProductType
 > {
   protected _events: ProductTypeEvent[];
   protected constructor(val: IProductType, dbe: DbProductType) {
@@ -70,14 +83,14 @@ export class ProductType extends IAggregate<
   }
 
   public get name(): ProductTypeName {
-    return this._props.name;
+    return this._value.name;
   }
   /**
    * Get the value object of the Product
    * @returns Product
    */
   public value(): IProductType {
-    const props: IProductType = cloneDeep(this._props);
+    const props: IProductType = cloneDeep(this._value);
     return Object.seal(props);
   }
 
@@ -108,7 +121,7 @@ export class ProductType extends IAggregate<
       return Result.fail(new ProductTypeRenameFailed([result.error]));
     }
     let validName = result.value();
-    this._props.name = validName;
+    this._value.name = validName;
     this._entity.name = validName.value();
     return Result.ok(this);
   }
@@ -118,13 +131,19 @@ export class ProductType extends IAggregate<
   }
 
   public importProduct(dto: CreateProductDto): Result<Product> {
-    let p = this._props.products.find(
-      (v) => v.sku.value() == dto.sku || v.id.value() == dto.id
-    );
-    if (p) {
-      return p.update(dto);
-    } else {
-      return this.addProduct(dto);
+    try {
+      let p = this._value.products.find(
+        (v) => v.sku?.value() == dto.sku || v.id?.value() == dto.id
+      );
+      if (p) {
+        return p.update(dto);
+      } else {
+        return this.addProduct(dto);
+      }
+    } catch (error) {
+      return Result.fail(
+        new FailedToImportProductError([error], dto, error?.message || error)
+      );
     }
   }
 
@@ -137,7 +156,7 @@ export class ProductType extends IAggregate<
     let product = result.value();
     try {
       product.setProductType(this);
-      this._props.products.push(product);
+      this._value.products.push(product);
       this._entity.products.add(product.entity());
       return Result.ok<Product>(product);
     } catch (err) {

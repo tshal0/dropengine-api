@@ -1,4 +1,5 @@
-import { QueryOrdersDto } from ".";
+import { SalesOrder } from "src/sales/domain";
+import { OrderResponseDto, QueryOrdersDto } from ".";
 
 export class AggregationResultOptions {
   key: string;
@@ -11,8 +12,9 @@ export class QueryOrdersResponseDto {
   size: number = 100;
   options: AggregationResultOptions[] = [];
   data: any[] = [];
-  constructor(query: QueryOrdersDto) {
+  constructor(query: QueryOrdersDto, data: SalesOrder[]) {
     this.page = +query.page;
     this.size = +query.size;
+    this.data = data.map((agg) => new OrderResponseDto(agg));
   }
 }

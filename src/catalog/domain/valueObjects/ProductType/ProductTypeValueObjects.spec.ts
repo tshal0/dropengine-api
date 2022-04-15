@@ -119,7 +119,6 @@ describe("ProductTypeOption", () => {
           { enabled: false, name: "Size", value: "30" },
         ],
       });
-      console.log(JSON.stringify(result, null, 2));
       expect(result.isFailure).toBe(true);
       expect(result.error).toEqual({
         inner: [

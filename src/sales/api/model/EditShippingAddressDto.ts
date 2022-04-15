@@ -1,5 +1,5 @@
-import { ShippingAddressDto } from "./ShippingAddressDto";
+import { AddressDto } from "@sales/dto";
 
 export class EditShippingAddressDto {
-  shippingAddress: ShippingAddressDto;
+  shippingAddress: AddressDto;
 }

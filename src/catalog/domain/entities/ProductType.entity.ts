@@ -52,6 +52,7 @@ export class DbProductType {
   products = new Collection<DbProduct>(this);
 
   props(maxDepth?: number | undefined): IProductTypeProps {
+    const newDepth = maxDepth - 1;
     let props: IProductTypeProps = {
       id: this.id,
       name: this.name,
@@ -65,7 +66,7 @@ export class DbProductType {
       createdAt: this.createdAt,
       products:
         this.products && this.products.isInitialized() && maxDepth > 0
-          ? this.products.getItems().map((v) => v.props(maxDepth - 1))
+          ? this.products.getItems().map((v) => v.props(newDepth))
           : null,
     };
     return props;

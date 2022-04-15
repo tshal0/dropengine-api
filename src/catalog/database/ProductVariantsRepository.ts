@@ -13,6 +13,7 @@ import {
   VariantSKU,
 } from "@catalog/domain";
 import { VariantQueryDto } from "@catalog/dto";
+import { ProductVariantUUID } from "@catalog/domain/valueObjects/ProductVariant/VariantUUID";
 
 /**
  * ProductVariantsRepository should have methods for
@@ -97,13 +98,17 @@ export class ProductVariantsRepository {
     return results;
   }
 
-  public async findByUuid(uuid: UUID): Promise<Result<ProductVariant>> {
+  public async findById(
+    id: ProductVariantUUID
+  ): Promise<Result<ProductVariant>> {
     let repo = this.em.getRepository(DbProductVariant);
-    let mp = await repo.findOne(uuid.value(), { populate: ["product"] });
+    let mp = await repo.findOne(id.value(), {
+      populate: ["product.productType"],
+    });
     if (mp == null) {
       //TODO: ProductVariantNotFound
       return Result.fail(
-        new ProductVariantNotFoundError(uuid.value(), `Database returned null.`)
+        new ProductVariantNotFoundError(id.value(), `Database returned null.`)
       );
     }
     let result = ProductVariant.db(mp);
@@ -114,7 +119,7 @@ export class ProductVariantsRepository {
     let repo = this.em.getRepository(DbProductVariant);
     let dbe = await repo.findOne(
       { sku: sku.value() },
-      { populate: ["product"] }
+      { populate: ["product.productType"] }
     );
     if (dbe == null) {
       //TODO: ProductVariantNotFound
