@@ -5,6 +5,17 @@ export interface IUserAccount {
   roles: string[];
   permissions: string[];
 }
+export interface IUserAuthorization {
+  groups?: string[];
+  roles?: string[];
+  permissions?: string[];
+}
+
+export interface IUserMetadata {
+  authorization: IUserAuthorization;
+  accounts: IUserAccount[];
+}
+
 export interface IUser {
   email?: string;
   emailVerified?: boolean;
@@ -17,10 +28,7 @@ export interface IUser {
   id?: string;
   nickname?: string;
   createdAt?: Date;
-  metadata?: {
-    authorization: { groups?: string[]; roles?: any[]; permissions?: any[] };
-    accounts: IUserAccount[];
-  };
+  metadata?: IUserMetadata;
   lastIp?: string;
   lastLogin?: Date;
   loginsCount?: number;

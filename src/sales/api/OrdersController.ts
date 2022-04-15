@@ -5,7 +5,6 @@ import {
   Inject,
   Get,
   Post,
-  Patch,
   Delete,
   Body,
   Res,
@@ -13,7 +12,6 @@ import {
   Query,
   ConflictException,
   HttpStatus,
-  Req,
   UnauthorizedException,
 } from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
@@ -30,16 +28,15 @@ import { CreateSalesOrder } from "../useCases/CreateSalesOrder";
 import { CreateOrderValidationPipe } from "./middleware";
 import {
   CreateOrderApiDto,
-  DeleteOrderResponseDto,
-  OrderResponseDto,
   QueryOrdersDto,
   QueryOrdersResponseDto,
 } from "./model";
-import { IAuthorizedUser } from "@shared/domain";
-import { IAuth0User } from "@auth0/domain/Auth0ExtendedUser";
-import { IUserAccount } from "@accounts/domain/interfaces/IUser";
+import { User } from "@shared/decorators";
+import { AuthenticatedUser } from "@shared/decorators/AuthenticatedUser";
+import { SalesLoggingInterceptor } from "./middleware/SalesLoggingInterceptor";
 
 @UseGuards(AuthGuard())
+@UseInterceptors(SalesLoggingInterceptor)
 @Controller({ path: "orders", version: Versions.v1 })
 export class OrdersController {
   constructor(
@@ -83,19 +80,12 @@ export class OrdersController {
   @Post()
   async post(
     @Res() res: ExpressResponse,
-    @Req() req: Request,
+    @User() user: AuthenticatedUser,
     @Body(CreateOrderValidationPipe) dto: CreateOrderApiDto
   ) {
     //TODO: Extract User validation into middleware?
-    const user: IAuth0User = req ? req["user"] : "";
-    const metadata = user["https://www.drop-engine.com/app_metadata"];
-    user.app_metadata = metadata;
-    const account: IUserAccount = user.app_metadata.accounts.find(
-      (a) => a.id == dto.accountId
-    );
-    if (!account) throw new UnauthorizedException(`UserAccountNotFound`);
-    const canManageOrders = account.permissions.includes("manage:orders");
-    if (canManageOrders) {
+
+    if (user.canManageOrders(dto.accountId)) {
       let result = await this.create.execute(dto);
       if (result.isFailure) {
         throw new ConflictException(result.error, `CreateSalesOrderFailed`);

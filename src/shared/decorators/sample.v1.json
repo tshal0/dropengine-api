@@ -1,0 +1,68 @@
+{
+  "https://www.drop-engine.com/email": "thomas@drop-engine.com",
+  "https://www.drop-engine.com/app_metadata": {
+    "accounts": [
+      {
+        "id": "0f5682e9-9a9a-4728-a794-6daf16ec08f6",
+        "companyCode": "THOMAS_ACCOUNT_1",
+        "name": "Thomas Account 1",
+        "roles": ["owner"],
+        "permissions": [
+          "manage:account",
+          "manage:orders",
+          "manage:products",
+          "manage:stores",
+          "read:account",
+          "read:orders",
+          "read:products",
+          "read:stores"
+        ]
+      },
+      {
+        "id": "12929935-3944-43ef-8415-6726e91f1b55",
+        "companyCode": "SOUTHERN_DESIGNS_1",
+        "name": "Southern Designs 1",
+        "roles": ["owner"],
+        "permissions": [
+          "manage:account",
+          "manage:orders",
+          "manage:products",
+          "manage:stores",
+          "read:account",
+          "read:orders",
+          "read:products",
+          "read:stores"
+        ]
+      },
+      {
+        "id": "c7ee5cde-e82e-42d1-b390-5470d67ef8d6",
+        "companyCode": "SOUTHERN_DESIGNS_2",
+        "name": "Southern Designs 2",
+        "roles": ["owner"],
+        "permissions": [
+          "manage:account",
+          "manage:orders",
+          "manage:products",
+          "manage:stores",
+          "read:account",
+          "read:orders",
+          "read:products",
+          "read:stores"
+        ]
+      }
+    ],
+    "authorization": {}
+  },
+  "iss": "https://drop-engine-dev.us.auth0.com/",
+  "sub": "auth0|61ef1176e4cc030070c9cc3d",
+  "aud": [
+    "dropengine.api.dev",
+    "https://drop-engine-dev.us.auth0.com/userinfo"
+  ],
+  "iat": 1650033974,
+  "exp": 1650120374,
+  "azp": "fPSjo4RYc2MTBCqjLRSWOR9qqdsXIaWB",
+  "scope": "openid profile email",
+  "gty": "password",
+  "permissions": []
+}
