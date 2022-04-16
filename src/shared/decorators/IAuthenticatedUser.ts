@@ -7,6 +7,7 @@ export interface IAuthenticatedUser {
 }
 
 export interface IRequestUser {
+  email: string;
   "https://www.drop-engine.com/email": string;
   "https://www.drop-engine.com/app_metadata": ReqUserAppMetadata;
   iss: string;

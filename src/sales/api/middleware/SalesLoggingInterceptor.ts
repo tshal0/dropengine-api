@@ -18,23 +18,16 @@ export class SalesLoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request: Request = context.getArgByIndex(0);
     const val: any = context.getArgByIndex(0).user;
-    const user = new AuthenticatedUser(val);
-    const account = user.account;
+    const user = AuthenticatedUser.load(val);
     const now = moment().toDate();
 
-    const begin = this.generateBeginTrace(now, user, account, request);
+    const begin = this.generateBeginTrace(now, user, request);
     this.logger.debug(begin.message);
     return next.handle().pipe(
       tap(() => {
         const now = moment().toDate();
         const duration = now.getTime() - begin.timestamp.getTime();
-        const end = this.generateEndTrace(
-          now,
-          duration,
-          user,
-          account,
-          request
-        );
+        const end = this.generateEndTrace(now, duration, user, request);
         this.logger.debug(end.message);
       })
     );
@@ -44,7 +37,6 @@ export class SalesLoggingInterceptor implements NestInterceptor {
     now: Date,
     duration: number,
     user: AuthenticatedUser,
-    account: IUserAccount,
     request
   ) {
     return {
@@ -52,12 +44,10 @@ export class SalesLoggingInterceptor implements NestInterceptor {
       duration: duration,
       email: user.email,
       userId: user.id,
-      account: account.companyCode,
       message:
         `[END]` +
         `[${user.id}]` +
         `[${user.email}]` +
-        `[${account.companyCode}]` +
         `[${request.method} ${
           request.url
         }] ${now.toISOString()} +${duration}ms`,
@@ -70,22 +60,15 @@ export class SalesLoggingInterceptor implements NestInterceptor {
     };
   }
 
-  private generateBeginTrace(
-    now: Date,
-    user: AuthenticatedUser,
-    account: IUserAccount,
-    request
-  ) {
+  private generateBeginTrace(now: Date, user: AuthenticatedUser, request) {
     return {
       timestamp: now,
       email: user.email,
       userId: user.id,
-      account: account.companyCode,
       message:
         `[BEGIN]` +
         `[${user.id}]` +
         `[${user.email}]` +
-        `[${account.companyCode}]` +
         `[${request.method} ${request.url}] ${now.toISOString()}`,
       properties: {
         action: "BEGIN",

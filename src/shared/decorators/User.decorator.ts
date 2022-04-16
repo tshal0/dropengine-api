@@ -5,7 +5,13 @@ export const User = createParamDecorator(
   (data: string, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     const val = request.user;
-    const user = new AuthenticatedUser(val);
-    return user;
+    console.debug(JSON.stringify(val, null, 2));
+    try {
+      const user = AuthenticatedUser.load(val);
+      return user;
+    } catch (error) {
+      console.log(JSON.stringify(error, null, 2));
+      return {};
+    }
   }
 );

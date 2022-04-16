@@ -5,20 +5,8 @@ import { IAuthenticatedUser, IRequestUser } from "./IAuthenticatedUser";
 
 export class AuthenticatedUser implements IAuthenticatedUser {
   private _props: IAuthenticatedUser;
-  constructor(props: IRequestUser) {
-    this._props = {
-      id: props.sub || "",
-      email: props["https://www.drop-engine.com/email"] || "",
-      metadata: {
-        accounts: [],
-        authorization: { groups: [], permissions: [], roles: [] },
-      },
-    };
-    const meta: IUserMetadata =
-      props["https://www.drop-engine.com/app_metadata"];
-    if (meta) {
-      this.metadata.accounts = meta.accounts ?? [];
-    }
+  protected constructor(props: IAuthenticatedUser) {
+    this._props = props;
   }
   public get id(): string {
     return this._props.id;
@@ -31,18 +19,39 @@ export class AuthenticatedUser implements IAuthenticatedUser {
   }
 
   public canManageOrders(accountId: string): boolean {
-    const account: IUserAccount = this._props.metadata.accounts.find(
-      (a) => a.id == accountId
-    );
-    if (!account) throw new NotFoundException(`UserNotFoundInAccount`);
-    const canManageOrders = account.permissions.includes("manage:orders");
-    return canManageOrders;
+    try {
+      if (!this._props.metadata.accounts.length) {
+        return false;
+      }
+      const account: IUserAccount = this._props.metadata?.accounts?.find(
+        (a) => a.id == accountId
+      );
+      if (!account) throw new NotFoundException(`UserNotFoundInAccount`);
+      const canManageOrders = account.permissions.includes("manage:orders");
+      return canManageOrders;
+    } catch (error) {
+      return false;
+    }
   }
 
   public get accounts(): IUserAccount[] {
-    return cloneDeep(this._props.metadata.accounts);
+    return cloneDeep(this._props.metadata?.accounts || []);
   }
   public get account(): IUserAccount {
-    return cloneDeep(this._props.metadata.accounts[0]);
+    return cloneDeep(this._props.metadata?.accounts[0]);
+  }
+
+  public static load(props: IRequestUser) {
+    console.debug(JSON.stringify(props, null, 2));
+    const email = props["https://www.drop-engine.com/email"] || props.email;
+    const userId = props.sub;
+    const meta: IUserMetadata =
+      props["https://www.drop-engine.com/app_metadata"];
+    const dto: IAuthenticatedUser = {
+      id: userId,
+      email: email,
+      metadata: meta,
+    };
+    return new AuthenticatedUser(dto);
   }
 }
