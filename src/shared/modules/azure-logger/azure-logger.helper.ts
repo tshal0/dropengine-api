@@ -1,21 +1,15 @@
-// import * as appInsights from 'applicationinsights';
-// import { getCircularReplacer } from 'shared/utils';
+import * as appInsights from "applicationinsights";
 
-// export const initializeAppInsights = (key: string) => {
-//   try {
-//     appInsights
-//       .setup(key)
-//       .setAutoDependencyCorrelation(true)
-//       .setAutoCollectRequests(true)
-//       .setAutoCollectPerformance(true, true)
-//       .setAutoCollectExceptions(true)
-//       .setAutoCollectDependencies(true)
-//       .setAutoCollectConsole(true)
-//       .setUseDiskRetryCaching(true)
-//       .setSendLiveMetrics(false)
-//       .start();
-//   } catch (err) {
-//     console.log(JSON.stringify(err, getCircularReplacer()));
-//     throw err;
-//   }
-// };
+export const initAppInsights = (key: string) => {
+  appInsights
+    .setup(key)
+    .setAutoDependencyCorrelation(true)
+    .setAutoCollectRequests(true)
+    .setAutoCollectPerformance(true, true)
+    .setAutoCollectExceptions(true)
+    .setAutoCollectDependencies(true)
+    .setAutoCollectConsole(true, true)
+    .setUseDiskRetryCaching(true)
+    .setSendLiveMetrics(true)
+    .start();
+};
