@@ -1476,7 +1476,7 @@
 											"// Add Store\r",
 											"// Get Account\r",
 											"const token = pm.collectionVariables.get(\"auth0_access_token\")\r",
-											"const base_url = pm.collectionVariables.get(\"base_url\")\r",
+											"const base_url = pm.environment.get(\"base_url\")\r",
 											"const prefix = pm.collectionVariables.get(\"prefix\")\r",
 											"const version = pm.collectionVariables.get(\"version\")\r",
 											"const apiUrl = `${base_url}/${prefix}/${version}`\r",

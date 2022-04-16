@@ -4,11 +4,11 @@ Rules:
 
 ```javascript
 function addEmailToAccessToken(user, context, callback) {
-  // This rule adds the authenticated user's email address to the access token.
-  var namespace = 'https://www.myeasysuite.co/';
-  context.accessToken[namespace + 'email'] = user.email;
-  context.accessToken[namespace + 'app_metadata'] = user.app_metadata;
-  context.idToken[namespace + 'app_metadata'] = user.app_metadata;
+  // TODO: implement your rule
+  var namespace = configuration.NAMESPACE;
+  context.accessToken[namespace + "/email"] = user.email;
+  context.accessToken[namespace + "/app_metadata"] = user.app_metadata;
+  context.idToken[namespace + "/app_metadata"] = user.app_metadata;
   return callback(null, user, context);
 }
 ```
@@ -17,9 +17,9 @@ Add Roles to Token
 
 ```javascript
 function (user, context, callback) {
+  var namespace = configuration.NAMESPACE;
   const assignedRoles = (context.authorization || {}).roles;
-	var namespace = 'https://www.myeasysuite.co/';
-  context.accessToken[namespace + 'roles'] = assignedRoles;
+  context.accessToken[namespace + '/roles'] = assignedRoles;
   callback(null, user, context);
 }
 ```
@@ -58,11 +58,11 @@ Verify User Email with Password Reset
 
 ```javascript
 function verifyUserWithPasswordReset(user, context, callback) {
-  const request = require('request');
-  const userApiUrl = auth0.baseUrl + '/users/';
+  const request = require("request");
+  const userApiUrl = auth0.baseUrl + "/users/";
 
   // This rule is only for Auth0 databases
-  if (context.connectionStrategy !== 'auth0') {
+  if (context.connectionStrategy !== "auth0") {
     return callback(null, user, context);
   }
 
@@ -75,7 +75,7 @@ function verifyUserWithPasswordReset(user, context, callback) {
     {
       url: userApiUrl + user.user_id,
       headers: {
-        Authorization: 'Bearer ' + auth0.accessToken,
+        Authorization: "Bearer " + auth0.accessToken,
       },
       json: { email_verified: true },
       timeout: 5000,
@@ -87,7 +87,7 @@ function verifyUserWithPasswordReset(user, context, callback) {
 
       // Return with success at this point.
       return callback(null, user, context);
-    },
+    }
   );
 }
 ```
