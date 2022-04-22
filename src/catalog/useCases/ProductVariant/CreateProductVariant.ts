@@ -1,12 +1,8 @@
-import { Injectable, NotImplementedException, Scope } from "@nestjs/common";
-import { EventEmitter2 } from "@nestjs/event-emitter";
+import { Injectable, Scope } from "@nestjs/common";
 import { UseCase } from "@shared/domain/UseCase";
 
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { HttpService } from "@nestjs/axios";
-import { ConfigService } from "@nestjs/config";
 import { UUID } from "@shared/domain";
 import { ProductsRepository } from "@catalog/database/ProductsRepository";
 import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
@@ -16,13 +12,7 @@ import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProdu
 export class CreateProductVariant
   implements UseCase<CreateProductVariantDto, ProductVariant>
 {
-  constructor(
-    private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
-    private readonly http: HttpService,
-    private readonly config: ConfigService,
-    private _repo: ProductsRepository
-  ) {}
+  constructor(private _repo: ProductsRepository) {}
   get llog() {
     return `[${moment()}][${CreateProductVariant.name}]`;
   }

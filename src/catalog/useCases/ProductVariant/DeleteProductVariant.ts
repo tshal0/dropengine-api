@@ -1,24 +1,16 @@
-import { EventEmitter2 } from "@nestjs/event-emitter";
 import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { HttpService } from "@nestjs/axios";
-import { ConfigService } from "@nestjs/config";
-import { Injectable, Scope, CACHE_MANAGER, Inject } from "@nestjs/common";
-import { Cache } from "cache-manager";
+import { Injectable, Scope } from "@nestjs/common";
 import { ProductVariantsRepository } from "@catalog/database/ProductVariantsRepository";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class DeleteProductVariant implements UseCase<UUID, any> {
   constructor(
-    private eventEmitter: EventEmitter2,
     private logger: AzureLoggerService,
-    private readonly http: HttpService,
-    private readonly config: ConfigService,
-    private _repo: ProductVariantsRepository,
-    @Inject(CACHE_MANAGER) private cache: Cache
+    private _repo: ProductVariantsRepository
   ) {}
   get llog() {
     return `[${moment()}][${DeleteProductVariant.name}]`;

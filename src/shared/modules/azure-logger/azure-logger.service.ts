@@ -1,16 +1,13 @@
 import { ConsoleLogger, Injectable, Scope } from "@nestjs/common";
-import { Logger, LoggerService } from "@nestjs/common";
 
 import { ConfigService } from "@nestjs/config";
 import { TelemetryClient } from "applicationinsights";
 import {
   RequestTelemetry,
-  SeverityLevel,
   TraceTelemetry,
   ExceptionTelemetry,
   EventTelemetry,
 } from "applicationinsights/out/Declarations/Contracts";
-import * as appInsights from "applicationinsights";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class AzureLoggerService extends ConsoleLogger {

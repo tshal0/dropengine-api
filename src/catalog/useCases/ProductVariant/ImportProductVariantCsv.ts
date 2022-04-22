@@ -1,14 +1,10 @@
 import { Injectable, Scope } from "@nestjs/common";
-import { EventEmitter2 } from "@nestjs/event-emitter";
-import { HttpService } from "@nestjs/axios";
-import { ConfigService } from "@nestjs/config";
 import { Readable } from "stream";
 import moment from "moment";
 import csv from "csvtojson";
 
 import { UseCase } from "@shared/domain/UseCase";
 import { Result, ResultError } from "@shared/domain/Result";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 
 import {
   IProductVariantProps,
@@ -73,13 +69,7 @@ export class ProcessImportedVariantsResponse {
 
 @Injectable({ scope: Scope.DEFAULT })
 export class ImportProductVariantCsv implements UseCase<any, any> {
-  constructor(
-    private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
-    private readonly http: HttpService,
-    private readonly config: ConfigService,
-    private _repo: ProductsRepository
-  ) {}
+  constructor(private _repo: ProductsRepository) {}
   get llog() {
     return `[${moment()}][${ImportProductVariantCsv.name}]`;
   }

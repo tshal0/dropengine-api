@@ -8,7 +8,7 @@ import {
 } from "@catalog/database";
 import { SyncVariant } from "@catalog/useCases/SyncVariant";
 import { AzureLoggerService } from "@shared/modules";
-import { MyEasySuiteClient } from "src/myeasysuite/MyEasySuiteClient";
+import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
 import { ProductVariant, VariantSKU } from "@catalog/domain";
 import { SyncVariantDto } from "@catalog/dto";
 import { Result, ResultError } from "@shared/domain";
@@ -54,12 +54,7 @@ export class FailedToLoadLineItemVariantByIdError implements ResultError {
 @Injectable({ scope: Scope.DEFAULT })
 export class CatalogService {
   constructor(
-    private _events: EventEmitter2,
-    private _logger: AzureLoggerService,
-    private _types: ProductTypesRepository,
-    private _products: ProductsRepository,
     private _repo: ProductVariantsRepository,
-    private _myEasySuite: MyEasySuiteClient,
     private _syncVariant: SyncVariant
   ) {}
   get llog() {

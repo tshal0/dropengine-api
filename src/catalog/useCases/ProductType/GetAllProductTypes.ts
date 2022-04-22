@@ -1,19 +1,14 @@
-import { Injectable, NotImplementedException, Scope } from "@nestjs/common";
-import { EventEmitter2 } from "@nestjs/event-emitter";
+import { Injectable, Scope } from "@nestjs/common";
 import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result } from "@shared/domain/Result";
-import { UUID } from "@shared/domain/valueObjects";
-import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { result } from "lodash";
 import { ProductTypesRepository } from "@catalog/database/ProductTypesRepository";
 import { IProductTypeProps } from "@catalog/domain";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class GetAllProductTypes implements UseCase<any, IProductTypeProps[]> {
   constructor(
-    private eventEmitter: EventEmitter2,
     private logger: AzureLoggerService,
     private _repository: ProductTypesRepository
   ) {}

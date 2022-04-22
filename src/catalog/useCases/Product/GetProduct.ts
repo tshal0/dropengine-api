@@ -1,5 +1,4 @@
 import { Injectable, Scope } from "@nestjs/common";
-import { EventEmitter2 } from "@nestjs/event-emitter";
 import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result } from "@shared/domain/Result";
@@ -11,7 +10,6 @@ import { Product } from "@catalog/domain";
 @Injectable({ scope: Scope.DEFAULT })
 export class GetProduct implements UseCase<UUID, Product> {
   constructor(
-    private eventEmitter: EventEmitter2,
     private logger: AzureLoggerService,
     private _repo: ProductsRepository
   ) {}

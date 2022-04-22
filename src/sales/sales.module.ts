@@ -32,7 +32,6 @@ import { AccountsModule } from "@accounts/accounts.module";
     AzureLoggerModule,
     ConfigModule,
     CacheModule.register(),
-    AzureStorageModule,
     CatalogModule,
   ],
   controllers: [OrdersController],

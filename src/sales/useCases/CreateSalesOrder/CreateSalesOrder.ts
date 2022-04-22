@@ -19,10 +19,6 @@ export class CreateSalesOrder
   implements UseCase<CreateOrderApiDto, SalesOrder>
 {
   constructor(
-    private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
-    private readonly http: HttpService,
-    private readonly config: ConfigService,
     private _repo: SalesOrderRepository,
     private _catalog: CatalogService
   ) {}

@@ -9,9 +9,6 @@ import { AzureLoggerService } from "./azure-logger.service";
   exports: [AzureLoggerService],
 })
 export class AzureLoggerModule {
-  constructor(
-    private _config: ConfigService,
-    private _logger: AzureLoggerService
-  ) {}
+  constructor() {}
   public onModuleInit(): any {}
 }

@@ -28,8 +28,6 @@ import {
   ImportProductCsv,
 } from "@catalog/useCases";
 import "multer";
-import { AzureStorageService } from "@shared/modules";
-import csv from "csvtojson";
 import { Readable } from "stream";
 import { ProductResponseDto } from "@catalog/dto/Product/ProductResponseDto";
 import { QueryProductResponseDto } from "@catalog/dto/Product/QueryProductResponseDto";
@@ -44,7 +42,6 @@ export class ProductsQueryDto {
 export class ProductsController {
   constructor(
     private readonly logger: AzureLoggerService,
-    private readonly storage: AzureStorageService,
     private readonly find: GetAllProducts,
     private readonly getProduct: GetProduct,
     private readonly create: CreateProduct,

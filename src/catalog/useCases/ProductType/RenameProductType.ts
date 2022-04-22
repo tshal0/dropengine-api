@@ -1,10 +1,8 @@
-import { Injectable, NotImplementedException, Scope } from "@nestjs/common";
-import { EventEmitter2 } from "@nestjs/event-emitter";
+import { Injectable, Scope } from "@nestjs/common";
 import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
-import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { ProductTypesRepository } from "@catalog/database/ProductTypesRepository";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
@@ -14,7 +12,6 @@ export class RenameProductType
   implements UseCase<{ id: UUID; name: string }, ProductType>
 {
   constructor(
-    private eventEmitter: EventEmitter2,
     private logger: AzureLoggerService,
     private _repo: ProductTypesRepository
   ) {}

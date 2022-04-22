@@ -2,8 +2,8 @@ import { HttpModule } from "@nestjs/axios";
 import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
-import { AzureLoggerModule, AzureStorageModule } from "@shared/modules";
-import { MyEasySuiteModule } from "src/myeasysuite/MyEasySuiteModule";
+import { AzureLoggerModule } from "@shared/modules";
+import { MyEasySuiteModule } from "@myeasysuite/MyEasySuiteModule";
 import { ProductsController } from "./api/ProductsController";
 import { ProductTypesController } from "./api/ProductTypesController";
 import { ProductVariantsController } from "./api/ProductVariantsController";
@@ -36,11 +36,10 @@ import { SyncVariant } from "./useCases/SyncVariant";
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
+    ConfigModule,
     HttpModule,
     AzureLoggerModule,
-    ConfigModule,
     CacheModule.register(),
-    AzureStorageModule,
     MyEasySuiteModule,
   ],
   providers: [

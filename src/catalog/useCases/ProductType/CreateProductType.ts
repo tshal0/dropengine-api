@@ -1,14 +1,11 @@
-import { Injectable, NotImplementedException, Scope } from "@nestjs/common";
-import { EventEmitter2 } from "@nestjs/event-emitter";
+import { Injectable, Scope } from "@nestjs/common";
 import { UseCase } from "@shared/domain/UseCase";
 import { ProductTypesRepository } from "../../database/ProductTypesRepository";
 
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
 import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import { ProductTypeName } from "@catalog/domain";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
 import { CreateProductTypeDto } from "@catalog/dto";
 
@@ -17,9 +14,7 @@ export class CreateProductType
   implements UseCase<CreateProductTypeDto, ProductType>
 {
   constructor(
-    private eventEmitter: EventEmitter2,
     private logger: AzureLoggerService,
-    private readonly http: HttpService,
     private readonly config: ConfigService,
     private _repo: ProductTypesRepository
   ) {}

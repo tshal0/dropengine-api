@@ -24,7 +24,7 @@ import {
   GetSalesOrder,
   QuerySalesOrders,
 } from "../useCases/CRUD";
-import { CreateSalesOrder } from "../useCases/CreateSalesOrder";
+import { CreateSalesOrder } from "../useCases/CreateSalesOrder/CreateSalesOrder";
 import { CreateOrderValidationPipe } from "./middleware";
 import {
   CreateOrderApiDto,

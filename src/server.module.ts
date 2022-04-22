@@ -18,7 +18,9 @@ import { CatalogModule } from "./catalog/catalog.module";
 import { Auth0Module } from "@auth0/auth0.module";
 import { AccountsModule } from "./accounts/accounts.module";
 import { SalesModule } from "./sales/sales.module";
-import { MyEasySuiteModule } from './myeasysuite/MyEasySuiteModule';
+import { MyEasySuiteModule } from "./myeasysuite/MyEasySuiteModule";
+import { APP_FILTER } from "@nestjs/core";
+import { AllExceptionsFilter } from "@shared/filters";
 
 @Module({
   imports: [
@@ -26,8 +28,8 @@ import { MyEasySuiteModule } from './myeasysuite/MyEasySuiteModule';
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>("MONGO_CONNECTION_STRING"),
+      useFactory: async (cfg: ConfigService) => ({
+        uri: cfg.get<string>("MONGO_CONNECTION_STRING"),
       }),
       inject: [ConfigService],
     }),
@@ -57,6 +59,12 @@ import { MyEasySuiteModule } from './myeasysuite/MyEasySuiteModule';
     CatalogModule,
     SalesModule,
     MyEasySuiteModule,
+  ],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
   ],
 })
 export class ServerModule {}

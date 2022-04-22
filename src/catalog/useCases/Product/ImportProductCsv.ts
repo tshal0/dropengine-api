@@ -1,18 +1,13 @@
 import { Injectable, Scope } from "@nestjs/common";
-import { EventEmitter2 } from "@nestjs/event-emitter";
 import { UseCase } from "@shared/domain/UseCase";
 import { ProductTypesRepository } from "../../database/ProductTypesRepository";
 
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
-import { HttpService } from "@nestjs/axios";
-import { ConfigService } from "@nestjs/config";
 import { Readable } from "stream";
 import csv from "csvtojson";
 import { IProductProps, Product, ProductTypeName } from "@catalog/domain";
 import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
-import { ProductsRepository } from "@catalog/database/ProductsRepository";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
 import { CsvProductDto } from "@catalog/dto/Product/CsvProductDto";
 
@@ -62,14 +57,7 @@ export class ProcessImportedProductsResponse {
 }
 @Injectable({ scope: Scope.DEFAULT })
 export class ImportProductCsv implements UseCase<any, any> {
-  constructor(
-    private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
-    private readonly http: HttpService,
-    private readonly config: ConfigService,
-    private readonly _typeRepo: ProductTypesRepository,
-    private _repo: ProductsRepository
-  ) {}
+  constructor(private readonly _typeRepo: ProductTypesRepository) {}
   get llog() {
     return `[${moment()}][${ImportProductCsv.name}]`;
   }

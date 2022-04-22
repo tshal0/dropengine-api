@@ -1,2 +1,2 @@
-export * from './CreateSalesOrder';
+export * from './CreateSalesOrder/CreateSalesOrder';
 export * from './CRUD';

@@ -1,10 +1,7 @@
-import { Injectable, NotImplementedException, Scope } from "@nestjs/common";
-import { EventEmitter2 } from "@nestjs/event-emitter";
+import { Injectable, Scope } from "@nestjs/common";
 import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
-import { UUID } from "@shared/domain/valueObjects";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
 import { ProductsRepository } from "@catalog/database/ProductsRepository";
 import {
   Product,
@@ -14,7 +11,7 @@ import {
   ProductVariant,
   VariantSKU,
 } from "@catalog/domain";
-import { MyEasySuiteClient } from "src/myeasysuite/MyEasySuiteClient";
+import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
 import {
   CreateProductDto,
   CreateProductVariantDto,
@@ -48,8 +45,6 @@ export class FailedToSyncVariantError implements ResultError {
 @Injectable({ scope: Scope.DEFAULT })
 export class SyncVariant implements UseCase<SyncVariantDto, ProductVariant> {
   constructor(
-    private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
     private _types: ProductTypesRepository,
     private _products: ProductsRepository,
     private _repo: ProductVariantsRepository,

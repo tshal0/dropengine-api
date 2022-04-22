@@ -33,6 +33,9 @@
       ],
       "@auth0/*": [
         "src/auth0/*"
+      ],
+      "@myeasysuite/*": [
+        "src/myeasysuite/*"
       ]
     },
   },
