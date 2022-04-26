@@ -8,7 +8,7 @@ import {
 } from "@nestjs/common";
 import { validate } from "class-validator";
 import { plainToClass } from "class-transformer";
-import { AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryService } from "@shared/modules";
 import {
   generateOrderValidationError,
   OrderValidationException,
@@ -16,7 +16,7 @@ import {
 
 @Injectable()
 export class CreateOrderValidationPipe implements PipeTransform {
-  constructor(private readonly logger: AzureLoggerService) {}
+  constructor(private readonly logger: AzureTelemetryService) {}
 
   async transform(value: any, { metatype }: ArgumentMetadata) {
     if (!metatype || !this.toValidate(metatype)) {

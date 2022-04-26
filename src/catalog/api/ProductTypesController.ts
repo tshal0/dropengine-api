@@ -11,7 +11,7 @@ import {
 } from "@nestjs/common";
 import { UUID } from "@shared/domain";
 import { AuthGuard } from "@nestjs/passport";
-import { AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryService } from "@shared/modules";
 import { IProductTypeProps } from "@catalog/domain";
 import { CreateProductTypeDto } from "@catalog/dto";
 import {
@@ -26,7 +26,7 @@ import {
 @Controller("/productTypes")
 export class ProductTypesController {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly find: GetAllProductTypes,
     private readonly getProductType: GetProductType,
     private readonly create: CreateProductType,

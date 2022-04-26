@@ -5,7 +5,7 @@ import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { Account } from "@accounts/domain/aggregates/Account";
 import { AccountId } from "@accounts/domain/valueObjects/AccountId";
 import { AccountsRepository } from "@accounts/database/AccountsRepository";
@@ -19,7 +19,7 @@ export class AddMembersUseCase
 {
   constructor(
     private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private auth0: Auth0MgmtApiClient,
     private _repo: AccountsRepository
   ) {}

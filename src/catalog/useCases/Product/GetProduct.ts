@@ -3,14 +3,14 @@ import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { ProductsRepository } from "@catalog/database/ProductsRepository";
 import { Product } from "@catalog/domain";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class GetProduct implements UseCase<UUID, Product> {
   constructor(
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private _repo: ProductsRepository
   ) {}
   get llog() {

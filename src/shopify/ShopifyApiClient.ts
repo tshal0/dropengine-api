@@ -1,12 +1,12 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { AzureLoggerService } from '@shared/modules/azure-logger/azure-logger.service';
+import { AzureTelemetryService } from '@shared/modules/azure-telemetry/azure-telemetry.service';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class ShopifyApiClient {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private http: HttpService,
   ) {}
 

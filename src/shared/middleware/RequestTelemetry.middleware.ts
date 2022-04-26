@@ -7,14 +7,14 @@ import {
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import { Request } from "express";
-import { AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryService } from "@shared/modules";
 import { IAuth0User } from "@auth0/domain/Auth0ExtendedUser";
 import { AuthenticatedUser } from "@shared/decorators";
 import moment from "moment";
 import { IUserAccount } from "@accounts/domain";
 @Injectable()
 export class RequestTelemetryInterceptor implements NestInterceptor {
-  constructor(private logger: AzureLoggerService) {}
+  constructor(private logger: AzureTelemetryService) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request: Request = context.getArgByIndex(0);
     const val: any = context.getArgByIndex(0).user;

@@ -15,8 +15,8 @@ import * as https from "https";
 import { ShopifyApiClient } from "./ShopifyApiClient";
 import { ConnectShopifyAccountUseCase } from "./useCases/ConnectShopifyAccount";
 import { PassportModule } from "@nestjs/passport";
-import { AzureLoggerModule } from "@shared/modules/azure-logger/azure-logger.module";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryModule } from "@shared/modules/azure-telemetry/azure-telemetry.module";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { DbShopifyAccountsRepository } from "./database/DbShopifyAccountsRepository";
 import { GetShopifyAccountUseCase } from "./useCases/GetShopifyAccount";
 import { AcceptShopifyInstallUseCase } from "./useCases/AcceptShopifyInstallUseCase";
@@ -26,7 +26,7 @@ import { GetAllAccountsUseCase } from "./useCases/GetAllAccounts";
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
-    AzureLoggerModule,
+    AzureTelemetryModule,
     HttpModule.registerAsync({
       imports: [ConfigModule, CacheModule.register()],
       useFactory: async (config: ConfigService, cache: Cache) => {
@@ -62,7 +62,7 @@ import { GetAllAccountsUseCase } from "./useCases/GetAllAccounts";
 export class ShopifyModule {
   constructor(
     private readonly httpService: HttpService,
-    private readonly logger: AzureLoggerService
+    private readonly logger: AzureTelemetryService
   ) {}
 
   public onModuleInit(): any {

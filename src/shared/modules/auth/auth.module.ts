@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
-import { AzureLoggerModule } from '../azure-logger/azure-logger.module';
+import { AzureTelemetryModule } from '../azure-telemetry/azure-telemetry.module';
 
 import authConfig from './auth.config';
 
@@ -11,7 +11,7 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     ConfigModule.forFeature(authConfig),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    AzureLoggerModule,
+    AzureTelemetryModule,
   ],
   providers: [JwtStrategy],
   exports: [PassportModule, JwtStrategy],

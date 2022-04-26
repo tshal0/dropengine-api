@@ -3,7 +3,7 @@ import { HttpModule } from "@nestjs/axios";
 import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
-import { AzureLoggerModule, AzureStorageModule } from "@shared/modules";
+import { AzureTelemetryModule, AzureStorageModule } from "@shared/modules";
 import { AccountsController } from "./api/AccountsController";
 import { UsersController } from "./api/UsersController";
 import { AccountsRepository } from "./database/AccountsRepository";
@@ -30,7 +30,7 @@ import { StoresController } from "./api/StoresController";
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
     HttpModule,
-    AzureLoggerModule,
+    AzureTelemetryModule,
     ConfigModule,
     CacheModule.register(),
     AzureStorageModule,

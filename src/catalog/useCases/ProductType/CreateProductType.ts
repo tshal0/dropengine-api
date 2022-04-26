@@ -4,7 +4,7 @@ import { ProductTypesRepository } from "../../database/ProductTypesRepository";
 
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { ConfigService } from "@nestjs/config";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
 import { CreateProductTypeDto } from "@catalog/dto";
@@ -14,7 +14,7 @@ export class CreateProductType
   implements UseCase<CreateProductTypeDto, ProductType>
 {
   constructor(
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private readonly config: ConfigService,
     private _repo: ProductTypesRepository
   ) {}

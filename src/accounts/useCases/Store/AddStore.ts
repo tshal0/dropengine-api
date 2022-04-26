@@ -3,7 +3,7 @@ import { EventEmitter2 } from "@nestjs/event-emitter";
 import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { Account } from "@accounts/domain/aggregates/Account";
 import { AccountsRepository } from "@accounts/database/AccountsRepository";
 import { User } from "@accounts/domain";
@@ -17,7 +17,7 @@ import { StoresRepository } from "@accounts/database/StoresRepository";
 export class AddStoreUseCase implements UseCase<CreateStoreDto, Account> {
   constructor(
     private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private auth0: Auth0MgmtApiClient,
     private _repo: StoresRepository,
     private _accountRepo: AccountsRepository

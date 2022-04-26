@@ -18,7 +18,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { Result, ResultError } from "@shared/domain";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { VariantSKU } from "@catalog/domain";
 import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
 import { IProductVariantProps } from "@catalog/domain/interfaces";
@@ -57,7 +57,7 @@ export class SyncVariantResponseDto {
 @Controller("/productVariants")
 export class ProductVariantsController {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly create: CreateProductVariant,
     private readonly getById: GetProductVariantById,
     private readonly getBySku: GetProductVariantBySku,

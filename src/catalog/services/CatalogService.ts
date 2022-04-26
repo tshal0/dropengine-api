@@ -7,7 +7,7 @@ import {
   ProductVariantsRepository,
 } from "@catalog/database";
 import { SyncVariant } from "@catalog/useCases/SyncVariant";
-import { AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryService } from "@shared/modules";
 import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
 import { ProductVariant, VariantSKU } from "@catalog/domain";
 import { SyncVariantDto } from "@catalog/dto";

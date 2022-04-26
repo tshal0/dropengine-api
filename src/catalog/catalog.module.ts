@@ -2,7 +2,7 @@ import { HttpModule } from "@nestjs/axios";
 import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
-import { AzureLoggerModule } from "@shared/modules";
+import { AzureTelemetryModule } from "@shared/modules";
 import { MyEasySuiteModule } from "@myeasysuite/MyEasySuiteModule";
 import { ProductsController } from "./api/ProductsController";
 import { ProductTypesController } from "./api/ProductTypesController";
@@ -38,7 +38,7 @@ import { SyncVariant } from "./useCases/SyncVariant";
     PassportModule.register({ defaultStrategy: "jwt" }),
     ConfigModule,
     HttpModule,
-    AzureLoggerModule,
+    AzureTelemetryModule,
     CacheModule.register(),
     MyEasySuiteModule,
   ],

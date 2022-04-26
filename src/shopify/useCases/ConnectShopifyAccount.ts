@@ -14,7 +14,7 @@ import {
 } from '../domain/events/ShopifyAccountEvent';
 import { ConfigService } from '@nestjs/config';
 import { Constants } from '@shared/Constants';
-import { AzureLoggerService } from '@shared/modules/azure-logger/azure-logger.service';
+import { AzureTelemetryService } from '@shared/modules/azure-telemetry/azure-telemetry.service';
 import {
   DbShopifyAccountsRepository,
   ShopifyAccountDuplicateShopOrigin,
@@ -26,7 +26,7 @@ export class ConnectShopifyAccountUseCase
 {
   constructor(
     private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private config: ConfigService,
     private _repo: DbShopifyAccountsRepository,
   ) {}

@@ -221,13 +221,7 @@ export class Product extends IAggregate<IProductProps, IProduct, DbProduct> {
     dto.option2.option = optionMap[toLower(productTypeOption2)];
     dto.option3.name = productTypeOption3;
     dto.option3.option = optionMap[toLower(productTypeOption3)];
-    console.log({
-      option1: dto.option1,
-      option2: dto.option2,
-      option3: dto.option3,
-      optionMap,
-      dtoOptions,
-    });
+
     let result = ProductVariant.create(dto);
     if (result.isFailure) {
       //TODO: FailedToAddVariant

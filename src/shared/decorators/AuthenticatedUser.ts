@@ -19,19 +19,24 @@ export class AuthenticatedUser implements IAuthenticatedUser {
   }
 
   public canManageOrders(accountId: string): boolean {
-    try {
-      if (!this._props.metadata.accounts.length) {
-        return false;
-      }
-      const account: IUserAccount = this._props.metadata?.accounts?.find(
-        (a) => a.id == accountId
-      );
-      if (!account) throw new NotFoundException(`UserNotFoundInAccount`);
-      const canManageOrders = account.permissions.includes("manage:orders");
-      return canManageOrders;
-    } catch (error) {
+    
+    if (!this._props.metadata.accounts.length) {
       return false;
     }
+    const account: IUserAccount = this._props.metadata?.accounts?.find(
+      (a) => a.id == accountId
+    );
+    if (!account)
+      throw new NotFoundException({
+        name: `UserNotFoundInAccount`,
+        accounts: this._props.metadata.accounts.map((a) => ({
+          id: a.id,
+          companyCode: a.companyCode,
+        })),
+        userId: this._props.id,
+      });
+    const canManageOrders = account.permissions.includes("manage:orders");
+    return canManageOrders;
   }
 
   public get accounts(): IUserAccount[] {
@@ -42,7 +47,6 @@ export class AuthenticatedUser implements IAuthenticatedUser {
   }
 
   public static load(props: IRequestUser) {
-    console.debug(JSON.stringify(props, null, 2));
     const email = props["https://www.drop-engine.com/email"] || props.email;
     const userId = props.sub;
     const meta: IUserMetadata =

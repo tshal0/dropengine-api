@@ -12,7 +12,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 
 import { EntityNotFoundException } from "@shared/exceptions";
 import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
@@ -29,7 +29,7 @@ import { CreateStoreDto } from "@accounts/dto/CreateStoreDto";
 @Controller("/stores")
 export class StoresController {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly auth0: Auth0MgmtApiClient,
   ) {}
   @Get(":id")

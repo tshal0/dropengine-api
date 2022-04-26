@@ -17,7 +17,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { IProductProps } from "@catalog/domain/interfaces/IProduct";
 import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
 import {
@@ -41,7 +41,7 @@ export class ProductsQueryDto {
 @Controller("/products")
 export class ProductsController {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly find: GetAllProducts,
     private readonly getProduct: GetProduct,
     private readonly create: CreateProduct,

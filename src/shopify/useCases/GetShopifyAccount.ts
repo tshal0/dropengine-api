@@ -10,7 +10,7 @@ import { UUID } from '@shared/domain/valueObjects';
 import { ShopifyAccount } from '../domain/entities/ShopifyAccount';
 import { ConfigService } from '@nestjs/config';
 import { Constants } from '@shared/Constants';
-import { AzureLoggerService } from '@shared/modules/azure-logger/azure-logger.service';
+import { AzureTelemetryService } from '@shared/modules/azure-telemetry/azure-telemetry.service';
 import {
   DbShopifyAccountsRepository,
   ShopifyAccountNotFoundException,
@@ -20,7 +20,7 @@ import {
 export class GetShopifyAccountUseCase implements UseCase<UUID, any> {
   constructor(
     private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private config: ConfigService,
     private _repo: DbShopifyAccountsRepository,
   ) {}

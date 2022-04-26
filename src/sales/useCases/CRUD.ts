@@ -4,7 +4,7 @@ import { UseCase } from "@shared/domain/UseCase";
 
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { QueryOrdersDto } from "../api/model";
@@ -16,7 +16,7 @@ import { SalesOrder } from "@sales/domain";
 export class GetSalesOrder implements UseCase<string, SalesOrder> {
   constructor(
     private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private readonly http: HttpService,
     private readonly config: ConfigService,
     private _repo: SalesOrderRepository
@@ -43,7 +43,7 @@ export class GetSalesOrder implements UseCase<string, SalesOrder> {
 export class QuerySalesOrders implements UseCase<QueryOrdersDto, SalesOrder[]> {
   constructor(
     private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private readonly http: HttpService,
     private readonly config: ConfigService,
     private _query: SalesOrderQuery
@@ -71,7 +71,7 @@ export class QuerySalesOrders implements UseCase<QueryOrdersDto, SalesOrder[]> {
 export class DeleteSalesOrder implements UseCase<string, void> {
   constructor(
     private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private readonly http: HttpService,
     private readonly config: ConfigService,
     private _repo: SalesOrderRepository

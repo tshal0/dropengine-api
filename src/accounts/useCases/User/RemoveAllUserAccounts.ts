@@ -2,7 +2,7 @@ import { EventEmitter2 } from "@nestjs/event-emitter";
 import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result } from "@shared/domain/Result";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { Injectable, Scope, CACHE_MANAGER, Inject } from "@nestjs/common";
@@ -16,7 +16,7 @@ import { User } from "@accounts/domain";
 export class RemoveAllUserAccountsUseCase implements UseCase<string, any> {
   constructor(
     private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private readonly http: HttpService,
     private readonly config: ConfigService,
     private readonly auth0: Auth0MgmtApiClient,

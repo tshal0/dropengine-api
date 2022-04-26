@@ -85,7 +85,6 @@ export class DbProductVariant {
       wrap(target).assign(source, { merge: true, mergeObjects: true });
       return target;
     } catch (error) {
-      console.error(error.message);
       throw error;
     }
   }

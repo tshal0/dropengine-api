@@ -4,7 +4,7 @@ import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.excep
 
 import moment from "moment";
 import { DbStore } from "../domain/entities/Store.entity";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { EntityManager, EntityRepository, FilterQuery } from "@mikro-orm/core";
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
 import { StoreId } from "@accounts/domain/valueObjects/StoreId";
@@ -70,7 +70,7 @@ export class FailedToConvertStoreToDb implements ResultError {
 @Injectable()
 export class StoresRepository {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly em: EntityManager
   ) {}
   get llog() {

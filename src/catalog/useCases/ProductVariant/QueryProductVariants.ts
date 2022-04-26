@@ -2,7 +2,7 @@ import { Injectable, Scope } from "@nestjs/common";
 import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { ProductVariantsRepository } from "@catalog/database/ProductVariantsRepository";
 import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
 import { VariantQueryDto } from "@catalog/dto";
@@ -12,7 +12,7 @@ export class QueryProductVariants
   implements UseCase<VariantQueryDto, ProductVariant[]>
 {
   constructor(
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private _repo: ProductVariantsRepository
   ) {}
   get llog() {

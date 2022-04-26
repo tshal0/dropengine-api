@@ -8,7 +8,7 @@ import {
 } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
-import { AzureLoggerModule, AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryModule, AzureTelemetryService } from "@shared/modules";
 import { requestObject } from "@shared/utils";
 import https from "https";
 import { Cache } from "cache-manager";
@@ -40,13 +40,13 @@ export abstract class MES {
   controllers: [MyEasySuiteController],
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
-    AzureLoggerModule,
+    AzureTelemetryModule,
     HttpModule.registerAsync({
-      imports: [ConfigModule, CacheModule.register(), AzureLoggerModule],
+      imports: [ConfigModule, CacheModule.register(), AzureTelemetryModule],
       useFactory: async (
         config: ConfigService,
         cache: Cache,
-        log: AzureLoggerService
+        log: AzureTelemetryService
       ) => {
         const baseUrl = config.get(MES.MES_API_URL);
         const accessTokenUrl = config.get(MES.MES_AUTH0_ACCESS_TOKEN_URL);
@@ -101,7 +101,7 @@ export abstract class MES {
 
         return httpConfig;
       },
-      inject: [ConfigService, CACHE_MANAGER, AzureLoggerService],
+      inject: [ConfigService, CACHE_MANAGER, AzureTelemetryService],
     }),
     ConfigModule,
     CacheModule.register(),
@@ -111,7 +111,7 @@ export class MyEasySuiteModule implements OnModuleInit {
   constructor(
     private readonly http: HttpService,
     private readonly config: ConfigService,
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     @Inject(CACHE_MANAGER) private cache: Cache
   ) {}
 

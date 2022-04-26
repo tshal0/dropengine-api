@@ -5,7 +5,7 @@ import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.excep
 
 import moment from "moment";
 import { DbAccount } from "../domain/entities/Account.entity";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import {
   Collection,
   EntityManager,
@@ -86,7 +86,7 @@ export class FailedToConvertAccountToDb implements ResultError {
 @Injectable()
 export class AccountsRepository {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly em: EntityManager
   ) {}
   get llog() {

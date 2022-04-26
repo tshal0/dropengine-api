@@ -94,7 +94,6 @@ export class DbProduct {
 
       return e;
     } catch (error) {
-      console.error(JSON.stringify(error, null, 2));
       throw error;
     }
   }

@@ -6,12 +6,12 @@ import {
   InternalServerErrorException,
 } from "@nestjs/common";
 import { BaseExceptionFilter } from "@nestjs/core";
-import { AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryService } from "@shared/modules";
 import { Response } from "express";
 
 @Catch()
 export class AllExceptionsFilter extends BaseExceptionFilter {
-  constructor(private readonly logger: AzureLoggerService) {
+  constructor(private readonly logger: AzureTelemetryService) {
     super();
   }
   catch(exception: unknown, host: ArgumentsHost) {

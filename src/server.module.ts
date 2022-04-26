@@ -1,11 +1,19 @@
 import { CacheModule, Module } from "@nestjs/common";
+import {
+  WinstonModule,
+  utilities as nestWinstonModuleUtilities,
+  NestLikeConsoleFormatOptions,
+  WINSTON_MODULE_NEST_PROVIDER,
+  WINSTON_MODULE_PROVIDER,
+} from "nest-winston";
+import * as winston from "winston";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { ScheduleModule } from "@nestjs/schedule";
 import { HttpModule } from "@nestjs/axios";
-import { AzureLoggerModule } from "@shared/modules/azure-logger/azure-logger.module";
+import { AzureTelemetryModule } from "@shared/modules/azure-telemetry/azure-telemetry.module";
 import { AzureStorageModule } from "@shared/modules/azure-storage/azure-storage.module";
 import { AuthModule } from "@shared/modules/auth/auth.module";
 import { AppModule } from "./app/app.module";
@@ -21,11 +29,20 @@ import { SalesModule } from "./sales/sales.module";
 import { MyEasySuiteModule } from "./myeasysuite/MyEasySuiteModule";
 import { APP_FILTER } from "@nestjs/core";
 import { AllExceptionsFilter } from "@shared/filters";
+import { format } from "winston";
+import { Format } from "logform";
+import chalk from "chalk";
+import {
+  nestFormat,
+  winstonLoggerOptions,
+} from "./shared/modules/winston-logger/winstonLogger";
+import { WinstonLogger } from "./shared";
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: "jwt" }),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
+
+    PassportModule.register({ defaultStrategy: "jwt" }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (cfg: ConfigService) => ({
@@ -48,7 +65,7 @@ import { AllExceptionsFilter } from "@shared/filters";
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),
     HttpModule,
-    AzureLoggerModule,
+    AzureTelemetryModule,
     AzureStorageModule,
     CacheModule.register(),
     // PrismaModule,
@@ -64,6 +81,10 @@ import { AllExceptionsFilter } from "@shared/filters";
     {
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
+    },
+    {
+      provide: WINSTON_MODULE_PROVIDER,
+      useClass: WinstonLogger,
     },
   ],
 })

@@ -5,7 +5,7 @@ import { EntityAlreadyExistsException } from "@shared/exceptions/entityalreadyex
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 
 import moment from "moment";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { ShopifyAccount } from "../domain/entities/ShopifyAccount";
 export class ShopifyAccountNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -50,7 +50,7 @@ export interface IDbShopifyAccountRepository {
 export class DbShopifyAccountsRepository
   implements IDbShopifyAccountRepository
 {
-  constructor(private readonly logger: AzureLoggerService) {}
+  constructor(private readonly logger: AzureTelemetryService) {}
   exists(id: UUID): Promise<boolean> {
     throw new Error("Method not implemented.");
   }

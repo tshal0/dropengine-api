@@ -3,7 +3,7 @@ import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { ProductTypesRepository } from "@catalog/database/ProductTypesRepository";
 import { ProductType } from "@catalog/domain/aggregates/ProductType";
 
@@ -12,7 +12,7 @@ export class RenameProductType
   implements UseCase<{ id: UUID; name: string }, ProductType>
 {
   constructor(
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private _repo: ProductTypesRepository
   ) {}
   get llog() {

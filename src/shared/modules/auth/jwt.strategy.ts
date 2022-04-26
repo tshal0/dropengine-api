@@ -4,11 +4,11 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy as BaseStrategy, ExtractJwt } from 'passport-jwt';
 import { passportJwtSecret } from 'jwks-rsa';
 import { JwtPayload } from './jwt.payload';
-import { AzureLoggerService } from '../azure-logger/azure-logger.service';
+import { AzureTelemetryService } from '../azure-telemetry/azure-telemetry.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(BaseStrategy) {
-  constructor(configService: ConfigService, logger: AzureLoggerService) {
+  constructor(configService: ConfigService, logger: AzureTelemetryService) {
     const DOMAIN = configService.get<string>('AUTH0_DOMAIN');
     const jwtSecretOptions = {
       cache: true,

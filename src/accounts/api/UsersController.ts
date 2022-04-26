@@ -16,7 +16,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { CreateUserDto } from "../dto/CreateUserDto";
 import { CreateUserUseCase } from "../useCases/User/CreateUser";
 
@@ -24,7 +24,7 @@ import { CreateUserUseCase } from "../useCases/User/CreateUser";
 export class UsersController {
   constructor(
     private readonly createUser: CreateUserUseCase,
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly getUser: GetUserUseCase,
     private readonly getAll: GetAllUsersUseCase,
     private readonly deleteUser: DeleteUserUseCase,

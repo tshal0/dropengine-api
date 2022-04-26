@@ -3,7 +3,7 @@ import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
-import { AzureLoggerModule, AzureStorageModule } from "@shared/modules";
+import { AzureTelemetryModule, AzureStorageModule } from "@shared/modules";
 import {
   MongoOrdersRepository,
   MongoSalesOrder,
@@ -29,7 +29,7 @@ import { AccountsModule } from "@accounts/accounts.module";
       { name: MongoSalesOrder.name, schema: MongoSalesOrderSchema },
     ]),
     HttpModule,
-    AzureLoggerModule,
+    AzureTelemetryModule,
     ConfigModule,
     CacheModule.register(),
     CatalogModule,

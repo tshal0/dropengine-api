@@ -1,9 +1,9 @@
-import { ConfigService } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AzureLoggerService } from './azure-logger.service';
-jest.mock('./azure-logger.helper');
-describe('AzureLoggerService', () => {
-  let service: AzureLoggerService;
+import { ConfigService } from "@nestjs/config";
+import { Test, TestingModule } from "@nestjs/testing";
+import { AzureTelemetryService } from "./azure-telemetry.service";
+jest.mock("./azure-telemetry.helper");
+describe("AzureTelemetryService", () => {
+  let service: AzureTelemetryService;
   let config: ConfigService;
 
   beforeEach(async () => {
@@ -14,16 +14,18 @@ describe('AzureLoggerService', () => {
     };
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        AzureLoggerService,
+        AzureTelemetryService,
         { provide: ConfigService, useValue: config_mock },
       ],
     }).compile();
 
     config = module.get<ConfigService>(ConfigService);
-    service = await module.resolve<AzureLoggerService>(AzureLoggerService);
+    service = await module.resolve<AzureTelemetryService>(
+      AzureTelemetryService
+    );
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });

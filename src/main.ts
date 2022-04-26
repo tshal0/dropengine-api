@@ -6,15 +6,24 @@ import {
   BadRequestException,
   RequestMethod,
 } from "@nestjs/common";
+import {
+  WinstonModule,
+  WINSTON_MODULE_NEST_PROVIDER,
+  WINSTON_MODULE_PROVIDER,
+} from "nest-winston";
+
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { ValidationError } from "class-validator";
 import { ServerModule } from "./server.module";
 import { Constants, Versions } from "./shared";
 import * as appInsights from "applicationinsights";
-import { initAppInsights } from "@shared/modules";
+import { initAppInsights, WinstonLogger } from "@shared/modules";
+import { Logger } from "winston";
+process.env.FORCE_COLOR = "true";
+
 appInsights
   .setup(process.env.APPINSIGHTS_INSTRUMENTATIONKEY)
   .setAutoDependencyCorrelation(true)
@@ -27,26 +36,28 @@ appInsights
   .setSendLiveMetrics(true)
   .start();
 async function bootstrap() {
-  const app = await NestFactory.create(ServerModule);
+  const app = await NestFactory.create(ServerModule, {
+    logger: WinstonModule.createLogger(WinstonLogger.loggerOptions),
+  });
+  const wlog: WinstonLogger = await app.resolve(WINSTON_MODULE_PROVIDER);
+  app.useLogger(wlog);
   const config = app.get<ConfigService>(ConfigService);
-  const logger = await app.resolve<AzureLoggerService>(AzureLoggerService);
+  const telemetry = await app.resolve<AzureTelemetryService>(
+    AzureTelemetryService
+  );
   const key = config.get<string>(Constants.APPINSIGHTS);
+  telemetry.setClient(appInsights.defaultClient);
 
-  logger.setClient(appInsights.defaultClient);
-  app.useLogger(logger);
-  logger.debug(`${Constants.APPINSIGHTS}: ${key}`);
-  logger.debug(`ApplicationInsights Initialized!`);
-
-  app.enableCors();
-
-  logger.debug(`POSTGRES_DB: ${process.env.POSTGRES_DB}`);
-  logger.debug(`POSTGRES_USER: ${process.env.POSTGRES_USER}`);
-  logger.debug(`POSTGRES_PASSWORD: ${process.env.POSTGRES_PASSWORD}`);
-  logger.debug(`POSTGRES_DB: ${process.env.POSTGRES_DB}`);
-  logger.debug(`POSTGRES_HOST: ${process.env.POSTGRES_HOST}`);
-  logger.debug(`POSTGRES_PORT: ${process.env.POSTGRES_PORT}`);
-  logger.debug(`POSTGRES_SCHEMA: ${process.env.POSTGRES_SCHEMA}`);
-  logger.debug(`DATABASE_URL: ${process.env.DATABASE_URL}`);
+  wlog.debug(`${Constants.APPINSIGHTS}: ${key}`);
+  wlog.debug(`ApplicationInsights Initialized!`);
+  wlog.debug(`POSTGRES_DB: ${process.env.POSTGRES_DB}`);
+  wlog.debug(`POSTGRES_USER: ${process.env.POSTGRES_USER}`);
+  wlog.debug(`POSTGRES_PASSWORD: ${process.env.POSTGRES_PASSWORD}`);
+  wlog.debug(`POSTGRES_DB: ${process.env.POSTGRES_DB}`);
+  wlog.debug(`POSTGRES_HOST: ${process.env.POSTGRES_HOST}`);
+  wlog.debug(`POSTGRES_PORT: ${process.env.POSTGRES_PORT}`);
+  wlog.debug(`POSTGRES_SCHEMA: ${process.env.POSTGRES_SCHEMA}`);
+  wlog.debug(`DATABASE_URL: ${process.env.DATABASE_URL}`);
 
   app.enableVersioning({
     type: VersioningType.URI,
@@ -86,6 +97,8 @@ async function bootstrap() {
   const port = config.get("PORT");
   await app.listen(`${Number(port)}`);
 
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  wlog.log(`Application is running on: ${await app.getUrl()}`);
+
+  app.enableCors();
 }
 bootstrap();

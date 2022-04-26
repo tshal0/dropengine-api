@@ -12,7 +12,7 @@ import { AcceptShopifyInstallDto } from "./dto/AcceptShopifyInstallDto";
 import { ConnectShopifyAccountDto } from "./dto/ConnectShopifyAccountDto";
 import moment from "moment";
 import { ConfigService } from "@nestjs/config";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { AcceptShopifyInstallUseCase } from "./useCases/AcceptShopifyInstallUseCase";
 import { ConnectShopifyAccountUseCase } from "./useCases/ConnectShopifyAccount";
 
@@ -20,7 +20,7 @@ import { ConnectShopifyAccountUseCase } from "./useCases/ConnectShopifyAccount";
 export class ShopifyController {
   constructor(
     private readonly config: ConfigService,
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly acceptShopifyInstall: AcceptShopifyInstallUseCase,
     private readonly createShopifyAccount: ConnectShopifyAccountUseCase
   ) {}

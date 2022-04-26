@@ -93,7 +93,6 @@ export abstract class BaseDomainEvent implements IDomainEvent {
       return ev;
     } catch (err: any) {
       const error = new Error(err.message ?? err);
-      console.log(JSON.stringify(error));
       throw error;
     }
   }

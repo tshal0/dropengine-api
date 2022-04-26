@@ -1,6 +1,6 @@
 import { PassportModule } from "@nestjs/passport";
 import { Test, TestingModule } from "@nestjs/testing";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { ShopifyApiClient } from "../ShopifyApiClient";
 import { AcceptShopifyInstallUseCase } from "../useCases/AcceptShopifyInstallUseCase";
 import { ConnectShopifyAccountUseCase } from "../useCases/ConnectShopifyAccount";
@@ -16,7 +16,7 @@ describe("ShopifyController", () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ShopifyApiController],
       providers: [
-        { provide: AzureLoggerService, useValue: {} },
+        { provide: AzureTelemetryService, useValue: {} },
         { provide: ShopifyApiClient, useValue: {} },
         { provide: ConnectShopifyAccountUseCase, useValue: {} },
         { provide: GetShopifyAccountUseCase, useValue: {} },

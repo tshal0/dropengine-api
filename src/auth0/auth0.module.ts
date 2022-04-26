@@ -8,25 +8,27 @@ import {
 } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
-import { AzureLoggerModule, AzureLoggerService } from "@shared/modules";
+import {
+  AzureTelemetryModule,
+  AzureTelemetryService,
+  WinstonLogger,
+} from "@shared/modules";
 import { requestObject } from "@shared/utils";
 import https from "https";
 import { Auth0MgmtApiClient } from "./Auth0MgmtApiClient";
 import { Cache } from "cache-manager";
+import { WinstonModule, WINSTON_MODULE_PROVIDER } from "nest-winston";
 
 @Module({
   providers: [Auth0MgmtApiClient],
   exports: [Auth0MgmtApiClient],
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
-    AzureLoggerModule,
+    AzureTelemetryModule,
+    WinstonModule,
     HttpModule.registerAsync({
-      imports: [ConfigModule, CacheModule.register(), AzureLoggerModule],
-      useFactory: async (
-        config: ConfigService,
-        cache: Cache,
-        log: AzureLoggerService
-      ) => {
+      imports: [ConfigModule, CacheModule.register(), AzureTelemetryModule],
+      useFactory: async (config: ConfigService, cache: Cache) => {
         const URL = config.get("AUTH0_MGMT_API_URL");
         const AUTH0_ACCESS_TOKEN_URL = config.get("AUTH0_ACCESS_TOKEN_URL");
         const AUTH0_MGMT_CLIENT_ID = config.get("AUTH0_MGMT_CLIENT_ID");
@@ -52,7 +54,6 @@ import { Cache } from "cache-manager";
           const resp = await requestObject(options);
           TOKEN = resp?.object?.access_token;
           cache.set("AUTH0_MGMT_ACCESS_TOKEN", TOKEN, { ttl: 3600 });
-          log.debug(`New Auth0 Management API Access Token Acquired!`);
         }
         const httpConfig = {
           baseURL: URL,
@@ -68,7 +69,7 @@ import { Cache } from "cache-manager";
 
         return httpConfig;
       },
-      inject: [ConfigService, CACHE_MANAGER, AzureLoggerService],
+      inject: [ConfigService, CACHE_MANAGER],
     }),
     ConfigModule,
     CacheModule.register(),
@@ -76,12 +77,7 @@ import { Cache } from "cache-manager";
   controllers: [],
 })
 export class Auth0Module implements OnModuleInit {
-  constructor(
-    private readonly http: HttpService,
-    private readonly config: ConfigService,
-    private readonly logger: AzureLoggerService,
-    @Inject(CACHE_MANAGER) private cache: Cache
-  ) {}
+  constructor(private readonly http: HttpService) {}
 
   public onModuleInit(): any {
     // Add request interceptor and response interceptor to log request infos
@@ -101,14 +97,10 @@ export class Auth0Module implements OnModuleInit {
           config["metadata"].startDate.getTime();
 
         // Log some request infos (you can actually extract a lot more if you want: the content type, the content size, etc.)
-        this.logger.log(
-          `${config.method.toUpperCase()} ${config.url} ${duration}ms`
-        );
 
         return response;
       },
       (err) => {
-        this.logger.error(err);
         // Don't forget this line like I did at first: it makes your failed HTTP requests resolve with "undefined" :-(
         return Promise.reject(err);
       }

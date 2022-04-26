@@ -2,7 +2,7 @@ import { Injectable, Scope } from "@nestjs/common";
 import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result } from "@shared/domain/Result";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { ProductsRepository } from "@catalog/database/ProductsRepository";
 import { IProductProps } from "@catalog/domain";
 import { ProductsQueryDto } from "@catalog/api/ProductsController";
@@ -10,7 +10,7 @@ import { ProductsQueryDto } from "@catalog/api/ProductsController";
 @Injectable({ scope: Scope.DEFAULT })
 export class GetAllProducts implements UseCase<any, IProductProps[]> {
   constructor(
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private _repo: ProductsRepository
   ) {}
   get llog() {

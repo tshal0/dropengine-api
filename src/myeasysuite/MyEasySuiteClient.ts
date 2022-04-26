@@ -2,7 +2,7 @@ import { IAuth0User, Auth0User } from "@auth0/domain/Auth0ExtendedUser";
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import { EntityNotFoundException } from "@shared/exceptions";
-import { AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryService } from "@shared/modules";
 import { map, catchError, lastValueFrom } from "rxjs";
 import { IMESProductVariant } from "./dto/MESProductVariant";
 
@@ -13,7 +13,7 @@ export interface IMyEasySuiteClient {
 @Injectable()
 export class MyEasySuiteClient implements IMyEasySuiteClient {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private http: HttpService
   ) {}
   async getVariantBySku(sku: string) {

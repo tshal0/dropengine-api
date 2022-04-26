@@ -14,6 +14,8 @@ import { getModelToken, MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
 import { TestingModule, Test } from "@nestjs/testing";
 import { OrdersController } from "@sales/api";
+import { Logger } from "winston";
+import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 
 import {
   MongoOrdersRepository,
@@ -22,7 +24,7 @@ import {
   SalesOrderQuery,
   SalesOrderRepository,
 } from "@sales/database";
-import { AzureLoggerModule, AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryModule, AzureTelemetryService } from "@shared/modules";
 import {
   CreateSalesOrder,
   GetSalesOrder,
@@ -76,7 +78,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       ]),
       HttpModule,
       ConfigModule.forRoot(),
-      AzureLoggerModule,
+      AzureTelemetryModule,
       CacheModule.register(),
       CatalogModule,
     ],
@@ -87,7 +89,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       { provide: EventEmitter2, useValue: eventEmitterMock },
       { provide: ConfigService, useValue: configMock },
       { provide: HttpService, useValue: httpMock },
-
+      { provide: WINSTON_MODULE_PROVIDER, useValue: {} },
       MongoOrdersRepository,
       SalesOrderRepository,
       CreateSalesOrder,
@@ -101,7 +103,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       { provide: DeleteSalesOrder, useValue: {} },
     ],
   })
-    .overrideProvider(AzureLoggerService)
+    .overrideProvider(AzureTelemetryService)
     .useValue(mockLogger)
     .overrideProvider(CatalogService)
     .useValue({})

@@ -11,7 +11,7 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { AuthorizedUser } from "@shared/domain/Auth0User";
 import { UUID } from "@shared/domain/valueObjects";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { IsNotEmpty, IsInt } from "class-validator";
 import { Request } from "express";
 import { ShopifyApiClient } from "../ShopifyApiClient";
@@ -32,7 +32,7 @@ export class ConnectShopifyQuery {
 export class ShopifyApiController {
   constructor(
     private readonly shopify: ShopifyApiClient,
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly createAccount: ConnectShopifyAccountUseCase,
     private readonly getAccount: GetShopifyAccountUseCase,
     private readonly getAll: GetAllAccountsUseCase,

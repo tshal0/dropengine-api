@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import moment from "moment";
 import { Result, ResultError, UseCase } from "@shared/domain";
-import { AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryService } from "@shared/modules";
 import { SalesOrder } from "@sales/domain";
 
 import { CreateOrderApiDto, CreateOrderLineItemApiDto } from "@sales/api";
@@ -47,7 +47,7 @@ export class CreateSalesOrder
   implements UseCase<CreateOrderApiDto, SalesOrder>
 {
   constructor(
-    private _log: AzureLoggerService,
+    private _log: AzureTelemetryService,
     private _repo: SalesOrderRepository,
     private _catalog: CatalogService
   ) {}
@@ -70,7 +70,6 @@ export class CreateSalesOrder
         validationError: { target: false },
       });
       if (validationErrors.length) {
-        console.log(JSON.stringify(validationErrors, null, 2));
         const message = `Failed to place SalesOrder. Validation errors found.`;
         throw new CreateSalesOrderException(
           {
@@ -127,9 +126,7 @@ export class CreateSalesOrder
       }
       return result;
     } catch (error) {
-      console.log(JSON.stringify(error, null, 2));
       if (error instanceof CreateSalesOrderException) {
-        console.log(JSON.stringify(error.getResponse(), null, 2));
         throw error;
       }
       const message = `Failed to place SalesOrder for order '${

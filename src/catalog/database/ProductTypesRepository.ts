@@ -4,7 +4,7 @@ import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.excep
 
 import moment from "moment";
 import { ProductType } from "../domain/aggregates/ProductType";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 
 import { EntityManager } from "@mikro-orm/postgresql";
 import { EntityRepository, MikroORM } from "@mikro-orm/core";
@@ -33,7 +33,7 @@ export class ProductTypeNotFoundWithEmailException extends EntityNotFoundExcepti
 @Injectable()
 export class ProductTypesRepository {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly em: EntityManager
   ) {}
   get llog() {

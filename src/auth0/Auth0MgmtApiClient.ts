@@ -10,7 +10,7 @@ import { Auth0Role } from "./dto/Auth0Role";
 import { Auth0AppMetadataPayload } from "./dto/Auth0AppMetadataPayload";
 import { Auth0PermissionsPayload } from "./dto/Auth0PermissionsPayload";
 import { Auth0User, IAuth0User } from "./domain/Auth0ExtendedUser";
-import { AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryService } from "@shared/modules";
 
 export interface PaginatedAuth0UserResponse {
   start: number;
@@ -69,7 +69,7 @@ export interface IAuth0MgmtApiClient {
 @Injectable()
 export class Auth0MgmtApiClient implements IAuth0MgmtApiClient {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private http: HttpService
   ) {}
   async getUsersByEmail(email: string): Promise<Auth0User[]> {

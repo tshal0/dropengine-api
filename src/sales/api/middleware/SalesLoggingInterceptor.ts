@@ -3,20 +3,23 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  Inject,
+  Logger,
 } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import { Request, Response } from "express";
-import { AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryService } from "@shared/modules";
 import { AuthenticatedUser } from "@shared/decorators";
 import moment from "moment";
 import {
   SeverityLevel,
   TraceTelemetry,
 } from "applicationinsights/out/Declarations/Contracts";
+import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 @Injectable()
 export class SalesLoggingInterceptor implements NestInterceptor {
-  constructor(private logger: AzureLoggerService) {}
+  constructor(private readonly telemetry: AzureTelemetryService) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req: Request = context.switchToHttp().getRequest();
     const res: Response = context.switchToHttp().getResponse();
@@ -49,8 +52,8 @@ export class SalesLoggingInterceptor implements NestInterceptor {
       contextObjects: { user },
       properties: { request: req.body },
     };
-    this.logger.trace(telemetry);
-    this.logger.debug(payload.message);
+    this.telemetry.trace(telemetry);
+    // this.logger.debug(payload.message);
     return next.handle().pipe(
       tap({
         next: (val) => {
@@ -80,8 +83,8 @@ export class SalesLoggingInterceptor implements NestInterceptor {
             contextObjects: { user },
             properties: { response: val },
           };
-          this.logger.trace(telemetry);
-          this.logger.debug(payload.message);
+          this.telemetry.trace(telemetry);
+          // this.logger.debug(payload.message);
         },
         error: (error) => {},
         complete: () => {},

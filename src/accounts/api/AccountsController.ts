@@ -18,7 +18,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import {
   AccountMemberDto,
   AccountResponseDto,
@@ -35,7 +35,7 @@ import { CreateStoreDto } from "@accounts/dto/CreateStoreDto";
 @Controller("/accounts")
 export class AccountsController {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly auth0: Auth0MgmtApiClient,
     private readonly getAccount: GetAccountUseCase,
     private readonly getAccounts: GetAccountsUseCase,

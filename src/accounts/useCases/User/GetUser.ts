@@ -5,7 +5,7 @@ import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { Auth0User } from "@auth0/domain/Auth0ExtendedUser";
 import { User } from "@accounts/domain";
 import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
@@ -14,7 +14,7 @@ import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
 export class GetUserUseCase implements UseCase<string, User> {
   constructor(
     private eventEmitter: EventEmitter2,
-    private logger: AzureLoggerService,
+    private logger: AzureTelemetryService,
     private readonly auth0: Auth0MgmtApiClient
   ) {}
   get llog() {

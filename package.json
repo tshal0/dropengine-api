@@ -55,9 +55,11 @@
     "@nestjs/schedule": "^1.0.2",
     "@nestjs/serve-static": "^2.2.2",
     "@nestjs/swagger": "^5.1.5",
+    "@types/chalk": "^2.2.0",
     "applicationinsights": "^2.3.1",
     "auth0": "^2.37.0",
     "cache-manager": "^3.6.0",
+    "chalk": "4.1.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "cookie": "^0.4.1",
@@ -72,6 +74,7 @@
     "moment": "^2.29.1",
     "mongoose": "^6.2.10",
     "multer": "^1.4.4",
+    "nest-winston": "^1.6.2",
     "newman": "^5.3.2",
     "newman-reporter-htmlextra": "^1.22.7",
     "newman-reporter-json": "^1.0.0",
@@ -85,7 +88,8 @@
     "request": "^2.88.2",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "swagger-ui-express": "^4.3.0"
+    "swagger-ui-express": "^4.3.0",
+    "winston": "^3.7.2"
   },
   "devDependencies": {
     "@jest/types": "^27.4.2",
@@ -101,6 +105,7 @@
     "@types/multer": "^1.4.7",
     "@types/node": "^16.0.0",
     "@types/supertest": "^2.0.11",
+    "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.0.1",

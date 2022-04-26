@@ -44,7 +44,6 @@ export class DbStore {
 
       return e;
     } catch (error) {
-      console.error(JSON.stringify(error, null, 2));
       throw error;
     }
   }

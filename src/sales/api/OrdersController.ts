@@ -13,6 +13,7 @@ import {
   ConflictException,
   HttpStatus,
   UnauthorizedException,
+  LoggerService,
 } from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
@@ -34,6 +35,8 @@ import {
 import { User } from "@shared/decorators";
 import { AuthenticatedUser } from "@shared/decorators/AuthenticatedUser";
 import { SalesLoggingInterceptor } from "./middleware/SalesLoggingInterceptor";
+import { WINSTON_MODULE_PROVIDER } from "nest-winston";
+import { Logger } from "winston";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)

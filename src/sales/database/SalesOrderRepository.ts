@@ -9,7 +9,7 @@ import moment from "moment";
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
 import { ResultError, Result } from "@shared/domain/Result";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
-import { AzureLoggerService } from "@shared/modules";
+import { AzureTelemetryService } from "@shared/modules";
 import { MongoSalesOrder } from "./mongo/MongoSalesOrder";
 
 import { MongoOrdersRepository } from "./mongo/MongoSalesOrderRepository";
@@ -80,7 +80,7 @@ export class FailedToConvertSalesOrderToDb implements ResultError {
 @Injectable()
 export class SalesOrderRepository {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly _mongo: MongoOrdersRepository
   ) {}
   protected static llog = () => `[${moment()}][${SalesOrderRepository.name}]`;

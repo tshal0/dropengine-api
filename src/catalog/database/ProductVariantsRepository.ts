@@ -5,7 +5,7 @@ import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.excep
 
 import moment from "moment";
 import { ProductVariant } from "../domain/aggregates/ProductVariant";
-import { AzureLoggerService } from "@shared/modules/azure-logger/azure-logger.service";
+import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { EntityManager } from "@mikro-orm/core";
 import {
   DbProductVariant,
@@ -82,7 +82,7 @@ export class FailedToConvertProductVariantToDb implements ResultError {
 @Injectable()
 export class ProductVariantsRepository {
   constructor(
-    private readonly logger: AzureLoggerService,
+    private readonly logger: AzureTelemetryService,
     private readonly em: EntityManager
   ) {}
   get llog() {
