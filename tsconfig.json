@@ -8,34 +8,42 @@
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": ".",
+    "outDir": "dist",
+    "baseUrl": "src",
     "incremental": true,
     "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "paths": {
+      "@jestconfig/*": [
+        ".jest/*"
+      ],
       "@shared/*": [
-        "src/shared/*"
+        "shared/*"
       ],
       "@sales/*": [
-        "src/sales/*"
+        "sales/*"
       ],
       "@catalog/*": [
-        "src/catalog/*"
+        "catalog/*"
       ],
       "@accounts/*": [
-        "src/accounts/*"
+        "accounts/*"
       ],
       "@shopify/*": [
-        "src/shopify/*"
+        "shopify/*"
       ],
       "@auth0/*": [
-        "src/auth0/*"
+        "auth0/*"
       ],
       "@myeasysuite/*": [
-        "src/myeasysuite/*"
+        "myeasysuite/*"
       ]
     },
   },

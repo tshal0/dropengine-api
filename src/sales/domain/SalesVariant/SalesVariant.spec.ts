@@ -1,8 +1,8 @@
 import { CatalogVariant } from "@catalog/services";
 import { MongoSalesVariant } from "@sales/database";
+import { mockCatalogVariant1 } from "@sales/mocks";
 import { cloneDeep } from "lodash";
 import { SalesPersonalizationRule, SalesVariant } from ".";
-import { mockCatalogVariant1 } from "../SalesOrder/fixtures/mocks";
 
 describe("SalesVariant", () => {
   describe("create", () => {

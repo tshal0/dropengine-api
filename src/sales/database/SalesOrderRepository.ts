@@ -107,6 +107,7 @@ export class SalesOrderRepository {
       }
       return result;
     } catch (err) {
+      this.logger.debug(err);
       return this.failedToSave(props, err);
     }
   }

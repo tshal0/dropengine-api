@@ -9,20 +9,20 @@ import {
 import moment from "moment";
 import { invalidPersonalization } from "./fixtures/create.invalidPersonalization";
 import { validDto } from "./fixtures/create.validDto";
+
+import { mockAddress } from "../../mocks/mockAddress";
+import { SalesOrder } from "./SalesOrder";
+import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
 import {
+  mockUuid1,
   mockCustomer,
-  mockAddress,
   mockLineItem,
   mockCatalogVariant1,
   mockTopText,
   mockMiddleText,
   mockBottomText,
   mockInitial,
-  mockUuid1,
-  mockSku1,
-} from "./fixtures/mocks";
-import { SalesOrder } from "./SalesOrder";
-import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
+} from "@sales/mocks";
 
 const nowStr = "2021-01-01T00:00:00.000Z";
 jest
@@ -43,8 +43,6 @@ describe("SalesOrder", () => {
     lineItems: [mockLineItem],
     shippingAddress: mockAddress,
     billingAddress: mockAddress,
-    updatedAt: undefined,
-    createdAt: undefined,
   };
   describe("create", () => {
     describe("with a valid DTO", () => {
@@ -67,7 +65,7 @@ describe("SalesOrder", () => {
         );
 
         let result = await SalesOrder.create(createOrderDto);
-      
+
         expect(result.isFailure).toBe(false);
         let order = result.value();
 
@@ -91,8 +89,6 @@ describe("SalesOrder", () => {
           lineItems: [mockLineItem],
           shippingAddress: mockAddress,
           billingAddress: mockAddress,
-          updatedAt: undefined,
-          createdAt: undefined,
         };
         const mockLineItem1: CreateLineItemDto = {
           lineNumber: 1,
@@ -134,8 +130,6 @@ describe("SalesOrder", () => {
           lineItems: [null],
           shippingAddress: null,
           billingAddress: null,
-          updatedAt: undefined,
-          createdAt: undefined,
         };
         const mockLineItem1: CreateLineItemDto = {
           lineNumber: 1,
@@ -283,8 +277,8 @@ describe("SalesOrder", () => {
           customer: dto.customer,
           shippingAddress: dto.shippingAddress,
           billingAddress: dto.billingAddress,
-          updatedAt: dto.updatedAt,
-          createdAt: dto.createdAt,
+          updatedAt: undefined,
+          createdAt: undefined,
         };
         const result = await SalesOrder.load(mock);
         expect(result.isFailure).toBe(false);

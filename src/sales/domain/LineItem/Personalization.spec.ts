@@ -1,16 +1,16 @@
+import {
+  mockCatalogVariant1,
+  mockTopText,
+  mockBottomText,
+  mockInitial,
+  mockMiddleText,
+} from "@sales/mocks";
 import { ILineItemProps, Personalization } from ".";
 import {
   ISalesVariant,
   ISalesVariantProps,
   SalesPersonalizationRule,
 } from "..";
-import {
-  mockBottomText,
-  mockCatalogVariant1,
-  mockInitial,
-  mockMiddleText,
-  mockTopText,
-} from "../SalesOrder/fixtures/mocks";
 
 describe("Personalization", () => {
   describe("validate", () => {

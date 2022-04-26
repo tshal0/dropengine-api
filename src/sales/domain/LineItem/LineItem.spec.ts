@@ -1,17 +1,17 @@
 import { MongoLineItem, MongoSalesVariant } from "@sales/database";
 import { CreateLineItemDto } from "@sales/dto";
-import moment from "moment";
-import { Types } from "mongoose";
-
-import { LineItem } from ".";
-import { SalesPersonalizationRule } from "..";
 import {
   mockCatalogVariant1,
   mockTopText,
   mockMiddleText,
   mockBottomText,
   mockInitial,
-} from "../SalesOrder/fixtures/mocks";
+} from "@sales/mocks";
+import moment from "moment";
+import { Types } from "mongoose";
+
+import { LineItem } from ".";
+import { SalesPersonalizationRule } from "..";
 
 const nowStr = "2021-01-01T00:00:00.000Z";
 jest

@@ -1,14 +1,16 @@
-import { mockUuid1 } from "@sales/mocks";
+import { CreateOrderDto } from "@sales/dto";
+import { now } from "@shared/mocks";
 
-export const validDto = (now) => ({
-  accountId: mockUuid1,
-  orderName: "SLI-1000",
-  orderNumber: 1000,
+export const createSalesOrderDto: CreateOrderDto = {
+  orderName: "SLI-10000000001",
   orderDate: now,
-  orderStatus: "OPEN",
+  orderNumber: "1001",
+  customer: {
+    email: "mock.customer@email.com",
+    name: "Mock Customer",
+  },
   lineItems: [
     {
-      id: null,
       lineNumber: 1,
       quantity: 1,
       variant: {
@@ -29,19 +31,8 @@ export const validDto = (now) => ({
         },
         option3: {
           option: null,
+          name: undefined,
           enabled: false,
-        },
-        manufacturingCost: {
-          currency: "USD",
-          total: 650,
-        },
-        shippingCost: {
-          currency: "USD",
-          total: 1200,
-        },
-        weight: {
-          units: "oz",
-          dimension: 738,
         },
         productionData: {
           material: "Mild Steel",
@@ -51,72 +42,65 @@ export const validDto = (now) => ({
         personalizationRules: [
           {
             name: "top_text",
-            label: "Top Text",
-            placeholder: "Enter up to 16 characters",
-            required: true,
             type: "input",
-            maxLength: 16,
-            pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
+            label: "Top Text",
             options: "",
+            pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
+            required: true,
+            maxLength: 16,
+            placeholder: "Enter up to 16 characters",
           },
           {
             name: "middle_text",
-            label: "Middle Text",
-            placeholder: "Enter up to 14 characters",
-            required: true,
             type: "input",
-            maxLength: 14,
-            pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
+            label: "Middle Text",
             options: "",
+            pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
+            required: true,
+            maxLength: 14,
+            placeholder: "Enter up to 14 characters",
           },
           {
             name: "bottom_text",
-            label: "Bottom Text",
-            placeholder: "Enter up to 16 characters",
-            required: true,
             type: "input",
-            maxLength: 16,
-            pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
+            label: "Bottom Text",
             options: "",
+            pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
+            required: true,
+            maxLength: 16,
+            placeholder: "Enter up to 16 characters",
           },
           {
             name: "initial",
-            label: "Initial",
-            placeholder: "Select Initial",
-            required: true,
             type: "dropdownlist",
-            maxLength: null,
+            label: "Initial",
             options: "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z",
+            required: true,
+            maxLength: null,
+            placeholder: "Select Initial",
           },
         ],
+        weight: {
+          units: "oz",
+          dimension: 738,
+        },
+        manufacturingCost: {
+          total: 650,
+          currency: "USD",
+        },
+        shippingCost: {
+          total: 1200,
+          currency: "USD",
+        },
       },
-      personalization: [
+      properties: [
         {
-          name: "Top Text",
-          value: "ValidText",
-        },
-        {
-          name: "Middle Text",
-          value: "ValidText",
-        },
-        {
-          name: "Bottom Text",
-          value: "ValidText",
-        },
-        {
-          name: "Initial",
-          value: "M",
+          name: "Name",
+          value: "MockName",
         },
       ],
-      flags: [],
-      createdAt: now,
-      updatedAt: now,
     },
   ],
-  customer: {
-    email: "mock.customer@email.com",
-    name: "Mock Customer",
-  },
   shippingAddress: {
     zip: "43844-9406",
     city: "Warsaw",
@@ -128,9 +112,9 @@ export const validDto = (now) => ({
     address2: "",
     address3: "",
     latitude: 40.2496938,
-    longitude: -82.1265222,
     province: "Ohio",
     lastName: "Stark",
+    longitude: -82.1265222,
     firstName: "Tony",
     countryCode: "US",
     provinceCode: "OH",
@@ -146,13 +130,12 @@ export const validDto = (now) => ({
     address2: "",
     address3: "",
     latitude: 40.2496938,
-    longitude: -82.1265222,
     province: "Ohio",
     lastName: "Stark",
+    longitude: -82.1265222,
     firstName: "Tony",
     countryCode: "US",
     provinceCode: "OH",
   },
-  createdAt: now,
-  updatedAt: now,
-});
+  accountId: "00000000-0000-0000-0000-000000000001",
+};

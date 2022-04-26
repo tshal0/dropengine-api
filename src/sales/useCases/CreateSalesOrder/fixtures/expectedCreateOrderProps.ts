@@ -1,14 +1,13 @@
-import { mockUuid1 } from "@sales/mocks";
+import { now } from "@shared/mocks";
 
-export const invalidPersonalization = (now) => ({
-  orderName: "SLI-1000",
-  accountId: mockUuid1,
-  orderNumber: 1000,
+export const expectedCreateOrderProps = {
+  accountId: "00000000-0000-0000-0000-000000000001",
+  orderName: "SLI-10000000001",
+  orderNumber: 1001,
   orderDate: now,
   orderStatus: "OPEN",
   lineItems: [
     {
-      id: null,
       lineNumber: 1,
       quantity: 1,
       variant: {
@@ -45,8 +44,8 @@ export const invalidPersonalization = (now) => ({
         },
         productionData: {
           material: "Mild Steel",
-          route: "1",
           thickness: "0.06",
+          route: "1",
         },
         personalizationRules: [
           {
@@ -93,50 +92,22 @@ export const invalidPersonalization = (now) => ({
       personalization: [
         {
           name: "Top Text",
-          value: "TooLongExample1234",
+          value: "ValidText",
+        },
+        {
+          name: "Middle Text",
+          value: "ValidText",
         },
         {
           name: "Bottom Text",
-          value: "Bad-Character",
+          value: "ValidText",
         },
         {
           name: "Initial",
           value: "M",
         },
       ],
-      flags: [
-        {
-          type: "InvalidPersonalization",
-          details: {
-            lineNumber: 1,
-            property: "Top Text",
-            reason: "INVALID_LENGTH",
-          },
-          message:
-            "Line Item #1 has invalid property 'Top Text': 'undefined'. Reason: INVALID_LENGTH",
-        },
-        {
-          type: "MissingPersonalization",
-          details: {
-            lineNumber: 1,
-            property: "Middle Text",
-            reason: "MISSING",
-          },
-          message: "Line Item #1 is missing property 'Middle Text'.",
-        },
-        {
-          type: "BadCharacter",
-          details: {
-            lineNumber: 1,
-            property: "Bottom Text",
-            value: "Bad-Character",
-            pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
-            reason: "BAD_CHARACTER",
-          },
-          message:
-            "Line Item #1 has a bad character in property 'Bottom Text': 'Bad-Character'. Reason: BAD_CHARACTER",
-        },
-      ],
+      flags: [],
       createdAt: now,
       updatedAt: now,
     },
@@ -183,4 +154,4 @@ export const invalidPersonalization = (now) => ({
   },
   createdAt: now,
   updatedAt: now,
-});
+};

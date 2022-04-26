@@ -1,5 +1,4 @@
 import { IAuth0User } from "@auth0/domain/Auth0ExtendedUser";
-import { CreateUserDto } from "src/accounts/dto/CreateUserDto";
 import { IUser, IUserAccount } from "../interfaces/IUser";
 import { Account } from "./Account";
 

@@ -285,13 +285,7 @@ export class ProductVariant extends IAggregate<
   public static create(dto: CreateProductVariantDto): Result<ProductVariant> {
     // TODO: Validate DTO, ProductType, Options
     const pt = dto.productType;
-    console.debug(
-      JSON.stringify({
-        option1: dto.option1,
-        option2: dto.option2,
-        option3: dto.option3,
-      })
-    );
+
     const productTypeOption1 = pt.option1?.name;
     const productTypeOption2 = pt.option2?.name;
     const productTypeOption3 = pt.option3?.name;
@@ -326,13 +320,6 @@ export class ProductVariant extends IAggregate<
     dto.option2.option = optionMap[toLower(productTypeOption2)];
     dto.option3.name = productTypeOption3;
     dto.option3.option = optionMap[toLower(productTypeOption3)];
-    console.log({
-      option1: dto.option1,
-      option2: dto.option2,
-      option3: dto.option3,
-      optionMap,
-      dtoOptions,
-    });
 
     let results = {
       uuid: dto.id

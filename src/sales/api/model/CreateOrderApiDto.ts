@@ -43,6 +43,4 @@ export class CreateOrderApiDto {
   @ValidateNested()
   shippingAddress: AddressDto;
   billingAddress: AddressDto;
-  updatedAt: Date;
-  createdAt: Date;
 }

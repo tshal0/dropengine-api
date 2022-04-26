@@ -1,4 +1,4 @@
-import { SalesOrder } from "src/sales/domain";
+import { SalesOrder } from "@sales/domain";
 import { OrderResponseDto, QueryOrdersDto } from ".";
 
 export class AggregationResultOptions {
