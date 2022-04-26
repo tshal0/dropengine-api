@@ -1,12 +1,9 @@
-import { CacheModule, Module } from "@nestjs/common";
+import { CacheModule, Logger, Module } from "@nestjs/common";
 import {
   WinstonModule,
-  utilities as nestWinstonModuleUtilities,
-  NestLikeConsoleFormatOptions,
   WINSTON_MODULE_NEST_PROVIDER,
   WINSTON_MODULE_PROVIDER,
 } from "nest-winston";
-import * as winston from "winston";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 
@@ -18,8 +15,6 @@ import { AzureStorageModule } from "@shared/modules/azure-storage/azure-storage.
 import { AuthModule } from "@shared/modules/auth/auth.module";
 import { AppModule } from "./app/app.module";
 import { ShopifyModule } from "./shopify/shopify.module";
-import { ServeStaticModule } from "@nestjs/serve-static";
-import { join } from "path";
 import { PassportModule } from "@nestjs/passport";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { CatalogModule } from "./catalog/catalog.module";
@@ -29,19 +24,18 @@ import { SalesModule } from "./sales/sales.module";
 import { MyEasySuiteModule } from "./myeasysuite/MyEasySuiteModule";
 import { APP_FILTER } from "@nestjs/core";
 import { AllExceptionsFilter } from "@shared/filters";
-import { format } from "winston";
-import { Format } from "logform";
-import chalk from "chalk";
-import {
-  nestFormat,
-  winstonLoggerOptions,
-} from "./shared/modules/winston-logger/winstonLogger";
 import { WinstonLogger } from "./shared";
+import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
-
+    WinstonModule.forRootAsync({
+      useFactory: () => ({
+        ...winstonLoggerOptions,
+      }),
+      inject: [],
+    }),
     PassportModule.register({ defaultStrategy: "jwt" }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -81,10 +75,6 @@ import { WinstonLogger } from "./shared";
     {
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
-    },
-    {
-      provide: WINSTON_MODULE_PROVIDER,
-      useClass: WinstonLogger,
     },
   ],
 })

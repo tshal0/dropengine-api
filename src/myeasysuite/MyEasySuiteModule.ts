@@ -40,14 +40,9 @@ export abstract class MES {
   controllers: [MyEasySuiteController],
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
-    AzureTelemetryModule,
     HttpModule.registerAsync({
-      imports: [ConfigModule, CacheModule.register(), AzureTelemetryModule],
-      useFactory: async (
-        config: ConfigService,
-        cache: Cache,
-        log: AzureTelemetryService
-      ) => {
+      imports: [ConfigModule, CacheModule.register()],
+      useFactory: async (config: ConfigService, cache: Cache) => {
         const baseUrl = config.get(MES.MES_API_URL);
         const accessTokenUrl = config.get(MES.MES_AUTH0_ACCESS_TOKEN_URL);
         const clientId = config.get(MES.MES_AUTH0_CLIENT_ID);
@@ -72,13 +67,13 @@ export abstract class MES {
           try {
             accessToken = await loadAccessToken(options, accessToken);
             cache.set(MES.MES_AUTH0_ACCESS_TOKEN, accessToken, { ttl: 3600 });
-            log.debug(`New MyEasySuite Access Token Acquired!`);
+            console.debug(`New MyEasySuite Access Token Acquired!`);
           } catch (error) {
             accessToken = "TOKEN_FAILED_TO_LOAD";
             cache.set(MES.MES_AUTH0_ACCESS_TOKEN, accessToken, {
               ttl: 3600,
             });
-            log.error(`New MyEasySuite Access Token Failed To Load.`);
+            console.error(`New MyEasySuite Access Token Failed To Load.`);
           }
         }
         const myEasySuiteHeaders = {
@@ -101,19 +96,14 @@ export abstract class MES {
 
         return httpConfig;
       },
-      inject: [ConfigService, CACHE_MANAGER, AzureTelemetryService],
+      inject: [ConfigService, CACHE_MANAGER],
     }),
     ConfigModule,
     CacheModule.register(),
   ],
 })
 export class MyEasySuiteModule implements OnModuleInit {
-  constructor(
-    private readonly http: HttpService,
-    private readonly config: ConfigService,
-    private readonly logger: AzureTelemetryService,
-    @Inject(CACHE_MANAGER) private cache: Cache
-  ) {}
+  constructor(private readonly http: HttpService) {}
 
   public onModuleInit(): any {
     // Add request interceptor and response interceptor to log request infos
@@ -133,12 +123,12 @@ export class MyEasySuiteModule implements OnModuleInit {
           config[MES.META].startDate.getTime();
 
         const durationLog = this.generateDurationLog(config, duration);
-        this.logger.log(durationLog);
+        console.log(durationLog);
 
         return response;
       },
       (err) => {
-        this.logger.error(err);
+        console.error(err);
         // Don't forget this line like I did at first: it makes your failed HTTP requests resolve with "undefined" :-(
         return Promise.reject(err);
       }

@@ -22,6 +22,7 @@ import { Constants, Versions } from "./shared";
 import * as appInsights from "applicationinsights";
 import { initAppInsights, WinstonLogger } from "@shared/modules";
 import { Logger } from "winston";
+import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
 process.env.FORCE_COLOR = "true";
 
 appInsights
@@ -37,10 +38,10 @@ appInsights
   .start();
 async function bootstrap() {
   const app = await NestFactory.create(ServerModule, {
-    logger: WinstonModule.createLogger(WinstonLogger.loggerOptions),
+    logger: WinstonModule.createLogger(winstonLoggerOptions),
   });
-  const wlog: WinstonLogger = await app.resolve(WINSTON_MODULE_PROVIDER);
-  app.useLogger(wlog);
+  const wlog = app.get(WINSTON_MODULE_NEST_PROVIDER);
+
   const config = app.get<ConfigService>(ConfigService);
   const telemetry = await app.resolve<AzureTelemetryService>(
     AzureTelemetryService

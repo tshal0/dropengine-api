@@ -4,22 +4,28 @@ import {
   ExecutionContext,
   CallHandler,
   Inject,
+  LoggerService,
   Logger,
 } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import { Request, Response } from "express";
-import { AzureTelemetryService } from "@shared/modules";
+import { AzureTelemetryService, WinstonLogger } from "@shared/modules";
 import { AuthenticatedUser } from "@shared/decorators";
 import moment from "moment";
 import {
   SeverityLevel,
   TraceTelemetry,
 } from "applicationinsights/out/Declarations/Contracts";
-import { WINSTON_MODULE_PROVIDER } from "nest-winston";
+import {
+  WinstonModule,
+  WINSTON_MODULE_NEST_PROVIDER,
+  WINSTON_MODULE_PROVIDER,
+} from "nest-winston";
 @Injectable()
 export class SalesLoggingInterceptor implements NestInterceptor {
-  constructor(private readonly telemetry: AzureTelemetryService) {}
+  private readonly logger: Logger = new Logger(SalesLoggingInterceptor.name);
+  constructor() {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req: Request = context.switchToHttp().getRequest();
     const res: Response = context.switchToHttp().getResponse();
@@ -33,11 +39,7 @@ export class SalesLoggingInterceptor implements NestInterceptor {
       timestamp: begin,
       email: user.email,
       userId: user.id,
-      message:
-        `[BEGIN]` +
-        `[${user.id}]` +
-        `[${user.email}]` +
-        `[${req.method} ${req.url}] ${begin.toISOString()}`,
+      message: `BEGIN ORDERS REQUEST`,
       properties: {
         action: "BEGIN",
         method: req.method,
@@ -52,8 +54,7 @@ export class SalesLoggingInterceptor implements NestInterceptor {
       contextObjects: { user },
       properties: { request: req.body },
     };
-    this.telemetry.trace(telemetry);
-    // this.logger.debug(payload.message);
+    this.logger.debug(telemetry);
     return next.handle().pipe(
       tap({
         next: (val) => {
@@ -64,11 +65,8 @@ export class SalesLoggingInterceptor implements NestInterceptor {
             duration: duration,
             email: user.email,
             userId: user.id,
-            message:
-              `[END]` +
-              `[${user.id}]` +
-              `[${user.email}]` +
-              `[${req.method} ${req.url}] ${end.toISOString()} +${duration}ms`,
+            message: `END ORDERS REQUEST`,
+
             properties: {
               action: "END",
               method: req.method,
@@ -81,9 +79,9 @@ export class SalesLoggingInterceptor implements NestInterceptor {
             severity: SeverityLevel.Information,
             time: end,
             contextObjects: { user },
-            properties: { response: val },
+            properties: { response: { ...val, data: [] } },
           };
-          this.telemetry.trace(telemetry);
+          this.logger.debug(telemetry);
           // this.logger.debug(payload.message);
         },
         error: (error) => {},
