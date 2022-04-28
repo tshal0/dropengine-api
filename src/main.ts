@@ -95,6 +95,8 @@ async function bootstrap() {
   });
   SwaggerModule.setup("api/docs", app, document);
 
+  app.enableShutdownHooks();
+
   const port = config.get("PORT");
   await app.listen(`${Number(port)}`);
 

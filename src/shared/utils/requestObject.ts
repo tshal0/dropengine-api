@@ -8,27 +8,23 @@ export interface AuthRequestResponse {
   };
 }
 
-export function requestObject(options): Promise<AuthRequestResponse> {
-  return new Promise((resolve, reject) => {
-    request(options, function (error, response, body) {
-      if (error) {
-        reject(error);
-      } else if (200 > response.statusCode || 299 < response.statusCode) {
-        reject(
-          new Error(
-            `Remote resource ${options.url} returned status code: ${
-              response.statusCode
-            }: ${safeJsonStringify(body, null, 2)} ${safeJsonStringify(
-              options,
-              null,
-              2
-            )}`
-          )
-        );
-      } else {
-        const object = typeof body === "string" ? JSON.parse(body) : body; // FIXME throws
-        resolve({ code: response.statusCode, object });
-      }
-    });
+export async function requestObject(options): Promise<AuthRequestResponse> {
+  return await request(options, function (error, response, body) {
+    if (error) {
+      throw error;
+    } else if (200 > response.statusCode || 299 < response.statusCode) {
+      throw new Error(
+        `Remote resource ${options.url} returned status code: ${
+          response.statusCode
+        }: ${safeJsonStringify(body, null, 2)} ${safeJsonStringify(
+          options,
+          null,
+          2
+        )}`
+      );
+    } else {
+      const object = typeof body === "string" ? JSON.parse(body) : body; // FIXME throws
+      return { code: response.statusCode, object };
+    }
   });
 }
