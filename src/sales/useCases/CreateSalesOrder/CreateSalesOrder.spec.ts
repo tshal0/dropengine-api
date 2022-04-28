@@ -21,7 +21,7 @@ import { mockSalesModule } from "./createSalesOrder.mock";
 import { createSalesOrderDto, expectedCreateOrderProps } from "./fixtures";
 
 import { CreateOrderApiDto, CreateOrderLineItemApiDto } from "@sales/api";
-import { CreateOrderDto } from "@sales/dto";
+import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
 import {
   MongoOrdersRepository,
   MongoSalesOrder,
@@ -49,6 +49,7 @@ import { AuthenticatedUser } from "@shared/decorators";
 import safeJsonStringify from "safe-json-stringify";
 import { CreateSalesOrderLineItemDto } from "./CreateSalesOrderLineItemDto";
 import { ICustomOptionProps } from "@catalog/domain";
+import { NotFoundException, NotImplementedException } from "@nestjs/common";
 class NoErrorThrownError extends Error {}
 
 const getAsyncError = async <TError>(call: () => unknown): Promise<TError> => {
@@ -281,7 +282,7 @@ describe("CreateSalesOrder", () => {
           .mockResolvedValue(mockVariant);
         // WHEN
         const result = await service.loadCatalogVariant(params);
-        console.log(safeJsonStringify(result, null, 2));
+        
         // THEN
         expect(result).toEqual(expected);
         expect(catalogSpy).toBeCalledTimes(1);
@@ -384,61 +385,103 @@ describe("CreateSalesOrder", () => {
         service.validateDomainDto(params)
       ).resolves.not.toThrowError();
     });
+
     describe("given invalid DTO", () => {
       it("should throw FailedToPlaceSalesOrderException: InvalidSalesOrder", async () => {
         const mockDto = newMockCreateSalesOrderDto();
         // GIVEN
         const params: CreateOrderDto = new CreateOrderDto();
         params.accountId = mockDto.accountId;
-        params.orderName = undefined;
-        params.orderDate = undefined;
-        params.orderNumber = mockDto.orderNumber;
-        params.customer = mockDto.customer;
-        params.lineItems = [];
-        params.shippingAddress = mockDto.shippingAddress;
-        params.billingAddress = mockDto.billingAddress;
+        params.orderName = null;
+        params.orderDate = null;
+        params.orderNumber = null;
+        params.customer = {
+          email: null,
+          name: null,
+        };
+        const mockLi: CreateLineItemDto = new CreateLineItemDto();
+        mockLi.lineNumber = null;
+        mockLi.quantity = null;
+        mockLi.variant = null;
+        mockLi.properties = null;
+
+        params.lineItems = [mockLi];
+        params.shippingAddress = null;
+        params.billingAddress = null;
 
         const expected = {
           response: {
             statusCode: 500,
             message:
-              "Failed to place SalesOrder for order 'undefined': Validation errors found.",
+              "Failed to place SalesOrder for order 'null': Validation errors found.",
             timestamp: now,
             error: "InvalidSalesOrder",
             details: {
-              orderNumber: "1001",
+              orderName: null,
+              orderNumber: null,
               reason: "Validation errors found.",
               inner: [
                 {
                   property: "orderName",
-                  children: [],
-                  constraints: {
-                    isNotEmpty: "orderName should not be empty",
-                    isString: "orderName must be a string",
-                  },
+                  message:
+                    "orderName should not be empty; orderName must be a string",
+                  type: "SalesOrderValidationError",
                 },
                 {
                   property: "orderDate",
-                  children: [],
-                  constraints: {
-                    isNotEmpty: "orderDate should not be empty",
-                    isDate: "orderDate must be a Date instance",
-                  },
+                  message:
+                    "orderDate should not be empty; orderDate must be a Date instance",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "orderNumber",
+                  message:
+                    "orderNumber should not be empty; orderNumber must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "lineItems.0.lineNumber",
+                  message:
+                    "lineNumber should not be empty; lineNumber must be a number conforming to the specified constraints",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "lineItems.0.quantity",
+                  message:
+                    "quantity should not be empty; quantity must be a number conforming to the specified constraints",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "lineItems.0.variant",
+                  message: "variant should not be empty",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "lineItems.0.properties",
+                  message:
+                    "properties must be an array; properties should not be empty",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress",
+                  message:
+                    "nested property shippingAddress must be either object or array",
+                  type: "SalesOrderValidationError",
                 },
               ],
             },
           },
           status: 500,
           message:
-            "Failed to place SalesOrder for order 'undefined': Validation errors found.",
-          name: FailedToPlaceSalesOrderException.name,
+            "Failed to place SalesOrder for order 'null': Validation errors found.",
+          name: "FailedToPlaceSalesOrderException",
         };
         // WHEN
         // THEN
         const error: any = await getAsyncError(
           async () => await service.validateDomainDto(params)
         );
-
+        
         // THEN
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
@@ -476,56 +519,41 @@ describe("CreateSalesOrder", () => {
               inner: [
                 {
                   property: "accountId",
-                  children: [],
-                  constraints: {
-                    isNotEmpty: "accountId should not be empty",
-                    isString: "accountId must be a string",
-                  },
+                  message:
+                    "accountId should not be empty; accountId must be a string",
+                  type: "SalesOrderValidationError",
                 },
                 {
                   property: "orderDate",
-                  children: [],
-                  constraints: {
-                    isDate: "orderDate must be a Date instance",
-                    isNotEmpty: "orderDate should not be empty",
-                  },
+                  message:
+                    "orderDate must be a Date instance; orderDate should not be empty",
+                  type: "SalesOrderValidationError",
                 },
                 {
                   property: "orderNumber",
-                  children: [],
-                  constraints: {
-                    isNotEmpty: "orderNumber should not be empty",
-                  },
+                  message: "orderNumber should not be empty",
+                  type: "SalesOrderValidationError",
                 },
                 {
                   property: "customer",
-                  children: [],
-                  constraints: {
-                    isNotEmptyObject: "customer must be a non-empty object",
-                  },
+                  message: "customer must be a non-empty object",
+                  type: "SalesOrderValidationError",
                 },
                 {
                   property: "lineItems",
-                  children: [],
-                  constraints: {
-                    isArray: "lineItems must be an array",
-                  },
+                  message: "lineItems must be an array",
+                  type: "SalesOrderValidationError",
                 },
                 {
                   property: "shippingAddress",
-                  children: [],
-                  constraints: {
-                    isNotEmptyObject:
-                      "shippingAddress must be a non-empty object",
-                  },
+                  message: "shippingAddress must be a non-empty object",
+                  type: "SalesOrderValidationError",
                 },
                 {
                   property: "user",
-                  children: [],
-                  constraints: {
-                    isNotEmpty: "user should not be empty",
-                    isNotEmptyObject: "user must be a non-empty object",
-                  },
+                  message:
+                    "user should not be empty; user must be a non-empty object",
+                  type: "SalesOrderValidationError",
                 },
               ],
             },
@@ -541,7 +569,7 @@ describe("CreateSalesOrder", () => {
         const error: any = await getAsyncError(
           async () => await service.validateUseCaseDto(params)
         );
-        console.log(safeJsonStringify(error, null, 2));
+        
         // THEN
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
@@ -589,7 +617,7 @@ describe("CreateSalesOrder", () => {
               orderNumber: "1001",
               reason:
                 "User 'mockUser@email.com' not authorized to place orders for given Account: 'MOCK_ACCOUNT_ID'",
-              inner: null,
+              inner: [],
             },
           },
           status: 500,
@@ -602,7 +630,7 @@ describe("CreateSalesOrder", () => {
         const error: any = await getAsyncError(
           async () => await service.validateUserAuthorization(params)
         );
-        console.log(safeJsonStringify(error, null, 2));
+        
         // THEN
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
@@ -643,7 +671,7 @@ describe("CreateSalesOrder", () => {
               orderNumber: "1001",
               reason:
                 "User 'mockUser@email.com' not authorized to place orders for given Account: 'MOCK_ACCOUNT_ID'",
-              inner: null,
+              inner: [],
             },
           },
           status: 500,
@@ -656,7 +684,6 @@ describe("CreateSalesOrder", () => {
         const error: any = await getAsyncError(
           async () => await service.validateUserAuthorization(params)
         );
-        console.log(safeJsonStringify(error, null, 2));
         // THEN
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
@@ -720,7 +747,7 @@ describe("CreateSalesOrder", () => {
             details: {
               orderName: "MOCK_ORDER_NAME",
               reason: "LineItem '1' was null or undefined.",
-              inner: null,
+              inner: [],
             },
           },
           status: 500,
@@ -731,7 +758,6 @@ describe("CreateSalesOrder", () => {
         const error: any = await getAsyncError(
           async () => await service.generateLineItemDto(params, index, dto)
         );
-        console.log(safeJsonStringify(error, null, 2));
         // THEN
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
@@ -753,6 +779,19 @@ describe("CreateSalesOrder", () => {
       let params = newMockCreateSalesOrderDto();
       params.user = newMockUser();
       params.accountId = params.user.account.id;
+      const mockLi: CreateSalesOrderLineItemDto =
+        new CreateSalesOrderLineItemDto();
+      mockLi.quantity = null;
+      mockLi.quantity = 1;
+      mockLi.sku = "MOCK_SKU";
+      mockLi.variantId = null;
+      mockLi.lineItemProperties = [
+        { name: mockTopText, value: "ValidText" },
+        { name: mockMiddleText, value: "ValidText" },
+        { name: mockBottomText, value: "ValidText" },
+        { name: mockInitial, value: "M" },
+      ];
+      params.lineItems = [mockLi];
       const expected = {
         accountId: "MOCK_ACCOUNT_ID",
         orderName: "SLI-10000000001",
@@ -802,10 +841,10 @@ describe("CreateSalesOrder", () => {
     describe("given invalid DTO", () => {
       it("should throw FailedToPlaceSalesOrderException", async () => {
         // GIVEN
-        // const mockVariant: CatalogVariant = mockCatalogVariant();
-        // let skuSpy = jest
-        //   .spyOn(catalogService, "loadVariantBySku")
-        //   .mockResolvedValue(mockVariant);
+        const mockVariant: CatalogVariant = mockCatalogVariant();
+        let skuSpy = jest
+          .spyOn(catalogService, "loadVariantBySku")
+          .mockResolvedValue(mockVariant);
         const params = newMockInvalidCreateSalesOrderDto();
         params.user = newMockUser();
         params.accountId = params.user.account.id;
@@ -813,23 +852,55 @@ describe("CreateSalesOrder", () => {
           response: {
             statusCode: 500,
             message:
-              "Failed to place SalesOrder for order 'null': CatalogVariant not found for LineItem '1'.",
+              "Failed to place SalesOrder for order 'null': Validation errors found.",
             timestamp: now,
-            error: "MissingLineItem",
+            error: "InvalidSalesOrder",
             details: {
               orderName: null,
               orderNumber: null,
-              reason: "CatalogVariant not found for LineItem '1'.",
+              reason: "Validation errors found.",
               inner: [
                 {
-                  sku: "MU-C004-00-18-Black",
+                  property: "orderName",
+                  message:
+                    "orderName should not be empty; orderName must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "orderDate",
+                  message:
+                    "orderDate should not be empty; orderDate must be a Date instance",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "orderNumber",
+                  message:
+                    "orderNumber should not be empty; orderNumber must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "customer",
+                  message: "customer should not be empty",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "customer",
+                  message:
+                    "nested property customer must be either object or array",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress",
+                  message:
+                    "nested property shippingAddress must be either object or array",
+                  type: "SalesOrderValidationError",
                 },
               ],
             },
           },
           status: 500,
           message:
-            "Failed to place SalesOrder for order 'null': CatalogVariant not found for LineItem '1'.",
+            "Failed to place SalesOrder for order 'null': Validation errors found.",
           name: "FailedToPlaceSalesOrderException",
         };
         // WHEN
@@ -837,7 +908,50 @@ describe("CreateSalesOrder", () => {
         const error: any = await getAsyncError(
           async () => await service.execute(params)
         );
-        console.log(safeJsonStringify(error, null, 2));
+        // THEN
+        expect(error).not.toBeInstanceOf(NoErrorThrownError);
+        expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
+        expect(error.getResponse()).toEqual(expected.response);
+        expect(error.name).toEqual(expected.name);
+      });
+    });
+    describe("given unknown error thrown", () => {
+      it("should throw FailedToPlaceSalesOrderException", async () => {
+        // GIVEN
+        const mockVariant: CatalogVariant = mockCatalogVariant();
+        let skuSpy = jest
+          .spyOn(catalogService, "loadVariantBySku")
+          .mockResolvedValue(mockVariant);
+        const params = newMockCreateSalesOrderDto();
+        params.user = newMockUser();
+        params.accountId = params.user.account.id;
+        const saveSpy = jest.spyOn(salesRepo, "save").mockImplementation(() => {
+          throw "Unexpected Error";
+        });
+        const expected = {
+          response: {
+            statusCode: 500,
+            message:
+              "Failed to place SalesOrder for order 'SLI-10000000001': An unexpected error has occurred.",
+            timestamp: now,
+            error: CreateSalesOrderError.UnknownSalesError,
+            details: {
+              orderName: "SLI-10000000001",
+              orderNumber: "1001",
+              reason: "An unexpected error has occurred.",
+              inner: [],
+            },
+          },
+          status: 500,
+          message:
+            "Failed to place SalesOrder for order 'SLI-10000000001': An unexpected error has occurred.",
+          name: FailedToPlaceSalesOrderException.name,
+        };
+        // WHEN
+        // THEN
+        const error: any = await getAsyncError(
+          async () => await service.execute(params)
+        );
         // THEN
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
@@ -920,17 +1034,16 @@ function newMockCreateSalesOrderDto() {
     id: "userId",
     metadata: { accounts: [], authorization: {} },
   });
-  const mockDto: CreateSalesOrderDto = {
-    accountId: mockAccountId,
-    orderName: mockOrderName1,
-    orderDate: now,
-    orderNumber: mockOrderNumber1,
-    customer: mockCustomer,
-    lineItems: [mockLi1],
-    shippingAddress: mockShipping,
-    billingAddress: mockBilling,
-    user: mockAuthUser,
-  };
+  const mockDto: CreateSalesOrderDto = new CreateSalesOrderDto();
+  mockDto.accountId = mockAccountId;
+  mockDto.orderName = mockOrderName1;
+  mockDto.orderDate = now;
+  mockDto.orderNumber = mockOrderNumber1;
+  mockDto.customer = mockCustomer;
+  mockDto.lineItems = [mockLi1];
+  mockDto.shippingAddress = mockShipping;
+  mockDto.billingAddress = mockBilling;
+  mockDto.user = mockAuthUser;
   const mockSalesOrderDto1: CreateOrderDto = cloneDeep(createSalesOrderDto);
   const mockSalesOrder1 = SalesOrder.create(mockSalesOrderDto1);
   return mockDto;

@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
   Logger,
   Scope,
+  ValidationError,
 } from "@nestjs/common";
 import moment from "moment";
 import { UseCase } from "@shared/domain";
@@ -47,9 +48,14 @@ export class CreateSalesOrder
       let order = result;
       return await this._repo.save(order);
     } catch (error) {
-      this.logger.error(error);
+      this.logger.error(safeJsonStringify(error, null, 2));
       if (weRecognize(error)) throw error;
-      else throw new FailedToPlaceSalesOrderException(dto, error);
+      else {
+        throw new FailedToPlaceSalesOrderException(
+          dto,
+          `An unexpected error has occurred.`
+        );
+      }
     }
 
     function weRecognize(error: any) {
@@ -67,7 +73,6 @@ export class CreateSalesOrder
     const quantity = li.quantity;
     const properties = generateLineItemProperties();
     const catalogVariant = await this.loadCatalogVariant(li);
-    guardCatalogVariantNotNull();
 
     let lineItem: CreateLineItemDto = {
       lineNumber: lineNumber,
@@ -77,23 +82,11 @@ export class CreateSalesOrder
     };
     return lineItem;
 
-    function guardCatalogVariantNotNull() {
-      if (catalogVariant === null || catalogVariant === undefined) {
-        throw new FailedToPlaceSalesOrderException(
-          dto,
-          `CatalogVariant not found for LineItem '${generateLineNumber()}'.`,
-          [{ sku: li.sku, id: li.variantId }],
-          CreateSalesOrderError.MissingLineItem
-        );
-      }
-    }
-
     function guardLineItemNotNull() {
       if (li === undefined || li === null) {
         throw new FailedToPlaceSalesOrderException(
           dto,
           `LineItem '${generateLineNumber()}' was null or undefined.`,
-          null,
           CreateSalesOrderError.MissingLineItem
         );
       }
@@ -114,7 +107,6 @@ export class CreateSalesOrder
       throw new FailedToPlaceSalesOrderException(
         dto,
         `User '${user.email}' not authorized to place orders for given Account: '${dto.accountId}'`,
-        null,
         CreateSalesOrderError.UserNotAuthorizedForAccount
       );
     }
@@ -126,11 +118,12 @@ export class CreateSalesOrder
     });
     if (dtoErrors.length) {
       const message = `Validation errors found.`;
+      const valErrors = generateValidationError(dtoErrors);
       throw new FailedToPlaceSalesOrderException(
         dto,
         message,
-        dtoErrors,
-        CreateSalesOrderError.InvalidSalesOrder
+        CreateSalesOrderError.InvalidSalesOrder,
+        valErrors
       );
     }
   }
@@ -138,14 +131,15 @@ export class CreateSalesOrder
     const validationErrors = await validate(createOrderDto, {
       validationError: { target: false },
     });
-    console.log(safeJsonStringify(validationErrors, null, 2));
     if (validationErrors.length) {
       const reason = `Validation errors found.`;
+      const valErrors = generateValidationError(validationErrors);
+
       throw new FailedToPlaceSalesOrderException(
         createOrderDto,
         reason,
-        validationErrors,
-        CreateSalesOrderError.InvalidSalesOrder
+        CreateSalesOrderError.InvalidSalesOrder,
+        valErrors
       );
     }
   }
@@ -171,7 +165,11 @@ export class CreateSalesOrder
     return await this._catalog.loadVariantById({ id });
   }
 }
-
+export class SalesOrderValidationError {
+  public type: CreateSalesOrderError =
+    CreateSalesOrderError.SalesOrderValidationError;
+  constructor(public property: string, public message: string) {}
+}
 /**
  * CSO ErrorTypes:
  * FailedToLoadVariant (conection failed, SKU or ID is invalid, etc)
@@ -181,6 +179,8 @@ export class CreateSalesOrder
  */
 export enum CreateSalesOrderError {
   UnknownSalesError = "UnknownSalesError",
+  SalesOrderValidationError = "SalesOrderValidationError",
+
   InvalidSalesOrder = "InvalidSalesOrder",
   InvalidLineItem = "InvalidLineItem",
   MissingLineItem = "MissingLineItem",
@@ -198,12 +198,37 @@ export class CreateSalesOrderException extends InternalServerErrorException {
   }
 }
 
+export function generateValidationError(
+  errors: ValidationError[],
+  parent: string = null
+) {
+  return errors.reduce((finalErrors, err): SalesOrderValidationError[] => {
+    let property = "";
+    if (parent) {
+      property = `${parent}`;
+      if (parent != err.property) property = `${property}.`;
+    }
+    if (parent != err.property) property = `${property}${err.property}`;
+    if (err.constraints) {
+      const message = Object.values(err.constraints).join("; ");
+      finalErrors.push(new SalesOrderValidationError(property, message));
+    }
+
+    if (err.children?.length) {
+      const childErr = generateValidationError(err.children, property);
+      finalErrors = finalErrors.concat(childErr);
+    }
+
+    return finalErrors;
+  }, [] as SalesOrderValidationError[]);
+}
+
 export class FailedToPlaceSalesOrderException extends CreateSalesOrderException {
   constructor(
     dto: CreateSalesOrderDto | CreateOrderDto,
     reason: any,
-    inner: any[] = [],
-    type: CreateSalesOrderError = CreateSalesOrderError.UnknownSalesError
+    type: CreateSalesOrderError = CreateSalesOrderError.UnknownSalesError,
+    inner: any[] = []
   ) {
     super(
       {
