@@ -9,6 +9,7 @@ import { AccessTokenGeneratedDto } from '../../dto/AccessTokenGeneratedDto';
 import { ConnectShopifyAccountDto } from '../../dto/ConnectShopifyAccountDto';
 import { InstallShopifyAccountDto } from '../../dto/InstallShopifyAccountDto';
 import { ShopifyAccount } from '../entities/ShopifyAccount';
+import safeJsonStringify from "safe-json-stringify";
 
 export const ShopifyAccountEventType = {
   Unknown: `${AggregateType.ShopifyAccount}.Unknown`,
@@ -44,7 +45,7 @@ export class ShopifyAccountEvent extends BaseDomainEvent {
       aggregateId: undefined,
       aggregateType: ShopifyAccount.name,
       timestamp: this.timestamp,
-      details: JSON.stringify({ ...this.details }),
+      details: safeJsonStringify({ ...this.details }),
     };
   }
   public static generateUuid() {

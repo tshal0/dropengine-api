@@ -21,23 +21,7 @@ describe("SalesVariantOption", () => {
         expect(props).toEqual(expected);
       });
     });
-    describe("a null or undefined value", () => {
-      it("should return failure", () => {
-        const opt: ISalesVariantOption = null;
-        const result = SalesVariantOption.from(opt);
-        expect(result.isFailure).toBe(true);
-        const error = result.error;
-        const expected = {
-          reason:
-            "SalesVariantOption must be a valid VariantOption, with a name, option, and enabled status.",
-          name: "InvalidSalesVariantOption",
-          message:
-            "InvalidSalesVariantOption 'null': SalesVariantOption must be a valid VariantOption, with a name, option, and enabled status.",
-          value: "null",
-        };
-        expect(error).toEqual(expected);
-      });
-    });
+
     describe("a valid disabled SalesVariantOption ", () => {
       it("should return success", () => {
         const opt: ISalesVariantOption = {

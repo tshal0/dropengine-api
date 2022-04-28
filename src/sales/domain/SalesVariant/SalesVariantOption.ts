@@ -1,4 +1,6 @@
 import { Result, ResultError, ValueObject } from "@shared/domain";
+import safeJsonStringify from "safe-json-stringify";
+
 export interface ISalesVariantOption {
   name: string;
   option: string;
@@ -21,7 +23,7 @@ export class InvalidSalesVariantOptionError implements ResultError {
 export class SalesVariantOption extends ValueObject<ISalesVariantOption> {
   static from(val: any): Result<SalesVariantOption> {
     if ([null, undefined].includes(val)) {
-      return Result.fail(SalesVariantOption.invalid(val));
+      return Result.ok(new SalesVariantOption(null));
     } else if (SalesVariantOption.validate(val)) {
       let value: ISalesVariantOption = {
         name: val.name,
@@ -49,7 +51,7 @@ export class SalesVariantOption extends ValueObject<ISalesVariantOption> {
 
   private static invalid(val: any): ResultError {
     return new InvalidSalesVariantOptionError(
-      JSON.stringify(val),
+      safeJsonStringify(val),
       `SalesVariantOption must be a valid VariantOption, with a name, option, and enabled status.`
     );
   }

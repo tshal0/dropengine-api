@@ -23,7 +23,7 @@ import {
   mockBottomText,
   mockInitial,
 } from "@sales/mocks";
-
+import { getAsyncError, NoErrorThrownError } from "@shared/utils";
 const nowStr = "2021-01-01T00:00:00.000Z";
 jest
   .spyOn(global.Date, "now")
@@ -64,10 +64,7 @@ describe("SalesOrder", () => {
           lineItems
         );
 
-        let result = await SalesOrder.create(createOrderDto);
-
-        expect(result.isFailure).toBe(false);
-        let order = result.value();
+        let order = await SalesOrder.create(createOrderDto);
 
         const props = order.props();
 
@@ -106,9 +103,7 @@ describe("SalesOrder", () => {
           lineItems
         );
 
-        let result = await SalesOrder.create(createOrderDto);
-        expect(result.isFailure).toBe(false);
-        let order = result.value();
+        let order = await SalesOrder.create(createOrderDto);
 
         const props = order.props();
         const expected = invalidPersonalization(now);
@@ -147,9 +142,6 @@ describe("SalesOrder", () => {
           lineItems
         );
 
-        let result = await SalesOrder.create(createOrderDto);
-        expect(result.isFailure).toBe(true);
-        const error = result.error;
         const expected = {
           inner: [
             {
@@ -223,8 +215,11 @@ describe("SalesOrder", () => {
           message:
             "InvalidSalesOrder 'undefined' 'undefined': Failed to create SalesOrder. See inner for details.",
         };
-
-        expect(error).toEqual(expected);
+        const error = await getAsyncError(async () =>
+          SalesOrder.create(createOrderDto)
+        );
+        expect(error).not.toBeInstanceOf(NoErrorThrownError);
+        expect(error).toMatchObject(expected);
       });
     });
   });
@@ -280,9 +275,7 @@ describe("SalesOrder", () => {
           updatedAt: undefined,
           createdAt: undefined,
         };
-        const result = await SalesOrder.load(mock);
-        expect(result.isFailure).toBe(false);
-        const order = result.value();
+        const order = await SalesOrder.load(mock);
         const props = order.props();
         const entity = order.entity();
         const value = order.value();
@@ -495,9 +488,6 @@ describe("SalesOrder", () => {
           updatedAt: now,
           createdAt: now,
         };
-        const result = await SalesOrder.load(mock);
-        expect(result.isFailure).toBe(true);
-        const error = result.error;
         const expected = {
           inner: [
             {
@@ -697,7 +687,9 @@ describe("SalesOrder", () => {
           message:
             "InvalidSalesOrder '00000000515bd494ed80cfbd' 'undefined': Failed to load SalesOrder from Mongo. See inner for details.",
         };
-        expect(error).toEqual(expected);
+        const error = await getAsyncError(async () => SalesOrder.load(mock));
+        expect(error).not.toBeInstanceOf(NoErrorThrownError);
+        expect(error).toMatchObject(expected);
       });
     });
   });

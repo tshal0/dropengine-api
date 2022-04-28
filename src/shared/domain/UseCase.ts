@@ -1,5 +1,5 @@
-import { Result } from './Result';
+import { Result } from "./Result";
 
 export interface UseCase<IRequest, IResponse> {
-  execute(request?: IRequest): Promise<Result<IResponse>>;
+  execute(request?: IRequest): Promise<Result<IResponse>> | Promise<IResponse>;
 }

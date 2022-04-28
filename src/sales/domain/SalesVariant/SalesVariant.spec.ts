@@ -24,21 +24,12 @@ describe("SalesVariant", () => {
         const clonedVariant = cloneDeep(mockCatalogVariant1);
 
         const cv: CatalogVariant = clonedVariant;
-        clonedVariant.option1 = null;
         clonedVariant.personalizationRules[0].label = null;
         const result = SalesVariant.create(cv);
         expect(result.isFailure).toBe(true);
         const error = result.error;
         const expected = {
           inner: [
-            {
-              value: "null",
-              reason:
-                "SalesVariantOption must be a valid VariantOption, with a name, option, and enabled status.",
-              name: "InvalidSalesVariantOption",
-              message:
-                "InvalidSalesVariantOption 'null': SalesVariantOption must be a valid VariantOption, with a name, option, and enabled status.",
-            },
             {
               inner: [
                 {
@@ -65,7 +56,11 @@ describe("SalesVariant", () => {
                 image: "mock_image",
                 svg: "mock_svg",
                 type: "2DMetalArt",
-                option1: null,
+                option1: {
+                  name: "Size",
+                  option: '18"',
+                  enabled: true,
+                },
                 option2: {
                   name: "Color",
                   option: "Black",
@@ -147,7 +142,11 @@ describe("SalesVariant", () => {
             image: "mock_image",
             svg: "mock_svg",
             type: "2DMetalArt",
-            option1: null,
+            option1: {
+              name: "Size",
+              option: '18"',
+              enabled: true,
+            },
             option2: {
               name: "Color",
               option: "Black",

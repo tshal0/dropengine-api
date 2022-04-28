@@ -41,35 +41,17 @@ export class SalesOrderQuery {
   constructor(private readonly _mongo: MongoOrdersRepository) {}
   protected static llog = () => `[${moment()}][${SalesOrderQuery.name}]`;
 
-  public async execute(params: QueryOrdersDto): Promise<Result<SalesOrder[]>> {
-    try {
-      let qp: MongoQueryParams = {
-        limit: params.size,
-        skip: params.size * params.page,
-      };
-      let docsResult = await this._mongo.find(qp);
-      let docs = docsResult.result.map((d) => d);
-      let orderResults = await Promise.all(
-        docs.map(async (d) => await SalesOrder.load(d))
-      );
-      let failures = orderResults
-        .filter((r) => r.isFailure)
-        .map((r) => r.error);
-      if (failures.length) {
-        return Result.fail(
-          new FailedToLoadSalesOrdersFromDb(
-            failures,
-            params,
-            `Failed to load SalesOrders from Mongo. See inner for details.`
-          )
-        );
-      }
-      let successes = orderResults
-        .filter((r) => r.isSuccess)
-        .map((r) => r.value());
-      return Result.ok(successes);
-    } catch (error) {
-      return Result.fail(error);
-    }
+  public async execute(params: QueryOrdersDto): Promise<SalesOrder[]> {
+    let qp: MongoQueryParams = {
+      limit: params.size,
+      skip: params.size * params.page,
+    };
+    let docsResult = await this._mongo.find(qp);
+    let docs = docsResult.result.map((d) => d);
+    let orderResults = await Promise.all(
+      docs.map(async (d) => await SalesOrder.load(d))
+    );
+
+    return orderResults;
   }
 }

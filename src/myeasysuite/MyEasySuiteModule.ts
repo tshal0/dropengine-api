@@ -66,8 +66,13 @@ export abstract class MES {
           const options = generateTokenRequestOptions(accessTokenUrl, payload);
           try {
             accessToken = await loadAccessToken(options, accessToken);
+            const isMock = accessToken == "MOCK_ACCESS_TOKEN";
             cache.set(MES.MES_AUTH0_ACCESS_TOKEN, accessToken, { ttl: 3600 });
-            console.debug(`New MyEasySuite Access Token Acquired!`);
+            // console.debug(
+            //   `New MyEasySuite Access Token Acquired: ${
+            //     isMock ? accessToken : accessToken?.length
+            //   }`
+            // );
           } catch (error) {
             accessToken = "TOKEN_FAILED_TO_LOAD";
             cache.set(MES.MES_AUTH0_ACCESS_TOKEN, accessToken, {

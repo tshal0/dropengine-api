@@ -3,32 +3,23 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-  Inject,
-  LoggerService,
   Logger,
 } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
-import { Request, Response } from "express";
-import { AzureTelemetryService, WinstonLogger } from "@shared/modules";
+import { Request } from "express";
 import { AuthenticatedUser } from "@shared/decorators";
 import moment from "moment";
 import {
   SeverityLevel,
   TraceTelemetry,
 } from "applicationinsights/out/Declarations/Contracts";
-import {
-  WinstonModule,
-  WINSTON_MODULE_NEST_PROVIDER,
-  WINSTON_MODULE_PROVIDER,
-} from "nest-winston";
 @Injectable()
 export class SalesLoggingInterceptor implements NestInterceptor {
   private readonly logger: Logger = new Logger(SalesLoggingInterceptor.name);
   constructor() {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req: Request = context.switchToHttp().getRequest();
-    const res: Response = context.switchToHttp().getResponse();
 
     const val: any = req["user"];
 
@@ -79,10 +70,9 @@ export class SalesLoggingInterceptor implements NestInterceptor {
             severity: SeverityLevel.Information,
             time: end,
             contextObjects: { user },
-            properties: { response: { ...val, data: [] } },
+            properties: { response: { data: [] } },
           };
-          this.logger.debug(telemetry);
-          // this.logger.debug(payload.message);
+          this.logger.debug(payload);
         },
         error: (error) => {},
         complete: () => {},

@@ -2,6 +2,7 @@ import { UUID } from "../valueObjects";
 import { AggregateType } from "./AggregateType";
 import moment from "moment";
 import { UnprocessableEntityException } from "@nestjs/common";
+import safeJsonStringify from "safe-json-stringify";
 
 export class IDomainEvent {
   public readonly timestamp: Date;
@@ -52,7 +53,7 @@ export abstract class BaseDomainEvent implements IDomainEvent {
       throw new UnprocessableEntityException(
         `Unable to call toString on event: ${this.aggregateType} ${
           this.eventId
-        } ${JSON.stringify(this.details)}`
+        } ${safeJsonStringify(this.details)}`
       );
     }
   }
@@ -125,7 +126,7 @@ export abstract class BaseDomainEvent implements IDomainEvent {
       aggregateId: this.getAggregateId(),
       aggregateType: this.getAggregateType(),
       timestamp: this.timestamp,
-      details: JSON.stringify({ ...this.details }),
+      details: safeJsonStringify({ ...this.details }),
     };
   }
 }

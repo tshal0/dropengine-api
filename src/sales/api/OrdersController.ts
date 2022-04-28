@@ -14,6 +14,7 @@ import {
   HttpStatus,
   UnauthorizedException,
   LoggerService,
+  Logger,
 } from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
@@ -36,12 +37,14 @@ import { User } from "@shared/decorators";
 import { AuthenticatedUser } from "@shared/decorators/AuthenticatedUser";
 import { SalesLoggingInterceptor } from "./middleware/SalesLoggingInterceptor";
 import { WINSTON_MODULE_PROVIDER } from "nest-winston";
-import { Logger } from "winston";
+import { CreateSalesOrderDto } from "@sales/useCases/CreateSalesOrder/CreateSalesOrderDto";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
 @Controller({ path: "orders", version: Versions.v1 })
 export class OrdersController {
+  private readonly logger: Logger = new Logger(OrdersController.name);
+
   constructor(
     @Inject(REQUEST) private readonly request: Request,
     private readonly create: CreateSalesOrder,
@@ -52,33 +55,24 @@ export class OrdersController {
 
   @Get(":id")
   async getById(@Param("id") id: string) {
+    this.logger.debug({
+      message: `ORDERS REQUEST`,
+      route: `/api/orders/${id}`,
+      id,
+    });
     let result = await this.load.execute(id);
-    if (result.isFailure) {
-      throw new EntityNotFoundException(
-        `GetSalesOrderFailed`,
-        id,
-        result.error.message
-      );
-    }
-    const aggregate = result.value();
+    const aggregate = result;
     return aggregate.props();
   }
   @Get()
   async get(@Query() query: QueryOrdersDto) {
     let result = await this.query.execute(query);
-    if (result.isFailure) {
-      throw new ConflictException(result.error, `QuerySalesOrdersFailed`);
-    }
-    const orders = result.value();
-    return new QueryOrdersResponseDto(query, orders);
+    return new QueryOrdersResponseDto(query, result);
   }
   @Delete(":id")
   async delete(@Param("id") id: string) {
     let result = await this.remove.execute(id);
-    if (result.isFailure) {
-      throw new ConflictException(result.error, `DeleteSalesOrderFailed`);
-    }
-    return result.value();
+    return result;
   }
   @Post()
   async post(
@@ -86,15 +80,8 @@ export class OrdersController {
     @User() user: AuthenticatedUser,
     @Body(CreateOrderValidationPipe) dto: CreateOrderApiDto
   ) {
-    //TODO: Extract User validation into middleware?
-
-    if (user.canManageOrders(dto.accountId)) {
-      let result = await this.create.execute(dto);
-      if (result.isFailure) {
-        throw new ConflictException(result.error, `CreateSalesOrderFailed`);
-      }
-      const order = result.value();
-      return res.status(HttpStatus.CREATED).send(order.props());
-    } else throw new UnauthorizedException(`UserPermissionsNotFound`);
+    const useCaseDto = new CreateSalesOrderDto(dto, user);
+    let order = await this.create.execute(useCaseDto);
+    return res.status(HttpStatus.CREATED).json(order.props());
   }
 }

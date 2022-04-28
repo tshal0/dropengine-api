@@ -58,7 +58,8 @@ export class SalesVariant extends IAggregate<
     return Object.seal(this._value);
   }
   public static create(dto: CatalogVariant): Result<SalesVariant> {
-    if (isNull(dto)) return Result.fail(SalesVariant.nullCatalogVariant(dto));
+    if (dto === null || dto === undefined)
+      return Result.fail(SalesVariant.nullCatalogVariant());
     let results: { [key: string]: Result<any> } = {};
     results.option1 = SalesVariantOption.from(dto.option1);
     results.option2 = SalesVariantOption.from(dto.option2);
@@ -145,10 +146,10 @@ export class SalesVariant extends IAggregate<
     const variant = new SalesVariant(value, doc);
     return Result.ok(variant);
   }
-  private static nullCatalogVariant(dto: null): ResultError {
+  private static nullCatalogVariant(): ResultError {
     return new InvalidSalesVariant(
       [],
-      dto,
+      null,
       `Failed to create SalesVariant: CatalogVariant was undefined.`
     );
   }

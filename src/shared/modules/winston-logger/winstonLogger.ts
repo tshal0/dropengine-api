@@ -1,32 +1,6 @@
-import { CacheModule, Module } from "@nestjs/common";
-import {
-  WinstonModule,
-  utilities as nestWinstonModuleUtilities,
-  NestLikeConsoleFormatOptions,
-} from "nest-winston";
+import { NestLikeConsoleFormatOptions } from "nest-winston";
 import * as winston from "winston";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { MongooseModule } from "@nestjs/mongoose";
-
-import { EventEmitterModule } from "@nestjs/event-emitter";
-import { ScheduleModule } from "@nestjs/schedule";
-import { HttpModule } from "@nestjs/axios";
-import { AzureTelemetryModule } from "@shared/modules/azure-telemetry/azure-telemetry.module";
-import { AzureStorageModule } from "@shared/modules/azure-storage/azure-storage.module";
-import { AuthModule } from "@shared/modules/auth/auth.module";
-import { AppModule } from "../../../app/app.module";
-import { ShopifyModule } from "../../../shopify/shopify.module";
-import { ServeStaticModule } from "@nestjs/serve-static";
-import { join } from "path";
-import { PassportModule } from "@nestjs/passport";
-import { MikroOrmModule } from "@mikro-orm/nestjs";
-import { CatalogModule } from "../../../catalog/catalog.module";
-import { Auth0Module } from "@auth0/auth0.module";
-import { AccountsModule } from "../../../accounts/accounts.module";
-import { SalesModule } from "../../../sales/sales.module";
-import { MyEasySuiteModule } from "../../../myeasysuite/MyEasySuiteModule";
-import { APP_FILTER } from "@nestjs/core";
-import { AllExceptionsFilter } from "@shared/filters";
+import safeJsonStringify from "safe-json-stringify";
 import { format } from "winston";
 import { Format } from "logform";
 import chalk from "chalk";
@@ -108,9 +82,12 @@ export const consoleFormat = (
       ("undefined" !== typeof context
         ? chalk.yellow(`${"[" + context + "]"} `)
         : "") +
-      `${color(message)} - ` +
-      `data: ${JSON.stringify(meta, null)} -` +
-      ("undefined" !== typeof ms ? ` ${chalk.yellow(ms)}` : "")
+      `${color(message)}` +
+      ("undefined" !== typeof ms ? ` ${chalk.yellow(ms)}` : "") +
+      (Object.keys(meta).length
+        ? `\n${color("data")}: ${safeJsonStringify(meta, null)}`
+        : "") +
+      (meta?.stack?.length ? `\n${color("stack")}: ${meta.stack}` : "")
     );
   });
 export const nestFormat = consoleFormat("DropEngine", {

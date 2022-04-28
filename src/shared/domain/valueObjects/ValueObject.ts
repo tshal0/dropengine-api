@@ -1,3 +1,5 @@
+import safeJsonStringify from "safe-json-stringify";
+
 export type Primitives = string | number | boolean;
 export interface DomainPrimitive<T extends Primitives | Date> {
   value: T;
@@ -28,7 +30,7 @@ export abstract class ValueObject<T> {
     if (vo === null || vo === undefined) {
       return false;
     }
-    return JSON.stringify(this) === JSON.stringify(vo);
+    return safeJsonStringify(this) === safeJsonStringify(vo);
   }
   /**
    * Get raw props object or value.

@@ -1,49 +1,50 @@
 import { IUserAccount, IUserMetadata } from "@accounts/domain";
-import { NotFoundException } from "@nestjs/common";
+import { NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { IsString, IsNotEmpty, IsNotEmptyObject } from "class-validator";
 import { cloneDeep } from "lodash";
 import { IAuthenticatedUser, IRequestUser } from "./IAuthenticatedUser";
 
 export class AuthenticatedUser implements IAuthenticatedUser {
-  private _props: IAuthenticatedUser;
-  protected constructor(props: IAuthenticatedUser) {
-    this._props = props;
+  constructor(props: IAuthenticatedUser) {
+    this.id = props.id;
+    this.email = props.email;
+    this.metadata = props.metadata;
   }
-  public get id(): string {
-    return this._props.id;
-  }
-  public get email(): string {
-    return this._props.email;
-  }
-  public get metadata(): IUserMetadata {
-    return this._props.metadata;
-  }
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+  @IsNotEmpty()
+  @IsNotEmptyObject()
+  metadata: IUserMetadata;
 
   public canManageOrders(accountId: string): boolean {
-    
-    if (!this._props.metadata.accounts.length) {
+    if (!this.metadata.accounts.length) {
       return false;
     }
-    const account: IUserAccount = this._props.metadata?.accounts?.find(
+    const account: IUserAccount = this.metadata?.accounts?.find(
       (a) => a.id == accountId
     );
     if (!account)
-      throw new NotFoundException({
+      throw new UnauthorizedException({
         name: `UserNotFoundInAccount`,
-        accounts: this._props.metadata.accounts.map((a) => ({
+        accounts: this.metadata.accounts.map((a) => ({
           id: a.id,
           companyCode: a.companyCode,
         })),
-        userId: this._props.id,
+        userId: this.id,
       });
     const canManageOrders = account.permissions.includes("manage:orders");
     return canManageOrders;
   }
 
   public get accounts(): IUserAccount[] {
-    return cloneDeep(this._props.metadata?.accounts || []);
+    return cloneDeep(this.metadata?.accounts || []);
   }
   public get account(): IUserAccount {
-    return cloneDeep(this._props.metadata?.accounts[0]);
+    return cloneDeep(this.metadata?.accounts[0]);
   }
 
   public static load(props: IRequestUser) {

@@ -3,7 +3,7 @@
  * - loading the SalesOrder Aggregate into memory
  * - persisting the SalesOrder Aggregate (and its CustomOptions, Variants, etc)
  */
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable, Logger, NotImplementedException } from "@nestjs/common";
 import moment from "moment";
 
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
@@ -79,65 +79,46 @@ export class FailedToConvertSalesOrderToDb implements ResultError {
 
 @Injectable()
 export class SalesOrderRepository {
-  constructor(
-    private readonly logger: AzureTelemetryService,
-    private readonly _mongo: MongoOrdersRepository
-  ) {}
-  protected static llog = () => `[${moment()}][${SalesOrderRepository.name}]`;
-
-  public async load(id: string): Promise<Result<SalesOrder>> {
+  private readonly logger: Logger = new Logger(SalesOrderRepository.name);
+  private async handle<T>(fn: () => T) {
     try {
-      let doc = await this._mongo.findById(id);
-      if (doc) return SalesOrder.load(doc);
-      return Result.fail(
-        new SalesOrderNotFoundError(id, `Database returned null.`)
-      );
-    } catch (error) {
-      return Result.fail(error);
+      return await fn();
+    } catch (err) {
+      this.logger.error(err);
+      throw err;
     }
   }
-  public async save(agg: SalesOrder): Promise<Result<SalesOrder>> {
-    let result: Result<SalesOrder> = null;
+  constructor(private readonly _mongo: MongoOrdersRepository) {}
+
+  public async load(id: string): Promise<SalesOrder> {
+    let doc = await this._mongo.findById(id);
+    if (doc) return SalesOrder.load(doc);
+    else throw new SalesOrderNotFoundException(id);
+  }
+  public async save(agg: SalesOrder): Promise<SalesOrder> {
+    let result: SalesOrder = null;
     const props = agg.entity();
-    try {
-      if (props.id?.length) {
-        result = await this.upsertById(agg);
-      } else {
-        result = await this.create(agg);
-      }
-      return result;
-    } catch (err) {
-      this.logger.debug(err);
-      return this.failedToSave(props, err);
+    if (props.id?.length) {
+      result = await this.upsertById(agg);
+    } else {
+      result = await this.create(agg);
     }
+    return result;
   }
-  public async delete(id: string): Promise<Result<void>> {
-    try {
-      await this._mongo.delete(id);
-      return Result.ok();
-    } catch (error) {
-      return Result.fail(error);
-    }
+  public async delete(id: string): Promise<void> {
+    await this._mongo.delete(id);
   }
 
-  private async upsertById(agg: SalesOrder): Promise<Result<SalesOrder>> {
-    try {
-      let dbe = agg.entity();
-      let updated = await this._mongo.update(dbe);
-      return SalesOrder.load(updated);
-    } catch (err) {
-      return this.failedToSave(agg.entity(), err);
-    }
+  private async upsertById(agg: SalesOrder): Promise<SalesOrder> {
+    let dbe = agg.entity();
+    let updated = await this._mongo.update(dbe);
+    return SalesOrder.load(updated);
   }
 
-  private async create(agg: SalesOrder): Promise<Result<SalesOrder>> {
-    try {
-      let dbe = agg.entity();
-      let updated = await this._mongo.create(dbe);
-      return SalesOrder.load(updated);
-    } catch (err) {
-      return this.failedToCreate(agg.entity(), err);
-    }
+  private async create(agg: SalesOrder): Promise<SalesOrder> {
+    let dbe = agg.entity();
+    let updated = await this._mongo.create(dbe);
+    return SalesOrder.load(updated);
   }
 
   private async persist(

@@ -1,4 +1,3 @@
-import { MongoMemoryServer } from "mongodb-memory-server";
 import { CatalogModule } from "@catalog/catalog.module";
 import {
   ProductsRepository,
@@ -7,14 +6,13 @@ import {
 } from "@catalog/database";
 import { CatalogService } from "@catalog/services";
 import { HttpModule, HttpService } from "@nestjs/axios";
-import { CacheModule, LogLevel } from "@nestjs/common";
+import { CacheModule, HttpStatus } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { getModelToken, MongooseModule } from "@nestjs/mongoose";
+import { MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
 import { TestingModule, Test } from "@nestjs/testing";
 import { OrdersController } from "@sales/api";
-import { Logger } from "winston";
 import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 
 import {
@@ -32,42 +30,23 @@ import {
   DeleteSalesOrder,
 } from "..";
 import { rootMongooseTestModule } from "@jestconfig/mongodb-memory-server";
-import {
-  ExceptionTelemetry,
-  RequestTelemetry,
-  EventTelemetry,
-  TraceTelemetry,
-} from "applicationinsights/out/Declarations/Contracts";
-import NodeClient from "applicationinsights/out/Library/NodeClient";
-import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
+import { TraceTelemetry } from "applicationinsights/out/Declarations/Contracts";
 
-const configMock = {
-  get: jest.fn((key: string) => {
-    return key.toUpperCase();
-  }),
-};
-const httpMock = {
-  get: jest.fn((key: string) => {
-    return key.toUpperCase();
-  }),
-};
-const eventEmitterMock = {
-  emit: jest.fn().mockReturnValue(true),
-};
-const mockLogger = {
-  trace: function (telemetry: TraceTelemetry): void {
-    console.debug(JSON.stringify(telemetry, null, 2));
-  },
-  error: function (message: string, stack?: string, context?: any): void {
-    console.error(message, stack, context);
-  },
-  log: function (message: any, ...optionalParams: any[]): void {
-    console.log(message, ...optionalParams);
-  },
-  debug: function (message: any, ...optionalParams: any[]): void {
-    console.debug(message, ...optionalParams);
-  },
-};
+import safeJsonStringify from "safe-json-stringify";
+import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
+/** MOCK UTILS */
+jest.mock("@shared/utils", () => {
+  const resp = {
+    code: 200,
+    object: {
+      access_token: "MOCK_ACCESS_TOKEN",
+    },
+  };
+  return {
+    requestObject: jest.fn().mockResolvedValue(resp),
+  };
+});
+/** MOCK SALES MODULE */
 export const mockSalesModule = async (): Promise<TestingModule> => {
   return await Test.createTestingModule({
     imports: [
@@ -106,7 +85,11 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
     .overrideProvider(AzureTelemetryService)
     .useValue(mockLogger)
     .overrideProvider(CatalogService)
-    .useValue({})
+    .useValue({
+      syncVariant: jest.fn(),
+      loadVariantBySku: jest.fn(),
+      loadVariantById: jest.fn(),
+    })
     .overrideProvider(ProductTypesRepository)
     .useValue({})
     .overrideProvider(ProductsRepository)
@@ -116,4 +99,35 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
     .overrideProvider(MyEasySuiteClient)
     .useValue({})
     .compile();
+};
+/** MOCK CONFIG */
+const configMock = {
+  get: jest.fn((key: string) => {
+    return key.toUpperCase();
+  }),
+};
+/** MOCK HTTP */
+const httpMock = {
+  get: jest.fn((key: string) => {
+    return key.toUpperCase();
+  }),
+};
+/** MOCK EVENT EMITTER */
+const eventEmitterMock = {
+  emit: jest.fn().mockReturnValue(true),
+};
+/** MOCK LOGGER */
+const mockLogger = {
+  trace: function (telemetry: TraceTelemetry): void {
+    console.debug(safeJsonStringify(telemetry, null, 2));
+  },
+  error: function (message: string, stack?: string, context?: any): void {
+    console.error(message, stack, context);
+  },
+  log: function (message: any, ...optionalParams: any[]): void {
+    console.log(message, ...optionalParams);
+  },
+  debug: function (message: any, ...optionalParams: any[]): void {
+    console.debug(message, ...optionalParams);
+  },
 };

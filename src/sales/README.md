@@ -119,3 +119,11 @@ We want to provide the ability for merchants to place orders in our system, allo
       16. Color
       17. Size
 7. Validate User Authorization
+
+## Results vs Exceptions
+
+We typically use Results only for ValueObjects in order to aggregate the validation errors before throwing an exception.
+
+Aggregates throw ValidationExceptions.
+
+UseCases, Controllers use Exceptions.

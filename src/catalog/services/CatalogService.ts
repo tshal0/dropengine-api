@@ -1,4 +1,9 @@
-import { Injectable, Scope } from "@nestjs/common";
+import {
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  Scope,
+} from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import moment from "moment";
 import {
@@ -22,33 +27,7 @@ export class LoadLineItemVariantByIdDto {
   id: string;
 }
 export enum CatalogServiceError {
-  FailedToLoadLineItemVariantBySku = "FailedToLoadLineItemVariantBySku",
-  FailedToLoadLineItemVariantById = "FailedToLoadLineItemVariantById",
-}
-
-export class FailedToLoadLineItemVariantBySkuError implements ResultError {
-  public stack: string;
-  public name = CatalogServiceError.FailedToLoadLineItemVariantBySku;
-  public message: string;
-  constructor(
-    public inner: ResultError[],
-    public value: LoadLineItemVariantBySkuDto,
-    public reason: string
-  ) {
-    this.message = `${this.name}` + ` '${value.sku}': ${reason}`;
-  }
-}
-export class FailedToLoadLineItemVariantByIdError implements ResultError {
-  public stack: string;
-  public name = CatalogServiceError.FailedToLoadLineItemVariantById;
-  public message: string;
-  constructor(
-    public inner: ResultError[],
-    public value: LoadLineItemVariantByIdDto,
-    public reason: string
-  ) {
-    this.message = `${this.name}` + ` '${value.id}': ${reason}`;
-  }
+  FailedToLoadVariant = "FailedToLoadVariant",
 }
 
 @Injectable({ scope: Scope.DEFAULT })
@@ -65,62 +44,65 @@ export class CatalogService {
     let result = await this._syncVariant.execute({ sku });
   }
 
-  async loadLineItemVariantBySku(
+  async loadVariantBySku(
     dto: LoadLineItemVariantBySkuDto
-  ): Promise<Result<CatalogVariant>> {
-    try {
-      let variantSkuResult: Result<any> = null;
+  ): Promise<CatalogVariant> {
+    let variantSkuResult: Result<any> = null;
 
-      variantSkuResult = VariantSKU.from(dto.sku);
-      if (variantSkuResult.isFailure)
-        return Result.fail(variantSkuResult.error);
-      let vsku: VariantSKU = variantSkuResult.value();
-      let loadVariantResult = await this._repo.findBySku(vsku);
-      let variant: ProductVariant = null;
+    variantSkuResult = VariantSKU.from(dto.sku);
+    if (variantSkuResult.isFailure)
+      throw new FailedToLoadVariantBySkuException(
+        dto.sku,
+        variantSkuResult.error.message
+      );
+    let vsku: VariantSKU = variantSkuResult.value();
+    let loadVariantResult = await this._repo.findBySku(vsku);
+    let variant: ProductVariant = null;
+    if (loadVariantResult.isFailure) {
+      loadVariantResult = await this._syncVariant.execute(dto);
       if (loadVariantResult.isFailure) {
-        loadVariantResult = await this._syncVariant.execute(dto);
-        if (loadVariantResult.isFailure) {
-          return Result.fail(
-            failedToLoadOrSyncVariantBySku(variantSkuResult, dto)
-          );
-        }
+        throw new FailedToLoadVariantBySkuException(
+          dto.sku,
+          loadVariantResult.error.message
+        );
       }
-      variant = loadVariantResult.value();
-
-      let props: ICatalogVariant = {
-        id: variant.id,
-        sku: variant.sku,
-        image: variant.image,
-        svg: variant.svg,
-        type: variant.type,
-        option1: variant.option1,
-        option2: variant.option2,
-        option3: variant.option3,
-        productionData: variant.productionData,
-        personalizationRules: variant.personalizationRules,
-        manufacturingCost: variant.manufacturingCost,
-        shippingCost: variant.shippingCost,
-        weight: variant.weight,
-      };
-      let catalogVariant = new CatalogVariant(props);
-      return Result.ok(catalogVariant);
-    } catch (error) {
-      return Result.fail(error);
     }
+    variant = loadVariantResult.value();
+
+    let props: ICatalogVariant = {
+      id: variant.id,
+      sku: variant.sku,
+      image: variant.image,
+      svg: variant.svg,
+      type: variant.type,
+      option1: variant.option1,
+      option2: variant.option2,
+      option3: variant.option3,
+      productionData: variant.productionData,
+      personalizationRules: variant.personalizationRules,
+      manufacturingCost: variant.manufacturingCost,
+      shippingCost: variant.shippingCost,
+      weight: variant.weight,
+    };
+    let catalogVariant = new CatalogVariant(props);
+    return catalogVariant;
   }
-  async loadLineItemVariantById(
+  async loadVariantById(
     dto: LoadLineItemVariantByIdDto
-  ): Promise<Result<CatalogVariant>> {
+  ): Promise<CatalogVariant> {
     try {
       let vidResult: Result<any> = null;
 
       vidResult = ProductVariantUUID.from(dto.id);
-      if (vidResult.isFailure) return Result.fail(vidResult.error);
+      if (vidResult.isFailure) throw vidResult.error;
       let variantId: ProductVariantUUID = vidResult.value();
       let loadVariantResult = await this._repo.findById(variantId);
       let variant: ProductVariant = null;
       if (loadVariantResult.isFailure) {
-        return Result.fail(failedToLoadOrSyncVariantById(vidResult, dto));
+        throw new FailedToLoadVariantByIdException(
+          dto.id,
+          loadVariantResult.error.message
+        );
       }
       variant = loadVariantResult.value();
 
@@ -140,30 +122,51 @@ export class CatalogService {
         weight: variant.weight,
       };
       let catalogVariant = new CatalogVariant(props);
-      return Result.ok(catalogVariant);
+      return catalogVariant;
     } catch (error) {
-      return Result.fail(error);
+      throw error;
     }
   }
 }
-function failedToLoadOrSyncVariantBySku(
-  result: Result<any>,
-  dto: { sku: string }
-): ResultError {
-  return new FailedToLoadLineItemVariantBySkuError(
-    [result.error],
-    dto,
-    `FailedToLoadOrSyncVariant`
-  );
+
+export class CatalogServiceException extends InternalServerErrorException {
+  public type: CatalogServiceError;
+  constructor(objectOrError: any, description: string) {
+    super(objectOrError, description);
+  }
+}
+export class FailedToLoadVariantBySkuException extends CatalogServiceException {
+  constructor(id: string, error: any) {
+    const msg = `Failed to load ProductVariant with SKU '${id}': ${
+      error?.message || error
+    }`;
+    super(
+      {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: msg,
+        timestamp: moment().toDate(),
+        error: CatalogServiceError.FailedToLoadVariant,
+        details: { id, inner: [error] },
+      },
+      msg
+    );
+  }
 }
 
-function failedToLoadOrSyncVariantById(
-  result: Result<any>,
-  dto: { id: string }
-): ResultError {
-  return new FailedToLoadLineItemVariantByIdError(
-    [result.error],
-    dto,
-    `FailedToLoadVariant`
-  );
+export class FailedToLoadVariantByIdException extends CatalogServiceException {
+  constructor(id: string, error: any) {
+    const msg = `Failed to load ProductVariant with ID '${id}': ${
+      error?.message || error
+    }`;
+    super(
+      {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: msg,
+        timestamp: moment().toDate(),
+        error: CatalogServiceError.FailedToLoadVariant,
+        details: { id, inner: [error] },
+      },
+      msg
+    );
+  }
 }

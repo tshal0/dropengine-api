@@ -111,7 +111,7 @@ export class SalesOrder extends IAggregate<
    * @param dto Data Transfer Object representing a SalesOrder to be created.
    * @returns {Result<SalesOrder>}
    */
-  public static async create(dto: CreateOrderDto): Promise<Result<SalesOrder>> {
+  public static async create(dto: CreateOrderDto): Promise<SalesOrder> {
     //TODO: ValidateLineItems
 
     let results: { [key: string]: Result<any> } = {};
@@ -129,7 +129,7 @@ export class SalesOrder extends IAggregate<
       .map((r) => r as Result<any>)
       .map((r) => r.error);
     if (errors.length) {
-      return Result.fail(SalesOrder.invalidSalesOrder(errors, dto));
+      throw SalesOrder.invalidSalesOrder(errors, dto);
     }
     // Timestamp
     const now = moment().toDate();
@@ -166,10 +166,10 @@ export class SalesOrder extends IAggregate<
     // SalesOrder
     const aggregate = new SalesOrder(value, doc);
 
-    return Result.ok(aggregate);
+    return aggregate;
   }
 
-  public static async load(doc: MongoSalesOrder): Promise<Result<SalesOrder>> {
+  public static async load(doc: MongoSalesOrder): Promise<SalesOrder> {
     let results: { [key: string]: Result<any> } = {};
     results.number = SalesOrderNumber.from(doc.orderNumber);
     results.orderDate = SalesOrderDate.from(doc.orderDate);
@@ -186,7 +186,7 @@ export class SalesOrder extends IAggregate<
       .map((r) => r as Result<any>)
       .map((r) => r.error);
     if (errors.length) {
-      return Result.fail(SalesOrder.failedToLoadSalesOrder(errors, doc));
+      throw SalesOrder.failedToLoadSalesOrder(errors, doc);
     }
 
     const orderNumber = results.number.value();
@@ -205,7 +205,7 @@ export class SalesOrder extends IAggregate<
       orderDate: results.orderDate.value(),
     };
     const value = new SalesOrder(props, doc);
-    return Result.ok(value);
+    return value;
   }
 
   private static createLineItems(dto: CreateOrderDto): Result<LineItem[]> {

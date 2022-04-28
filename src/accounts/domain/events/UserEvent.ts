@@ -17,6 +17,8 @@ export const UserEventType = {
   Deactivated: "Deactivated",
   Deleted: "Deleted",
 };
+import safeJsonStringify from "safe-json-stringify";
+
 export class UserEvent extends BaseDomainEvent {
   public readonly aggregateType = AggregateType.User;
   public eventType = UserEventType.Unknown;
@@ -36,7 +38,7 @@ export class UserEvent extends BaseDomainEvent {
       aggregateId: undefined,
       aggregateType: "User",
       timestamp: this.timestamp,
-      details: JSON.stringify({ ...this.details }),
+      details: safeJsonStringify({ ...this.details }),
     };
   }
   public static generateUuid() {

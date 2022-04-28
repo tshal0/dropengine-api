@@ -3,15 +3,16 @@ import mapper from "jest-module-name-mapper";
 const mappings = {
   ...mapper(),
 };
+console.log("🚀 ~ file: jest.config.ts ~ line 4 ~ mappings", mappings);
 const config: Config.InitialOptions = {
   moduleNameMapper: mappings,
 
-  // collectCoverageFrom: ["src/**/*.(t|j)s"],
-  // coveragePathIgnorePatterns: ["src/console", "src/migration"],
-  // coverageDirectory: "coverage",
-  // coverageReporters: ["json", "lcov", "text", "clover", "cobertura"],
-  // collectCoverage: true,
-  // reporters: ["default", "jest-junit"],
+  collectCoverage: true,
+  collectCoverageFrom: ["src/**/*.(t|j)s"],
+  coveragePathIgnorePatterns: ["node_modules", ".mock.ts", "jest.config.ts"],
+  coverageDirectory: "coverage",
+  coverageReporters: ["json", "lcov", "text", "clover", "cobertura"],
+  reporters: ["default", "jest-junit"],
 
   moduleFileExtensions: ["js", "json", "ts"],
   rootDir: ".",
@@ -19,8 +20,7 @@ const config: Config.InitialOptions = {
   transform: {
     "^.+\\.(t|j)s$": "ts-jest",
   },
-  collectCoverageFrom: ["**/*.(t|j)s"],
-  coverageDirectory: "../coverage",
+
   testEnvironment: "node",
   globals: {
     "ts-jest": {

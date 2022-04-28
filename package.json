@@ -88,6 +88,7 @@
     "request": "^2.88.2",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
+    "safe-json-stringify": "^1.2.0",
     "swagger-ui-express": "^4.3.0",
     "winston": "^3.7.2"
   },
@@ -104,6 +105,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.7",
     "@types/node": "^16.0.0",
+    "@types/safe-json-stringify": "^1.1.2",
     "@types/supertest": "^2.0.11",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
