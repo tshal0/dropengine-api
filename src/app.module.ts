@@ -65,7 +65,6 @@ import safeJsonStringify from "safe-json-stringify";
       },
       // Stupid hack to make TS stop complaining about env.DB_TYPE
       type: (process.env.DB_TYPE as "postgresql") || "postgresql",
-      baseDir: process.env.DB_BASEDIR || __dirname.replace("/src", ""),
       debug: process.env.ENVIRONMENT != "production",
     }),
     AuthModule,

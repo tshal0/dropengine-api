@@ -7,7 +7,7 @@ console.log("🚀 ~ file: jest.config.ts ~ line 4 ~ mappings", mappings);
 const config: Config.InitialOptions = {
   moduleNameMapper: mappings,
   moduleFileExtensions: ["js", "json", "ts"],
-  rootDir: "..",
+  rootDir: ".",
   testEnvironment: "node",
   testRegex: ".e2e-spec.ts$",
   transform: {
@@ -25,9 +25,9 @@ const config: Config.InitialOptions = {
       tsconfig: "tsconfig.test.json",
     },
   },
-  globalSetup: "./src/.jest/globalSetup.ts",
-  globalTeardown: "./src/.jest/globalTeardown.ts",
-  setupFiles: ["./e2e/setup.ts"],
+  globalSetup: "./e2e/.jest/globalSetup.ts",
+  globalTeardown: "./e2e/.jest/globalTeardown.ts",
+  setupFiles: ["./e2e/.jest/setup.ts"],
 };
 
 export default config;
