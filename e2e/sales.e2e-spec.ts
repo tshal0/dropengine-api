@@ -1,81 +1,34 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { ExecutionContext, INestApplication } from "@nestjs/common";
+import { INestApplication } from "@nestjs/common";
 import request from "supertest";
-import { SalesModule } from "@sales/sales.module";
-import { CatalogModule } from "@catalog/catalog.module";
-import { rootMongooseTestModule } from "@jestconfig/mongodb-memory-server";
-import { AuthGuard, PassportModule } from "@nestjs/passport";
-import { AuthModule } from "@shared/modules";
-import { MikroOrmModule } from "@mikro-orm/nestjs";
-import { DbProduct, DbProductType, DbProductVariant } from "@catalog/domain";
-import { DbAccount } from "@accounts/domain/entities/Account.entity";
-import { SqlEntityManager } from "@mikro-orm/postgresql";
-import { ProductTypesRepository } from "@catalog/database";
-import { MikroORM } from "@mikro-orm/core";
-import { DbStore } from "@accounts/domain/entities/Store.entity";
 import { loadAccessToken } from "./loadAccessToken";
+import { AppModule } from "../src/app.module";
+import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
+import { WinstonModule } from "nest-winston";
 
 /** MOCK UTILS */
-
+jest.setTimeout(60000);
 describe("Sales (e2e)", () => {
   let app: INestApplication;
   let token: string = "NOT_AVAILABLE";
+  let module: TestingModule;
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        PassportModule.register({ defaultStrategy: "jwt" }),
-        rootMongooseTestModule(),
-        // MongooseModule.forFeature([
-        //   { name: MongoSalesOrder.name, schema: MongoSalesOrderSchema },
-        // ]),
-        // HttpModule,
-        // ConfigModule.forRoot(),
-        // AzureTelemetryModule,
-        MikroOrmModule.forRoot({
-          dbName: "./e2e/test.sqlite3",
-          type: "sqlite",
-          baseDir: "./e2e",
-          entities: [
-            DbProduct,
-            DbProductType,
-            DbProductVariant,
-            DbAccount,
-            DbStore,
-          ],
-        }),
-        AuthModule,
-        CatalogModule,
-        SalesModule,
-      ],
-      providers: [
-        { provide: MikroORM, useValue: {} },
-        { provide: SqlEntityManager, useValue: {} },
-        {
-          provide: ProductTypesRepository,
-          useValue: {},
-        },
-        // {
-        //   provide: getRepositoryToken(DbProductType),
-        //   useValue: {},
-        // },
-        // {
-        //   provide: getRepositoryToken(DbProduct),
-        //   useValue: {},
-        // },
-        // {
-        //   provide: getRepositoryToken(DbProductVariant),
-        //   useValue: {},
-        // },
-        // {
-        //   provide: getRepositoryToken(DbAccount),
-        //   useValue: {},
-        // },
-      ],
-    })
-    .compile();
+    module = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
 
-    app = moduleFixture.createNestApplication();
+    app = module.createNestApplication();
+    const logger = WinstonModule.createLogger(winstonLoggerOptions);
+    module.useLogger(logger);
     await app.init();
+    app.useLogger(logger);
+    AppModule.register({
+      mikroOrmOptions: {
+        dbName: "./e2e/test.sqlite3",
+        type: "sqlite",
+        baseDir: "./e2e",
+      },
+    });
     token = await loadAccessToken();
   });
   beforeEach(async () => {});
@@ -99,6 +52,6 @@ describe("Sales (e2e)", () => {
       .expect(expected);
   });
   afterAll(async () => {
-    await app.close();
+    if (app) await app.close();
   });
 });

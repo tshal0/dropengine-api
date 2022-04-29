@@ -6,15 +6,15 @@ import {
   VersioningType,
   VERSION_NEUTRAL,
 } from "@nestjs/common";
-import { AppService } from "./app.service";
+import { HealthService } from "./health.service";
 
 @Controller({ path: "/", version: VERSION_NEUTRAL })
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+export class HealthController {
+  constructor(private readonly health: HealthService) {}
 
   @Get()
   @HttpCode(200)
   async getHealthCheck(): Promise<any> {
-    return { status: "DropEngine™ API Up!" };
+    return await this.health.check();
   }
 }

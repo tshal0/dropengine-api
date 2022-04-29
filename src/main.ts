@@ -17,7 +17,7 @@ import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
 import { ValidationError } from "class-validator";
-import { ServerModule } from "./server.module";
+import { AppModule } from "./app.module";
 import { Constants, Versions } from "./shared";
 import * as appInsights from "applicationinsights";
 import { initAppInsights, WinstonLogger } from "@shared/modules";
@@ -37,7 +37,7 @@ appInsights
   .setSendLiveMetrics(true)
   .start();
 async function bootstrap() {
-  const app = await NestFactory.create(ServerModule, {
+  const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger(winstonLoggerOptions),
   });
   const wlog = app.get(WINSTON_MODULE_NEST_PROVIDER);

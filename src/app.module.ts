@@ -1,9 +1,11 @@
-import { CacheModule, Logger, Module } from "@nestjs/common";
 import {
-  WinstonModule,
-  WINSTON_MODULE_NEST_PROVIDER,
-  WINSTON_MODULE_PROVIDER,
-} from "nest-winston";
+  CacheModule,
+  DynamicModule,
+  Module,
+  OnModuleDestroy,
+  OnModuleInit,
+} from "@nestjs/common";
+import { WinstonModule } from "nest-winston";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 
@@ -13,10 +15,10 @@ import { HttpModule } from "@nestjs/axios";
 import { AzureTelemetryModule } from "@shared/modules/azure-telemetry/azure-telemetry.module";
 import { AzureStorageModule } from "@shared/modules/azure-storage/azure-storage.module";
 import { AuthModule } from "@shared/modules/auth/auth.module";
-import { AppModule } from "./app/app.module";
+import { HealthModule } from "./health/health.module";
 import { ShopifyModule } from "./shopify/shopify.module";
 import { PassportModule } from "@nestjs/passport";
-import { MikroOrmModule } from "@mikro-orm/nestjs";
+import { MikroOrmModule, MikroOrmModuleOptions } from "@mikro-orm/nestjs";
 import { CatalogModule } from "./catalog/catalog.module";
 import { Auth0Module } from "@auth0/auth0.module";
 import { AccountsModule } from "./accounts/accounts.module";
@@ -24,12 +26,16 @@ import { SalesModule } from "./sales/sales.module";
 import { MyEasySuiteModule } from "./myeasysuite/MyEasySuiteModule";
 import { APP_FILTER } from "@nestjs/core";
 import { AllExceptionsFilter } from "@shared/filters";
-import { WinstonLogger } from "./shared";
 import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
+import { MikroORM } from "@mikro-orm/core";
+import safeJsonStringify from "safe-json-stringify";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: process.env.ENV_LOCATION || ".env",
+    }),
     WinstonModule.forRootAsync({
       useFactory: () => ({
         ...winstonLoggerOptions,
@@ -48,11 +54,19 @@ import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogg
       entities: ["./dist/**/entities/*.entity.js"],
       entitiesTs: ["./src/**/entities/*.entity.ts"],
       clientUrl: process.env.DATABASE_URL || undefined,
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      dbName: process.env.DB_DB,
+      schema: process.env.DB_SCHEMA,
       driverOptions: {
         connection: { ssl: process.env.POSTGRES_SSL || false },
       },
-      debug: true,
-      type: "postgresql",
+      // Stupid hack to make TS stop complaining about env.DB_TYPE
+      type: (process.env.DB_TYPE as "postgresql") || "postgresql",
+      baseDir: process.env.DB_BASEDIR || __dirname.replace("/src", ""),
+      debug: process.env.ENVIRONMENT != "production",
     }),
     AuthModule,
 
@@ -63,7 +77,7 @@ import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogg
     AzureStorageModule,
     CacheModule.register(),
     // PrismaModule,
-    AppModule,
+    HealthModule,
     Auth0Module,
     AccountsModule,
     ShopifyModule,
@@ -78,4 +92,39 @@ import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogg
     },
   ],
 })
-export class ServerModule {}
+export class AppModule implements OnModuleDestroy, OnModuleInit {
+  constructor(private orm: MikroORM) {}
+  async onModuleInit() {
+    console.log(this.orm.config.get("baseDir"));
+  }
+
+  async onModuleDestroy(): Promise<void> {
+    await this.orm.close();
+  }
+  static register(options?: {
+    mikroOrmOptions?: MikroOrmModuleOptions;
+  }): DynamicModule {
+    return {
+      module: AppModule,
+      imports: [
+        MikroOrmModule.forRoot({
+          entities: ["./dist/**/entities/*.entity.js"],
+          entitiesTs: ["./src/**/entities/*.entity.ts"],
+          clientUrl: process.env.DATABASE_URL || undefined,
+          host: process.env.DB_HOST,
+          port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
+          user: process.env.DB_USER,
+          password: process.env.DB_PASS,
+          dbName: process.env.DB_DB,
+          schema: process.env.DB_SCHEMA,
+          driverOptions: {
+            connection: { ssl: process.env.POSTGRES_SSL || false },
+          },
+          debug: true,
+          type: "postgresql",
+          ...options?.mikroOrmOptions,
+        }),
+      ],
+    };
+  }
+}

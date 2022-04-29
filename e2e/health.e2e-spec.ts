@@ -1,9 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication } from "@nestjs/common";
 import request from "supertest";
-import { AppModule } from "../src/app/app.module";
+import { HealthModule } from "../src/health/health.module";
+import { AppModule } from "app.module";
 
-describe("AppController (e2e)", () => {
+describe("HealthModule (e2e)", () => {
   let app: INestApplication;
 
   beforeEach(async () => {
