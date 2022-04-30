@@ -28,7 +28,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand --detectOpenHandles --maxWorkers=50%",
     "test:e2e": "yarn migrate & yarn jest --config ./jest-e2e.config.ts --detectOpenHandles --force-exit",
     "test:e2e:local": "dotenv -e dropengine.local.env -- yarn jest --config ./jest-e2e.config.ts --detectOpenHandles --force-exit",
-    "test:e2e:docker": "docker-compose -f docker-compose.e2e.yml --env-file e2e.docker.env up --build --remove-orphans --abort-on-container-exit",
+    "test:e2e:docker": "docker-compose -f docker-compose.e2e.yml --env-file e2e.docker.env run --rm e2e-test-runner",
     "test:e2e:docker:t": "docker-compose -f docker-compose.e2e.yml --env-file e2e.docker.env run --rm e2e-test-runner",
     "tde": "npm run test:docker:e2e",
     "test:postman": "newman run postman/drop-engine-api-tests.postman_collection.json -e postman/dev.postman_environment.json --reporters cli,junitfull --reporter-junitfull-export junit.postman.xml --insecure",
