@@ -74,6 +74,11 @@ stages:
           - task: DownloadSecureFile@1
             inputs:
               secureFile: 'e2e.docker.env'
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(Agent.TempDirectory)'
+              Contents: 'e2e.docker.env'
+              TargetFolder: '$(System.DefaultWorkingDirectory)'
           - task: Npm@1
             displayName: npm run test:docker:e2e
             inputs:
