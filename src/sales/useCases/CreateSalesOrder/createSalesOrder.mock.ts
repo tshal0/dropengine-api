@@ -36,14 +36,8 @@ import safeJsonStringify from "safe-json-stringify";
 import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
 /** MOCK UTILS */
 jest.mock("@shared/utils", () => {
-  const resp = {
-    code: 200,
-    object: {
-      access_token: "MOCK_ACCESS_TOKEN",
-    },
-  };
   return {
-    requestObject: jest.fn().mockResolvedValue(resp),
+    loadAccessToken: jest.fn().mockResolvedValue("MOCK_ACCESS_TOKEN"),
   };
 });
 /** MOCK SALES MODULE */

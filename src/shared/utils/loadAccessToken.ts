@@ -5,6 +5,13 @@ const POST = "POST";
 const SCOPES = "token id_token openid profile email";
 
 export async function loadAccessToken(
+  tokenOptions: AuthPayloadParams
+): Promise<string> {
+  const payload = grantTypePayloads[tokenOptions.grantType](tokenOptions);
+  const options = generateTokenRequestOptions(tokenOptions.url, payload);
+  return await fetchAccessToken(options);
+}
+export async function fetchAccessToken(
   options: AuthRequestOptions
 ): Promise<string> {
   let resp = await requestObject(options);
@@ -38,6 +45,7 @@ export interface AuthPayloadParams {
   userName: any;
   userPass: any;
   grantType: any;
+  url: string;
 }
 export const grantTypePayloads: { [key: string]: (params: any) => any } = {
   password: (params: AuthPayloadParams) => {

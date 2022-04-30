@@ -15,6 +15,7 @@ import {
   WinstonLogger,
 } from "@shared/modules";
 import {
+  AuthPayloadParams,
   generateTokenRequestOptions,
   grantTypePayloads,
   loadAccessToken,
@@ -62,18 +63,18 @@ export abstract class AUTH0 {
         let accessToken = await cache.get(AUTH0.AUTH0_MGMT_ACCESS_TOKEN);
 
         if (!accessToken) {
-          const payload = grantTypePayloads[grantType]({
+          const tokenOptions: AuthPayloadParams = {
             clientId,
             clientSecret,
             audience,
-            grantType,
             userName,
             userPass,
-          });
+            grantType,
+            url: accessTokenUrl,
+          };
 
-          const options = generateTokenRequestOptions(accessTokenUrl, payload);
           try {
-            accessToken = await loadAccessToken(options);
+            accessToken = await loadAccessToken(tokenOptions);
             console.log(
               `New Auth0ManagementAPI Token Received: ${accessToken?.length}`
             );

@@ -2,8 +2,7 @@ import { TestingModule } from "@nestjs/testing";
 import { Model } from "mongoose";
 import { getModelToken } from "@nestjs/mongoose";
 import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
-import { Result } from "@shared/domain";
-import { now, spyOnDate } from "@shared/mocks";
+import { now } from "@shared/mocks";
 import {
   CatalogService,
   CatalogServiceError,
@@ -18,9 +17,9 @@ import {
   FailedToPlaceSalesOrderException,
 } from "..";
 import { mockSalesModule } from "./createSalesOrder.mock";
-import { createSalesOrderDto, expectedCreateOrderProps } from "./fixtures";
+import { createSalesOrderDto } from "./fixtures";
 
-import { CreateOrderApiDto, CreateOrderLineItemApiDto } from "@sales/api";
+import { CreateOrderLineItemApiDto } from "@sales/api";
 import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
 import {
   MongoOrdersRepository,
@@ -46,10 +45,8 @@ import {
 import { cloneDeep } from "lodash";
 import { CreateSalesOrderDto } from "./CreateSalesOrderDto";
 import { AuthenticatedUser } from "@shared/decorators";
-import safeJsonStringify from "safe-json-stringify";
 import { CreateSalesOrderLineItemDto } from "./CreateSalesOrderLineItemDto";
 import { ICustomOptionProps } from "@catalog/domain";
-import { NotFoundException, NotImplementedException } from "@nestjs/common";
 class NoErrorThrownError extends Error {}
 
 const getAsyncError = async <TError>(call: () => unknown): Promise<TError> => {
@@ -282,7 +279,7 @@ describe("CreateSalesOrder", () => {
           .mockResolvedValue(mockVariant);
         // WHEN
         const result = await service.loadCatalogVariant(params);
-        
+
         // THEN
         expect(result).toEqual(expected);
         expect(catalogSpy).toBeCalledTimes(1);
@@ -481,7 +478,7 @@ describe("CreateSalesOrder", () => {
         const error: any = await getAsyncError(
           async () => await service.validateDomainDto(params)
         );
-        
+
         // THEN
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
@@ -569,7 +566,7 @@ describe("CreateSalesOrder", () => {
         const error: any = await getAsyncError(
           async () => await service.validateUseCaseDto(params)
         );
-        
+
         // THEN
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
@@ -630,7 +627,7 @@ describe("CreateSalesOrder", () => {
         const error: any = await getAsyncError(
           async () => await service.validateUserAuthorization(params)
         );
-        
+
         // THEN
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);

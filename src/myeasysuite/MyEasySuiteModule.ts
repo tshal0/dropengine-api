@@ -14,6 +14,7 @@ import { Cache } from "cache-manager";
 import { MyEasySuiteClient } from "./MyEasySuiteClient";
 import { MyEasySuiteController } from "./api/MyEasySuiteController";
 import {
+  AuthPayloadParams,
   generateTokenRequestOptions,
   grantTypePayloads,
   loadAccessToken,
@@ -63,17 +64,18 @@ export abstract class MES {
         let accessToken = await cache.get(MES.MES_AUTH0_ACCESS_TOKEN);
 
         if (!accessToken) {
-          const payload = grantTypePayloads[grantType]({
+          const tokenOptions: AuthPayloadParams = {
             clientId,
             clientSecret,
             audience,
             userName,
             userPass,
             grantType,
-          });
-          const options = generateTokenRequestOptions(accessTokenUrl, payload);
+            url: accessTokenUrl,
+          };
+
           try {
-            accessToken = await loadAccessToken(options);
+            accessToken = await loadAccessToken(tokenOptions);
             console.log(
               `New MyEasySuite Token Received: ${accessToken?.length}`
             );
