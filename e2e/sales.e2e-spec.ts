@@ -20,7 +20,7 @@ describe("Sales (e2e)", () => {
 
     app = module.createNestApplication();
     const logger = WinstonModule.createLogger(winstonLoggerOptions);
-    module.useLogger(logger);
+    // module.useLogger(logger);
     await app.init();
     app.useLogger(logger);
     token = await loadAccessToken();

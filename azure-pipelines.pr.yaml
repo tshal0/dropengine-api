@@ -55,7 +55,7 @@ stages:
             inputs:
               testResultsFiles: '**/junit.xml'
               failTaskOnFailedTests: true
-              testRunTitle: 'NestJS Unit Tests (Staging)'
+              testRunTitle: 'NestJS Unit Tests'
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: 'Cobertura'
@@ -80,11 +80,17 @@ stages:
               Contents: 'e2e.docker.env'
               TargetFolder: '$(System.DefaultWorkingDirectory)'
           - task: Npm@1
-            displayName: npm run test:docker:e2e
+            displayName: npm run test:e2e:docker
             inputs:
               command: 'custom'
-              customCommand: 'run test:docker:e2e'
+              customCommand: 'run test:e2e:docker'
               workingDir: $(System.DefaultWorkingDirectory)
+          - task: PublishTestResults@2
+            displayName: 'Publish NestJS E2E Test Results'
+            inputs:
+              testResultsFiles: '**/junit.e2e.xml'
+              failTaskOnFailedTests: true
+              testRunTitle: 'NestJS Unit Tests'
   - stage: PublishArtifact
     jobs:
       - job: PublishArtifact

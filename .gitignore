@@ -10,6 +10,7 @@ node_modules
 ssl
 *.ignore.*
 *.postman.xml
+*.e2e.xml
 /globalConfig.json
 azlogin.json
 junit.xml

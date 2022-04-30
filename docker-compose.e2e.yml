@@ -15,6 +15,7 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+      - ./results/:/usr/src/app/e2e/results
     restart: unless-stopped
     command: yarn test:e2e
     env_file:

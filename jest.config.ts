@@ -12,7 +12,10 @@ const config: Config.InitialOptions = {
   coveragePathIgnorePatterns: ["node_modules", ".mock.ts", "jest.config.ts"],
   coverageDirectory: "coverage",
   coverageReporters: ["json", "lcov", "text", "clover", "cobertura"],
-  reporters: ["default", "jest-junit"],
+  reporters: [
+    "default",
+    ["jest-junit", { outputDirectory: "results", outputName: "junit.xml" }],
+  ],
 
   moduleFileExtensions: ["js", "json", "ts"],
   rootDir: ".",

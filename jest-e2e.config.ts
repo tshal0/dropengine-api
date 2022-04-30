@@ -16,9 +16,12 @@ const config: Config.InitialOptions = {
   collectCoverage: false,
   collectCoverageFrom: ["src/**/*.(t|j)s"],
   coveragePathIgnorePatterns: ["node_modules", ".mock.ts", "jest.config.ts"],
-  coverageDirectory: "coverage",
+  coverageDirectory: "./e2e/coverage",
   coverageReporters: ["json", "lcov", "text", "clover", "cobertura"],
-  reporters: ["default", "jest-junit"],
+  reporters: [
+    "default",
+    ["jest-junit", { outputDirectory: "results", outputName: "junit.e2e.xml" }],
+  ],
 
   globals: {
     "ts-jest": {
