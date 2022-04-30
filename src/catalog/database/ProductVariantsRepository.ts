@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ResultError, Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
@@ -81,10 +81,8 @@ export class FailedToConvertProductVariantToDb implements ResultError {
 
 @Injectable()
 export class ProductVariantsRepository {
-  constructor(
-    private readonly logger: AzureTelemetryService,
-    private readonly em: EntityManager
-  ) {}
+  private readonly logger: Logger = new Logger(ProductVariantsRepository.name);
+  constructor(private readonly em: EntityManager) {}
   get llog() {
     return `[${moment()}][${ProductVariantsRepository.name}]`;
   }

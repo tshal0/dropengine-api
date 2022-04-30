@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable, Logger, NotImplementedException } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 
 import { catchError, lastValueFrom, map, of } from "rxjs";
@@ -27,51 +27,13 @@ interface IAuth0GetPaginatedUsersResponseDto {
 }
 export interface IAuth0MgmtApiClient {
   getUsersByEmail(email: string): Promise<IAuth0User[]>;
-
-  // fetchUsersPage(page: number): Promise<PaginatedAuth0UserResponse>;
-  // fetchAllUsers(): Promise<IAuth0User[]>;
-  // getResourceServers(): Promise<Auth0ResourceServer[]>;
-  // getResourceServer(id: string): Promise<Auth0ResourceServer>;
-  // patchResourceServer(
-  //   id: string,
-  //   payload: Auth0ResourceServer
-  // ): Promise<Auth0ResourceServer>;
-
-  // getRoles(): Promise<Auth0Role[]>;
-  // getRole(id: string): Promise<Auth0Role>;
-  // createRole(payload: Auth0CreateRolePayload): Promise<Auth0Role>;
-  // deleteRole(id: string): Promise<{}>;
-
-  // getRolePermissions(id: string): Promise<Auth0PermissionsPayload>;
-  // addRolePermissions(
-  //   id: string,
-  //   payload: Auth0PermissionsPayload
-  // ): Promise<Auth0PermissionsPayload>;
-  // removeRolePermissions(
-  //   id: string,
-  //   payload: Auth0PermissionsPayload
-  // ): Promise<Auth0PermissionsPayload>;
-
-  // getUser(id: string): Promise<IAuth0User>;
-  // patchUserAppMetadata(
-  //   id: string,
-  //   app_metadata: { companies?: string[] }
-  // ): Promise<IAuth0User>;
-  // getUsersByTenant(
-  //   tenant_code: string,
-  //   page: number
-  // ): Promise<IAuth0User[]>;
-  // getUserRoles(id: string): Promise<Auth0Role[]>;
-  // addUserRoles(id: string, payload: Auth0RolesPayload): Promise<Auth0Role[]>;
-  // removeUserRoles(id: string, payload: Auth0RolesPayload): Promise<Auth0Role[]>;
 }
 
 @Injectable()
 export class Auth0MgmtApiClient implements IAuth0MgmtApiClient {
-  constructor(
-    private readonly logger: AzureTelemetryService,
-    private http: HttpService
-  ) {}
+  private readonly logger: Logger = new Logger(Auth0MgmtApiClient.name);
+
+  constructor(private http: HttpService) {}
   async getUsersByEmail(email: string): Promise<Auth0User[]> {
     const resp$ = await this.http
       .get(`/api/v2/users-by-email?email=${email}`)
@@ -87,11 +49,13 @@ export class Auth0MgmtApiClient implements IAuth0MgmtApiClient {
   }
   async createUser(user: Auth0User, password: string): Promise<Auth0User> {
     const props = user.props();
+
     const payload = {
       ...props,
       connection: "Username-Password-Authentication",
       password: password,
     };
+    this.logger.debug(JSON.stringify({ payload }, null, 2));
     const resp$ = await this.http
       .post(`/api/v2/users`, {
         ...payload,
@@ -389,7 +353,7 @@ export class Auth0MgmtApiClient implements IAuth0MgmtApiClient {
   // }
 
   private handleAuth0MgmtApiError<T>(e: any) {
-    this.logger.error(e.message, e.stack, {
+    this.logger.error(e.message, {
       url: `${e.config?.baseURL}${e.config?.url}`,
       method: e.config?.method,
       response: e?.response?.data,

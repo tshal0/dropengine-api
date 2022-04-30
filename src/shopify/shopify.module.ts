@@ -2,6 +2,7 @@ import {
   CacheModule,
   CACHE_MANAGER,
   Inject,
+  Logger,
   Module,
   OnModuleInit,
 } from "@nestjs/common";
@@ -60,10 +61,9 @@ import { GetAllAccountsUseCase } from "./useCases/GetAllAccounts";
   exports: [],
 })
 export class ShopifyModule {
-  constructor(
-    private readonly httpService: HttpService,
-    private readonly logger: AzureTelemetryService
-  ) {}
+  private readonly logger: Logger = new Logger(ShopifyModule.name);
+
+  constructor(private readonly httpService: HttpService) {}
 
   public onModuleInit(): any {
     // Add request interceptor and response interceptor to log request infos

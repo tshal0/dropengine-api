@@ -5,6 +5,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   NotImplementedException,
   Param,
   Post,
@@ -28,10 +29,9 @@ import { CreateStoreDto } from "@accounts/dto/CreateStoreDto";
 
 @Controller("/stores")
 export class StoresController {
-  constructor(
-    private readonly logger: AzureTelemetryService,
-    private readonly auth0: Auth0MgmtApiClient,
-  ) {}
+  private readonly logger: Logger = new Logger(StoresController.name);
+
+  constructor(private readonly auth0: Auth0MgmtApiClient) {}
   @Get(":id")
   @UseGuards(AuthGuard())
   async get(@Param("id") id: string): Promise<IStoreResponseDto> {
@@ -57,7 +57,6 @@ export class StoresController {
     // }
   }
 
-  
   @Get()
   @UseGuards(AuthGuard())
   async query(): Promise<IStoreResponseDto[]> {

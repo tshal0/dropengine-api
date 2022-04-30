@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Query,
@@ -40,8 +41,9 @@ export class ProductsQueryDto {
 
 @Controller("/products")
 export class ProductsController {
+  private readonly logger: Logger = new Logger(ProductsController.name);
+
   constructor(
-    private readonly logger: AzureTelemetryService,
     private readonly find: GetAllProducts,
     private readonly getProduct: GetProduct,
     private readonly create: CreateProduct,

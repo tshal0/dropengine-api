@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Patch,
   Post,
@@ -25,8 +26,9 @@ import {
 
 @Controller("/productTypes")
 export class ProductTypesController {
+  private readonly logger: Logger = new Logger(ProductTypesController.name);
+
   constructor(
-    private readonly logger: AzureTelemetryService,
     private readonly find: GetAllProductTypes,
     private readonly getProductType: GetProductType,
     private readonly create: CreateProductType,

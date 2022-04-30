@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Query,
@@ -23,9 +24,7 @@ import { VariantSKU } from "@catalog/domain";
 import { ProductVariant } from "@catalog/domain/aggregates/ProductVariant";
 import { IProductVariantProps } from "@catalog/domain/interfaces";
 import { CreateProductVariantDto } from "@catalog/dto/ProductVariant/CreateProductVariantDto";
-import {
-  QueryProductVariants,
-} from "@catalog/useCases";
+import { QueryProductVariants } from "@catalog/useCases";
 import { CreateProductVariant } from "@catalog/useCases/ProductVariant/CreateProductVariant";
 import { DeleteProductVariant } from "@catalog/useCases/ProductVariant/DeleteProductVariant";
 import { GetProductVariantBySku } from "@catalog/useCases/ProductVariant/GetProductVariantBySku";
@@ -56,8 +55,9 @@ export class SyncVariantResponseDto {
 
 @Controller("/productVariants")
 export class ProductVariantsController {
+  private readonly logger: Logger = new Logger(ProductVariantsController.name);
+
   constructor(
-    private readonly logger: AzureTelemetryService,
     private readonly create: CreateProductVariant,
     private readonly getById: GetProductVariantById,
     private readonly getBySku: GetProductVariantBySku,

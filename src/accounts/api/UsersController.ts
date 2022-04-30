@@ -10,6 +10,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   UnprocessableEntityException,
@@ -22,9 +23,9 @@ import { CreateUserUseCase } from "../useCases/User/CreateUser";
 
 @Controller("/users")
 export class UsersController {
+  private readonly logger: Logger = new Logger(UsersController.name);
   constructor(
     private readonly createUser: CreateUserUseCase,
-    private readonly logger: AzureTelemetryService,
     private readonly getUser: GetUserUseCase,
     private readonly getAll: GetAllUsersUseCase,
     private readonly deleteUser: DeleteUserUseCase,

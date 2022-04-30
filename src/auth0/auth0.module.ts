@@ -5,6 +5,7 @@ import {
   CACHE_MANAGER,
   OnModuleInit,
   Inject,
+  Logger,
 } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
@@ -13,12 +14,32 @@ import {
   AzureTelemetryService,
   WinstonLogger,
 } from "@shared/modules";
-import { requestObject } from "@shared/utils";
+import {
+  generateTokenRequestOptions,
+  grantTypePayloads,
+  loadAccessToken,
+  requestObject,
+} from "@shared/utils";
 import https from "https";
 import { Auth0MgmtApiClient } from "./Auth0MgmtApiClient";
 import { Cache } from "cache-manager";
 import { WinstonModule, WINSTON_MODULE_PROVIDER } from "nest-winston";
+import safeJsonStringify from "safe-json-stringify";
+import { MES } from "@myeasysuite/MyEasySuiteModule";
+export abstract class AUTH0 {
+  static readonly AUTH0_MGMT_API_URL: string = `AUTH0_MGMT_API_URL`;
 
+  static readonly AUTH0_MGMT_ACCESS_TOKEN_URL: string = `AUTH0_MGMT_ACCESS_TOKEN_URL`;
+  static readonly AUTH0_MGMT_CLIENT_ID: string = `AUTH0_MGMT_CLIENT_ID`;
+  static readonly AUTH0_MGMT_CLIENT_SECRET: string = `AUTH0_MGMT_CLIENT_SECRET`;
+  static readonly AUTH0_MGMT_AUDIENCE: string = `AUTH0_MGMT_AUDIENCE`;
+  static readonly AUTH0_MGMT_GRANT_TYPE: string = `AUTH0_MGMT_GRANT_TYPE`;
+  static readonly AUTH0_MGMT_ACCESS_TOKEN: string = `AUTH0_MGMT_ACCESS_TOKEN`;
+  static readonly AUTH0_MGMT_USERNAME: string = `AUTH0_MGMT_USERNAME`;
+  static readonly AUTH0_MGMT_PASSWORD: string = `AUTH0_MGMT_PASSWORD`;
+
+  static readonly META: string = "metadata";
+}
 @Module({
   providers: [Auth0MgmtApiClient],
   exports: [Auth0MgmtApiClient],
@@ -27,44 +48,63 @@ import { WinstonModule, WINSTON_MODULE_PROVIDER } from "nest-winston";
     AzureTelemetryModule,
     WinstonModule,
     HttpModule.registerAsync({
-      imports: [ConfigModule, CacheModule.register(), AzureTelemetryModule],
+      imports: [ConfigModule, CacheModule.register()],
       useFactory: async (config: ConfigService, cache: Cache) => {
-        const URL = config.get("AUTH0_MGMT_API_URL");
-        const AUTH0_ACCESS_TOKEN_URL = config.get("AUTH0_ACCESS_TOKEN_URL");
-        const AUTH0_MGMT_CLIENT_ID = config.get("AUTH0_MGMT_CLIENT_ID");
-        const AUTH0_MGMT_CLIENT_SECRET = config.get("AUTH0_MGMT_CLIENT_SECRET");
-        const AUTH0_MGMT_AUDIENCE = config.get("AUTH0_MGMT_AUDIENCE");
-        const AUTH0_MGMT_GRANT_TYPE = config.get("AUTH0_MGMT_GRANT_TYPE");
+        const baseUrl = config.get(AUTH0.AUTH0_MGMT_API_URL);
+        const accessTokenUrl = config.get(AUTH0.AUTH0_MGMT_ACCESS_TOKEN_URL);
+        const clientId = config.get(AUTH0.AUTH0_MGMT_CLIENT_ID);
+        const clientSecret = config.get(AUTH0.AUTH0_MGMT_CLIENT_SECRET);
+        const audience = config.get(AUTH0.AUTH0_MGMT_AUDIENCE);
+        const grantType = config.get(AUTH0.AUTH0_MGMT_GRANT_TYPE);
+        const userName = config.get(AUTH0.AUTH0_MGMT_USERNAME);
+        const userPass = config.get(AUTH0.AUTH0_MGMT_PASSWORD);
 
-        let TOKEN = await cache.get("AUTH0_MGMT_ACCESS_TOKEN");
+        let accessToken = await cache.get(AUTH0.AUTH0_MGMT_ACCESS_TOKEN);
 
-        if (!TOKEN) {
-          const options = {
-            method: "POST",
-            url: AUTH0_ACCESS_TOKEN_URL,
-            headers: { "content-type": "application/json" },
-            body: {
-              client_id: AUTH0_MGMT_CLIENT_ID,
-              client_secret: AUTH0_MGMT_CLIENT_SECRET,
-              audience: AUTH0_MGMT_AUDIENCE,
-              grant_type: AUTH0_MGMT_GRANT_TYPE,
-            },
-            json: true,
-          };
-          const resp = await requestObject(options);
-          TOKEN = resp?.object?.access_token;
-          cache.set("AUTH0_MGMT_ACCESS_TOKEN", TOKEN, { ttl: 3600 });
+        if (!accessToken) {
+          const payload = grantTypePayloads[grantType]({
+            clientId,
+            clientSecret,
+            audience,
+            userName,
+            userPass,
+            grantType,
+          });
+          const options = generateTokenRequestOptions(accessTokenUrl, payload);
+          try {
+            accessToken = await loadAccessToken(options);
+            console.log(
+              `New Auth0ManagementAPI Token Received: ${accessToken?.length}`
+            );
+            cache.set(AUTH0.AUTH0_MGMT_ACCESS_TOKEN, accessToken, {
+              ttl: 3600,
+            });
+          } catch (error) {
+            accessToken = "TOKEN_FAILED_TO_LOAD";
+            cache.set(AUTH0.AUTH0_MGMT_ACCESS_TOKEN, accessToken, {
+              ttl: 3600,
+            });
+            console.error(
+              `New Auth0ManagementAPI Access Token Failed To Load.`,
+              error
+            );
+          }
         }
+        const auth0MgmtHeaders = {
+          Authorization: `Bearer ${accessToken}`,
+        };
+        const auth0MgmtHttpsAgent = new https.Agent({
+          rejectUnauthorized: false,
+        });
+        const retryConfig = {
+          // retryDelay: (retryCount) => retryCount * 1000,
+        };
         const httpConfig = {
-          baseURL: URL,
-          headers: { Authorization: `Bearer ${TOKEN}` },
-          httpsAgent: new https.Agent({
-            rejectUnauthorized: false,
-          }),
+          baseURL: baseUrl,
+          headers: auth0MgmtHeaders,
+          httpsAgent: auth0MgmtHttpsAgent,
 
-          "axios-retry": {
-            retryDelay: (retryCount) => retryCount * 1000,
-          },
+          "axios-retry": retryConfig,
         };
 
         return httpConfig;
@@ -77,13 +117,16 @@ import { WinstonModule, WINSTON_MODULE_PROVIDER } from "nest-winston";
   controllers: [],
 })
 export class Auth0Module implements OnModuleInit {
+  private readonly logger: Logger = new Logger(Auth0Module.name);
   constructor(private readonly http: HttpService) {}
 
   public onModuleInit(): any {
     // Add request interceptor and response interceptor to log request infos
     const axios = this.http.axiosRef;
-
+    const logger = this.logger;
     axios.interceptors.request.use(function (config) {
+      logger.log(`AUTH0 REQUEST: ${config.baseURL}${config.url}`);
+
       // Please don't tell my Typescript compiler...
       config["metadata"] = { ...config["metadata"], startDate: new Date() };
       return config;

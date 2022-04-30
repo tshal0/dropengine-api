@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Logger,
   Query,
   Req,
   Res,
@@ -18,9 +19,9 @@ import { ConnectShopifyAccountUseCase } from "./useCases/ConnectShopifyAccount";
 
 @Controller("shopify")
 export class ShopifyController {
+  private readonly logger: Logger = new Logger(ShopifyController.name);
   constructor(
     private readonly config: ConfigService,
-    private readonly logger: AzureTelemetryService,
     private readonly acceptShopifyInstall: AcceptShopifyInstallUseCase,
     private readonly createShopifyAccount: ConnectShopifyAccountUseCase
   ) {}

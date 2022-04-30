@@ -25,18 +25,19 @@ import { Logger } from "winston";
 import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
 process.env.FORCE_COLOR = "true";
 
-appInsights
-  .setup(process.env.APPINSIGHTS_INSTRUMENTATIONKEY)
-  .setAutoDependencyCorrelation(true)
-  .setAutoCollectRequests(true)
-  .setAutoCollectPerformance(true, true)
-  .setAutoCollectExceptions(true)
-  .setAutoCollectDependencies(true)
-  .setAutoCollectConsole(true, true)
-  .setUseDiskRetryCaching(true)
-  .setSendLiveMetrics(true)
-  .start();
 async function bootstrap() {
+  appInsights
+    .setup(process.env.APPINSIGHTS_INSTRUMENTATIONKEY)
+    .setAutoDependencyCorrelation(true)
+    .setAutoCollectRequests(true)
+    .setAutoCollectPerformance(true, true)
+    .setAutoCollectExceptions(true)
+    .setAutoCollectDependencies(true)
+    .setAutoCollectConsole(true, true)
+    .setUseDiskRetryCaching(true)
+    .setSendLiveMetrics(true)
+    .start();
+
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger(winstonLoggerOptions),
   });
@@ -51,13 +52,13 @@ async function bootstrap() {
 
   wlog.debug(`${Constants.APPINSIGHTS}: ${key}`);
   wlog.debug(`ApplicationInsights Initialized!`);
-  wlog.debug(`POSTGRES_DB: ${process.env.POSTGRES_DB}`);
-  wlog.debug(`POSTGRES_USER: ${process.env.POSTGRES_USER}`);
-  wlog.debug(`POSTGRES_PASSWORD: ${process.env.POSTGRES_PASSWORD}`);
-  wlog.debug(`POSTGRES_DB: ${process.env.POSTGRES_DB}`);
-  wlog.debug(`POSTGRES_HOST: ${process.env.POSTGRES_HOST}`);
-  wlog.debug(`POSTGRES_PORT: ${process.env.POSTGRES_PORT}`);
-  wlog.debug(`POSTGRES_SCHEMA: ${process.env.POSTGRES_SCHEMA}`);
+  wlog.debug(`DB_DB: ${process.env.DB_DB}`);
+  wlog.debug(`DB_USER: ${process.env.DB_USER}`);
+  wlog.debug(`DB_PASS: ${process.env.DB_PASS}`);
+  wlog.debug(`DB_DB: ${process.env.DB_DB}`);
+  wlog.debug(`DB_HOST: ${process.env.DB_HOST}`);
+  wlog.debug(`DB_PORT: ${process.env.DB_PORT}`);
+  wlog.debug(`DB_SCHEMA: ${process.env.DB_SCHEMA}`);
   wlog.debug(`DATABASE_URL: ${process.env.DATABASE_URL}`);
 
   app.enableVersioning({

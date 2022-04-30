@@ -16,7 +16,7 @@ import {
 
 @Injectable()
 export class CreateOrderValidationPipe implements PipeTransform {
-  constructor(private readonly logger: AzureTelemetryService) {}
+  constructor() {}
 
   async transform(value: any, { metatype }: ArgumentMetadata) {
     if (!metatype || !this.toValidate(metatype)) {

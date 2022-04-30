@@ -75,6 +75,10 @@ export const consoleFormat = (
     if (meta["0"]?.length) {
       context = meta["0"];
     }
+    if (typeof context === "object") {
+      meta.context = context;
+      context = "Axios";
+    }
     return (
       `${color(`[${appName}] -`)} ` +
       ("undefined" !== typeof timestamp ? `${timestamp}Z\t` : "") +
@@ -85,7 +89,11 @@ export const consoleFormat = (
       `${color(message)}` +
       ("undefined" !== typeof ms ? ` ${chalk.yellow(ms)}` : "") +
       (Object.keys(meta).length
-        ? `\n${color("data")}: ${safeJsonStringify(meta, null)}`
+        ? `\n${color("data")}: ${safeJsonStringify(
+            { ...meta, stack: undefined },
+            null,
+            2
+          )}`
         : "") +
       (meta?.stack?.length ? `\n${color("stack")}: ${meta.stack}` : "")
     );
@@ -103,6 +111,7 @@ export const winstonLoggerOptions = {
           info.level = `${info.level.toUpperCase()}`;
           return info;
         })(),
+
         winston.format.timestamp({
           format: "YYYY-MM-DD[T]HH:mm:ss.SSS",
         }),

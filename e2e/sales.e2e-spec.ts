@@ -1,10 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication } from "@nestjs/common";
 import request from "supertest";
-import { loadAccessToken } from "./loadAccessToken";
 import { AppModule } from "../src/app.module";
 import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
 import { WinstonModule } from "nest-winston";
+import { loadAccessToken } from "./utils";
 
 /** MOCK UTILS */
 jest.setTimeout(60000);
@@ -35,7 +35,9 @@ describe("Sales (e2e)", () => {
 
   it("/orders (GET)", () => {
     const server: INestApplication = app.getHttpServer();
-
+    //InstrumentationKey=168ed634-a01a-49c4-b4de-003f25780784;
+    //IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;
+    //LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/
     const expected = {
       total: 0,
       page: 0,

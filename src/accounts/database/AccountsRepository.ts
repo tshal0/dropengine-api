@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ResultError, Result } from "@shared/domain/Result";
 import { NumberID, UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
@@ -85,10 +85,9 @@ export class FailedToConvertAccountToDb implements ResultError {
 
 @Injectable()
 export class AccountsRepository {
-  constructor(
-    private readonly logger: AzureTelemetryService,
-    private readonly em: EntityManager
-  ) {}
+  private readonly logger: Logger = new Logger(AccountsRepository.name);
+
+  constructor(private readonly em: EntityManager) {}
   get llog() {
     return `[${moment()}][${AccountsRepository.name}]`;
   }

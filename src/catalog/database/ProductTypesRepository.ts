@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { Result, ResultError } from "@shared/domain/Result";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
 
@@ -32,8 +32,9 @@ export class ProductTypeNotFoundWithEmailException extends EntityNotFoundExcepti
 
 @Injectable()
 export class ProductTypesRepository {
+  private readonly logger: Logger = new Logger(ProductTypesRepository.name);
+
   constructor(
-    private readonly logger: AzureTelemetryService,
     private readonly em: EntityManager
   ) {}
   get llog() {

@@ -12,6 +12,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   UnprocessableEntityException,
@@ -34,8 +35,9 @@ import { CreateStoreDto } from "@accounts/dto/CreateStoreDto";
 
 @Controller("/accounts")
 export class AccountsController {
+  private readonly logger: Logger = new Logger(AccountsController.name);
+
   constructor(
-    private readonly logger: AzureTelemetryService,
     private readonly auth0: Auth0MgmtApiClient,
     private readonly getAccount: GetAccountUseCase,
     private readonly getAccounts: GetAccountsUseCase,

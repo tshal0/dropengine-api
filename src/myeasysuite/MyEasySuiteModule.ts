@@ -5,15 +5,19 @@ import {
   CACHE_MANAGER,
   OnModuleInit,
   Inject,
+  Logger,
 } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
-import { AzureTelemetryModule, AzureTelemetryService } from "@shared/modules";
-import { requestObject } from "@shared/utils";
 import https from "https";
 import { Cache } from "cache-manager";
 import { MyEasySuiteClient } from "./MyEasySuiteClient";
 import { MyEasySuiteController } from "./api/MyEasySuiteController";
+import {
+  generateTokenRequestOptions,
+  grantTypePayloads,
+  loadAccessToken,
+} from "@shared/utils";
 
 export abstract class MES {
   static readonly MES_API_URL: string = `MES_API_URL`;
@@ -42,7 +46,11 @@ export abstract class MES {
     PassportModule.register({ defaultStrategy: "jwt" }),
     HttpModule.registerAsync({
       imports: [ConfigModule, CacheModule.register()],
-      useFactory: async (config: ConfigService, cache: Cache) => {
+      useFactory: async (
+        config: ConfigService,
+        cache: Cache,
+        logger: Logger
+      ) => {
         const baseUrl = config.get(MES.MES_API_URL);
         const accessTokenUrl = config.get(MES.MES_AUTH0_ACCESS_TOKEN_URL);
         const clientId = config.get(MES.MES_AUTH0_CLIENT_ID);
@@ -55,30 +63,30 @@ export abstract class MES {
         let accessToken = await cache.get(MES.MES_AUTH0_ACCESS_TOKEN);
 
         if (!accessToken) {
-          const payload = generateTokenRequestPayload(
+          const payload = grantTypePayloads[grantType]({
             clientId,
             clientSecret,
             audience,
             userName,
             userPass,
-            grantType
-          );
+            grantType,
+          });
           const options = generateTokenRequestOptions(accessTokenUrl, payload);
           try {
-            accessToken = await loadAccessToken(options, accessToken);
-            const isMock = accessToken == "MOCK_ACCESS_TOKEN";
+            accessToken = await loadAccessToken(options);
+            console.log(
+              `New Auth0ManagementAPI Token Received: ${accessToken?.length}`
+            );
             cache.set(MES.MES_AUTH0_ACCESS_TOKEN, accessToken, { ttl: 3600 });
-            // console.debug(
-            //   `New MyEasySuite Access Token Acquired: ${
-            //     isMock ? accessToken : accessToken?.length
-            //   }`
-            // );
           } catch (error) {
             accessToken = "TOKEN_FAILED_TO_LOAD";
             cache.set(MES.MES_AUTH0_ACCESS_TOKEN, accessToken, {
               ttl: 3600,
             });
-            console.error(`New MyEasySuite Access Token Failed To Load.`);
+            console.error(
+              `New MyEasySuite Access Token Failed To Load.`,
+              error
+            );
           }
         }
         const myEasySuiteHeaders = {
@@ -143,74 +151,4 @@ export class MyEasySuiteModule implements OnModuleInit {
   private generateDurationLog(config, duration: number) {
     return `${config.method.toUpperCase()} ${config.url} ${duration}ms`;
   }
-}
-async function loadAccessToken(
-  options: {
-    method: string;
-    url: any;
-    headers: { "content-type": string };
-    body: {
-      client_id: any;
-      client_secret: any;
-      audience: any;
-      scope: string;
-      username: any;
-      password: any;
-      grant_type: any;
-    };
-    json: boolean;
-  },
-  accessToken: any
-) {
-  const resp = await requestObject(options);
-
-  accessToken = extractAccessToken(resp);
-  return accessToken;
-}
-
-function extractAccessToken(resp: {
-  code: number;
-  object: { access_token: string };
-}): any {
-  return resp?.object?.access_token;
-}
-
-function generateTokenRequestOptions(
-  accessTokenUrl: any,
-  payload: {
-    client_id: any;
-    client_secret: any;
-    audience: any;
-    scope: string;
-    username: any;
-    password: any;
-    grant_type: any;
-  }
-) {
-  return {
-    method: MES.POST,
-    url: accessTokenUrl,
-    headers: MES.HEADERS,
-    body: payload,
-    json: true,
-  };
-}
-
-function generateTokenRequestPayload(
-  clientId: any,
-  clientSecret: any,
-  audience: any,
-  userName: any,
-  userPass: any,
-  grantType: any
-) {
-  return {
-    client_id: clientId,
-    client_secret: clientSecret,
-    audience: audience,
-    scope: MES.SCOPES,
-    username: userName,
-    password: userPass,
-    grant_type: grantType,
-  };
 }

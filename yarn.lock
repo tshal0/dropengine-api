@@ -774,16 +774,6 @@
     "@mikro-orm/knex" "^5.0.2"
     pg "8.7.3"
 
-"@mikro-orm/sqlite@5.0.2":
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/sqlite/-/sqlite-5.0.2.tgz#36c8346027a10f5cc041f5ab1fb73749cbe01aab"
-  integrity sha512-FOKDgd64E4TsWEnkixnSyQy0pev+dE8Wo+purhllobkpkRLuN8iU5O5uniwGzddooCVawNE5S52w6loTSeni2A==
-  dependencies:
-    "@mikro-orm/knex" "^5.0.2"
-    "@vscode/sqlite3" "5.0.7"
-    fs-extra "10.0.0"
-    sqlstring-sqlite "0.1.1"
-
 "@nestjs/axios@^0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-0.0.5.tgz#a2470cf38f7f29dbd9a6288a234a6ee60588aad6"
@@ -1456,13 +1446,6 @@
   dependencies:
     "@typescript-eslint/types" "5.10.0"
     eslint-visitor-keys "^3.0.0"
-
-"@vscode/sqlite3@5.0.7":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@vscode/sqlite3/-/sqlite3-5.0.7.tgz#358df36bb0e9e735c54785e3e4b9b2dce1d32895"
-  integrity sha512-NlsOf+Hir2r4zopI1qMvzWXPwPJuFscirkmFTniTAT24Yz2FWcyZxzK7UT8iSNiTqOCPz48yF55ZVHaz7tTuVQ==
-  dependencies:
-    node-addon-api "^4.2.0"
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
@@ -6011,11 +5994,6 @@ next-tick@1, next-tick@^1.1.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.1.0.tgz#1836ee30ad56d67ef281b22bd199f709449b35eb"
   integrity sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==
 
-node-addon-api@^4.2.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-4.3.0.tgz#52a1a0b475193e0928e98e0426a0d1254782b77f"
-  integrity sha512-73sE9+3UaLYYFmDsFZnqCInzPyh3MqIwZO9cw58yIqAZhONrrabrYyYe3TuIqtIiOuTXVhsGau8hcrhhwSsDIQ==
-
 node-emoji@1.11.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/node-emoji/-/node-emoji-1.11.0.tgz#69a0150e6946e2f115e9d7ea4df7971e2628301c"
@@ -7325,11 +7303,6 @@ sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
-
-sqlstring-sqlite@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/sqlstring-sqlite/-/sqlstring-sqlite-0.1.1.tgz#c8c61810663f2e59a6b0d737b70a8752bda3a078"
-  integrity sha1-yMYYEGY/LlmmsNc3twqHUr2joHg=
 
 sqlstring@2.3.2:
   version "2.3.2"

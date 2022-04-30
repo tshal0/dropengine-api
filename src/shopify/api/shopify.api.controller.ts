@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Query,
   Req,
@@ -30,9 +31,10 @@ export class ConnectShopifyQuery {
 
 @Controller("shopify")
 export class ShopifyApiController {
+  private readonly logger: Logger = new Logger(ShopifyApiController.name);
+
   constructor(
     private readonly shopify: ShopifyApiClient,
-    private readonly logger: AzureTelemetryService,
     private readonly createAccount: ConnectShopifyAccountUseCase,
     private readonly getAccount: GetShopifyAccountUseCase,
     private readonly getAll: GetAllAccountsUseCase,

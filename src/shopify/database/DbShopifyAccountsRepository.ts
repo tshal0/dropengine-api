@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import { ConflictException, Injectable, Logger } from "@nestjs/common";
 import { ResultError, Result } from "@shared/domain/Result";
 import { UUID } from "@shared/domain/valueObjects";
 import { EntityAlreadyExistsException } from "@shared/exceptions/entityalreadyexists.exception";
@@ -50,7 +50,8 @@ export interface IDbShopifyAccountRepository {
 export class DbShopifyAccountsRepository
   implements IDbShopifyAccountRepository
 {
-  constructor(private readonly logger: AzureTelemetryService) {}
+  private readonly logger: Logger = new Logger(DbShopifyAccountsRepository.name);
+  constructor() {}
   exists(id: UUID): Promise<boolean> {
     throw new Error("Method not implemented.");
   }

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ResultError, Result } from "@shared/domain/Result";
 import { NumberID, UUID } from "@shared/domain/valueObjects";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
@@ -90,10 +90,9 @@ export class FailedToConvertProductToDb implements ResultError {
 
 @Injectable()
 export class ProductsRepository {
-  constructor(
-    private readonly logger: AzureTelemetryService,
-    private readonly em: EntityManager
-  ) {}
+  private readonly logger: Logger = new Logger(ProductsRepository.name);
+
+  constructor(private readonly em: EntityManager) {}
   get llog() {
     return `[${moment()}][${ProductsRepository.name}]`;
   }
@@ -255,10 +254,7 @@ export class ProductsRepository {
     let repo = this.em.getRepository(DbProduct);
     let dbe: DbProduct = null;
     if (dto.id?.length) {
-      dbe = await repo.findOne(
-        { id: dto.id },
-        { populate: ["productType"] }
-      );
+      dbe = await repo.findOne({ id: dto.id }, { populate: ["productType"] });
     } else if (dto.sku?.length) {
       dbe = await repo.findOne({ sku: dto.sku }, { populate: ["productType"] });
     } else {
