@@ -90,7 +90,7 @@ stages:
             inputs:
               testResultsFiles: '**/junit.e2e.xml'
               failTaskOnFailedTests: true
-              testRunTitle: 'NestJS Unit Tests'
+              testRunTitle: 'NestJS E2E Tests'
   - stage: PublishArtifact
     jobs:
       - job: PublishArtifact
