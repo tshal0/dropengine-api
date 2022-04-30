@@ -7,7 +7,7 @@ services:
     build:
       context: .
       target: build
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.e2e
     working_dir: /usr/src/app
     ports:
       - ${WEBSITES_PORT}:${WEBSITES_PORT}
@@ -16,7 +16,7 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
       - ./results/:/usr/src/app/e2e/results
-    restart: unless-stopped
+    restart: always
     command: yarn test:e2e
     env_file:
       - ./e2e.docker.env
