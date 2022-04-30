@@ -71,6 +71,9 @@ stages:
               KeyVaultName: '$(keyVaultName)'
               SecretsFilter: '*'
               RunAsPreJob: true
+          - task: DownloadSecureFile@1
+            inputs:
+              secureFile: 'e2e.docker.env'
           - task: Npm@1
             displayName: npm run test:docker:e2e
             inputs:
