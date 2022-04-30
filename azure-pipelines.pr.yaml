@@ -31,13 +31,6 @@ stages:
               KeyVaultName: '$(keyVaultName)'
               SecretsFilter: '*'
               RunAsPreJob: true
-          # - task: PowerShell@2
-          #   displayName: 'Set the DATABASE_URL env variable to PostgresDatabaseUrl from the KeyVault'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: 'Write-Host "##vso[task.setvariable variable=database.url]$(PostgresDatabaseUrl)"'
-          #     showWarnings: true
-          #     pwsh: true
           - task: Npm@1
             displayName: npm install
             inputs:
@@ -68,6 +61,22 @@ stages:
               codeCoverageTool: 'Cobertura'
               summaryFileLocation: 'coverage/cobertura-coverage.xml'
               failIfCoverageEmpty: true
+      - job: DockerComposeIntegrationTests
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: AzureKeyVault@2
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              KeyVaultName: '$(keyVaultName)'
+              SecretsFilter: '*'
+              RunAsPreJob: true
+          - task: Npm@1
+            displayName: npm run test:docker:e2e
+            inputs:
+              command: 'custom'
+              customCommand: 'run test:docker:e2e'
+              workingDir: $(System.DefaultWorkingDirectory)
   - stage: PublishArtifact
     jobs:
       - job: PublishArtifact
