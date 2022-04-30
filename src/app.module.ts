@@ -28,7 +28,6 @@ import { APP_FILTER } from "@nestjs/core";
 import { AllExceptionsFilter } from "@shared/filters";
 import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
 import { MikroORM } from "@mikro-orm/core";
-import safeJsonStringify from "safe-json-stringify";
 import { mikroOrmOptions } from "./mikroOrmOptions";
 
 @Module({
@@ -99,7 +98,7 @@ export class AppModule implements OnModuleDestroy, OnModuleInit {
           port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
           user: process.env.DB_USER,
           password: process.env.DB_PASS,
-          dbName: process.env.DB_DB,
+          dbName: process.env.DB_NAME,
           schema: process.env.DB_SCHEMA,
           driverOptions: {
             connection: { ssl: process.env.POSTGRES_SSL || false },

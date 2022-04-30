@@ -52,10 +52,10 @@ async function bootstrap() {
 
   wlog.debug(`${Constants.APPINSIGHTS}: ${key}`);
   wlog.debug(`ApplicationInsights Initialized!`);
-  wlog.debug(`DB_DB: ${process.env.DB_DB}`);
+  wlog.debug(`DB_NAME: ${process.env.DB_NAME}`);
   wlog.debug(`DB_USER: ${process.env.DB_USER}`);
   wlog.debug(`DB_PASS: ${process.env.DB_PASS}`);
-  wlog.debug(`DB_DB: ${process.env.DB_DB}`);
+  wlog.debug(`DB_NAME: ${process.env.DB_NAME}`);
   wlog.debug(`DB_HOST: ${process.env.DB_HOST}`);
   wlog.debug(`DB_PORT: ${process.env.DB_PORT}`);
   wlog.debug(`DB_SCHEMA: ${process.env.DB_SCHEMA}`);

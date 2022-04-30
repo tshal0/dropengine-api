@@ -60,7 +60,20 @@ export async function postAuth(options): Promise<AuthRequestResponse> {
       return resp;
     })
     .catch((err) => {
-      console.error(err);
+      console.error({
+        message: err.message,
+        config: {
+          url: err.config.url,
+          method: err.config.method,
+          data: err.config.data,
+          headers: err.config.headers,
+        },
+        response: {
+          status: err.response.status,
+          statusText: err.response.statusText,
+          data: err.response.data,
+        },
+      });
       throw err;
     });
   return { code: resp.status, object: resp.data };

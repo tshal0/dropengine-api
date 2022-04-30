@@ -1,0 +1,1 @@
+docker exec -it dropengine_psql psql -U postgres -a dropengine

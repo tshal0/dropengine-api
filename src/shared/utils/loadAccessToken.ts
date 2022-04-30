@@ -1,4 +1,3 @@
-import { Body } from "@nestjs/common";
 import { Method } from "axios";
 import { requestObject, AuthRequestOptions } from "./requestObject";
 const HEADERS = { "content-type": "application/json" };
@@ -42,6 +41,10 @@ export interface AuthPayloadParams {
 }
 export const grantTypePayloads: { [key: string]: (params: any) => any } = {
   password: (params: AuthPayloadParams) => {
+    console.log(params.grantType);
+    if (!params.userName || !params.userPass) {
+      throw new Error(`User not found for grantType: 'password'`);
+    }
     return {
       client_id: params.clientId,
       client_secret: params.clientSecret,
@@ -53,6 +56,7 @@ export const grantTypePayloads: { [key: string]: (params: any) => any } = {
     };
   },
   client_credentials: (params: AuthPayloadParams) => {
+    console.log(params.grantType);
     return {
       grant_type: params.grantType,
       client_id: params.clientId,

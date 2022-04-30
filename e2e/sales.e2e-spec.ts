@@ -1,10 +1,11 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication } from "@nestjs/common";
 import request from "supertest";
-import { AppModule } from "../src/app.module";
 import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
 import { WinstonModule } from "nest-winston";
 import { loadAccessToken } from "./utils";
+import { AppModule } from "../src/app.module";
+import { MikroORM } from "@mikro-orm/core";
 
 /** MOCK UTILS */
 jest.setTimeout(60000);
@@ -22,13 +23,6 @@ describe("Sales (e2e)", () => {
     module.useLogger(logger);
     await app.init();
     app.useLogger(logger);
-    AppModule.register({
-      mikroOrmOptions: {
-        dbName: "./e2e/test.sqlite3",
-        type: "sqlite",
-        baseDir: "./e2e",
-      },
-    });
     token = await loadAccessToken();
   });
   beforeEach(async () => {});

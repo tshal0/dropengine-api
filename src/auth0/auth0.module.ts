@@ -66,10 +66,11 @@ export abstract class AUTH0 {
             clientId,
             clientSecret,
             audience,
+            grantType,
             userName,
             userPass,
-            grantType,
           });
+
           const options = generateTokenRequestOptions(accessTokenUrl, payload);
           try {
             accessToken = await loadAccessToken(options);

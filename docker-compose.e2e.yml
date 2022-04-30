@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  main:
-    container_name: dropengine_main
-    image: dropengine-api:1.0.1
+  e2e-test-runner:
+    container_name: dropengine_main_e2e
+    image: dropengine-api-e2e:1.0.1
     build:
       context: .
       target: build
@@ -16,49 +16,74 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     restart: unless-stopped
-    command: yarn run start:dev
+    command: yarn test:e2e
     env_file:
-      - .env
+      - ./e2e.docker.env
     depends_on:
       - db
       - mongo
     networks:
-      - webnet
+      - webnet_e2e
     environment:
       # DEBUG: "*"
       NODE_ENV: "development"
   db:
-    image: postgres:13
-    container_name: dropengine_psql
+    container_name: dropengine_psql_e2e
     hostname: psql
-    restart: always
+    build:
+      context: ./docker/postgres
+      target: build
+      dockerfile: Dockerfile
+    working_dir: /usr/src/db
     ports:
       - '6544:5432'
     expose:
       - '5432'
-    env_file:
-      - .env
     volumes:
-      - postgres:/var/lib/postgresql/data
+      # - ./seed.db.sql:/docker-entrypoint-initdb.d/db.sql
+      - pgdata:/var/lib/postgresql/data # or specify a local folder like 
+      # - ./.volumes/pgdata:/var/lib/postgresql/data
+      # - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    env_file:
+      - ./e2e.docker.env
     networks:
-      - webnet
+      - webnet_e2e
+  # db:
+  #   image: postgres:13
+  #   container_name: dropengine_psql_e2e
+  #   hostname: psql
+  #   restart: always
+  #   ports:
+  #     - '6544:5432'
+  #   expose:
+  #     - '5432'
+  #   env_file:
+  #     - ./e2e.docker.env
+  #   volumes:
+  #     # - ./seed.db.sql:/docker-entrypoint-initdb.d/db.sql
+  #     - pgdata:/var/lib/postgresql/data # or specify a local folder like 
+  #     # - ./.volumes/pgdata:/var/lib/postgresql/data
+  #     - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+  #   networks:
+  #     - webnet_e2e
   mongo:
     image: mongo:5.0
-    container_name: dropengine_mongo
+    container_name: dropengine_mongo_e2e
     hostname: mongo
     ports:
       - '6545:27017'
     expose:
       - '27017'
     volumes:
-      - mongo:/data/db
+      - mongodata:/data/db
     networks:
-      - webnet
+      - webnet_e2e
 volumes:
-  postgres:
-    name: dropengine_psql_volume
-  mongo:
-    name: dropengine_mongo_volume
+  pgdata:
+    name: postgres_volume_e2e
+  mongodata:
+    name: mongo_volume_e2e
 networks:
-  webnet:
-    name: webnet
+  webnet_e2e:
+    name: webnet_e2e
