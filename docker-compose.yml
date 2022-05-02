@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   main:
-    container_name: dropengine_main
+    container_name: dropengine-api
     image: dropengine-api:1.0.1
     build:
       context: .
@@ -28,7 +28,7 @@ services:
       # DEBUG: "*"
       NODE_ENV: "development"
   db:
-    container_name: dropengine_psql
+    container_name: dropengine-psql
     hostname: psql
     build:
       context: ./docker/postgres
@@ -40,36 +40,15 @@ services:
     expose:
       - '5432'
     volumes:
-      # - ./seed.db.sql:/docker-entrypoint-initdb.d/db.sql
-      - pgdata:/var/lib/postgresql/data # or specify a local folder like 
-      # - ./.volumes/pgdata:/var/lib/postgresql/data
-      # - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data 
     restart: unless-stopped
     env_file:
       - .env
     networks:
       - webnet
-  # db:
-  #   image: postgres:13
-  #   container_name: dropengine_psql
-  #   hostname: psql
-  #   restart: always
-  #   ports:
-  #     - '6544:5432'
-  #   expose:
-  #     - '5432'
-  #   env_file:
-  #     - .env
-  #   volumes:
-  #     # - ./seed.db.sql:/docker-entrypoint-initdb.d/db.sql
-  #     # - ./.volumes/pgdata:/var/lib/postgresql/data
-  #     - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
-  #     - postgres:/var/lib/postgresql/data
-  #   networks:
-  #     - webnet
   mongo:
     image: mongo:5.0
-    container_name: dropengine_mongo
+    container_name: dropengine-mongo
     hostname: mongo
     ports:
       - '6545:27017'
@@ -83,7 +62,7 @@ volumes:
   pgdata:
     name: pgdata
   mongo:
-    name: mongo_volume
+    name: mongodata
 networks:
   webnet:
     name: webnet

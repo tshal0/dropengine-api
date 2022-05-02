@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  e2e-test-runner:
-    container_name: dropengine_main_e2e
+  e2e:
+    container_name: dropengine-api-e2e
     image: dropengine-api-e2e:1.0.1
     build:
       context: .
@@ -24,12 +24,12 @@ services:
       - db
       - mongo
     networks:
-      - webnet_e2e
+      - webnet-e2e
     environment:
       # DEBUG: "*"
       NODE_ENV: "development"
   db:
-    container_name: dropengine_psql_e2e
+    container_name: dropengine-psql-e2e
     hostname: psql
     build:
       context: ./docker/postgres
@@ -41,50 +41,29 @@ services:
     expose:
       - '5432'
     volumes:
-      # - ./seed.db.sql:/docker-entrypoint-initdb.d/db.sql
-      - pgdata:/var/lib/postgresql/data # or specify a local folder like 
-      # - ./.volumes/pgdata:/var/lib/postgresql/data
-      # - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data 
     restart: always
     env_file:
       - ./e2e.docker.env
     networks:
-      - webnet_e2e
-  # db:
-  #   image: postgres:13
-  #   container_name: dropengine_psql_e2e
-  #   hostname: psql
-  #   restart: always
-  #   ports:
-  #     - '6544:5432'
-  #   expose:
-  #     - '5432'
-  #   env_file:
-  #     - ./e2e.docker.env
-  #   volumes:
-  #     # - ./seed.db.sql:/docker-entrypoint-initdb.d/db.sql
-  #     - pgdata:/var/lib/postgresql/data # or specify a local folder like 
-  #     # - ./.volumes/pgdata:/var/lib/postgresql/data
-  #     - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
-  #   networks:
-  #     - webnet_e2e
+      - webnet-e2e
   mongo:
     image: mongo:5.0
-    container_name: dropengine_mongo_e2e
+    container_name: dropengine-mongo-e2e
     hostname: mongo
     ports:
       - '6545:27017'
     expose:
       - '27017'
     volumes:
-      - mongodata:/data/db
+      - mongo:/data/db
     networks:
-      - webnet_e2e
+      - webnet-e2e
 volumes:
   pgdata:
-    name: postgres_volume_e2e
-  mongodata:
-    name: mongo_volume_e2e
+    name: pgdata
+  mongo:
+    name: mongodata
 networks:
-  webnet_e2e:
-    name: webnet_e2e
+  webnet-e2e:
+    name: webnet-e2e
