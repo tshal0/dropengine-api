@@ -8,7 +8,9 @@ info:
     email: thomas@drop-engine.com
   summary: DropEngine Internal API
 servers:
-  - url: 'http://localhost:8802'
+  - url: 'http://localhost:8802/api/v1'
+  - url: 'https://dev.drop-engine.com/api/v1'
+    description: ''
 paths:
   '/users/{userId}':
     parameters:
@@ -277,6 +279,175 @@ paths:
           $ref: '#/components/responses/ImportVariantsResponseDto'
       description: ''
     parameters: []
+  /orders:
+    get:
+      summary: Query Orders
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/QueryOrdersResponseDto'
+      operationId: get-orders
+      description: 'Query for SalesOrders using provided query filters. Allows for pagination, filtering.'
+    post:
+      summary: Create Order
+      operationId: post-orders
+      responses:
+        '200':
+          $ref: '#/components/responses/SalesOrderDto'
+      description: Create a SalesOrder with provided payload.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/CreateSalesOrder.json
+  '/orders/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: Order ID
+    get:
+      summary: Get Order
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/SalesOrderDto'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  message:
+                    type: string
+                    minLength: 1
+                  error:
+                    type: string
+                    minLength: 1
+                required:
+                  - id
+                  - message
+                  - error
+                x-examples:
+                  example-1:
+                    id: 6259fce47ddc5db601cc1bbf
+                    message: 'SalesOrder not found with ID: 6259fce47ddc5db601cc1bbf'
+                    error: SALES_ORDER_NOT_FOUND
+              examples:
+                'Error: Not Found':
+                  value:
+                    id: 6259fce47ddc5db601cc1bbf
+                    message: 'SalesOrder not found with ID: 6259fce47ddc5db601cc1bbf'
+                    error: SALES_ORDER_NOT_FOUND
+      operationId: get-orders-id
+      description: Lookup SalesOrder by ID.
+  '/orders/{id}/lineItems/{lid}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: lid
+        in: path
+        required: true
+    patch:
+      summary: ''
+      operationId: patch-orders-id-lineItems-lid
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/CreateSalesOrderLineItem.json
+  '/orders/{id}/shippingAddress':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    patch:
+      summary: ''
+      operationId: patch-orders-id-shippingAddress
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/Address.json
+  '/orders/{id}/customer':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    patch:
+      summary: ''
+      operationId: patch-orders-id-customer
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/CreateSalesOrderCustomer.json
+  '/orders/{id}/send':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: Send To Manufacturer
+      operationId: post-orders-id-send
+      responses:
+        '200':
+          description: OK
+  '/orders/{id}/recall':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: Recall From Manufacturer
+      operationId: post-orders-id-recall
+      responses:
+        '200':
+          description: OK
+      description: ''
+  '/orders/{id}/cancel':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    post:
+      summary: Cancel Order
+      operationId: post-orders-id-cancel
+      responses:
+        '200':
+          description: OK
+      description: ''
 components:
   schemas:
     User:
@@ -2152,5 +2323,268 @@ components:
             required:
               - errors
               - imported
+    QueryOrdersResponseDto:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            description: ''
+            type: object
+            x-examples:
+              example-1:
+                total: 0
+                page: 0
+                pages: 0
+                size: 100
+                options: []
+                data: []
+            properties:
+              total:
+                type: number
+              page:
+                type: number
+              pages:
+                type: number
+              size:
+                type: number
+              options:
+                type: array
+                items:
+                  type: object
+              data:
+                type: array
+                items:
+                  $ref: ../models/SalesOrder.json
+            required:
+              - total
+              - page
+              - pages
+              - size
+              - options
+              - data
+          examples:
+            Example Response:
+              value:
+                total: 0
+                page: 0
+                pages: 0
+                size: 100
+                options: []
+                data:
+                  - id: 6270277eb0e7a7ca40b015cd
+                    orderName: SLI-3838315397200
+                    orderStatus: OPEN
+                    orderDate: '2022-05-02T18:48:30.131Z'
+                    orderNumber: 1001
+                    customer:
+                      email: test@example.com
+                      name: Test Example
+                    shippingAddress:
+                      zip: 43844-9406
+                      city: Warsaw
+                      name: Tony Stark
+                      phone: '2563472777'
+                      company: MyEasySuite Inc.
+                      country: United States
+                      address1: 19936 County Road 18
+                      address2: ''
+                      address3: ''
+                      latitude: 40.2496938
+                      longitude: -82.1265222
+                      province: Ohio
+                      lastName: Stark
+                      firstName: Tony
+                      countryCode: US
+                      provinceCode: OH
+                    billingAddress:
+                      zip: 43844-9406
+                      city: Warsaw
+                      name: Tony Stark
+                      phone: '2563472777'
+                      company: MyEasySuite Inc.
+                      country: United States
+                      address1: 19936 County Road 18
+                      address2: ''
+                      address3: ''
+                      latitude: 40.2496938
+                      longitude: -82.1265222
+                      province: Ohio
+                      lastName: Stark
+                      firstName: Tony
+                      countryCode: US
+                      provinceCode: OH
+                    lineItems:
+                      - id: 6270277eb0e7a7ca40b015ce
+                        lineNumber: 1
+                        quantity: 1
+                        variant:
+                          id: 6e4971dc-6c71-4ae9-a451-3f557b8d97e8
+                          sku: MU-C004-00-24-Black
+                          image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png'
+                          svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/4384264343/MU-C004-00.svg'
+                          type: 2DMetalArt
+                          option1:
+                            name: Size
+                            option: 24"
+                            enabled: true
+                          option2:
+                            name: Color
+                            option: Black
+                            enabled: true
+                          option3:
+                            option: null
+                            enabled: false
+                          manufacturingCost:
+                            currency: USD
+                            total: 800
+                          shippingCost:
+                            currency: USD
+                            total: 1300
+                          weight:
+                            units: oz
+                            dimension: 1194
+                          productionData:
+                            material: Mild Steel
+                            thickness: '0.06'
+                            route: '1'
+                          personalizationRules:
+                            - name: top_text
+                              label: Top Text
+                              placeholder: Enter up to 14 characters
+                              required: true
+                              type: input
+                              maxLength: 14
+                              pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                              options: ''
+                            - name: bottom_text
+                              label: Bottom Text
+                              placeholder: Enter up to 14 characters
+                              required: true
+                              type: input
+                              maxLength: 14
+                              pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                              options: ''
+                            - name: initial
+                              label: Initial
+                              placeholder: Select your initial here
+                              required: true
+                              type: dropdownlist
+                              maxLength: 0
+                              options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
+                        personalization:
+                          - name: Top Text
+                            value: TestExampleLongerThan14
+                          - name: Bottom Text
+                            value: Test-Example
+                        flags:
+                          - type: InvalidPersonalization
+                            details:
+                              lineNumber: 1
+                              property: Top Text
+                              reason: INVALID_LENGTH
+                            message: 'Line Item #1 has invalid property ''Top Text'': ''undefined''. Reason: INVALID_LENGTH'
+                          - type: BadCharacter
+                            details:
+                              lineNumber: 1
+                              property: Bottom Text
+                              value: Test-Example
+                              pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                              reason: BAD_CHARACTER
+                            message: 'Line Item #1 has a bad character in property ''Bottom Text'': ''Test-Example''. Reason: BAD_CHARACTER'
+                          - type: MissingPersonalization
+                            details:
+                              lineNumber: 1
+                              property: Initial
+                              reason: MISSING
+                            message: 'Line Item #1 is missing property ''Initial''.'
+                        createdAt: '2022-05-02T18:55:41.584Z'
+                        updatedAt: '2022-05-02T18:55:41.584Z'
+                      - id: 6270277eb0e7a7ca40b015cf
+                        lineNumber: 2
+                        quantity: 1
+                        variant:
+                          id: ed45942e-5f80-447e-bca3-a4bcc8d27088
+                          sku: MU-C004-00-18-Black
+                          image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png'
+                          svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/4384264343/MU-C004-00.svg'
+                          type: 2DMetalArt
+                          option1:
+                            name: Size
+                            option: 18"
+                            enabled: true
+                          option2:
+                            name: Color
+                            option: Black
+                            enabled: true
+                          option3:
+                            option: null
+                            enabled: false
+                          manufacturingCost:
+                            currency: USD
+                            total: 650
+                          shippingCost:
+                            currency: USD
+                            total: 1200
+                          weight:
+                            units: oz
+                            dimension: 738
+                          productionData:
+                            material: Mild Steel
+                            thickness: '0.06'
+                            route: '1'
+                          personalizationRules:
+                            - name: top_text
+                              label: Top Text
+                              placeholder: Enter up to 14 characters
+                              required: true
+                              type: input
+                              maxLength: 14
+                              pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                              options: ''
+                            - name: bottom_text
+                              label: Bottom Text
+                              placeholder: Enter up to 14 characters
+                              required: true
+                              type: input
+                              maxLength: 14
+                              pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                              options: ''
+                            - name: initial
+                              label: Initial
+                              placeholder: Select your initial here
+                              required: true
+                              type: dropdownlist
+                              maxLength: 0
+                              options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
+                        personalization:
+                          - name: Name
+                            value: TestExample
+                        flags:
+                          - type: MissingPersonalization
+                            details:
+                              lineNumber: 2
+                              property: Top Text
+                              reason: MISSING
+                            message: 'Line Item #2 is missing property ''Top Text''.'
+                          - type: MissingPersonalization
+                            details:
+                              lineNumber: 2
+                              property: Bottom Text
+                              reason: MISSING
+                            message: 'Line Item #2 is missing property ''Bottom Text''.'
+                          - type: MissingPersonalization
+                            details:
+                              lineNumber: 2
+                              property: Initial
+                              reason: MISSING
+                            message: 'Line Item #2 is missing property ''Initial''.'
+                        createdAt: '2022-05-02T18:55:41.584Z'
+                        updatedAt: '2022-05-02T18:55:41.584Z'
+    SalesOrderDto:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            $ref: ../models/SalesOrder.json
 tags:
   - name: v1.0

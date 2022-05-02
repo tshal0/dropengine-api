@@ -1,0 +1,29 @@
+{
+  "description": "",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "option": {
+      "type": "string",
+      "minLength": 1
+    },
+    "enabled": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "name",
+    "option",
+    "enabled"
+  ],
+  "x-examples": {
+    "example-1": {
+      "name": "Size",
+      "option": "24\"",
+      "enabled": true
+    }
+  }
+}

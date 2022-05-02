@@ -1,0 +1,29 @@
+{
+  "description": "Money value object. Records currence and base number in int format (pennies for USD). 1300 is equivalent to 13.00 USD.",
+  "type": "object",
+  "properties": {
+    "currency": {
+      "type": "string",
+      "minLength": 1
+    },
+    "total": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "currency",
+    "total"
+  ],
+  "x-examples": {
+    "example-1": {
+      "currency": "USD",
+      "total": 1300
+    }
+  },
+  "examples": [
+    {
+      "currency": "USD",
+      "total": 1300
+    }
+  ]
+}

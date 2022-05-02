@@ -10,8 +10,8 @@ Remove-Item ./$repoName/* -Recurse
 git config user.email "$userEmail"
 git config user.name "$userName"
 Copy-Item $stoplightDir/* -Destination $repoName -Recurse
-cd .\$repoName
-ls
+Set-Location .\$repoName
+Get-ChildItem
 git add .
 git status
 git remote -v show

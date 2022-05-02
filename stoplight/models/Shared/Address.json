@@ -1,0 +1,124 @@
+{
+  "description": "Address schema.",
+  "type": "object",
+  "properties": {
+    "zip": {
+      "type": "string",
+      "minLength": 1
+    },
+    "city": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phone": {
+      "type": "string",
+      "minLength": 1
+    },
+    "company": {
+      "type": "string",
+      "minLength": 1
+    },
+    "country": {
+      "type": "string",
+      "minLength": 1
+    },
+    "address1": {
+      "type": "string",
+      "minLength": 1
+    },
+    "address2": {
+      "type": "string"
+    },
+    "address3": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "province": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lastName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "firstName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "countryCode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provinceCode": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "zip",
+    "city",
+    "name",
+    "phone",
+    "company",
+    "country",
+    "address1",
+    "address2",
+    "address3",
+    "latitude",
+    "province",
+    "lastName",
+    "longitude",
+    "firstName",
+    "countryCode",
+    "provinceCode"
+  ],
+  "x-examples": {
+    "example-1": {
+      "zip": "43844-9406",
+      "city": "Warsaw",
+      "name": "Tony Stark",
+      "phone": "2563472777",
+      "company": "MyEasySuite Inc.",
+      "country": "United States",
+      "address1": "19936 County Road 18",
+      "address2": "",
+      "address3": "",
+      "latitude": 40.2496938,
+      "province": "Ohio",
+      "lastName": "Stark",
+      "longitude": -82.1265222,
+      "firstName": "Tony",
+      "countryCode": "US",
+      "provinceCode": "OH"
+    }
+  },
+  "examples": [
+    {
+      "zip": "43844-9406",
+      "city": "Warsaw",
+      "name": "Tony Stark",
+      "phone": "2563472777",
+      "company": "MyEasySuite Inc.",
+      "country": "United States",
+      "address1": "19936 County Road 18",
+      "address2": "",
+      "address3": "",
+      "latitude": 40.2496938,
+      "longitude": -82.1265222,
+      "province": "Ohio",
+      "lastName": "Stark",
+      "firstName": "Tony",
+      "countryCode": "US",
+      "provinceCode": "OH"
+    }
+  ]
+}

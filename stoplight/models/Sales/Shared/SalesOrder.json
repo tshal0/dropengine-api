@@ -1,0 +1,350 @@
+{
+  "description": "",
+  "type": "object",
+  "x-examples": {
+    "example-1": {
+      "id": "6270277eb0e7a7ca40b015cd",
+      "accountId": "0f5682e9-9a9a-4728-a794-6daf16ec08f6",
+      "orderName": "SLI-3838315397200",
+      "orderNumber": 1001,
+      "orderDate": "2021-01-01T00:00:00.000Z",
+      "orderStatus": "OPEN",
+      "lineItems": [
+        {
+          "id": "6270277eb0e7a7ca40b015ce",
+          "lineNumber": 1,
+          "quantity": 1,
+          "variant": {
+            "id": "6e4971dc-6c71-4ae9-a451-3f557b8d97e8",
+            "sku": "MU-C004-00-24-Black",
+            "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png",
+            "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/4384264343/MU-C004-00.svg",
+            "type": "2DMetalArt",
+            "option1": {
+              "name": "Size",
+              "option": "24\"",
+              "enabled": true
+            },
+            "option2": {
+              "name": "Color",
+              "option": "Black",
+              "enabled": true
+            },
+            "option3": {
+              "option": null,
+              "enabled": false
+            },
+            "manufacturingCost": {
+              "currency": "USD",
+              "total": 800
+            },
+            "shippingCost": {
+              "currency": "USD",
+              "total": 1300
+            },
+            "weight": {
+              "units": "oz",
+              "dimension": 1194
+            },
+            "productionData": {
+              "material": "Mild Steel",
+              "thickness": "0.06",
+              "route": "1"
+            },
+            "personalizationRules": [
+              {
+                "name": "top_text",
+                "label": "Top Text",
+                "placeholder": "Enter up to 14 characters",
+                "required": true,
+                "type": "input",
+                "maxLength": 14,
+                "pattern": "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
+                "options": ""
+              },
+              {
+                "name": "bottom_text",
+                "label": "Bottom Text",
+                "placeholder": "Enter up to 14 characters",
+                "required": true,
+                "type": "input",
+                "maxLength": 14,
+                "pattern": "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
+                "options": ""
+              },
+              {
+                "name": "initial",
+                "label": "Initial",
+                "placeholder": "Select your initial here",
+                "required": true,
+                "type": "dropdownlist",
+                "maxLength": 0,
+                "options": "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
+              }
+            ]
+          },
+          "personalization": [
+            {
+              "name": "Top Text",
+              "value": "TestExampleLongerThan14"
+            },
+            {
+              "name": "Bottom Text",
+              "value": "Test-Example"
+            }
+          ],
+          "flags": [
+            {
+              "type": "InvalidPersonalization",
+              "details": {
+                "lineNumber": 1,
+                "property": "Top Text",
+                "reason": "INVALID_LENGTH"
+              },
+              "message": "Line Item #1 has invalid property 'Top Text': 'undefined'. Reason: INVALID_LENGTH"
+            },
+            {
+              "type": "BadCharacter",
+              "details": {
+                "lineNumber": 1,
+                "property": "Bottom Text",
+                "value": "Test-Example",
+                "pattern": "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
+                "reason": "BAD_CHARACTER"
+              },
+              "message": "Line Item #1 has a bad character in property 'Bottom Text': 'Test-Example'. Reason: BAD_CHARACTER"
+            },
+            {
+              "type": "MissingPersonalization",
+              "details": {
+                "lineNumber": 1,
+                "property": "Initial",
+                "reason": "MISSING"
+              },
+              "message": "Line Item #1 is missing property 'Initial'."
+            }
+          ],
+          "createdAt": "2022-05-02T18:48:30.175Z",
+          "updatedAt": "2022-05-02T18:48:30.175Z"
+        },
+        {
+          "id": "6270277eb0e7a7ca40b015cf",
+          "lineNumber": 2,
+          "quantity": 1,
+          "variant": {
+            "id": "ed45942e-5f80-447e-bca3-a4bcc8d27088",
+            "sku": "MU-C004-00-18-Black",
+            "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png",
+            "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/4384264343/MU-C004-00.svg",
+            "type": "2DMetalArt",
+            "option1": {
+              "name": "Size",
+              "option": "18\"",
+              "enabled": true
+            },
+            "option2": {
+              "name": "Color",
+              "option": "Black",
+              "enabled": true
+            },
+            "option3": {
+              "option": null,
+              "enabled": false
+            },
+            "manufacturingCost": {
+              "currency": "USD",
+              "total": 650
+            },
+            "shippingCost": {
+              "currency": "USD",
+              "total": 1200
+            },
+            "weight": {
+              "units": "oz",
+              "dimension": 738
+            },
+            "productionData": {
+              "material": "Mild Steel",
+              "thickness": "0.06",
+              "route": "1"
+            },
+            "personalizationRules": [
+              {
+                "name": "top_text",
+                "label": "Top Text",
+                "placeholder": "Enter up to 14 characters",
+                "required": true,
+                "type": "input",
+                "maxLength": 14,
+                "pattern": "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
+                "options": ""
+              },
+              {
+                "name": "bottom_text",
+                "label": "Bottom Text",
+                "placeholder": "Enter up to 14 characters",
+                "required": true,
+                "type": "input",
+                "maxLength": 14,
+                "pattern": "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
+                "options": ""
+              },
+              {
+                "name": "initial",
+                "label": "Initial",
+                "placeholder": "Select your initial here",
+                "required": true,
+                "type": "dropdownlist",
+                "maxLength": 0,
+                "options": "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
+              }
+            ]
+          },
+          "personalization": [
+            {
+              "name": "Name",
+              "value": "TestExample"
+            }
+          ],
+          "flags": [
+            {
+              "type": "MissingPersonalization",
+              "details": {
+                "lineNumber": 2,
+                "property": "Top Text",
+                "reason": "MISSING"
+              },
+              "message": "Line Item #2 is missing property 'Top Text'."
+            },
+            {
+              "type": "MissingPersonalization",
+              "details": {
+                "lineNumber": 2,
+                "property": "Bottom Text",
+                "reason": "MISSING"
+              },
+              "message": "Line Item #2 is missing property 'Bottom Text'."
+            },
+            {
+              "type": "MissingPersonalization",
+              "details": {
+                "lineNumber": 2,
+                "property": "Initial",
+                "reason": "MISSING"
+              },
+              "message": "Line Item #2 is missing property 'Initial'."
+            }
+          ],
+          "createdAt": "2022-05-02T18:48:30.177Z",
+          "updatedAt": "2022-05-02T18:48:30.177Z"
+        }
+      ],
+      "customer": {
+        "email": "test@example.com",
+        "name": "Test Example"
+      },
+      "shippingAddress": {
+        "zip": "43844-9406",
+        "city": "Warsaw",
+        "name": "Tony Stark",
+        "phone": "2563472777",
+        "company": "MyEasySuite Inc.",
+        "country": "United States",
+        "address1": "19936 County Road 18",
+        "address2": "",
+        "address3": "",
+        "latitude": 40.2496938,
+        "longitude": -82.1265222,
+        "province": "Ohio",
+        "lastName": "Stark",
+        "firstName": "Tony",
+        "countryCode": "US",
+        "provinceCode": "OH"
+      },
+      "billingAddress": {
+        "zip": "43844-9406",
+        "city": "Warsaw",
+        "name": "Tony Stark",
+        "phone": "2563472777",
+        "company": "MyEasySuite Inc.",
+        "country": "United States",
+        "address1": "19936 County Road 18",
+        "address2": "",
+        "address3": "",
+        "latitude": 40.2496938,
+        "longitude": -82.1265222,
+        "province": "Ohio",
+        "lastName": "Stark",
+        "firstName": "Tony",
+        "countryCode": "US",
+        "provinceCode": "OH"
+      },
+      "createdAt": "2022-05-02T18:48:30.131Z",
+      "updatedAt": "2022-05-02T18:48:30.131Z"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accountId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "orderName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "orderNumber": {
+      "type": "number"
+    },
+    "orderDate": {
+      "type": "string",
+      "minLength": 1
+    },
+    "orderStatus": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lineItems": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "$ref": "./SalesLineItem.json"
+      }
+    },
+    "customer": {
+      "$ref": "./SalesCustomer.json"
+    },
+    "shippingAddress": {
+      "$ref": "../../Shared/Address.json"
+    },
+    "billingAddress": {
+      "$ref": "../../Shared/Address.json"
+    },
+    "createdAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "updatedAt": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "id",
+    "accountId",
+    "orderName",
+    "orderNumber",
+    "orderDate",
+    "orderStatus",
+    "lineItems",
+    "customer",
+    "shippingAddress",
+    "billingAddress",
+    "createdAt",
+    "updatedAt"
+  ]
+}

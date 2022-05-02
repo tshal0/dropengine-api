@@ -8,9 +8,9 @@
   "lineItems": [
     {
       "sku": "MEM-001-01",
+      "variantId": "00000000-0000-0000-0000-000000000001",
       "lineItemProperties": [{ "name": "Name", "value": "TestExample" }],
-      "quantity": 1,
-      "variantId": "00000000-0000-0000-0000-000000000001"
+      "quantity": 1
     }
   ],
   "shippingAddress": {

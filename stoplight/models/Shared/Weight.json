@@ -1,0 +1,23 @@
+{
+  "description": "",
+  "type": "object",
+  "properties": {
+    "units": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dimension": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "units",
+    "dimension"
+  ],
+  "x-examples": {
+    "example-1": {
+      "units": "oz",
+      "dimension": 1194
+    }
+  }
+}

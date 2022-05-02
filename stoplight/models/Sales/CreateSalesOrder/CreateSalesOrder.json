@@ -1,0 +1,158 @@
+{
+  "description": "Payload for creating a SalesOrder in DropEngine.",
+  "type": "object",
+  "x-examples": {
+    "example-1": {
+      "orderDate": "2021-01-01T00:00:00.000Z",
+      "orderNumber": "1001",
+      "customer": {
+        "email": "test@example.com",
+        "name": "Test Example"
+      },
+      "lineItems": [
+        {
+          "sku": "MEM-001-01",
+          "variantId": "00000000-0000-0000-0000-000000000001",
+          "lineItemProperties": [
+            {
+              "name": "Name",
+              "value": "TestExample"
+            }
+          ],
+          "quantity": 1
+        }
+      ],
+      "shippingAddress": {
+        "zip": "43844-9406",
+        "city": "Warsaw",
+        "name": "Tony Stark",
+        "phone": "2563472777",
+        "company": "MyEasySuite Inc.",
+        "country": "United States",
+        "address1": "19936 County Road 18",
+        "address2": "",
+        "address3": "",
+        "latitude": 40.2496938,
+        "province": "Ohio",
+        "lastName": "Stark",
+        "longitude": -82.1265222,
+        "firstName": "Tony",
+        "countryCode": "US",
+        "provinceCode": "OH"
+      },
+      "billingAddress": {
+        "zip": "43844-9406",
+        "city": "Warsaw",
+        "name": "Tony Stark",
+        "phone": "2563472777",
+        "company": "MyEasySuite Inc.",
+        "country": "United States",
+        "address1": "19936 County Road 18",
+        "address2": "",
+        "address3": "",
+        "latitude": 40.2496938,
+        "province": "Ohio",
+        "lastName": "Stark",
+        "longitude": -82.1265222,
+        "firstName": "Tony",
+        "countryCode": "US",
+        "provinceCode": "OH"
+      }
+    }
+  },
+  "examples": [
+    {
+      "orderDate": "2021-01-01T00:00:00.000Z",
+      "orderNumber": "1001",
+      "customer": {
+        "email": "test@example.com",
+        "name": "Test Example"
+      },
+      "lineItems": [
+        {
+          "sku": "MEM-001-01",
+          "variantId": "00000000-0000-0000-0000-000000000001",
+          "lineItemProperties": [
+            {
+              "name": "Name",
+              "value": "TestExample"
+            }
+          ],
+          "quantity": 1
+        }
+      ],
+      "shippingAddress": {
+        "zip": "43844-9406",
+        "city": "Warsaw",
+        "name": "Tony Stark",
+        "phone": "2563472777",
+        "company": "MyEasySuite Inc.",
+        "country": "United States",
+        "address1": "19936 County Road 18",
+        "address2": "",
+        "address3": "",
+        "latitude": 40.2496938,
+        "province": "Ohio",
+        "lastName": "Stark",
+        "longitude": -82.1265222,
+        "firstName": "Tony",
+        "countryCode": "US",
+        "provinceCode": "OH"
+      },
+      "billingAddress": {
+        "zip": "43844-9406",
+        "city": "Warsaw",
+        "name": "Tony Stark",
+        "phone": "2563472777",
+        "company": "MyEasySuite Inc.",
+        "country": "United States",
+        "address1": "19936 County Road 18",
+        "address2": "",
+        "address3": "",
+        "latitude": 40.2496938,
+        "province": "Ohio",
+        "lastName": "Stark",
+        "longitude": -82.1265222,
+        "firstName": "Tony",
+        "countryCode": "US",
+        "provinceCode": "OH"
+      }
+    }
+  ],
+  "title": "CreateSalesOrder",
+  "properties": {
+    "orderDate": {
+      "type": "string",
+      "minLength": 1
+    },
+    "orderNumber": {
+      "type": "string",
+      "minLength": 1
+    },
+    "customer": {
+      "$ref": "./CreateSalesOrderCustomer.json"
+    },
+    "lineItems": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "$ref": "./CreateSalesOrderLineItem.json"
+      }
+    },
+    "shippingAddress": {
+      "$ref": "../../Shared/Address.json"
+    },
+    "billingAddress": {
+      "$ref": "../../Shared/Address.json"
+    }
+  },
+  "required": [
+    "orderDate",
+    "orderNumber",
+    "customer",
+    "lineItems",
+    "shippingAddress",
+    "billingAddress"
+  ]
+}
