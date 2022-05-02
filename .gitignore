@@ -1,3 +1,4 @@
+dropengine-api-docs
 *.sqlite3
 _artifact
 *.env*
