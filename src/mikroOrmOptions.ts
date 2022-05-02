@@ -1,4 +1,3 @@
-import { MikroOrmModuleOptions } from "@mikro-orm/nestjs";
 
 export const mikroOrmOptions = {
   entities: ["./dist/**/entities/*.entity.js"],

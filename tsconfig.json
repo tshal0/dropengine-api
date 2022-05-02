@@ -47,9 +47,12 @@
       ],
     },
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
     "_artifact",
     "dist",
-    "jest*.ts"
+    "jest*.ts",
   ]
 }

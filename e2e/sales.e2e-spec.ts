@@ -1,7 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication } from "@nestjs/common";
 import request from "supertest";
-import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
 import { WinstonModule } from "nest-winston";
 import { loadAccessToken } from "./utils";
 import { AppModule } from "../src/app.module";
@@ -19,19 +18,13 @@ describe("Sales (e2e)", () => {
     }).compile();
 
     app = module.createNestApplication();
-    const logger = WinstonModule.createLogger(winstonLoggerOptions);
-    // module.useLogger(logger);
     await app.init();
-    app.useLogger(logger);
     token = await loadAccessToken();
   });
   beforeEach(async () => {});
 
   it("/orders (GET)", () => {
     const server: INestApplication = app.getHttpServer();
-    //InstrumentationKey=168ed634-a01a-49c4-b4de-003f25780784;
-    //IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;
-    //LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/
     const expected = {
       total: 0,
       page: 0,
@@ -44,6 +37,77 @@ describe("Sales (e2e)", () => {
     return request(server)
       .get("/orders")
       .set("Authorization", `Bearer ${token}`)
+      .expect(200)
+      .expect(expected);
+  });
+
+  it("/orders/:id/lineItems/:lid (PATCH)", () => {
+    // Edit Personalization
+    const server: INestApplication = app.getHttpServer();
+    const payload = {};
+    const expected = {};
+    const id = "123";
+    const lineNumber = "123";
+    return request(server)
+      .patch(`/orders/${id}/lineItems/${lineNumber}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send(payload)
+      .expect(200)
+      .expect(expected);
+  });
+  it("/orders/:id/shippingAddress (PATCH)", () => {
+    // Edit ShippingAddress
+    const server: INestApplication = app.getHttpServer();
+    const payload = {};
+    const expected = {};
+    const id = "123";
+    const lineNumber = "123";
+    return request(server)
+      .patch(`/orders/${id}/shippingAddress`)
+      .set("Authorization", `Bearer ${token}`)
+      .send(payload)
+      .expect(200)
+      .expect(expected);
+  });
+  it("/orders/:id/customer (PATCH)", () => {
+    // Edit Customer
+    const server: INestApplication = app.getHttpServer();
+    const payload = {};
+    const expected = {};
+    const id = "123";
+    const lineNumber = "123";
+    return request(server)
+      .patch(`/orders/${id}/customer`)
+      .set("Authorization", `Bearer ${token}`)
+      .send(payload)
+      .expect(200)
+      .expect(expected);
+  });
+  it("/orders/:id/send (POST)", () => {
+    // Send To Manufacturer
+    const server: INestApplication = app.getHttpServer();
+    const payload = {};
+    const expected = {};
+    const id = "123";
+    const lineNumber = "123";
+    return request(server)
+      .post(`/orders/${id}/send`)
+      .set("Authorization", `Bearer ${token}`)
+      .send(payload)
+      .expect(200)
+      .expect(expected);
+  });
+  it("/orders/:id/recall (POST)", () => {
+    // Recall From Manufacturer
+    const server: INestApplication = app.getHttpServer();
+    const payload = {};
+    const expected = {};
+    const id = "123";
+    const lineNumber = "123";
+    return request(server)
+      .post(`/orders/${id}/recall`)
+      .set("Authorization", `Bearer ${token}`)
+      .send(payload)
       .expect(200)
       .expect(expected);
   });

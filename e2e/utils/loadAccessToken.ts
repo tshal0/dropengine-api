@@ -7,13 +7,13 @@ export async function loadAccessToken() {
   const accessToken = extractAccessToken(resp);
   return accessToken;
 }
-export function extractAccessToken(resp: {
+function extractAccessToken(resp: {
   code: number;
   object: { access_token: string };
 }): any {
   return resp?.object?.access_token;
 }
-export function generateTokenRequestOptions() {
+function generateTokenRequestOptions() {
   const accessTokenUrl = process.env.AUTH0_ACCESS_TOKEN_URL;
 
   const payload = generateTokenRequestPayload();
@@ -49,7 +49,7 @@ export interface AuthRequestResponse {
     access_token: string;
   };
 }
-export async function postAuth(options): Promise<AuthRequestResponse> {
+async function postAuth(options): Promise<AuthRequestResponse> {
   let resp = await axios({
     url: options.url,
     data: options.body,
