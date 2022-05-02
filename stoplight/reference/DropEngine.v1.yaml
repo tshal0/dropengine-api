@@ -370,7 +370,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/CreateSalesOrderLineItem.json
+              $ref: ../models/Sales/CreateSalesOrder/CreateSalesOrderLineItem.json
   '/orders/{id}/shippingAddress':
     parameters:
       - schema:
@@ -388,7 +388,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/Address.json
+              $ref: ../models/Shared/Address.json
   '/orders/{id}/customer':
     parameters:
       - schema:
@@ -406,7 +406,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/CreateSalesOrderCustomer.json
+              $ref: ../models/Sales/CreateSalesOrder/CreateSalesOrderCustomer.json
   '/orders/{id}/send':
     parameters:
       - schema:
@@ -2354,7 +2354,7 @@ components:
               data:
                 type: array
                 items:
-                  $ref: ../models/SalesOrder.json
+                  $ref: ../models/Sales/Shared/SalesOrder.json
             required:
               - total
               - page
@@ -2585,6 +2585,6 @@ components:
       content:
         application/json:
           schema:
-            $ref: ../models/SalesOrder.json
+            $ref: ../models/Sales/Shared/SalesOrder.json
 tags:
   - name: v1.0
