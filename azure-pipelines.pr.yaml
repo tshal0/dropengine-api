@@ -108,11 +108,15 @@ stages:
                 New-Item -Path "./_artifact" -Name "postman" -ItemType "directory" -Force
                 New-Item -Path "./_artifact" -Name "migrations" -ItemType "directory" -Force
                 New-Item -Path "./_artifact" -Name "azure" -ItemType "directory" -Force
+                New-Item -Path "./_artifact" -Name "scripts" -ItemType "directory" -Force
+                New-Item -Path "./_artifact" -Name "stoplight" -ItemType "directory" -Force
 
                 Copy-Item -Path "./src/*" -Destination "./_artifact/src" -Recurse -Force
                 Copy-Item -Path "./postman/*" -Destination "./_artifact/postman" -Recurse -Force
                 Copy-Item -Path "./migrations/*" -Destination "./_artifact/migrations" -Recurse -Force
                 Copy-Item -Path "./azure/*" -Destination "./_artifact/azure" -Recurse -Force
+                Copy-Item -Path "./scripts/*" -Destination "./_artifact/scripts" -Recurse -Force
+                Copy-Item -Path "./stoplight/*" -Destination "./_artifact/stoplight" -Recurse -Force
 
                 Copy-Item -Path "./package.json" -Destination "./_artifact"
                 Copy-Item -Path "./tsconfig.json" -Destination "./_artifact"
