@@ -85,6 +85,7 @@ stages:
               command: 'custom'
               customCommand: 'run test:e2e:docker'
               workingDir: $(System.DefaultWorkingDirectory)
+            continueOnError: true
           - task: PublishTestResults@2
             displayName: 'Publish NestJS E2E Test Results'
             inputs:
