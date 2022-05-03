@@ -35,7 +35,7 @@ describe("Sales (e2e)", () => {
     };
 
     return request(server)
-      .get("/orders")
+      .get("/sales/orders")
       .set("Authorization", `Bearer ${token}`)
       .expect(200)
       .expect(expected);
