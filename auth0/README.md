@@ -1,9 +1,83 @@
 # Auth0
 
-Rules:
+## Settings > General
+
+- Name
+  - DropEngine™ (Env)
+- Logo URL
+  - <https://sadropenginedev.blob.core.windows.net/images/drop-engine-logo-combo.png>
+- Support Email
+  - thomas@drop-engine.com
+- API Auth Settings > Default Directory
+  - `Username-Password-Authentication`
+
+## APIs
+
+### **Auth0 Management API**
+
+- M2M
+  - API Explorer
+  - DropEngine API Postman Client (Dev)
+  - DropEngine Management API (Dev)
+    - Grant ALL scopes to the client
+
+### **DropEngine API (Env)**
+
+- Name: `DropEngine API (Dev)`
+- Identifier: `dropengine.api.ENV`
+- RBAC: `enabled`
+- Add Permissiong to the Access Token
+- Allow Offline Access
+- M2M
+  - DropEngine Management API (Dev)
+  - DropEngine API Postman Client (Dev)
+
+## Applications
+
+- API Explorer
+- Default App
+- DropEngine API Postman Client (ENV)
+  - Regular Web App
+  - Logo: `https://sadropenginedev.blob.core.windows.net/images/drop-engine-logo-combo.png`
+  - Auth Method: `POST`
+  - Grant Types
+    - Implicit
+    - Auth Code
+    - Refresh Token
+    - Password
+- DropEngine Management Client (ENV)
+  - Machine to Machine
+  - Auth Method: `POST`
+  - Grant Types
+    - Auth Code
+    - Client Credentials
+    - Password
+  - APIs
+    - Auth0 Management API `enabled`
+    - DropEngine API (ENV) `enabled`
+- DropEngine Portal (ENV)
+  - SPA
+  - Logo: `https://sadropenginedev.blob.core.windows.net/images/drop-engine-logo-icon.png`
+  - Auth Method `None`
+  - Callback URLs
+    - `http://localhost:3002, https://dev.drop-engine.com`
+  - Logout URLs
+    - `https://dev.drop-engine.com, http://localhost:3002`
+  - Web Origins
+    - `http://localhost:3002, https://dev.drop-engine.com`
+  - Refresh Token Rotation
+  - Grant Types
+    - Implicit
+    - Auth Code
+    - Refresh Token
+    - Password
+
+## Rules
+
+- Settings.NAMESPACE: `https://www.drop-engine.com`
 
 ```javascript
-function addEmailToAccessToken(user, context, callback) {
+function addEmailAndMetadataToAccessToken(user, context, callback) {
   // TODO: implement your rule
   var namespace = configuration.NAMESPACE;
   context.accessToken[namespace + "/email"] = user.email;
@@ -16,10 +90,10 @@ function addEmailToAccessToken(user, context, callback) {
 Add Roles to Token
 
 ```javascript
-function (user, context, callback) {
+function addRolesToToken(user, context, callback) {
   var namespace = configuration.NAMESPACE;
   const assignedRoles = (context.authorization || {}).roles;
-  context.accessToken[namespace + '/roles'] = assignedRoles;
+  context.accessToken[namespace + "/roles"] = assignedRoles;
   callback(null, user, context);
 }
 ```
@@ -54,7 +128,7 @@ function (user, context, callback) {
 }
 ```
 
-Verify User Email with Password Reset
+Verify User Email with Password Reset `Not Needed`
 
 ```javascript
 function verifyUserWithPasswordReset(user, context, callback) {
@@ -90,12 +164,4 @@ function verifyUserWithPasswordReset(user, context, callback) {
     }
   );
 }
-```
-
-```javascript
-
-```
-
-```javascript
-
 ```
