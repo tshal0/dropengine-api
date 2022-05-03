@@ -1,0 +1,41 @@
+variables:
+  ArtifactName: '_drop-engine-api'
+  ImageName: 'dropengine-api'
+steps:
+- task: Docker@2
+  displayName: 'Load Image From TAR'
+  inputs:
+    command: load
+    arguments: '--input $(System.DefaultWorkingDirectory)/$(ArtifactName)/ContainerImage/$(ImageName).image.tar'
+    variables:
+  ImageName: 'dropengine-api'
+  ContainerRegistryName: 'acrdropenginedev.azurecr.io'
+- task: Docker@2
+  displayName: 'ReTag Image with ACR Name - BuildId'
+  inputs:
+    containerRegistry: 'DropEngineACR-Dev'
+    repository: '$(ImageName)'
+    command: tag
+    arguments: '$(ImageName):$(Build.BuildId) $(ContainerRegistryName)/$(ImageName):$(Build.BuildId)'
+
+    variables:
+  ImageName: 'dropengine-api'
+  ContainerRegistryName: 'acrdropenginedev.azurecr.io'
+- task: Docker@2
+  displayName: 'ReTag Image with ACR Name - Latest'
+  inputs:
+    containerRegistry: 'DropEngineACR-Dev'
+    repository: '$(ImageName)'
+    command: tag
+    arguments: '$(ImageName):$(Build.BuildId) $(ContainerRegistryName)/$(ImageName):latest'
+    variables:
+  ImageName: 'dropengine-api'
+- task: Docker@2
+  displayName: 'Push Image to ACR-Dev'
+  inputs:
+    containerRegistry: 'DropEngineACR-Dev'
+    repository: '$(ImageName)'
+    command: push
+    tags: |
+     $(Build.BuildId)
+     latest

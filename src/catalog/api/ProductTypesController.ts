@@ -24,7 +24,7 @@ import {
 } from "@catalog/useCases";
 
 
-@Controller("/productTypes")
+@Controller("catalog/productTypes")
 export class ProductTypesController {
   private readonly logger: Logger = new Logger(ProductTypesController.name);
 

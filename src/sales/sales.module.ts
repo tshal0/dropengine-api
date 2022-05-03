@@ -20,7 +20,7 @@ import {
   CreateSalesOrder,
 } from "./useCases";
 import { CatalogModule } from "@catalog/catalog.module";
-import { AccountsModule } from "@accounts/accounts.module";
+import { AuthModule } from "@auth/auth.module";
 
 @Module({
   imports: [

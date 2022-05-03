@@ -45,7 +45,7 @@ export class SalesLoggingInterceptor implements NestInterceptor {
       contextObjects: { user },
       properties: { request: req.body },
     };
-    this.logger.debug(telemetry);
+    this.logger.debug(telemetry.message);
     return next.handle().pipe(
       tap({
         next: (val) => {
@@ -72,7 +72,7 @@ export class SalesLoggingInterceptor implements NestInterceptor {
             contextObjects: { user },
             properties: { response: { data: [] } },
           };
-          this.logger.debug(payload);
+          this.logger.debug(telemetry.message);
         },
         error: (error) => {},
         complete: () => {},

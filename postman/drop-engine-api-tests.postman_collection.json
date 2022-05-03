@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1b5ccfa1-d6ee-478e-9992-64a7ca5967ee",
+		"_postman_id": "326c0e40-0ab6-482c-8ad9-c3b159cdaa5c",
 		"name": "drop-engine-api-tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -72,13 +72,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/users",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"users"
 									]
 								}
@@ -104,13 +105,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/users/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"users",
 										":id"
 									],
@@ -143,13 +145,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/users",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"users"
 									]
 								}
@@ -172,7 +175,9 @@
 											"const accountId = account?.id\r",
 											"pm.test(`Created Account should have valid AccountId`, () => {\r",
 											"    pm.expect(accountId?.length).greaterThan(0)\r",
+											"    console.log(`Setting collectionVariables 'accountId' to '${accountId}'`)\r",
 											"    pm.collectionVariables.set(`accountId`, accountId)\r",
+											"    console.log(`Set`, pm.collectionVariables.get(`accountId`))\r",
 											"})\r",
 											"\r",
 											"const testUserId = pm.collectionVariables.get('testUserId')\r",
@@ -217,7 +222,7 @@
 											"        }\r",
 											"    })\r",
 											"})\r",
-											"\r",
+											"console.log(`Exiting`, pm.collectionVariables.get(`accountId`))\r",
 											""
 										],
 										"type": "text/javascript"
@@ -237,13 +242,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"accounts"
 									]
 								}
@@ -257,17 +263,28 @@
 									"listen": "test",
 									"script": {
 										"exec": [
+											"console.log(`Test`, pm.collectionVariables.get(`accountId`))\r",
+											"\r",
 											"pm.test(\"AddStore Status code is 201\", function () {\r",
 											"    pm.response.to.have.status(201);\r",
 											"});\r",
 											"\r",
 											"const account = pm.response.json()\r",
-											"const store = account.stores.find(s => s.name == pm.collectionVariables.get('storeName'))\r",
+											"const store = account.stores?.find(s => s.name == pm.collectionVariables.get('storeName'))\r",
 											"const storeId = store?.id\r",
 											"pm.test(`Created Store should have valid storeId`, () => {\r",
 											"    pm.expect(storeId?.length).greaterThan(0)\r",
 											"    pm.collectionVariables.set(`storeId`, storeId)\r",
 											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.log(`Pre`, pm.collectionVariables.get(`accountId`))"
 										],
 										"type": "text/javascript"
 									}
@@ -286,13 +303,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id/stores",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/stores",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"accounts",
 										":id",
 										"stores"
@@ -332,13 +350,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id/stores/:storeId",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/stores/:storeId",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"accounts",
 										":id",
 										"stores",
@@ -384,13 +403,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"accounts",
 										":id"
 									],
@@ -423,13 +443,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"accounts"
 									]
 								}
@@ -485,13 +506,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/users",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"users"
 									]
 								}
@@ -543,13 +565,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id/members",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/members",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"accounts",
 										":id",
 										"members"
@@ -593,13 +616,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id/members/:userId",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/members/:userId",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"accounts",
 										":id",
 										"members",
@@ -638,13 +662,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"accounts",
 										":id"
 									],
@@ -677,13 +702,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/users/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"users",
 										":id"
 									],
@@ -696,6 +722,26 @@
 								}
 							},
 							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.collectionVariables.set('module', 'auth')"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				},
@@ -743,13 +789,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"productTypes"
 									]
 								}
@@ -878,13 +925,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes/:uuid",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:uuid",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"productTypes",
 										":uuid"
 									],
@@ -928,18 +976,19 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": ".//products.v1.csv"
+											"src": ".\\products.v1.csv"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/products/import",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products/import",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"products",
 										"import"
 									]
@@ -1209,13 +1258,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/products?productTypeId={{productTypeUuid}}",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products?productTypeId={{productTypeUuid}}",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"products"
 									],
 									"query": [
@@ -1255,18 +1305,19 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": ".//variants.v1.csv"
+											"src": ".\\variants.v1.csv"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/productVariants/import",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/import",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"productVariants",
 										"import"
 									]
@@ -1407,13 +1458,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/productVariants",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"productVariants"
 									]
 								}
@@ -1439,13 +1491,14 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/productTypes/:uuid",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:uuid",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"productTypes",
 										":uuid"
 									],
@@ -1458,6 +1511,26 @@
 								}
 							},
 							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.collectionVariables.set('module', 'catalog')"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				},
@@ -1475,11 +1548,13 @@
 											"// Create Account\r",
 											"// Add Store\r",
 											"// Get Account\r",
+											"pm.collectionVariables.set('module', 'auth')\r",
 											"const token = pm.collectionVariables.get(\"auth0_access_token\")\r",
 											"const base_url = pm.environment.get(\"base_url\")\r",
 											"const prefix = pm.collectionVariables.get(\"prefix\")\r",
 											"const version = pm.collectionVariables.get(\"version\")\r",
-											"const apiUrl = `${base_url}/${prefix}/${version}`\r",
+											"const _module = pm.collectionVariables.get(\"module\")\r",
+											"const apiUrl = `${base_url}/${prefix}/${version}/${_module}`\r",
 											"const createUserUrl = `${apiUrl}/users`\r",
 											"const createAccountUrl = `${apiUrl}/accounts`\r",
 											"const addStoreUrl = `${apiUrl}/accounts/{{accountId}}/stores`\r",
@@ -1533,6 +1608,12 @@
 											"    pm.sendRequest(createAccountOptions, function (err, response) {\r",
 											"        const resp = response.json()\r",
 											"        const accountId = resp.id;\r",
+											"        pm.test(`PREREQUEST: Created Account should have valid AccountId`, () => {\r",
+											"            pm.expect(accountId?.length).greaterThan(0)\r",
+											"            console.log(`Setting collectionVariables 'accountId' to '${accountId}'`)\r",
+											"            pm.collectionVariables.set(`accountId`, accountId)\r",
+											"            console.log(`Set`, pm.collectionVariables.get(`accountId`))\r",
+											"        })\r",
 											"        placeOrderVariables.accountId = accountId;\r",
 											"        pm.collectionVariables.set(`placeOrder_accountId`, accountId)\r",
 											"\r",
@@ -1549,7 +1630,9 @@
 										"exec": [
 											"pm.test(\"Successful POST request\", function () {\r",
 											"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
-											"});"
+											"});\r",
+											"pm.collectionVariables.set('module', 'sales')\r",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -1559,13 +1642,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"accounts",
 										":id"
 									],
@@ -1634,19 +1718,29 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('module', 'sales')"
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/orders?page=0&size=100",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/orders?page=0&size=100",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"orders"
 									],
 									"query": [
@@ -1688,19 +1782,29 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('module', 'sales')"
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/orders/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/orders/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"orders",
 										":id"
 									],
@@ -1727,19 +1831,29 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('module', 'auth')"
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/accounts/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"accounts",
 										":id"
 									],
@@ -1766,19 +1880,29 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('module', 'auth')"
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/{{prefix}}/{{version}}/users/:id",
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"{{prefix}}",
 										"{{version}}",
+										"{{module}}",
 										"users",
 										":id"
 									],
@@ -1798,18 +1922,31 @@
 		},
 		{
 			"name": "Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"const resp = `DropEngine™ API Up!`\r",
+							"pm.test(`Response should contain status: '${resp}'`, function () {\r",
+							"    const body = pm.response.json()\r",
+							"    pm.expect(body?.status).to.eq(resp)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/{{prefix}}/{{version}}/",
+					"raw": "{{base_url}}",
 					"host": [
 						"{{base_url}}"
-					],
-					"path": [
-						"{{prefix}}",
-						"{{version}}",
-						""
 					]
 				}
 			},
@@ -1981,6 +2118,11 @@
 		{
 			"key": "version",
 			"value": "v1",
+			"type": "string"
+		},
+		{
+			"key": "module",
+			"value": "auth",
 			"type": "string"
 		},
 		{

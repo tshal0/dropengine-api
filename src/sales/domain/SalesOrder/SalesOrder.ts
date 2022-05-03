@@ -12,7 +12,7 @@ import { SalesOrderID } from "./SalesOrderID";
 import { LineItem } from "../LineItem";
 import { SalesOrderDate } from "./SalesOrderDate";
 import { CreateOrderDto } from "@sales/dto";
-import { AccountId } from "@accounts/domain/valueObjects/AccountId";
+import { AccountId } from "@auth/domain/valueObjects/AccountId";
 
 /**
  * Aggregates need: events, domain methods, initializers, converters

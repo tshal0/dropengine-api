@@ -1,0 +1,41 @@
+steps:
+- task: ExtractFiles@1
+  displayName: 'Extract files '
+  inputs:
+    archiveFilePatterns: '**/artifact.zip'
+    destinationFolder: '$(System.DefaultWorkingDirectory)/_artifact'
+    overwriteExistingFiles: true
+- task: AzureKeyVault@2
+  displayName: 'Azure Key Vault: kv-dropengine-dev'
+  inputs:
+    azureSubscription: 'DropEngine-Primary(<SUBSCRIPTION_IDENTIFIER(GUID)>)'
+    KeyVaultName: 'kv-dropengine-dev'
+    #Your build pipeline references an undefined variable named ‘PostgresDatabaseUrl’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+- powershell: |
+   Write-Host "##vso[task.setvariable variable=database.url]$(PostgresDatabaseUrl)"
+   Write-Host "##vso[task.setvariable variable=production]true"
+  displayName: 'PowerShell Script'
+  steps:
+- powershell: |
+   Get-ChildItem -Recurse
+   
+  displayName: 'PowerShell Script copy'
+- task: Npm@1
+  displayName: 'npm run install'
+  inputs:
+    workingDir: '$(System.DefaultWorkingDirectory)/_artifact/postman'
+    verbose: false
+- task: Npm@1
+  displayName: 'npm run test:postman'
+  inputs:
+    command: custom
+    workingDir: '$(System.DefaultWorkingDirectory)/_artifact/postman'
+    verbose: false
+    customCommand: 'run test:postman'
+  continueOnError: true
+- task: PublishTestResults@2
+  displayName: 'Publish API Test Results'
+  inputs:
+    testResultsFiles: '**/*.postman.xml'
+    failTaskOnFailedTests: true

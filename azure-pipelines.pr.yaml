@@ -6,7 +6,7 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   azureServiceConnection: 'DropEngineRM'
-  azureSubscription: 'DropEngine-Primary(0eaeda16-3a81-428c-a7d4-427b1354dc02)'
+  azureSubscription: 'DropEngine-Primary(<SUBSCRIPTION_IDENTIFIER(GUID)>)'
   vmImageName: 'ubuntu-latest'
   location: 'eastus'
   postgresDatabaseUrl: ''

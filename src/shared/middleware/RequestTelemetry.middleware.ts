@@ -11,7 +11,7 @@ import { AzureTelemetryService } from "@shared/modules";
 import { IAuth0User } from "@auth0/domain/Auth0ExtendedUser";
 import { AuthenticatedUser } from "@shared/decorators";
 import moment from "moment";
-import { IUserAccount } from "@accounts/domain";
+import { IUserAccount } from "@auth/domain";
 @Injectable()
 export class RequestTelemetryInterceptor implements NestInterceptor {
   constructor(private logger: AzureTelemetryService) {}

@@ -46,7 +46,7 @@ import { CreateSalesOrderDto } from "@sales/useCases/CreateSalesOrder/CreateSale
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
-@Controller({ path: "orders", version: Versions.v1 })
+@Controller({ path: "sales/orders", version: Versions.v1 })
 export class OrdersController {
   private readonly logger: Logger = new Logger(OrdersController.name);
 

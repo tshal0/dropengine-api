@@ -39,7 +39,7 @@ export class ProductsQueryDto {
   productTypeId: string;
 }
 
-@Controller("/products")
+@Controller("catalog/products")
 export class ProductsController {
   private readonly logger: Logger = new Logger(ProductsController.name);
 

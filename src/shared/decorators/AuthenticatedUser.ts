@@ -1,4 +1,4 @@
-import { IUserAccount, IUserMetadata } from "@accounts/domain";
+import { IUserAccount, IUserMetadata } from "@auth/domain";
 import { NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { IsString, IsNotEmpty, IsNotEmptyObject } from "class-validator";
 import { cloneDeep } from "lodash";

@@ -78,6 +78,7 @@ paths:
                   $ref: '#/components/schemas/User'
       tags:
         - v1
+      description: TBD
     parameters: []
   '/users/{id}':
     parameters:

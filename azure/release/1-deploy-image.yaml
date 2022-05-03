@@ -1,0 +1,96 @@
+variables:
+  ImageName: 'dropengine-api'
+steps:
+- task: ExtractFiles@1
+  displayName: 'Extract files '
+  inputs:
+    archiveFilePatterns: '**/artifact.zip'
+    destinationFolder: '$(System.DefaultWorkingDirectory)/_artifact'
+    overwriteExistingFiles: true
+    steps:
+- task: AzureKeyVault@2
+  displayName: 'Azure Key Vault: kv-dropengine-dev'
+  inputs:
+    azureSubscription: 'DropEngine-Primary(<SUBSCRIPTION_IDENTIFIER(GUID)>)'
+    KeyVaultName: 'kv-dropengine-dev'
+    #Your build pipeline references an undefined variable named ‘PostgresDatabaseUrl’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+- powershell: |
+   Write-Host "##vso[task.setvariable variable=database.url]$(PostgresDatabaseUrl)"
+   Write-Host "##vso[task.setvariable variable=production]true"
+   Write-Host "##vso[task.setvariable variable=postgres.ssl]true"
+  displayName: 'PowerShell Script'
+  steps:
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    workingDir: '$(System.DefaultWorkingDirectory)/_artifact'
+    verbose: false
+    steps:
+- task: Npm@1
+  displayName: 'npm run migrate:deploy'
+  inputs:
+    command: custom
+    workingDir: '$(System.DefaultWorkingDirectory)/_artifact'
+    verbose: false
+    customCommand: 'run migrate'
+    variables:
+  service: 'dropengine'
+  env: 'dev'
+  ImageName: 'dropengine-api'
+
+- powershell: |
+   Write-Host "##vso[task.setvariable variable=acrHostName]acr$(service)$(env).azurecr.io"
+   Write-Host "##vso[task.setvariable variable=keyVaultName]kv-$(service)-$(env)"
+   Write-Host "##vso[task.setvariable variable=serviceImage]$(ImageName):$(Build.BuildId)"
+   Write-Host "##vso[task.setvariable variable=webAppUrl]https://app-{service}-{env}.azurewebsites.net/api"
+   
+  displayName: 'PowerShell Script'
+
+  #Your build pipeline references an undefined variable named ‘Parameters.ConnectedServiceName’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+  #Your build pipeline references an undefined variable named ‘Parameters.WebAppKind’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+  #Your build pipeline references an undefined variable named ‘Parameters.WebAppName’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+  #Your build pipeline references an undefined variable named ‘Parameters.DockerNamespace’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+  #Your build pipeline references an undefined variable named ‘Parameters.DockerRepository’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+  #Your build pipeline references an undefined variable named ‘Parameters.StartupCommand’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+- task: AzureRmWebAppDeployment@4
+  displayName: 'Deploy Azure App Service'
+  inputs:
+    azureSubscription: '$(Parameters.ConnectedServiceName)'
+    appType: '$(Parameters.WebAppKind)'
+    WebAppName: '$(Parameters.WebAppName)'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'rg-dropengine-dev'
+    SlotName: slot1
+    DockerNamespace: '$(Parameters.DockerNamespace)'
+    DockerRepository: '$(Parameters.DockerRepository)'
+    DockerImageTag: '$(Build.BuildId)'
+    StartupCommand: '$(Parameters.StartupCommand)'
+    AppSettings: '-SERVICE_IMAGE $(ImageName):$(Build.BuildId)'
+    #Your build pipeline references an undefined variable named ‘keyVaultName’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+    #Your build pipeline references an undefined variable named ‘serviceImage’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+- task: AzureCLI@2
+  displayName: 'Azure CLI '
+  inputs:
+    azureSubscription: DropEngineRM
+    scriptType: pscore
+    scriptLocation: inlineScript
+    inlineScript: |
+     $kvName = "$(keyVaultName)"
+     $serviceImage = "$(serviceImage)"
+     Write-Output "ServiceImage - $serviceImage"
+     az keyvault secret set --vault-name $kvName --name ServiceImage --value """$serviceImage"""
+    addSpnToEnvironment: true
+- task: AzureAppServiceManage@0
+  displayName: 'Swap Slots: Slot1'
+  inputs:
+    azureSubscription: 'DropEngine-Primary(<SUBSCRIPTION_IDENTIFIER(GUID)>)'
+    WebAppName: 'app-dropengine-dev'
+    ResourceGroupName: 'rg-dropengine-dev'
+    SourceSlot: slot1
+- task: miguelcruz.vsts-smoke-web-test-task.smoke-web-test.SmokeWebTest@1
+  displayName: 'Smoke Web Test'
+  inputs:
+    url: 'https://app-dropengine-dev.azurewebsites.net'
+  retryCountOnTaskFailure: 5

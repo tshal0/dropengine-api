@@ -53,7 +53,7 @@ export class SyncVariantResponseDto {
   variant: IProductVariantProps;
 }
 
-@Controller("/productVariants")
+@Controller("catalog/productVariants")
 export class ProductVariantsController {
   private readonly logger: Logger = new Logger(ProductVariantsController.name);
 

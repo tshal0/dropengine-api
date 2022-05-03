@@ -14,14 +14,12 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { HttpModule } from "@nestjs/axios";
 import { AzureTelemetryModule } from "@shared/modules/azure-telemetry/azure-telemetry.module";
 import { AzureStorageModule } from "@shared/modules/azure-storage/azure-storage.module";
-import { AuthModule } from "@shared/modules/auth/auth.module";
 import { HealthModule } from "./health/health.module";
 import { ShopifyModule } from "./shopify/shopify.module";
 import { PassportModule } from "@nestjs/passport";
 import { MikroOrmModule, MikroOrmModuleOptions } from "@mikro-orm/nestjs";
 import { CatalogModule } from "./catalog/catalog.module";
 import { Auth0Module } from "@auth0/auth0.module";
-import { AccountsModule } from "./accounts/accounts.module";
 import { SalesModule } from "./sales/sales.module";
 import { MyEasySuiteModule } from "./myeasysuite/MyEasySuiteModule";
 import { APP_FILTER } from "@nestjs/core";
@@ -29,6 +27,8 @@ import { AllExceptionsFilter } from "@shared/filters";
 import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
 import { MikroORM } from "@mikro-orm/core";
 import { mikroOrmOptions } from "./mikroOrmOptions";
+import { AuthModule } from "./auth/auth.module";
+import { AuthenticationModule } from "./shared";
 
 @Module({
   imports: [
@@ -42,7 +42,12 @@ import { mikroOrmOptions } from "./mikroOrmOptions";
       }),
       inject: [],
     }),
+    CacheModule.register(),
+    HttpModule,
     PassportModule.register({ defaultStrategy: "jwt" }),
+    AuthenticationModule,
+    EventEmitterModule.forRoot(),
+    ScheduleModule.forRoot(),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (cfg: ConfigService) => ({
@@ -51,18 +56,11 @@ import { mikroOrmOptions } from "./mikroOrmOptions";
       inject: [ConfigService],
     }),
     MikroOrmModule.forRoot(mikroOrmOptions),
+    Auth0Module,
     AuthModule,
-
-    EventEmitterModule.forRoot(),
-    ScheduleModule.forRoot(),
-    HttpModule,
     AzureTelemetryModule,
     AzureStorageModule,
-    CacheModule.register(),
-    // PrismaModule,
     HealthModule,
-    Auth0Module,
-    AccountsModule,
     ShopifyModule,
     CatalogModule,
     SalesModule,
