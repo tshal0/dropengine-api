@@ -175,7 +175,7 @@ paths:
                   $ref: '#/components/schemas/ProductType'
       operationId: get-productTypes
     post:
-      summary: ''
+      summary: Create ProductType
       operationId: post-productTypes
       responses:
         '200':
@@ -192,12 +192,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductType'
       operationId: get-productTypes
-    post:
-      summary: ''
-      operationId: post-productTypes
-      responses:
-        '200':
-          description: OK
     parameters:
       - schema:
           type: string
@@ -230,7 +224,7 @@ paths:
           name: productTypeId
           description: ProductTypeId filter.
     post:
-      summary: ''
+      summary: Create Product
       operationId: post-products
       responses:
         '200':
@@ -258,12 +252,6 @@ paths:
       tags: []
       responses: {}
       operationId: get-products
-    post:
-      summary: ''
-      operationId: post-products
-      responses:
-        '200':
-          description: OK
     parameters:
       - schema:
           type: string
@@ -361,7 +349,7 @@ paths:
         in: path
         required: true
     patch:
-      summary: ''
+      summary: Edit Personalization
       operationId: patch-orders-id-lineItems-lid
       responses:
         '200':
@@ -379,7 +367,7 @@ paths:
         in: path
         required: true
     patch:
-      summary: ''
+      summary: Edit ShippingAddress
       operationId: patch-orders-id-shippingAddress
       responses:
         '200':
@@ -397,7 +385,7 @@ paths:
         in: path
         required: true
     patch:
-      summary: ''
+      summary: Edit Customer
       operationId: patch-orders-id-customer
       responses:
         '200':

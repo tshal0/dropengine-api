@@ -7,11 +7,12 @@ $docRepo = "https://github.com/dropEngineLead/$repoName.git"
 
 git clone $docRepo
 Remove-Item ./$repoName/* -Recurse
-git config user.email "$userEmail"
-git config user.name "$userName"
+
 Copy-Item $stoplightDir/* -Destination $repoName -Recurse
 Set-Location .\$repoName
 Get-ChildItem
+git config user.email "$userEmail"
+git config user.name "$userName"
 git add .
 git status
 git remote -v show
