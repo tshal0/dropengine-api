@@ -19,6 +19,7 @@ import {
   grantTypePayloads,
   loadAccessToken,
 } from "@shared/utils";
+import safeJsonStringify from "safe-json-stringify";
 
 export abstract class MES {
   static readonly MES_API_URL: string = `MES_API_URL`;
@@ -89,6 +90,7 @@ export abstract class MES {
               `New MyEasySuite Access Token Failed To Load.`,
               error
             );
+            console.debug(safeJsonStringify(tokenOptions, null, 2));
           }
         }
         const myEasySuiteHeaders = {

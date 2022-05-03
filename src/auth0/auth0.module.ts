@@ -31,6 +31,7 @@ export abstract class AUTH0 {
   static readonly AUTH0_MGMT_API_URL: string = `AUTH0_MGMT_API_URL`;
 
   static readonly AUTH0_MGMT_ACCESS_TOKEN_URL: string = `AUTH0_MGMT_ACCESS_TOKEN_URL`;
+  static readonly AUTH0_ACCESS_TOKEN_URL: string = `AUTH0_ACCESS_TOKEN_URL`;
   static readonly AUTH0_MGMT_CLIENT_ID: string = `AUTH0_MGMT_CLIENT_ID`;
   static readonly AUTH0_MGMT_CLIENT_SECRET: string = `AUTH0_MGMT_CLIENT_SECRET`;
   static readonly AUTH0_MGMT_AUDIENCE: string = `AUTH0_MGMT_AUDIENCE`;
@@ -52,7 +53,9 @@ export abstract class AUTH0 {
       imports: [ConfigModule, CacheModule.register()],
       useFactory: async (config: ConfigService, cache: Cache) => {
         const baseUrl = config.get(AUTH0.AUTH0_MGMT_API_URL);
-        const accessTokenUrl = config.get(AUTH0.AUTH0_MGMT_ACCESS_TOKEN_URL);
+        const accessTokenUrl =
+          config.get(AUTH0.AUTH0_MGMT_ACCESS_TOKEN_URL) ||
+          config.get(AUTH0.AUTH0_ACCESS_TOKEN_URL);
         const clientId = config.get(AUTH0.AUTH0_MGMT_CLIENT_ID);
         const clientSecret = config.get(AUTH0.AUTH0_MGMT_CLIENT_SECRET);
         const audience = config.get(AUTH0.AUTH0_MGMT_AUDIENCE);
@@ -90,6 +93,7 @@ export abstract class AUTH0 {
               `New Auth0ManagementAPI Access Token Failed To Load.`,
               error
             );
+            console.debug(safeJsonStringify(tokenOptions, null, 2));
           }
         }
         const auth0MgmtHeaders = {
