@@ -3,7 +3,9 @@ info:
   title: Auth
   version: '1'
   summary: DropEngine™ Auth API
-  description: ''
+  description: TBD
+  contact:
+    name: Thomas Shallenberger
 servers:
   - url: 'https://dev.drop-engine.com/api/v1/auth'
     description: Dev
@@ -19,16 +21,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-              examples:
-                New User Bob Fellow:
-                  value:
-                    id: 12
-                    firstName: Bob
-                    lastName: Fellow
-                    email: bob.fellow@gmail.com
-                    dateOfBirth: '1996-08-24'
-                    emailVerified: false
-                    createDate: '2020-11-18'
+              examples: {}
         '400':
           description: Missing Required Information
         '409':
@@ -63,7 +56,13 @@ paths:
                   password: password123!
                   firstName: Test
                   lastName: Sample
-            examples: {}
+            examples:
+              example-1:
+                value:
+                  email: string
+                  password: string
+                  firstName: string
+                  lastName: string
         description: Post the necessary fields for the API to create a new user.
       description: Create a new user.
       tags:
@@ -119,16 +118,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-              examples:
-                Updated User Rebecca Baker:
-                  value:
-                    id: 13
-                    firstName: Rebecca
-                    lastName: Baker
-                    email: rebecca@gmail.com
-                    dateOfBirth: '1985-10-02'
-                    emailVerified: false
-                    createDate: '2019-08-24'
+              examples: {}
         '404':
           description: User Not Found
         '409':
@@ -138,39 +128,75 @@ paths:
         content:
           application/json:
             schema:
+              description: ''
               type: object
               properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
                 email:
                   type: string
-                  description: 'If a new email is given, the user''s email verified property will be set to false.'
-                dateOfBirth:
+                  minLength: 1
+                password:
                   type: string
-            examples:
-              Update First Name:
-                value:
-                  firstName: Rebecca
-              Update Email:
-                value:
-                  email: rebecca@gmail.com
-              Update Last Name & Date of Birth:
-                value:
-                  lastName: Baker
-                  dateOfBirth: '1985-10-02'
+                  minLength: 1
+                firstName:
+                  type: string
+                  minLength: 1
+                lastName:
+                  type: string
+                  minLength: 1
+              required:
+                - email
+                - password
+                - firstName
+                - lastName
+              x-examples:
+                example-1:
+                  email: string
+                  password: string
+                  firstName: string
+                  lastName: string
+            examples: {}
         description: Patch user properties to update.
       tags:
         - v1
     delete:
       summary: Delete a user
       operationId: delete-users-userId
+      description: TBD
       responses:
         '200':
           description: OK
       tags:
         - v1
+  /accounts:
+    get:
+      summary: Retrieve a list of accounts
+      description: TBD
+      tags:
+        - v1
+      responses:
+        '200':
+          description: OK
+      operationId: get-accounts
+  '/accounts/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Retrieve a specific account
+      description: TBD
+      tags:
+        - v1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+      operationId: get-accounts-id
 components:
   schemas:
     User:
