@@ -1,37 +1,19 @@
 FROM node:16.13.2-alpine3.14 AS build
 
 WORKDIR /usr/src/app
+ADD package.json yarn.lock tsconfig.json /usr/src/app/
+RUN yarn --pure-lockfile
 
-COPY package*.json ./
-COPY yarn.lock ./
-# COPY .npmrc ./
-# COPY .npmrc ./prisma
+FROM node:16.13.2-alpine3.14 as production
 
-RUN yarn add glob rimraf
-RUN yarn --only=development
-
-COPY . .
-RUN echo $(ls -1 /usr/src/app)
-RUN yarn tsc:debug
-RUN yarn build
-
-FROM node:16.13.1-alpine3.14 as production
+EXPOSE ${WEBSITES_PORT}
+WORKDIR /usr/src/app
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
-WORKDIR /usr/src/app
 
-COPY package*.json ./
-COPY yarn.lock ./
-# COPY .npmrc ./
-# COPY .npmrc $HOME
+COPY --from=build /usr/src/app .
+ADD . /usr/src/app/
+RUN yarn build
 
-RUN yarn --only=production
-
-COPY . .
-COPY --from=build /usr/src/app/dist ./dist
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/package*.json ./
-EXPOSE ${WEBSITES_PORT}
-RUN echo $(ls -1 /usr/src/app)
 CMD ["node", "dist/main"]

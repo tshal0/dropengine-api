@@ -54,5 +54,7 @@
     "_artifact",
     "dist",
     "jest*.ts",
+    "*mock*.ts",
+    "*spec.ts"
   ]
 }
