@@ -10,8 +10,9 @@ servers:
 paths:
   /productTypes:
     get:
-      summary: Get ProductTypes
-      tags: []
+      summary: Retrieve a list of product types
+      tags:
+        - v1
       responses:
         '200':
           description: OK
@@ -22,16 +23,19 @@ paths:
                 items:
                   $ref: '#/components/schemas/ProductType'
       operationId: get-productTypes
+      description: ''
     post:
-      summary: Create ProductType
+      summary: Create a product type
       operationId: post-productTypes
       responses:
         '200':
           description: OK
+      description: ''
   '/productTypes/{id}':
     get:
-      summary: Get ProductType
-      tags: []
+      summary: '/productTypes/{id}'
+      tags:
+        - v1
       responses:
         '200':
           description: OK
@@ -48,8 +52,9 @@ paths:
         required: true
   /products:
     get:
-      summary: Query Products
-      tags: []
+      summary: Retrieve a list of products
+      tags:
+        - v1
       responses:
         '200':
           $ref: '#/components/responses/QueryProductsResponseDto'
@@ -71,16 +76,19 @@ paths:
           in: query
           name: productTypeId
           description: ProductTypeId filter.
+      description: ''
     post:
-      summary: Create Product
+      summary: Create a product
       operationId: post-products
       responses:
         '200':
           description: OK
+      tags:
+        - v1
     parameters: []
   /products/import:
     post:
-      summary: Import Products
+      summary: Import a CSV of products
       operationId: import-products
       responses:
         '200':
@@ -93,13 +101,17 @@ paths:
               type: object
             examples: {}
         description: ''
+      tags:
+        - v1
     parameters: []
   '/products/{id}':
     get:
-      summary: Get Product
-      tags: []
+      summary: Retrieve a specific product
+      tags:
+        - v1
       responses: {}
       operationId: get-products
+      description: ''
     parameters:
       - schema:
           type: string
@@ -108,12 +120,14 @@ paths:
         required: true
   /productVariants/import:
     post:
-      summary: Import Product Variants
+      summary: Import a CSV of product types
       operationId: import-products
       responses:
         '200':
           $ref: '#/components/responses/ImportVariantsResponseDto'
       description: ''
+      tags:
+        - v1
     parameters: []
 components:
   responses:

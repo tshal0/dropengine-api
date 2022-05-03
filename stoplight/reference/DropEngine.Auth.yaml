@@ -18,7 +18,8 @@ paths:
         description: Id of an existing user.
     get:
       summary: Get User
-      tags: []
+      tags:
+        - v1
       responses:
         '200':
           description: User Found
@@ -155,6 +156,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
+      tags:
+        - v1
     parameters: []
 components:
   schemas:

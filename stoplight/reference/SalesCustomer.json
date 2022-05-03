@@ -20,5 +20,6 @@
       "email": "test@example.com",
       "name": "Test Example"
     }
-  }
+  },
+  "title": "Customer"
 }

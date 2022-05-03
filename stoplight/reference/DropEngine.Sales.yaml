@@ -11,8 +11,8 @@ paths:
     get:
       summary: Get Orders
       tags:
-        - v1.0
         - orders
+        - v1
       responses: {}
       operationId: get-orders
     post:
@@ -39,7 +39,8 @@ paths:
         description: Order ID
     get:
       summary: Get Order
-      tags: []
+      tags:
+        - v1
       responses:
         '200':
           $ref: '#/components/responses/SalesOrderDto'
@@ -100,6 +101,8 @@ paths:
           application/json:
             schema:
               $ref: ../models/Sales/CreateSalesOrder/CreateSalesOrderLineItem.json
+      tags:
+        - v1
   '/orders/{id}/shippingAddress':
     parameters:
       - schema:
@@ -118,6 +121,8 @@ paths:
           application/json:
             schema:
               $ref: ../models/Shared/Address.json
+      tags:
+        - v1
   '/orders/{id}/customer':
     parameters:
       - schema:
@@ -136,6 +141,9 @@ paths:
           application/json:
             schema:
               $ref: ../models/Sales/CreateSalesOrder/CreateSalesOrderCustomer.json
+      tags:
+        - v1
+      description: ''
   '/orders/{id}/send':
     parameters:
       - schema:
@@ -149,6 +157,8 @@ paths:
       responses:
         '200':
           description: OK
+      tags:
+        - v1
   '/orders/{id}/recall':
     parameters:
       - schema:
@@ -163,6 +173,8 @@ paths:
         '200':
           description: OK
       description: ''
+      tags:
+        - v1
   '/orders/{id}/cancel':
     parameters:
       - schema:
@@ -177,6 +189,8 @@ paths:
         '200':
           description: OK
       description: ''
+      tags:
+        - v1
 components:
   schemas:
     DomainEvent:
