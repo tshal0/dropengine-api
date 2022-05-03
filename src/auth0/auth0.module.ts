@@ -4,23 +4,12 @@ import {
   CacheModule,
   CACHE_MANAGER,
   OnModuleInit,
-  Inject,
   Logger,
 } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
-import {
-  AzureTelemetryModule,
-  AzureTelemetryService,
-  WinstonLogger,
-} from "@shared/modules";
-import {
-  AuthPayloadParams,
-  generateTokenRequestOptions,
-  grantTypePayloads,
-  loadAccessToken,
-  requestObject,
-} from "@shared/utils";
+import { AzureTelemetryModule } from "@shared/modules";
+import { AuthPayloadParams, loadAccessToken } from "@shared/utils";
 import https from "https";
 import { Auth0MgmtApiClient } from "./Auth0MgmtApiClient";
 import { Cache } from "cache-manager";
