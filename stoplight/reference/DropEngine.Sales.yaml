@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Sales
-  version: '1.0'
+  version: '1'
   summary: DropEngine™ Sales API
 servers:
   - url: 'https://dev.drop-engine.com/api/v1/sales'
@@ -9,26 +9,17 @@ servers:
 paths:
   /orders:
     get:
-      summary: Get Orders
-      tags:
-        - orders
-        - v1
+      summary: Retrieve a list of orders
       responses: {}
       operationId: get-orders
-    post:
-      summary: Create Order
       tags:
-        - v1.0
-        - orders
+        - v1
+    post:
+      summary: Create an order
       responses: {}
       operationId: post-orders
-    delete:
-      summary: Delete Order
       tags:
-        - v1.0
-        - orders
-      responses: {}
-      operationId: delete-orders
+        - v1
   '/orders/{id}':
     parameters:
       - schema:
@@ -38,7 +29,7 @@ paths:
         required: true
         description: Order ID
     get:
-      summary: Get Order
+      summary: Retrieve a specific order
       tags:
         - v1
       responses:
@@ -78,6 +69,14 @@ paths:
                     error: SALES_ORDER_NOT_FOUND
       operationId: get-orders-id
       description: Lookup SalesOrder by ID.
+    delete:
+      summary: Delete an order
+      operationId: delete-orders-id
+      responses:
+        '200':
+          description: OK
+      tags:
+        - v1
   '/orders/{id}/lineItems/{lid}':
     parameters:
       - schema:
@@ -91,7 +90,7 @@ paths:
         in: path
         required: true
     patch:
-      summary: Edit Personalization
+      summary: Update a line items personalization
       operationId: patch-orders-id-lineItems-lid
       responses:
         '200':
@@ -100,7 +99,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/Sales/CreateSalesOrder/CreateSalesOrderLineItem.json
+              $ref: '#/components/schemas/CreateSalesOrderLineItem'
       tags:
         - v1
   '/orders/{id}/shippingAddress':
@@ -111,7 +110,7 @@ paths:
         in: path
         required: true
     patch:
-      summary: Edit ShippingAddress
+      summary: Update an orders shipping address
       operationId: patch-orders-id-shippingAddress
       responses:
         '200':
@@ -120,7 +119,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/Shared/Address.json
+              $ref: ../models/Address.json
       tags:
         - v1
   '/orders/{id}/customer':
@@ -131,7 +130,7 @@ paths:
         in: path
         required: true
     patch:
-      summary: Edit Customer
+      summary: Update an orders customer information
       operationId: patch-orders-id-customer
       responses:
         '200':
@@ -140,7 +139,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../models/Sales/CreateSalesOrder/CreateSalesOrderCustomer.json
+              $ref: '#/components/schemas/CreateSalesOrderCustomer'
       tags:
         - v1
       description: ''
@@ -152,7 +151,7 @@ paths:
         in: path
         required: true
     post:
-      summary: Send To Manufacturer
+      summary: Send an order to a manufacturer
       operationId: post-orders-id-send
       responses:
         '200':
@@ -167,7 +166,7 @@ paths:
         in: path
         required: true
     post:
-      summary: Recall From Manufacturer
+      summary: Recall an order from its manufacturer
       operationId: post-orders-id-recall
       responses:
         '200':
@@ -183,7 +182,7 @@ paths:
         in: path
         required: true
     post:
-      summary: Cancel Order
+      summary: Cancel an order
       operationId: post-orders-id-cancel
       responses:
         '200':
@@ -193,785 +192,833 @@ paths:
         - v1
 components:
   schemas:
-    DomainEvent:
-      title: DomainEvent
+    CreateSalesOrder:
+      description: ''
       type: object
+      x-examples:
+        example-1:
+          orderDate: '2021-01-01T00:00:00.000Z'
+          orderNumber: '1001'
+          customer:
+            email: test@example.com
+            name: Test Example
+          lineItems:
+            - sku: MEM-001-01
+              variantId: 00000000-0000-0000-0000-000000000001
+              lineItemProperties:
+                - name: Name
+                  value: TestExample
+              quantity: 1
+          shippingAddress:
+            zip: 43844-9406
+            city: Warsaw
+            name: Tony Stark
+            phone: '2563472777'
+            company: MyEasySuite Inc.
+            country: United States
+            address1: 19936 County Road 18
+            address2: ''
+            address3: ''
+            latitude: 40.2496938
+            province: Ohio
+            lastName: Stark
+            longitude: -82.1265222
+            firstName: Tony
+            countryCode: US
+            provinceCode: OH
+          billingAddress:
+            zip: 43844-9406
+            city: Warsaw
+            name: Tony Stark
+            phone: '2563472777'
+            company: MyEasySuite Inc.
+            country: United States
+            address1: 19936 County Road 18
+            address2: ''
+            address3: ''
+            latitude: 40.2496938
+            province: Ohio
+            lastName: Stark
+            longitude: -82.1265222
+            firstName: Tony
+            countryCode: US
+            provinceCode: OH
+      title: CreateSalesOrder
+      properties:
+        orderDate:
+          type: string
+          minLength: 1
+        orderNumber:
+          type: string
+          minLength: 1
+        customer:
+          $ref: '#/components/schemas/CreateSalesOrderCustomer'
+        lineItems:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/CreateSalesOrderLineItem'
+        shippingAddress:
+          $ref: ../models/Address.json
+        billingAddress:
+          $ref: ../models/Address.json
+      required:
+        - orderDate
+        - orderNumber
+        - customer
+        - lineItems
+        - shippingAddress
+        - billingAddress
+    CreateSalesOrderCustomer:
+      $ref: '#/components/schemas/SalesCustomer'
+      title: CreateSalesOrderCustomer
+    CreateSalesOrderLineItem:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          sku: MEM-001-01
+          variantId: 00000000-0000-0000-0000-000000000001
+          lineItemProperties:
+            - name: Name
+              value: TestExample
+          quantity: 1
+      title: CreateSalesOrderLineItem
+      properties:
+        sku:
+          type: string
+          minLength: 1
+        variantId:
+          type: string
+          minLength: 1
+        lineItemProperties:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SalesPersonalizationOption'
+        quantity:
+          type: number
+      required:
+        - sku
+        - variantId
+        - lineItemProperties
+        - quantity
+    SalesOrder:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: 6270277eb0e7a7ca40b015cd
+          accountId: 0f5682e9-9a9a-4728-a794-6daf16ec08f6
+          orderName: SLI-3838315397200
+          orderNumber: 1001
+          orderDate: '2021-01-01T00:00:00.000Z'
+          orderStatus: OPEN
+          lineItems:
+            - id: 6270277eb0e7a7ca40b015ce
+              lineNumber: 1
+              quantity: 1
+              variant:
+                id: 6e4971dc-6c71-4ae9-a451-3f557b8d97e8
+                sku: MU-C004-00-24-Black
+                image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png'
+                svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/4384264343/MU-C004-00.svg'
+                type: 2DMetalArt
+                option1:
+                  name: Size
+                  option: 24"
+                  enabled: true
+                option2:
+                  name: Color
+                  option: Black
+                  enabled: true
+                option3:
+                  option: null
+                  enabled: false
+                manufacturingCost:
+                  currency: USD
+                  total: 800
+                shippingCost:
+                  currency: USD
+                  total: 1300
+                weight:
+                  units: oz
+                  dimension: 1194
+                productionData:
+                  material: Mild Steel
+                  thickness: '0.06'
+                  route: '1'
+                personalizationRules:
+                  - name: top_text
+                    label: Top Text
+                    placeholder: Enter up to 14 characters
+                    required: true
+                    type: input
+                    maxLength: 14
+                    pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                    options: ''
+                  - name: bottom_text
+                    label: Bottom Text
+                    placeholder: Enter up to 14 characters
+                    required: true
+                    type: input
+                    maxLength: 14
+                    pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                    options: ''
+                  - name: initial
+                    label: Initial
+                    placeholder: Select your initial here
+                    required: true
+                    type: dropdownlist
+                    maxLength: 0
+                    options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
+              personalization:
+                - name: Top Text
+                  value: TestExampleLongerThan14
+                - name: Bottom Text
+                  value: Test-Example
+              flags:
+                - type: InvalidPersonalization
+                  details:
+                    lineNumber: 1
+                    property: Top Text
+                    reason: INVALID_LENGTH
+                  message: 'Line Item #1 has invalid property ''Top Text'': ''undefined''. Reason: INVALID_LENGTH'
+                - type: BadCharacter
+                  details:
+                    lineNumber: 1
+                    property: Bottom Text
+                    value: Test-Example
+                    pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                    reason: BAD_CHARACTER
+                  message: 'Line Item #1 has a bad character in property ''Bottom Text'': ''Test-Example''. Reason: BAD_CHARACTER'
+                - type: MissingPersonalization
+                  details:
+                    lineNumber: 1
+                    property: Initial
+                    reason: MISSING
+                  message: 'Line Item #1 is missing property ''Initial''.'
+              createdAt: '2022-05-02T18:48:30.175Z'
+              updatedAt: '2022-05-02T18:48:30.175Z'
+            - id: 6270277eb0e7a7ca40b015cf
+              lineNumber: 2
+              quantity: 1
+              variant:
+                id: ed45942e-5f80-447e-bca3-a4bcc8d27088
+                sku: MU-C004-00-18-Black
+                image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png'
+                svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/4384264343/MU-C004-00.svg'
+                type: 2DMetalArt
+                option1:
+                  name: Size
+                  option: 18"
+                  enabled: true
+                option2:
+                  name: Color
+                  option: Black
+                  enabled: true
+                option3:
+                  option: null
+                  enabled: false
+                manufacturingCost:
+                  currency: USD
+                  total: 650
+                shippingCost:
+                  currency: USD
+                  total: 1200
+                weight:
+                  units: oz
+                  dimension: 738
+                productionData:
+                  material: Mild Steel
+                  thickness: '0.06'
+                  route: '1'
+                personalizationRules:
+                  - name: top_text
+                    label: Top Text
+                    placeholder: Enter up to 14 characters
+                    required: true
+                    type: input
+                    maxLength: 14
+                    pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                    options: ''
+                  - name: bottom_text
+                    label: Bottom Text
+                    placeholder: Enter up to 14 characters
+                    required: true
+                    type: input
+                    maxLength: 14
+                    pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                    options: ''
+                  - name: initial
+                    label: Initial
+                    placeholder: Select your initial here
+                    required: true
+                    type: dropdownlist
+                    maxLength: 0
+                    options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
+              personalization:
+                - name: Name
+                  value: TestExample
+              flags:
+                - type: MissingPersonalization
+                  details:
+                    lineNumber: 2
+                    property: Top Text
+                    reason: MISSING
+                  message: 'Line Item #2 is missing property ''Top Text''.'
+                - type: MissingPersonalization
+                  details:
+                    lineNumber: 2
+                    property: Bottom Text
+                    reason: MISSING
+                  message: 'Line Item #2 is missing property ''Bottom Text''.'
+                - type: MissingPersonalization
+                  details:
+                    lineNumber: 2
+                    property: Initial
+                    reason: MISSING
+                  message: 'Line Item #2 is missing property ''Initial''.'
+              createdAt: '2022-05-02T18:48:30.177Z'
+              updatedAt: '2022-05-02T18:48:30.177Z'
+          customer:
+            email: test@example.com
+            name: Test Example
+          shippingAddress:
+            zip: 43844-9406
+            city: Warsaw
+            name: Tony Stark
+            phone: '2563472777'
+            company: MyEasySuite Inc.
+            country: United States
+            address1: 19936 County Road 18
+            address2: ''
+            address3: ''
+            latitude: 40.2496938
+            longitude: -82.1265222
+            province: Ohio
+            lastName: Stark
+            firstName: Tony
+            countryCode: US
+            provinceCode: OH
+          billingAddress:
+            zip: 43844-9406
+            city: Warsaw
+            name: Tony Stark
+            phone: '2563472777'
+            company: MyEasySuite Inc.
+            country: United States
+            address1: 19936 County Road 18
+            address2: ''
+            address3: ''
+            latitude: 40.2496938
+            longitude: -82.1265222
+            province: Ohio
+            lastName: Stark
+            firstName: Tony
+            countryCode: US
+            provinceCode: OH
+          createdAt: '2022-05-02T18:48:30.131Z'
+          updatedAt: '2022-05-02T18:48:30.131Z'
       properties:
         id:
           type: string
-  responses:
-    QueryProductsResponseDto:
-      description: Example response
-      content:
-        application/json:
-          schema:
-            description: ''
-            type: object
-            x-examples:
-              example-1:
-                data:
-                  - uuid: e06cc34d-6979-44b2-9fdc-54fbb7edc05f
-                    sku: MU-C001-00
-                    type: 2DMetalArt
-                    pricingTier: '1'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C001-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/7329271441/MU-C001-00.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: fff90a63-6b5b-4b01-a7be-6a5205ecf7c5
-                    sku: MU-C004-00
-                    type: 2DMetalArt
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/1486874782/MU-C004-00.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: 1aab0038-5211-4017-8263-a6f437c83b7e
-                    sku: MU-C005-00
-                    type: 2DMetalArt
-                    pricingTier: '3'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C005-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7191694457/7636424154/MU-C005-00.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                    variants: []
-                    productType: null
-                  - uuid: 0c1f7dac-3547-47c2-ac13-034c3a653175
-                    sku: MU-C116-00
-                    type: 2DMetalArt
-                    pricingTier: '3'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Outdoors
-                      - Tree
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/1891427748/MU-C116-00.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: middle_text
-                        type: input
-                        label: Middle Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                    variants: []
-                    productType: null
-                  - uuid: 50118145-07b4-41d0-8841-b20dbbc6d8ed
-                    sku: MU-C017-00
-                    type: 2DMetalArt
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/5233468681/MU-C017-00.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: 1b9f757b-45bc-4b42-a615-b42e47b197de
-                    sku: MEM-27-00
-                    type: 2DMetalArt
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Nurse
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-27-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3499663496/9643599499/27_04.20.2021.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                    variants: []
-                    productType: null
-                  - uuid: a54b0ff1-3611-473b-9dd5-68d7ed950a6f
-                    sku: MU2-C001-00
-                    type: Canvas
-                    pricingTier: '1'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C001-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/7329271441/MU-C001-00.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: a2214160-bac2-4987-a073-24f849c31f36
-                    sku: MU2-C004-00
-                    type: Canvas
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/1486874782/MU-C004-00.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: af931398-6aaa-4366-bbde-2c124edb7ea1
-                    sku: MU2-C005-00
-                    type: Canvas
-                    pricingTier: '3'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C005-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7191694457/7636424154/MU-C005-00.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                    variants: []
-                    productType: null
-                  - uuid: cb7c22fc-d16d-42d5-a692-fc7d07919ab5
-                    sku: MU2-C116-00
-                    type: Canvas
-                    pricingTier: '3'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Outdoors
-                      - Tree
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/1891427748/MU-C116-00.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: middle_text
-                        type: input
-                        label: Middle Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                    variants: []
-                    productType: null
-                  - uuid: 6d39c9d5-3b9a-4e22-bb01-6e4ce1bd8200
-                    sku: MU2-C017-00
-                    type: Canvas
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/5233468681/MU-C017-00.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: 94bd8389-d620-4ccc-9710-118370ea10c7
-                    sku: MU2-27-00
-                    type: Canvas
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Nurse
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-27-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3499663496/9643599499/27_04.20.2021.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                    variants: []
-                    productType: null
-                page: 0
-                pages: 1
-                query: ''
-                size: 12
-                total: 12
-            properties:
-              data:
-                type: array
-                uniqueItems: true
-                minItems: 1
-                items:
-                  $ref: '#/components/schemas/Product'
-              page:
-                type: number
-              pages:
-                type: number
-              query:
+          minLength: 1
+        accountId:
+          type: string
+          minLength: 1
+        orderName:
+          type: string
+          minLength: 1
+        orderNumber:
+          type: number
+        orderDate:
+          type: string
+          minLength: 1
+        orderStatus:
+          type: string
+          minLength: 1
+        lineItems:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SalesLineItem'
+        customer:
+          $ref: '#/components/schemas/SalesCustomer'
+        shippingAddress:
+          $ref: ../models/Address.json
+        billingAddress:
+          $ref: ../models/Address.json
+        createdAt:
+          type: string
+          minLength: 1
+        updatedAt:
+          type: string
+          minLength: 1
+      required:
+        - id
+        - accountId
+        - orderName
+        - orderNumber
+        - orderDate
+        - orderStatus
+        - lineItems
+        - customer
+        - shippingAddress
+        - billingAddress
+        - createdAt
+        - updatedAt
+    SalesCustomer:
+      description: ''
+      type: object
+      properties:
+        email:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+      required:
+        - email
+        - name
+      x-examples:
+        example-1:
+          email: test@example.com
+          name: Test Example
+      title: SalesCustomer
+    SalesLineItem:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: 6270277eb0e7a7ca40b015ce
+          lineNumber: 1
+          quantity: 1
+          variant:
+            id: 6e4971dc-6c71-4ae9-a451-3f557b8d97e8
+            sku: MU-C004-00-24-Black
+            image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png'
+            svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/4384264343/MU-C004-00.svg'
+            type: 2DMetalArt
+            option1:
+              name: Size
+              option: 24"
+              enabled: true
+            option2:
+              name: Color
+              option: Black
+              enabled: true
+            option3:
+              option: null
+              enabled: false
+            manufacturingCost:
+              currency: USD
+              total: 800
+            shippingCost:
+              currency: USD
+              total: 1300
+            weight:
+              units: oz
+              dimension: 1194
+            productionData:
+              material: Mild Steel
+              thickness: '0.06'
+              route: '1'
+            personalizationRules:
+              - name: top_text
+                label: Top Text
+                placeholder: Enter up to 14 characters
+                required: true
+                type: input
+                maxLength: 14
+                pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                options: ''
+              - name: bottom_text
+                label: Bottom Text
+                placeholder: Enter up to 14 characters
+                required: true
+                type: input
+                maxLength: 14
+                pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                options: ''
+              - name: initial
+                label: Initial
+                placeholder: Select your initial here
+                required: true
+                type: dropdownlist
+                maxLength: 0
+                options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
+          personalization:
+            - name: Top Text
+              value: TestExampleLongerThan14
+            - name: Bottom Text
+              value: Test-Example
+          flags:
+            - type: InvalidPersonalization
+              details:
+                lineNumber: 1
+                property: Top Text
+                reason: INVALID_LENGTH
+              message: 'Line Item #1 has invalid property ''Top Text'': ''undefined''. Reason: INVALID_LENGTH'
+            - type: BadCharacter
+              details:
+                lineNumber: 1
+                property: Bottom Text
+                value: Test-Example
+                pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+                reason: BAD_CHARACTER
+              message: 'Line Item #1 has a bad character in property ''Bottom Text'': ''Test-Example''. Reason: BAD_CHARACTER'
+            - type: MissingPersonalization
+              details:
+                lineNumber: 1
+                property: Initial
+                reason: MISSING
+              message: 'Line Item #1 is missing property ''Initial''.'
+          createdAt: '2022-05-02T18:48:30.175Z'
+          updatedAt: '2022-05-02T18:48:30.175Z'
+      title: SalesLineItem
+      examples:
+        - id: string
+          lineNumber: 0
+          quantity: 0
+          variant:
+            id: string
+            sku: string
+            image: string
+            svg: string
+            type: string
+            option1:
+              name: string
+              option: string
+              enabled: true
+            option2:
+              name: string
+              option: string
+              enabled: true
+            option3:
+              option: null
+              enabled: true
+            manufacturingCost:
+              currency: string
+              total: 0
+            shippingCost:
+              currency: string
+              total: 0
+            weight:
+              units: string
+              dimension: 0
+            productionData:
+              material: string
+              thickness: string
+              route: string
+            personalizationRules:
+              - name: string
+                label: string
+                placeholder: string
+                required: true
                 type: string
-              size:
-                type: number
-              total:
-                type: number
-            required:
-              - data
-              - page
-              - pages
-              - query
-              - size
-              - total
-          examples:
-            GetProducts (Default):
-              value:
-                data:
-                  - uuid: e06cc34d-6979-44b2-9fdc-54fbb7edc05f
-                    sku: MU-C001-00
-                    type: 2DMetalArt
-                    pricingTier: '1'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C001-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/7329271441/MU-C001-00.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: fff90a63-6b5b-4b01-a7be-6a5205ecf7c5
-                    sku: MU-C004-00
-                    type: 2DMetalArt
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/1486874782/MU-C004-00.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: 1aab0038-5211-4017-8263-a6f437c83b7e
-                    sku: MU-C005-00
-                    type: 2DMetalArt
-                    pricingTier: '3'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C005-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7191694457/7636424154/MU-C005-00.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                    variants: []
-                    productType: null
-                  - uuid: 0c1f7dac-3547-47c2-ac13-034c3a653175
-                    sku: MU-C116-00
-                    type: 2DMetalArt
-                    pricingTier: '3'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Outdoors
-                      - Tree
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/1891427748/MU-C116-00.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: middle_text
-                        type: input
-                        label: Middle Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                    variants: []
-                    productType: null
-                  - uuid: 50118145-07b4-41d0-8841-b20dbbc6d8ed
-                    sku: MU-C017-00
-                    type: 2DMetalArt
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/5233468681/MU-C017-00.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: 1b9f757b-45bc-4b42-a615-b42e47b197de
-                    sku: MEM-27-00
-                    type: 2DMetalArt
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Nurse
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-27-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3499663496/9643599499/27_04.20.2021.svg'
-                    createdAt: '2022-03-24T20:43:26.000Z'
-                    updatedAt: '2022-03-24T20:43:26.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                    variants: []
-                    productType: null
-                  - uuid: a54b0ff1-3611-473b-9dd5-68d7ed950a6f
-                    sku: MU2-C001-00
-                    type: Canvas
-                    pricingTier: '1'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C001-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/7329271441/MU-C001-00.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: a2214160-bac2-4987-a073-24f849c31f36
-                    sku: MU2-C004-00
-                    type: Canvas
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/1486874782/MU-C004-00.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: af931398-6aaa-4366-bbde-2c124edb7ea1
-                    sku: MU2-C005-00
-                    type: Canvas
-                    pricingTier: '3'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C005-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7191694457/7636424154/MU-C005-00.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                    variants: []
-                    productType: null
-                  - uuid: cb7c22fc-d16d-42d5-a692-fc7d07919ab5
-                    sku: MU2-C116-00
-                    type: Canvas
-                    pricingTier: '3'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Outdoors
-                      - Tree
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/1891427748/MU-C116-00.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: top_text
-                        type: input
-                        label: Top Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                      - name: middle_text
-                        type: input
-                        label: Middle Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: bottom_text
-                        type: input
-                        label: Bottom Text
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 24
-                        placeholder: Enter up to 24 characters
-                    variants: []
-                    productType: null
-                  - uuid: 6d39c9d5-3b9a-4e22-bb01-6e4ce1bd8200
-                    sku: MU2-C017-00
-                    type: Canvas
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Initial
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/5233468681/MU-C017-00.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                      - name: initial
-                        type: dropdown
-                        label: Initial
-                        options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
-                        required: true
-                        placeholder: Select Initial
-                    variants: []
-                    productType: null
-                  - uuid: 94bd8389-d620-4ccc-9710-118370ea10c7
-                    sku: MU2-27-00
-                    type: Canvas
-                    pricingTier: '2'
-                    tags:
-                      - Steel
-                      - Custom
-                      - Nurse
-                    image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-27-00-Black.png'
-                    svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3499663496/9643599499/27_04.20.2021.svg'
-                    createdAt: '2022-03-24T19:19:00.000Z'
-                    updatedAt: '2022-03-24T19:19:00.000Z'
-                    customOptions:
-                      - name: name
-                        type: input
-                        label: Name
-                        pattern: 'A-Z,a-z,0-9'
-                        required: true
-                        maxLength: 16
-                        placeholder: Enter up to 16 characters
-                    variants: []
-                    productType: null
-                page: 0
-                pages: 1
-                query: ''
-                size: 12
-                total: 12
-            Empty:
-              value:
-                data: []
-                page: 0
-                pages: 1
-                query: ''
-                size: 0
-                total: 0
+                maxLength: 0
+                pattern: string
+                options: string
+          personalization:
+            - name: string
+              value: string
+          flags:
+            - type: string
+              details:
+                lineNumber: 0
+                property: string
+                reason: string
+              message: string
+          createdAt: string
+          updatedAt: string
+      properties:
+        id:
+          type: string
+          minLength: 1
+        lineNumber:
+          type: number
+        quantity:
+          type: number
+        variant:
+          $ref: '#/components/schemas/SalesProductVariant'
+        personalization:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SalesPersonalizationOption'
+        flags:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SalesLineItemFlag'
+        createdAt:
+          type: string
+          minLength: 1
+        updatedAt:
+          type: string
+          minLength: 1
+      required:
+        - id
+        - lineNumber
+        - quantity
+        - variant
+        - personalization
+        - flags
+        - createdAt
+        - updatedAt
+    SalesPersonalizationOption:
+      description: ''
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        value:
+          type: string
+          minLength: 1
+      required:
+        - name
+        - value
+      x-examples:
+        example-1:
+          name: string
+          value: string
+      title: SalesPersonalizationOption
+    SalesLineItemFlag:
+      description: ''
+      type: object
+      properties:
+        type:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          properties:
+            lineNumber:
+              type: number
+            property:
+              type: string
+              minLength: 1
+            reason:
+              type: string
+              minLength: 1
+          required:
+            - lineNumber
+            - property
+            - reason
+        message:
+          type: string
+          minLength: 1
+      required:
+        - type
+        - details
+        - message
+      x-examples:
+        example-1:
+          type: MissingPersonalization
+          details:
+            lineNumber: 2
+            property: Top Text
+            reason: MISSING
+          message: 'Line Item #2 is missing property ''Top Text''.'
+      title: SalesLineItemFlag
+    SalesProductVariant:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: ed45942e-5f80-447e-bca3-a4bcc8d27088
+          sku: MU-C004-00-18-Black
+          image: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png'
+          svg: 'https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/4384264343/MU-C004-00.svg'
+          type: 2DMetalArt
+          option1:
+            name: Size
+            option: 18"
+            enabled: true
+          option2:
+            name: Color
+            option: Black
+            enabled: true
+          option3:
+            option: null
+            enabled: false
+          manufacturingCost:
+            currency: USD
+            total: 650
+          shippingCost:
+            currency: USD
+            total: 1200
+          weight:
+            units: oz
+            dimension: 738
+          productionData:
+            material: Mild Steel
+            thickness: '0.06'
+            route: '1'
+          personalizationRules:
+            - name: top_text
+              label: Top Text
+              placeholder: Enter up to 14 characters
+              required: true
+              type: input
+              maxLength: 14
+              pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+              options: ''
+            - name: bottom_text
+              label: Bottom Text
+              placeholder: Enter up to 14 characters
+              required: true
+              type: input
+              maxLength: 14
+              pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+              options: ''
+            - name: initial
+              label: Initial
+              placeholder: Select your initial here
+              required: true
+              type: dropdownlist
+              maxLength: 0
+              options: 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z'
+      properties:
+        id:
+          type: string
+          minLength: 1
+        sku:
+          type: string
+          minLength: 1
+        image:
+          type: string
+          minLength: 1
+        svg:
+          type: string
+          minLength: 1
+        type:
+          type: string
+          minLength: 1
+        option1:
+          $ref: '#/components/schemas/SalesProductVariantOption'
+        option2:
+          $ref: '#/components/schemas/SalesProductVariantOption'
+        option3:
+          $ref: '#/components/schemas/SalesProductVariantOption'
+        manufacturingCost:
+          $ref: ../models/Money.json
+        shippingCost:
+          $ref: ../models/Money.json
+        weight:
+          $ref: ../models/Weight.json
+        productionData:
+          type: object
+          required:
+            - material
+            - thickness
+            - route
+          properties:
+            material:
+              type: string
+              minLength: 1
+            thickness:
+              type: string
+              minLength: 1
+            route:
+              type: string
+              minLength: 1
+        personalizationRules:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SalesProductPersonalizationRule'
+      required:
+        - id
+        - sku
+        - image
+        - svg
+        - type
+        - option1
+        - option2
+        - option3
+        - manufacturingCost
+        - shippingCost
+        - weight
+        - productionData
+        - personalizationRules
+    SalesProductVariantOption:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          name: null
+          option: null
+          enabled: true
+      properties:
+        name:
+          type:
+            - string
+            - 'null'
+        option:
+          type:
+            - string
+            - 'null'
+        enabled:
+          type: boolean
+      required:
+        - enabled
+    SalesProductPersonalizationRule:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          name: top_text
+          label: Top Text
+          placeholder: Enter up to 14 characters
+          required: true
+          type: input
+          maxLength: 14
+          pattern: '^[a-zA-Z0-9\s!?.,\’”()&$%#@/]*$'
+          options: ''
+      properties:
+        name:
+          type: string
+          minLength: 1
+        label:
+          type: string
+          minLength: 1
+        placeholder:
+          type: string
+          minLength: 1
+        required:
+          type: boolean
+        type:
+          type: string
+          minLength: 1
+        maxLength:
+          type: number
+        pattern:
+          type:
+            - string
+            - 'null'
+        options:
+          type:
+            - string
+            - 'null'
+      required:
+        - name
+        - label
+        - placeholder
+        - required
+        - type
+        - maxLength
+        - options
+      title: SalesProductPersonalizationRule
+  responses:
     QueryOrdersResponseDto:
       description: Example response
       content:
@@ -1003,7 +1050,7 @@ components:
               data:
                 type: array
                 items:
-                  $ref: ../models/Sales/Shared/SalesOrder.json
+                  $ref: '#/components/schemas/SalesOrder'
             required:
               - total
               - page
@@ -1021,10 +1068,13 @@ components:
                 options: []
                 data:
                   - id: 6270277eb0e7a7ca40b015cd
+                    accountId: 00000000-0000-0000-0000-000000000001
                     orderName: SLI-3838315397200
                     orderStatus: OPEN
                     orderDate: '2022-05-02T18:48:30.131Z'
                     orderNumber: 1001
+                    createdAt: '2021-01-01T00:00:00.000Z'
+                    updatedAt: '2021-01-01T00:00:00.000Z'
                     customer:
                       email: test@example.com
                       name: Test Example
@@ -1083,6 +1133,7 @@ components:
                           option3:
                             option: null
                             enabled: false
+                            name: null
                           manufacturingCost:
                             currency: USD
                             total: 800
@@ -1146,8 +1197,8 @@ components:
                               property: Initial
                               reason: MISSING
                             message: 'Line Item #1 is missing property ''Initial''.'
-                        createdAt: '2022-05-02T18:55:41.584Z'
-                        updatedAt: '2022-05-02T18:55:41.584Z'
+                        createdAt: '2021-01-01T00:00:00.000Z'
+                        updatedAt: '2021-01-01T00:00:00.000Z'
                       - id: 6270277eb0e7a7ca40b015cf
                         lineNumber: 2
                         quantity: 1
@@ -1234,7 +1285,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: ../models/Sales/Shared/SalesOrder.json
+            $ref: '#/components/schemas/SalesOrder'
 tags:
   - name: sales
   - name: v1

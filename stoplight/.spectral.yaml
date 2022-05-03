@@ -3,14 +3,12 @@ formats:
 extends:
   - 'spectral:oas'
 rules:
-  info-matches-stoplight:
-    description: This is an example rule
-    message: Info must contain Stoplight
+  info-matches-dropengine:
+    description: This is an example rule for DropEngine
+    message: Info must contain summary
     given: $.info
     recommended: true
     type: style
     then:
       field: title
-      function: pattern
-      functionOptions:
-        match: Stoplight
+      function: truthy
