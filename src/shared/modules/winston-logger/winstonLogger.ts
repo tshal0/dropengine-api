@@ -75,6 +75,9 @@ export const consoleFormat = (
     if (meta["0"]?.length) {
       context = meta["0"];
     }
+    if (typeof meta?.stack === "object") {
+      meta.stack = safeJsonStringify(meta.stack, null, 2);
+    }
     if (typeof context === "object") {
       meta.context = context;
       context = "Axios";
