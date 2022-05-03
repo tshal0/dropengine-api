@@ -1,926 +1,1147 @@
 {
-  "info": {
-    "_postman_id": "ef1f555b-256d-4b42-91d4-50c1b31afc71",
-    "name": "drop-engine-api",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "users",
-      "item": [
-        {
-          "name": "FindById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "users",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "c0af603a-29bd-4622-bc92-11df2c0d4a11"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Activate",
-          "request": {
-            "method": "PATCH",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id/activate",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "users",
-                ":id",
-                "activate"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "98cdd307-c6c6-47f5-a42b-b7a2807a8fa6"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "SignUp",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"email\": \"test@sample.com\",\r\n    \"password\": \"password123!\",\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"Sample\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
-              "host": ["{{base_url}}"],
-              "path": ["{{prefix}}", "{{version}}", "{{module}}", "users"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "users",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "8a05fa21-11e2-4555-9ff4-507e76ed78c6"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "FindUserByEmail",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users?email=thomas@valknot.co",
-              "host": ["{{base_url}}"],
-              "path": ["{{prefix}}", "{{version}}", "{{module}}", "users"],
-              "query": [
-                {
-                  "key": "email",
-                  "value": "thomas@valknot.co"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "All",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
-              "host": ["{{base_url}}"],
-              "path": ["{{prefix}}", "{{version}}", "{{module}}", "users"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "productTypes",
-      "item": [
-        {
-          "name": "FindByUuid",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:id",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "productTypes",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "974f029d-7ef4-4c57-a25a-bfbaae8ae897"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "\r",
-                  "const resp = pm.response.json()\r",
-                  "\r",
-                  "pm.test(`UUID should not be empty`, () => {\r",
-                  "    pm.expect(resp.id.length).to.be.greaterThan(0)\r",
-                  "})\r",
-                  "\r",
-                  "pm.collectionVariables.set(`productTypeUuid`, resp.id)"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"2DMetalArt\",\r\n    \"image\": \"imageurl\",\r\n    \"productionData\": {\r\n        \"material\": \"Mild Steel\",\r\n        \"thickness\": \"0.06\",\r\n        \"route\": \"1\"\r\n    },\r\n    \"option1\": {\r\n        \"name\": \"Size\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"12\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"15\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"18\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"24\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"30\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Color\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Black\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"White\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Gold\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Copper\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Silver\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option3\": null,\r\n    \"livePreview\": null\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/api/productTypes",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "api",
-                "productTypes"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:id",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "productTypes",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "201eadac-15e3-4900-9be1-6123bb13ee9b"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "FindById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes?id=1",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "productTypes"
-              ],
-              "query": [
-                {
-                  "key": "id",
-                  "value": "1"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "All",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "productTypes"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Rename",
-          "request": {
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"asdf\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:id/rename",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "productTypes",
-                ":id",
-                "rename"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "974f029d-7ef4-4c57-a25a-bfbaae8ae897"
-                }
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "products",
-      "item": [
-        {
-          "name": "FindByUuid",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products/:id",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "products",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "efa5f79b-ccf3-4ad4-8ce0-68987ca5918c"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"productTypeId\": \"00000000-0000-0000-0000-000000000001\",\r\n    \"sku\": \"MEM-000-01\",\r\n    \"tags\": \"\",\r\n    \"categories\": \"\",\r\n    \"image\": \"\",\r\n    \"svg\": \"\",\r\n    \"customOptions\": [\r\n        {\r\n            \"name\": \"name\",\r\n            \"label\": \"Name\",\r\n            \"placeholder\": \"Enter up to 20 characters\",\r\n            \"required\": true,\r\n            \"type\": \"input\",\r\n            \"maxLength\": 20,\r\n            \"pattern\": \"^[a-zA-Z0-9\\\\s.,'/&]*\"\r\n        },\r\n        {\r\n            \"name\": \"initial\",\r\n            \"label\": \"Initial\",\r\n            \"placeholder\": \"Select your initial here\",\r\n            \"required\": true,\r\n            \"type\": \"dropdown\",\r\n            \"options\": \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\"\r\n        }\r\n    ],\r\n    \"variants\": []\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products",
-              "host": ["{{base_url}}"],
-              "path": ["{{prefix}}", "{{version}}", "{{module}}", "products"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products/:id",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "products",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "f03d82be-427a-499c-8dae-0ae967843130"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "FindById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products?id=1",
-              "host": ["{{base_url}}"],
-              "path": ["{{prefix}}", "{{version}}", "{{module}}", "products"],
-              "query": [
-                {
-                  "key": "id",
-                  "value": "1"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "All",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiaXNzIjoiaHR0cHM6Ly9kcm9wLWVuZ2luZS1kZXYudXMuYXV0aDAuY29tLyJ9..BHiK9JtBRrxGF8x5.c2Vvd5EK4dEplyk2GR_te38XdNleb5UmC-YbO7FVM3EyDQwFxRq507a4ycITidRoAMN8lCNZ5a_awe6a3b97rVe2FhJRnuyq1DBomPP7c3Z_ABc3pgfWoAt79oLvBs9uuC-soudfZpcFv9TJoqJ9DXBR99ZWYIMfWBiuaT99zVomDSJplzRozJF8PmU4sic_nTNtQnqUSVD4FEDLkUxplT0MAu2k2PO9BQxuIRXqkZdusexTmGPk9o6K2eZWpWQPRtdnM13Dd85odHvw-88sR9RLA89S_AIQSr-5L1d2mrosqDJZrqhouB3JWgxD-DDu6Wjrh1U-zho.F0tzjqBoP7uWgwfh5G26WA",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products?page=0&size=100&productTypeId={{productTypeId}}",
-              "host": ["{{base_url}}"],
-              "path": ["{{prefix}}", "{{version}}", "{{module}}", "products"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "0"
-                },
-                {
-                  "key": "size",
-                  "value": "100"
-                },
-                {
-                  "key": "productTypeId",
-                  "value": "{{productTypeId}}"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Rename",
-          "request": {
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"asdf\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:id/rename",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "productTypes",
-                ":id",
-                "rename"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "974f029d-7ef4-4c57-a25a-bfbaae8ae897"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UpdateCustomOptions",
-          "request": {
-            "method": "PATCH",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/",
-              "host": ["{{base_url}}"],
-              "path": ["{{prefix}}", "{{version}}", "{{module}}", ""]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "ImportProductCsv",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": "/C:/DE/projects/drop-engine-api/e2e/fixtures/2022_03_18_product_with_images_fixed.csv"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products/import",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "products",
-                "import"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "shopify",
-      "item": [
-        {
-          "name": "Connect",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/shopify?shop=de-template-local&timestamp={{$timestamp}}",
-              "host": ["{{base_url}}"],
-              "path": ["{{prefix}}", "{{version}}", "{{module}}", "shopify"],
-              "query": [
-                {
-                  "key": "shop",
-                  "value": "de-template-local"
-                },
-                {
-                  "key": "timestamp",
-                  "value": "{{$timestamp}}"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "AcceptInstall",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/shopify/accept",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "shopify",
-                "accept"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Shopify Account",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/shopify/:id",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "shopify",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "53d354d6-bbcb-4b13-b642-13b13c6b6401"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get All",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/shopify",
-              "host": ["{{base_url}}"],
-              "path": ["{{prefix}}", "{{version}}", "{{module}}", "shopify"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/shopify/:id",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "shopify",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "955f54fe-f43f-43d1-a6ad-9690dd84f2c3"
-                }
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "productVariants",
-      "item": [
-        {
-          "name": "Create",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"productId\": \"7c119f4c-1432-47bd-9273-0972d35f75f8\",\r\n    \"image\":\"\",\r\n    \"sku\": \"MEM-000-01-15-Black\",\r\n    \"option1\": {\r\n        \"name\": \"Size\",\r\n        \"option\": \"15\"\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Color\",\r\n        \"option\": \"Black\"\r\n    }\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "productVariants"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/:id",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "productVariants",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": "ab0d7bf2-cbd9-45d8-9c00-f89f18db4dae"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "FindByUuid",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/:uuid",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "productVariants",
-                ":uuid"
-              ],
-              "variable": [
-                {
-                  "key": "uuid",
-                  "value": "ab0d7bf2-cbd9-45d8-9c00-f89f18db4dae"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "FindById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/:id",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "productVariants",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "key": "id",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "FindBySku",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/MEM-000-01-12-Black",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "productVariants",
-                "MEM-000-01-12-Black"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "ImportVariantCsv",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": "/C:/DE/projects/drop-engine-api/e2e/fixtures/2022_03_18_variants_with_images_fixed.csv"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/import",
-              "host": ["{{base_url}}"],
-              "path": [
-                "{{prefix}}",
-                "{{version}}",
-                "{{module}}",
-                "productVariants",
-                "import"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Health",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}",
-          "host": ["{{base_url}}"]
-        }
-      },
-      "response": []
-    }
-  ],
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{auth0_access_token}}",
-        "type": "string"
-      }
-    ]
-  },
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          "const access_token = pm.environment.get('auth0_access_token');",
-          "const expiry = pm.environment.get('auth0_access_token_expiration');",
-          "const limitDate = new Date(new Date().getTime() - (12 * 60 * 60 * 1000));",
-          "const expiryDate = Date.parse(expiry)",
-          "console.warn({ limitDate, expiryDate, expiry })",
-          "if (!expiryDate || expiryDate < limitDate || expiryDate && !access_token?.length) {",
-          "    console.warn(`No Access Token. Loading new one now...`)",
-          "    const domain = pm.environment.get('auth0_domain')",
-          "    const authUrl = pm.environment.get('auth0_authUrl').replace('{{auth0_domain}}', domain)",
-          "    const tokenUrl = pm.environment.get('auth0_access_token_url').replace('{{auth0_domain}}', domain)",
-          "    pm.environment.set('auth0_authUrl', authUrl)",
-          "    pm.environment.set('auth0_access_token_url', tokenUrl)",
-          "    const client_id = pm.environment.get('auth0_client_id')",
-          "    const client_secret = pm.environment.get('auth0_client_secret')",
-          "    const audience = pm.environment.get('auth0_audience')",
-          "    const username = pm.environment.get('auth0_user')",
-          "    const password = pm.environment.get('auth0_password')",
-          "    const scope = pm.environment.get('auth0_scope')",
-          "    const grant_type = 'password'",
-          "    const authPayload = {",
-          "        \"client_id\": client_id,",
-          "        \"client_secret\": client_secret,",
-          "        \"audience\": audience,",
-          "        \"username\": username,",
-          "        \"password\": password,",
-          "        \"scope\": scope,",
-          "        \"grant_type\": grant_type,",
-          "    }",
-          "",
-          "    const authTokenUrl = pm.environment.get('auth0_access_token_url')",
-          "    console.log(authTokenUrl)",
-          "    const options = {",
-          "        url: authTokenUrl,",
-          "        method: 'POST',",
-          "        header: { 'content-type': 'application/json' },",
-          "        body: {",
-          "            mode: 'raw',",
-          "            raw: JSON.stringify(authPayload)",
-          "",
-          "        }",
-          "    };",
-          "    console.warn(authPayload, authTokenUrl)",
-          "    pm.sendRequest(options, function (err, response) {",
-          "        const resp = response.json()",
-          "        pm.environment.set('auth0_access_token', resp.access_token);",
-          "        pm.environment.set('auth0_access_token_expiration', `${new Date(Date.now())}`);",
-          "",
-          "    });",
-          "}",
-          "",
-          "console.log(`Exiting PreRequest Script...`)"
-        ]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    }
-  ],
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:8802"
-    },
-    {
-      "key": "createdUserId",
-      "value": "693f01fa-a6ac-4661-bf4c-e75b66850130"
-    },
-    {
-      "key": "testUserEmail",
-      "value": "test@sample.com"
-    },
-    {
-      "key": "testUserId",
-      "value": ""
-    },
-    {
-      "key": "productTypeId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "productTypeUuid",
-      "value": ""
-    },
-    {
-      "key": "prefix",
-      "value": "api",
-      "type": "string"
-    },
-    {
-      "key": "version",
-      "value": "v1",
-      "type": "string"
-    },
-    {
-      "key": "module",
-      "value": "auth",
-      "type": "string"
-    }
-  ]
+	"info": {
+		"_postman_id": "fa39a06c-89d8-400a-91e7-de9b3ff43549",
+		"name": "drop-engine-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "shopify",
+			"item": [
+				{
+					"name": "Connect",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/shopify?shop=de-template-local&timestamp={{$timestamp}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"{{version}}",
+								"{{module}}",
+								"shopify"
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "de-template-local"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{$timestamp}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AcceptInstall",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/shopify/accept",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"{{version}}",
+								"{{module}}",
+								"shopify",
+								"accept"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Shopify Account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/shopify/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"{{version}}",
+								"{{module}}",
+								"shopify",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "53d354d6-bbcb-4b13-b642-13b13c6b6401"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/shopify",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"{{version}}",
+								"{{module}}",
+								"shopify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/shopify/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{prefix}}",
+								"{{version}}",
+								"{{module}}",
+								"shopify",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "955f54fe-f43f-43d1-a6ad-9690dd84f2c3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "Retrieve a specific user",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "c0af603a-29bd-4622-bc92-11df2c0d4a11"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Activate a user",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id/activate",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users",
+										":id",
+										"activate"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "98cdd307-c6c6-47f5-a42b-b7a2807a8fa6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"test@sample.com\",\r\n    \"password\": \"password123!\",\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"Sample\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a user",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "8a05fa21-11e2-4555-9ff4-507e76ed78c6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lookup a user by email",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users?email=thomas@valknot.co",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "thomas@valknot.co"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a list of users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.collectionVariables.set('module', 'auth')",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "catalog",
+			"item": [
+				{
+					"name": "productTypes",
+					"item": [
+						{
+							"name": "Retrieve a specific product type",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productTypes",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "974f029d-7ef4-4c57-a25a-bfbaae8ae897"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a product type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"const resp = pm.response.json()\r",
+											"\r",
+											"pm.test(`UUID should not be empty`, () => {\r",
+											"    pm.expect(resp.id.length).to.be.greaterThan(0)\r",
+											"})\r",
+											"\r",
+											"pm.collectionVariables.set(`productTypeUuid`, resp.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"2DMetalArt\",\r\n    \"image\": \"imageurl\",\r\n    \"productionData\": {\r\n        \"material\": \"Mild Steel\",\r\n        \"thickness\": \"0.06\",\r\n        \"route\": \"1\"\r\n    },\r\n    \"option1\": {\r\n        \"name\": \"Size\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"12\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"15\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"18\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"24\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"30\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Color\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Black\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"White\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Gold\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Copper\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Silver\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option3\": null,\r\n    \"livePreview\": null\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/api/productTypes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"api",
+										"productTypes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a product type",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productTypes",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "201eadac-15e3-4900-9be1-6123bb13ee9b"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a list of product types",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productTypes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Rename a product type",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"asdf\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:id/rename",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productTypes",
+										":id",
+										"rename"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "974f029d-7ef4-4c57-a25a-bfbaae8ae897"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "products",
+					"item": [
+						{
+							"name": "Retrieve a specific product",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "efa5f79b-ccf3-4ad4-8ce0-68987ca5918c"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a product",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productTypeId\": \"00000000-0000-0000-0000-000000000001\",\r\n    \"sku\": \"MEM-000-01\",\r\n    \"tags\": \"\",\r\n    \"categories\": \"\",\r\n    \"image\": \"\",\r\n    \"svg\": \"\",\r\n    \"customOptions\": [\r\n        {\r\n            \"name\": \"name\",\r\n            \"label\": \"Name\",\r\n            \"placeholder\": \"Enter up to 20 characters\",\r\n            \"required\": true,\r\n            \"type\": \"input\",\r\n            \"maxLength\": 20,\r\n            \"pattern\": \"^[a-zA-Z0-9\\\\s.,'/&]*\"\r\n        },\r\n        {\r\n            \"name\": \"initial\",\r\n            \"label\": \"Initial\",\r\n            \"placeholder\": \"Select your initial here\",\r\n            \"required\": true,\r\n            \"type\": \"dropdown\",\r\n            \"options\": \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\"\r\n        }\r\n    ],\r\n    \"variants\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a product",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "f03d82be-427a-499c-8dae-0ae967843130"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a list of products",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiaXNzIjoiaHR0cHM6Ly9kcm9wLWVuZ2luZS1kZXYudXMuYXV0aDAuY29tLyJ9..BHiK9JtBRrxGF8x5.c2Vvd5EK4dEplyk2GR_te38XdNleb5UmC-YbO7FVM3EyDQwFxRq507a4ycITidRoAMN8lCNZ5a_awe6a3b97rVe2FhJRnuyq1DBomPP7c3Z_ABc3pgfWoAt79oLvBs9uuC-soudfZpcFv9TJoqJ9DXBR99ZWYIMfWBiuaT99zVomDSJplzRozJF8PmU4sic_nTNtQnqUSVD4FEDLkUxplT0MAu2k2PO9BQxuIRXqkZdusexTmGPk9o6K2eZWpWQPRtdnM13Dd85odHvw-88sR9RLA89S_AIQSr-5L1d2mrosqDJZrqhouB3JWgxD-DDu6Wjrh1U-zho.F0tzjqBoP7uWgwfh5G26WA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products?page=0&size=100&productTypeId={{productTypeId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"products"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "100"
+										},
+										{
+											"key": "productTypeId",
+											"value": "{{productTypeId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Rename",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"asdf\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:id/rename",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productTypes",
+										":id",
+										"rename"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "974f029d-7ef4-4c57-a25a-bfbaae8ae897"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a products personalization rules",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Import a list of products",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/DE/projects/drop-engine-api/e2e/fixtures/2022_03_18_product_with_images_fixed.csv"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products/import",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"products",
+										"import"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "productVariants",
+					"item": [
+						{
+							"name": "Create a product variant",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\": \"7c119f4c-1432-47bd-9273-0972d35f75f8\",\r\n    \"image\":\"\",\r\n    \"sku\": \"MEM-000-01-15-Black\",\r\n    \"option1\": {\r\n        \"name\": \"Size\",\r\n        \"option\": \"15\"\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Color\",\r\n        \"option\": \"Black\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productVariants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a product variant",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productVariants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "ab0d7bf2-cbd9-45d8-9c00-f89f18db4dae"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a specific product variant",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/:uuid",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productVariants",
+										":uuid"
+									],
+									"variable": [
+										{
+											"key": "uuid",
+											"value": "ab0d7bf2-cbd9-45d8-9c00-f89f18db4dae"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lookup a specific product variant by SKU",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/MEM-000-01-12-Black",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productVariants",
+										"MEM-000-01-12-Black"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Import a list of product variants",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/DE/projects/drop-engine-api/e2e/fixtures/2022_03_18_variants_with_images_fixed.csv"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/import",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productVariants",
+										"import"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.collectionVariables.set('module', 'catalog')",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "sales",
+			"item": [
+				{
+					"name": "orders",
+					"item": [
+						{
+							"name": "Create an order",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/orders",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a list of orders",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/orders",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a specific order",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/orders/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"orders",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete an order",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/orders/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"orders",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.collectionVariables.set('module', 'sales')",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}",
+					"host": [
+						"{{base_url}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth0_access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const access_token = pm.environment.get('auth0_access_token');",
+					"const expiry = pm.environment.get('auth0_access_token_expiration');",
+					"const limitDate = new Date(new Date().getTime() - (12 * 60 * 60 * 1000));",
+					"const expiryDate = Date.parse(expiry)",
+					"console.warn({ limitDate, expiryDate, expiry })",
+					"if (!expiryDate || expiryDate < limitDate || expiryDate && !access_token?.length) {",
+					"    console.warn(`No Access Token. Loading new one now...`)",
+					"    const domain = pm.environment.get('auth0_domain')",
+					"    const authUrl = pm.environment.get('auth0_authUrl').replace('{{auth0_domain}}', domain)",
+					"    const tokenUrl = pm.environment.get('auth0_access_token_url').replace('{{auth0_domain}}', domain)",
+					"    pm.environment.set('auth0_authUrl', authUrl)",
+					"    pm.environment.set('auth0_access_token_url', tokenUrl)",
+					"    const client_id = pm.environment.get('auth0_client_id')",
+					"    const client_secret = pm.environment.get('auth0_client_secret')",
+					"    const audience = pm.environment.get('auth0_audience')",
+					"    const username = pm.environment.get('auth0_user')",
+					"    const password = pm.environment.get('auth0_password')",
+					"    const scope = pm.environment.get('auth0_scope')",
+					"    const grant_type = 'password'",
+					"    const authPayload = {",
+					"        \"client_id\": client_id,",
+					"        \"client_secret\": client_secret,",
+					"        \"audience\": audience,",
+					"        \"username\": username,",
+					"        \"password\": password,",
+					"        \"scope\": scope,",
+					"        \"grant_type\": grant_type,",
+					"    }",
+					"",
+					"    const authTokenUrl = pm.environment.get('auth0_access_token_url')",
+					"    console.log(authTokenUrl)",
+					"    const options = {",
+					"        url: authTokenUrl,",
+					"        method: 'POST',",
+					"        header: { 'content-type': 'application/json' },",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify(authPayload)",
+					"",
+					"        }",
+					"    };",
+					"    console.warn(authPayload, authTokenUrl)",
+					"    pm.sendRequest(options, function (err, response) {",
+					"        const resp = response.json()",
+					"        pm.environment.set('auth0_access_token', resp.access_token);",
+					"        pm.environment.set('auth0_access_token_expiration', `${new Date(Date.now())}`);",
+					"",
+					"    });",
+					"}",
+					"",
+					"console.log(`Exiting PreRequest Script...`)"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8802"
+		},
+		{
+			"key": "createdUserId",
+			"value": "693f01fa-a6ac-4661-bf4c-e75b66850130"
+		},
+		{
+			"key": "testUserEmail",
+			"value": "test@sample.com"
+		},
+		{
+			"key": "testUserId",
+			"value": ""
+		},
+		{
+			"key": "productTypeId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "productTypeUuid",
+			"value": ""
+		},
+		{
+			"key": "prefix",
+			"value": "api",
+			"type": "string"
+		},
+		{
+			"key": "version",
+			"value": "v1",
+			"type": "string"
+		},
+		{
+			"key": "module",
+			"value": "auth",
+			"type": "string"
+		}
+	]
 }
