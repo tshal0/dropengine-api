@@ -1,0 +1,360 @@
+openapi: 3.1.0
+info:
+  title: Auth
+  version: '1.0'
+  summary: DropEngine™ Auth API
+  description: ''
+servers:
+  - url: 'https://dev.drop-engine.com/api/v1/auth'
+    description: Dev
+paths:
+  '/users/{userId}':
+    parameters:
+      - schema:
+          type: integer
+        name: userId
+        in: path
+        required: true
+        description: Id of an existing user.
+    get:
+      summary: Get User
+      tags: []
+      responses:
+        '200':
+          description: User Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples: {}
+        '404':
+          description: User Not Found
+      operationId: get-user
+      description: Retrieve the information of the user with the matching user ID.
+    patch:
+      summary: Update User Information
+      operationId: patch-users-userId
+      responses:
+        '200':
+          description: User Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                Updated User Rebecca Baker:
+                  value:
+                    id: 13
+                    firstName: Rebecca
+                    lastName: Baker
+                    email: rebecca@gmail.com
+                    dateOfBirth: '1985-10-02'
+                    emailVerified: false
+                    createDate: '2019-08-24'
+        '404':
+          description: User Not Found
+        '409':
+          description: Email Already Taken
+      description: Update the information of an existing user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                  description: 'If a new email is given, the user''s email verified property will be set to false.'
+                dateOfBirth:
+                  type: string
+            examples:
+              Update First Name:
+                value:
+                  firstName: Rebecca
+              Update Email:
+                value:
+                  email: rebecca@gmail.com
+              Update Last Name & Date of Birth:
+                value:
+                  lastName: Baker
+                  dateOfBirth: '1985-10-02'
+        description: Patch user properties to update.
+    delete:
+      summary: ''
+      operationId: delete-users-userId
+      responses:
+        '200':
+          description: OK
+  /users:
+    post:
+      summary: Create New User
+      operationId: post-user
+      responses:
+        '200':
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                New User Bob Fellow:
+                  value:
+                    id: 12
+                    firstName: Bob
+                    lastName: Fellow
+                    email: bob.fellow@gmail.com
+                    dateOfBirth: '1996-08-24'
+                    emailVerified: false
+                    createDate: '2020-11-18'
+        '400':
+          description: Missing Required Information
+        '409':
+          description: Email Already Taken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                dateOfBirth:
+                  type: string
+                  format: date
+              required:
+                - firstName
+                - lastName
+                - email
+                - dateOfBirth
+            examples:
+              Create User Bob Fellow:
+                value:
+                  firstName: Bob
+                  lastName: Fellow
+                  email: bob.fellow@gmail.com
+                  dateOfBirth: '1996-08-24'
+        description: Post the necessary fields for the API to create a new user.
+      description: Create a new user.
+    get:
+      summary: Get Users
+      operationId: get-users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    parameters: []
+components:
+  schemas:
+    User:
+      description: User data model generated on registration.
+      type: object
+      x-examples:
+        example-1:
+          email: test@sample.com
+          emailVerified: false
+          name: test@sample.com
+          firstName: Test
+          lastName: Sample
+          picture: 'https://s.gravatar.com/avatar/a265d5b83f09a26f759f09a931601b8f?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png'
+          updatedAt: '2022-04-01T19:21:40.147Z'
+          id: auth0|624750b4c39494006905b9ba
+          nickname: test
+          createdAt: '2022-04-01T19:21:24.136Z'
+          metadata:
+            authorization: {}
+            accounts:
+              - id: b1f2eb06-b4ba-42c2-9843-ce1a3d04741f
+                companyCode: TEST_ACCOUNT
+                name: Test Account
+                roles:
+                  - owner
+                permissions:
+                  - 'manage:account'
+                  - 'manage:orders'
+                  - 'manage:products'
+                  - 'manage:stores'
+                  - 'read:account'
+                  - 'read:orders'
+                  - 'read:products'
+                  - 'read:stores'
+      properties:
+        id:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 1
+        emailVerified:
+          type: boolean
+        name:
+          type: string
+          minLength: 1
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        picture:
+          type: string
+          minLength: 1
+        nickname:
+          type: string
+          minLength: 1
+        updatedAt:
+          type: string
+          minLength: 1
+        createdAt:
+          type: string
+          minLength: 1
+        metadata:
+          type: object
+          required:
+            - authorization
+            - accounts
+          properties:
+            authorization:
+              type: object
+            accounts:
+              type: array
+              uniqueItems: true
+              minItems: 1
+              items:
+                $ref: '#/components/schemas/UserAccount'
+      required:
+        - id
+        - email
+        - emailVerified
+        - name
+        - firstName
+        - lastName
+        - picture
+        - nickname
+        - updatedAt
+        - createdAt
+        - metadata
+    UserAccount:
+      description: The Account a User either owns or belongs to.
+      type: object
+      x-examples:
+        example-1:
+          id: b1f2eb06-b4ba-42c2-9843-ce1a3d04741f
+          companyCode: TEST_ACCOUNT
+          name: Test Account
+          roles:
+            - owner
+          permissions:
+            - 'manage:account'
+            - 'manage:orders'
+            - 'manage:products'
+            - 'manage:stores'
+            - 'read:account'
+            - 'read:orders'
+            - 'read:products'
+            - 'read:stores'
+      properties:
+        id:
+          type: string
+          minLength: 1
+        companyCode:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        roles:
+          type: array
+          items:
+            type: string
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - companyCode
+        - name
+        - roles
+        - permissions
+    Account:
+      description: 'An Account is an organization, through which its Owner can act as either a Merchant or Manufacturer, placing Orders or producing/fulfilling them.'
+      type: object
+      x-examples:
+        example-1:
+          id: 26374590-29ca-4917-af5b-974110cae203
+          name: Test Account
+          ownerId: auth0|62474c1bb5b84300708c8ff1
+          companyCode: TEST_ACCOUNT
+          members:
+            - email: new@sample.com
+              picture: 'https://s.gravatar.com/avatar/f07fb651991b8923f6751cbb79907323?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fne.png'
+              userId: auth0|62474d5bf7b105007088bb6c
+            - email: test@sample.com
+              picture: 'https://s.gravatar.com/avatar/a265d5b83f09a26f759f09a931601b8f?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png'
+              userId: auth0|62474c1bb5b84300708c8ff1
+      properties:
+        id:
+          type: string
+          minLength: 1
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          minLength: 1
+        ownerId:
+          type: string
+          minLength: 1
+        companyCode:
+          type: string
+          minLength: 1
+        members:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/AccountMember'
+      required:
+        - id
+        - name
+        - ownerId
+        - companyCode
+        - members
+      title: ''
+    AccountMember:
+      description: User who has been added to an Account.
+      type: object
+      properties:
+        email:
+          type: string
+          minLength: 1
+        picture:
+          type: string
+          minLength: 1
+        userId:
+          type: string
+          minLength: 1
+      required:
+        - email
+        - picture
+        - userId
+      x-examples:
+        example-1:
+          email: new@sample.com
+          picture: 'https://s.gravatar.com/avatar/f07fb651991b8923f6751cbb79907323?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fne.png'
+          userId: auth0|62474d5bf7b105007088bb6c
+tags:
+  - name: auth
+  - name: v1
