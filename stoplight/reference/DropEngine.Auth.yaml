@@ -66,7 +66,7 @@ paths:
         description: Post the necessary fields for the API to create a new user.
       description: Create a new user.
       tags:
-        - v1
+        - Users
     get:
       summary: Retrieve a list of users
       operationId: get-users
@@ -81,7 +81,7 @@ paths:
                   $ref: '#/components/schemas/User'
               examples: {}
       tags:
-        - v1
+        - Users
       description: TBD
     parameters: []
   '/users/{id}':
@@ -95,7 +95,7 @@ paths:
     get:
       summary: Retrieve a specific user
       tags:
-        - v1
+        - Users
       responses:
         '200':
           description: User Found
@@ -157,7 +157,7 @@ paths:
             examples: {}
         description: Patch user properties to update.
       tags:
-        - v1
+        - Users
     delete:
       summary: Delete a user
       operationId: delete-users-userId
@@ -166,13 +166,13 @@ paths:
         '200':
           description: OK
       tags:
-        - v1
+        - Users
   /accounts:
     get:
       summary: Retrieve a list of accounts
       description: TBD
       tags:
-        - v1
+        - Accounts
       responses:
         '200':
           description: OK
@@ -188,7 +188,7 @@ paths:
       summary: Retrieve a specific account
       description: TBD
       tags:
-        - v1
+        - Accounts
       responses:
         '200':
           description: OK
@@ -397,5 +397,7 @@ components:
           picture: 'https://s.gravatar.com/avatar/f07fb651991b8923f6751cbb79907323?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fne.png'
           userId: auth0|62474d5bf7b105007088bb6c
 tags:
+  - name: Accounts
   - name: auth
+  - name: Users
   - name: v1

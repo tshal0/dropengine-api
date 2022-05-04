@@ -20,7 +20,7 @@ paths:
           $ref: '#/components/responses/QueryOrdersResponseDto'
       operationId: get-orders
       tags:
-        - v1
+        - Orders
     post:
       summary: Create an order
       description: TBD
@@ -28,14 +28,14 @@ paths:
         '200':
           $ref: '#/components/responses/SalesOrderDto'
       operationId: post-orders
-      tags:
-        - v1
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateSalesOrder'
         description: ''
+      tags:
+        - Orders
   '/orders/{id}':
     parameters:
       - schema:
@@ -46,8 +46,6 @@ paths:
         description: Order ID
     get:
       summary: Retrieve a specific order
-      tags:
-        - v1
       responses:
         '200':
           $ref: '#/components/responses/SalesOrderDto'
@@ -85,6 +83,8 @@ paths:
                     error: SALES_ORDER_NOT_FOUND
       operationId: get-orders-id
       description: Lookup SalesOrder by ID.
+      tags:
+        - Orders
     delete:
       description: TBD
       summary: Delete an order
@@ -93,7 +93,7 @@ paths:
         '200':
           description: OK
       tags:
-        - v1
+        - Orders
   '/orders/{id}/lineItems/{lid}':
     parameters:
       - schema:
@@ -119,7 +119,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateSalesOrderLineItem'
       tags:
-        - v1
+        - Orders
   '/orders/{id}/shippingAddress':
     parameters:
       - schema:
@@ -140,7 +140,7 @@ paths:
             schema:
               $ref: ../models/Address.json
       tags:
-        - v1
+        - Orders
   '/orders/{id}/customer':
     parameters:
       - schema:
@@ -159,9 +159,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateSalesOrderCustomer'
-      tags:
-        - v1
       description: TBD
+      tags:
+        - Orders
   '/orders/{id}/send':
     parameters:
       - schema:
@@ -177,7 +177,7 @@ paths:
         '200':
           description: OK
       tags:
-        - v1
+        - Orders
   '/orders/{id}/recall':
     parameters:
       - schema:
@@ -193,7 +193,7 @@ paths:
           description: OK
       description: TBD
       tags:
-        - v1
+        - Orders
   '/orders/{id}/cancel':
     parameters:
       - schema:
@@ -209,7 +209,7 @@ paths:
           description: OK
       description: TBD
       tags:
-        - v1
+        - Orders
 components:
   schemas:
     CreateSalesOrder:
@@ -290,6 +290,8 @@ components:
         - lineItems
         - shippingAddress
         - billingAddress
+      x-tags:
+        - Orders
     CreateSalesOrderCustomer:
       $ref: '#/components/schemas/SalesCustomer'
       title: CreateSalesOrderCustomer
@@ -1307,5 +1309,4 @@ components:
           schema:
             $ref: '#/components/schemas/SalesOrder'
 tags:
-  - name: sales
-  - name: v1
+  - name: Orders

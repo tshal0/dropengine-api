@@ -3,9 +3,9 @@ info:
   title: Catalog
   version: '1'
   summary: DropEngine™ Catalog API
-  description: 'TBD'
+  description: TBD
   contact:
-    name: 'thomas@drop-engine.com'
+    name: thomas@drop-engine.com
 servers:
   - url: 'https://dev.drop-engine.com/api/v1/catalog'
     description: Dev
@@ -13,8 +13,6 @@ paths:
   /productTypes:
     get:
       summary: Retrieve a list of product types
-      tags:
-        - v1
       responses:
         '200':
           description: OK
@@ -25,21 +23,21 @@ paths:
                 items:
                   $ref: '#/components/schemas/ProductType'
       operationId: get-productTypes
-      description: 'TBD'
+      description: TBD
+      tags:
+        - ProductTypes
     post:
       summary: Create a product type
       operationId: post-productTypes
       responses:
         '200':
           description: OK
-      description: 'TBD'
+      description: TBD
       tags:
-        - v1
+        - ProductTypes
   '/productTypes/{id}':
     get:
       summary: Retrieve a specific product type
-      tags:
-        - v1
       responses:
         '200':
           description: OK
@@ -48,7 +46,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductType'
       operationId: get-productType
-      description: 'TBD'
+      description: TBD
+      tags:
+        - ProductTypes
     parameters:
       - schema:
           type: string
@@ -59,8 +59,6 @@ paths:
   /products:
     get:
       summary: Retrieve a list of products
-      tags:
-        - v1
       responses:
         '200':
           $ref: '#/components/responses/QueryProductsResponseDto'
@@ -82,16 +80,18 @@ paths:
           in: query
           name: productTypeId
           description: ProductTypeId filter.
-      description: 'TBD'
+      description: TBD
+      tags:
+        - Products
     post:
       summary: Create a product
-      description: 'TBD'
+      description: TBD
       operationId: post-products
       responses:
         '200':
           description: OK
       tags:
-        - v1
+        - Products
     parameters: []
   /products/import:
     post:
@@ -100,22 +100,20 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ImportProductsResponseDto'
-      description: 'TBD'
+      description: TBD
       requestBody:
         content:
           multipart/form-data:
             schema:
               type: object
             examples: {}
-        description: 'TBD'
+        description: TBD
       tags:
-        - v1
+        - Products
     parameters: []
   '/products/{id}':
     get:
       summary: Retrieve a specific product
-      tags:
-        - v1
       responses:
         '200':
           description: OK
@@ -124,7 +122,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Product'
       operationId: get-product
-      description: 'TBD'
+      description: TBD
+      tags:
+        - Products
     parameters:
       - schema:
           type: string
@@ -138,9 +138,9 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ImportVariantsResponseDto'
-      description: 'TBD'
+      description: TBD
       tags:
-        - v1
+        - ProductVariants
     parameters: []
 components:
   responses:
@@ -149,7 +149,7 @@ components:
       content:
         application/json:
           schema:
-            description: 'TBD'
+            description: TBD
             type: object
             x-examples:
               example-1:
@@ -917,11 +917,11 @@ components:
                 size: 0
                 total: 0
     ImportProductsResponseDto:
-      description: 'TBD'
+      description: TBD
       content:
         application/json:
           schema:
-            description: 'TBD'
+            description: TBD
             type: object
             x-examples:
               example-1:
@@ -1121,11 +1121,11 @@ components:
               - errors
               - imported
     ImportVariantsResponseDto:
-      description: 'TBD'
+      description: TBD
       content:
         application/json:
           schema:
-            description: 'TBD'
+            description: TBD
             type: object
             x-examples:
               example-1:
@@ -1326,7 +1326,7 @@ components:
               - imported
   schemas:
     ProductType:
-      description: 'TBD'
+      description: TBD
       type: object
       x-examples:
         example-1:
@@ -1496,7 +1496,7 @@ components:
         - updatedAt
         - createdAt
     Product:
-      description: 'TBD'
+      description: TBD
       type: object
       x-examples:
         example-1:
@@ -1614,7 +1614,7 @@ components:
         - createdAt
         - updatedAt
     ProductVariant:
-      description: 'TBD'
+      description: TBD
       type: object
       properties:
         uuid:
@@ -1777,5 +1777,6 @@ components:
           updatedAt: '2022-04-01T19:27:54.125Z'
           product: null
 tags:
-  - name: catalog
-  - name: v1
+  - name: Products
+  - name: ProductTypes
+  - name: ProductVariants
