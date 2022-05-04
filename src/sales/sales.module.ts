@@ -14,14 +14,15 @@ import {
 import { OrdersController } from "./api";
 
 import {
+  CreateSalesOrder,
   DeleteSalesOrder,
   GetSalesOrder,
   QuerySalesOrders,
-  CreateSalesOrder,
+  UpdatePersonalization,
+  UpdateShippingAddress,
 } from "./useCases";
 import { CatalogModule } from "@catalog/catalog.module";
 import { AuthModule } from "@auth/auth.module";
-import { UpdatePersonalization } from "./useCases/UpdatePersonalization";
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { UpdatePersonalization } from "./useCases/UpdatePersonalization";
     QuerySalesOrders,
     DeleteSalesOrder,
     UpdatePersonalization,
+    UpdateShippingAddress,
   ],
 })
 export class SalesModule {}

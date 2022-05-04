@@ -6,5 +6,4 @@ export const spyOnDate = () => {
     .spyOn(global.Date, "now")
     .mockImplementation(() => new Date(nowStr).valueOf());
 };
-spyOnDate();
-export const now = moment().toDate();
+export const now = new Date(nowStr);

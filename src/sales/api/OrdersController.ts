@@ -45,6 +45,7 @@ import { SalesLoggingInterceptor } from "./middleware/SalesLoggingInterceptor";
 import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 import { CreateSalesOrderDto } from "@sales/useCases/CreateSalesOrder/CreateSalesOrderDto";
 import { UpdatePersonalization } from "@sales/useCases/UpdatePersonalization";
+import { UpdateShippingAddress } from "@sales/useCases";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
@@ -58,7 +59,8 @@ export class OrdersController {
     private readonly load: GetSalesOrder,
     private readonly query: QuerySalesOrders,
     private readonly remove: DeleteSalesOrder,
-    private readonly updatePersonalization: UpdatePersonalization
+    private readonly updatePersonalization: UpdatePersonalization,
+    private readonly updateShipping: UpdateShippingAddress
   ) {}
 
   @Get(":id")
@@ -94,7 +96,11 @@ export class OrdersController {
     @Param("id") id: string,
     @Body() dto: EditShippingAddressDto
   ) {
-    throw new NotImplementedException({ dto, id });
+    const order = await this.updateShipping.execute({
+      orderId: id,
+      shippingAddress: dto.shippingAddress,
+    });
+    return order.props();
   }
   @Post(":id/send")
   async postSend(@Param("id") id: string, @Body() dto: any) {

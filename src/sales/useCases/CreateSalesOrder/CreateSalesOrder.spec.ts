@@ -2,7 +2,7 @@ import { TestingModule } from "@nestjs/testing";
 import { Model } from "mongoose";
 import { getModelToken } from "@nestjs/mongoose";
 import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
-import { now } from "@shared/mocks";
+import { now, spyOnDate } from "@shared/mocks";
 import {
   CatalogService,
   CatalogServiceError,
@@ -40,6 +40,7 @@ import {
 import { CreateSalesOrderDto } from "./CreateSalesOrderDto";
 import { AuthenticatedUser } from "@shared/decorators";
 import { CreateSalesOrderLineItemDto } from "./CreateSalesOrderLineItemDto";
+spyOnDate();
 class NoErrorThrownError extends Error {}
 
 const getAsyncError = async <TError>(call: () => unknown): Promise<TError> => {

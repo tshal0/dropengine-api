@@ -28,6 +28,7 @@ import {
   GetSalesOrder,
   QuerySalesOrders,
   DeleteSalesOrder,
+  UpdateShippingAddress,
 } from "../useCases";
 import { rootMongooseTestModule } from "@jestconfig/mongodb-memory-server";
 import { TraceTelemetry } from "applicationinsights/out/Declarations/Contracts";
@@ -76,6 +77,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       { provide: QuerySalesOrders, useValue: {} },
       { provide: DeleteSalesOrder, useValue: {} },
       UpdatePersonalization,
+      UpdateShippingAddress,
     ],
   })
     .overrideProvider(AzureTelemetryService)

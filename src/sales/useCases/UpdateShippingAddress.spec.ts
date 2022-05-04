@@ -17,12 +17,12 @@ import {
   mockSalesModule,
   mockTopText,
 } from "@sales/mocks";
-import { now } from "@shared/mocks";
+import { now, spyOnDate } from "@shared/mocks";
 import { cloneDeep } from "lodash";
 import { Model } from "mongoose";
 import safeJsonStringify from "safe-json-stringify";
-import { UpdatePersonalization } from "./UpdatePersonalization";
-
+import { UpdateShippingAddress } from "./UpdateShippingAddress";
+spyOnDate();
 class NoErrorThrownError extends Error {}
 
 const getAsyncError = async <TError>(call: () => unknown): Promise<TError> => {
@@ -35,9 +35,9 @@ const getAsyncError = async <TError>(call: () => unknown): Promise<TError> => {
   }
 };
 
-describe("UpdatePersonalization", () => {
+describe("UpdateShippingAddress", () => {
   let module: TestingModule;
-  let service: UpdatePersonalization;
+  let service: UpdateShippingAddress;
   let model: Model<MongoSalesOrderDocument>;
   const modelToken = getModelToken(MongoSalesOrder.name);
   let catalogService: CatalogService;
@@ -52,8 +52,8 @@ describe("UpdatePersonalization", () => {
   beforeEach(async () => {
     module = await mockSalesModule();
 
-    service = await module.resolve<UpdatePersonalization>(
-      UpdatePersonalization
+    service = await module.resolve<UpdateShippingAddress>(
+      UpdateShippingAddress
     );
     model = await module.resolve<Model<MongoSalesOrderDocument>>(modelToken);
     catalogService = await module.resolve<CatalogService>(CatalogService);
@@ -71,14 +71,17 @@ describe("UpdatePersonalization", () => {
     expect(service).toBeDefined();
   });
 
-  describe("given valid SalesOrder, SalesLineItem, and personalization", () => {
+  describe("given valid SalesOrder, Address", () => {
     const mockUid = "000000000000000000000001";
     const mockVariant = mockCatalogVariant();
     const mockLineItem: MongoLineItem = {
       lineNumber: 1,
       quantity: 1,
       variant: cloneDeep(mockVariant),
-      personalization: [],
+      personalization: [
+        { name: mockTopText, value: "ValidText" },
+        { name: mockBottomText, value: "ValidText" },
+      ],
       flags: [],
       updatedAt: now,
       createdAt: now,
@@ -99,28 +102,19 @@ describe("UpdatePersonalization", () => {
     beforeEach(async () => {
       mockOrder = await ordersRepo.create(mockOrder);
       mockLineItem.id = mockOrder.lineItems[0].id;
-      let test = await ordersRepo.findById(mockOrder.id);
     });
-    it("should update the personalization and save the SalesOrder", async () => {
-      const mockDto = {
-        lineItemId: mockLineItem.id,
-        orderId: mockOrder.id,
-        personalization: [
-          { name: mockTopText, value: "ValidText" },
-          { name: mockBottomText, value: "ValidText" },
-        ],
-      };
+    it("should update the shippingAddress and save the SalesOrder", async () => {
       // GIVEN
+      const mockAddressDto = cloneDeep(mockAddress);
+      mockAddressDto.province = "Alabama";
+      mockAddressDto.provinceCode = "AL";
+      const mockDto = {
+        orderId: mockOrder.id,
+        shippingAddress: mockAddressDto,
+      };
 
       // WHEN
-      // const error: any = await getAsyncError(
-      //   async () =>
-      //     await service.execute({
-      //       lineItemId: mockLineItem.id,
-      //       orderId: mockOrder.id,
-      //       personalization: [{ name: mockTopText, value: "ValidText" }],
-      //     })
-      // );
+
       const result = await service.execute(mockDto);
       const expected = {
         id: mockOrder.id,
@@ -131,21 +125,14 @@ describe("UpdatePersonalization", () => {
         orderStatus: "OPEN",
         lineItems: [
           {
-            id: mockLineItem.id,
-            lineNumber: 1,
-            quantity: 1,
-            variant: mockVariant,
-            personalization: mockDto.personalization,
-            flags: [],
-            createdAt: now,
-            updatedAt: now,
+            ...mockLineItem,
           },
         ],
         customer: {
           email: "mock.customer@email.com",
           name: "Mock Customer",
         },
-        shippingAddress: mockAddress,
+        shippingAddress: { ...mockAddressDto },
         billingAddress: mockAddress,
         createdAt: now,
         updatedAt: now,
@@ -153,7 +140,6 @@ describe("UpdatePersonalization", () => {
 
       // THEN
       const props = result.props();
-      console.log(safeJsonStringify(props, null, 2));
 
       expect(props).toMatchObject(expected);
     });

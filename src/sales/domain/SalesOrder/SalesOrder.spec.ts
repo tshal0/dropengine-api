@@ -74,9 +74,9 @@ describe("SalesOrder", () => {
     productionData: mockCatalogVariant1.productionData,
     personalizationRules: mockCatalogVariant1.personalizationRules,
   };
-  const orderId = "00000000515bd494ed80cfbd";
+  const orderId = "000000000000000000000001";
   const oid = new Types.ObjectId(orderId);
-  const lineItemId = "00000000515bd494ed80cfbd";
+  const lineItemId = "000000000000000000000002";
   const lid = new Types.ObjectId(lineItemId);
   const mli: MongoLineItem = {
     _id: lid,
@@ -140,11 +140,11 @@ describe("SalesOrder", () => {
           response: {
             statusCode: 500,
             message:
-              "Failed to update shipping address for order '00000000515bd494ed80cfbd': InvalidSalesOrderAddress: SalesOrderAddress encountered validation errors. See inner for details.",
+              "Failed to update shipping address for order '000000000000000000000001': InvalidSalesOrderAddress: SalesOrderAddress encountered validation errors. See inner for details.",
             timestamp: now,
             error: "InvalidShippingAddress",
             details: {
-              orderId: "00000000515bd494ed80cfbd",
+              orderId: "000000000000000000000001",
               shippingAddress: {
                   zip: "43844-9406",
                   city: "Warsaw",
@@ -186,7 +186,7 @@ describe("SalesOrder", () => {
           },
           status: 500,
           message:
-            "Failed to update shipping address for order '00000000515bd494ed80cfbd': InvalidSalesOrderAddress: SalesOrderAddress encountered validation errors. See inner for details.",
+            "Failed to update shipping address for order '000000000000000000000001': InvalidSalesOrderAddress: SalesOrderAddress encountered validation errors. See inner for details.",
           name: "InvalidShippingAddressException",
         };
         expect(error.getResponse()).toEqual(expected.response);
@@ -598,9 +598,9 @@ describe("SalesOrder", () => {
           productionData: mockCatalogVariant1.productionData,
           personalizationRules: mockCatalogVariant1.personalizationRules,
         };
-        const orderId = "00000000515bd494ed80cfbd";
+        const orderId = "000000000000000000000001";
         const oid = new Types.ObjectId(orderId);
-        const lineItemId = "00000000515bd494ed80cfbd";
+        const lineItemId = "000000000000000000000002";
         const lid = new Types.ObjectId(lineItemId);
         const mli: MongoLineItem = {
           _id: lid,
@@ -660,7 +660,7 @@ describe("SalesOrder", () => {
           ],
           value: {
             _id: oid,
-            id: "00000000515bd494ed80cfbd",
+            id: "000000000000000000000001",
             accountId: mockUuid1,
             orderStatus: "OPEN",
             orderDate: null,
@@ -668,7 +668,7 @@ describe("SalesOrder", () => {
             lineItems: [
               {
                 _id: lid,
-                id: "00000000515bd494ed80cfbd",
+                id: "000000000000000000000002",
                 lineNumber: 1,
                 quantity: 1,
                 variant: {
@@ -828,7 +828,7 @@ describe("SalesOrder", () => {
             "Failed to load SalesOrder from Mongo. See inner for details.",
           name: "InvalidSalesOrder",
           message:
-            "InvalidSalesOrder '00000000515bd494ed80cfbd' 'undefined': Failed to load SalesOrder from Mongo. See inner for details.",
+            "InvalidSalesOrder '000000000000000000000001' 'undefined': Failed to load SalesOrder from Mongo. See inner for details.",
         };
         const error = await getAsyncError(async () => SalesOrder.load(mock));
         expect(error).not.toBeInstanceOf(NoErrorThrownError);

@@ -74,7 +74,13 @@ export class SalesLoggingInterceptor implements NestInterceptor {
           };
           this.logger.debug(telemetry.message);
         },
-        error: (error) => {},
+        error: (error) => {
+          this.logger.error(
+            `${error?.message || error}`,
+            error?.stack,
+            error?.context
+          );
+        },
         complete: () => {},
         finalize: () => {},
       })
