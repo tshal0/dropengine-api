@@ -11,8 +11,10 @@ import { SalesOrderAddress } from "./SalesOrderAddress";
 import { SalesOrderID } from "./SalesOrderID";
 import { ILineItemProperty, LineItem, LineItemID } from "../SalesLineItem";
 import { SalesOrderDate } from "./SalesOrderDate";
-import { CreateOrderDto } from "@sales/dto";
+import { AddressDto, CreateOrderDto } from "@sales/dto";
 import { AccountId } from "@auth/domain/valueObjects/AccountId";
+import { EditShippingAddressDto } from "@sales/api";
+import { HttpStatus, InternalServerErrorException } from "@nestjs/common";
 
 /**
  * Aggregates need: events, domain methods, initializers, converters
@@ -22,6 +24,7 @@ export enum SalesOrderError {
   InvalidSalesOrderProperty = "InvalidSalesOrderProperty",
   FailedToCreateLineItems = "FailedToCreateLineItems",
   FailedToLoadLineItems = "FailedToLoadLineItems",
+  InvalidShippingAddress = "InvalidShippingAddress",
 }
 export class InvalidSalesOrder implements ResultError {
   public stack: string;
@@ -118,6 +121,26 @@ export class SalesOrder extends IAggregate<
     function matchesLineItemId(): (value: LineItem) => unknown {
       return (li) => li.id == dto.lineItemId;
     }
+  }
+
+  public async updateShippingAddress(
+    dto: EditShippingAddressDto
+  ): Promise<SalesOrder> {
+    const result = await SalesOrderAddress.from(dto.shippingAddress);
+    if (result.isFailure) {
+      throw new InvalidShippingAddressException(
+        {
+          orderId: this._entity.id,
+          shippingAddress: dto.shippingAddress,
+        },
+        result.error.message,
+        SalesOrderError.InvalidShippingAddress,
+        result.error.inner
+      );
+    }
+    this._entity.shippingAddress = dto.shippingAddress;
+    this._value.shippingAddress = result.value();
+    return this;
   }
 
   /** Utility Methods */
@@ -280,6 +303,38 @@ export class SalesOrder extends IAggregate<
     return new FailedToLoadLineItemsError(
       errors,
       `Failed to load LineItems from Mongo. See inner error for details.`
+    );
+  }
+}
+export class InvalidShippingAddressException extends InternalServerErrorException {
+  constructor(
+    dto: {
+      orderId: string;
+      shippingAddress: AddressDto;
+    },
+    reason: any,
+    type: SalesOrderError,
+    inner: any[]
+  ) {
+    super(
+      {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message:
+          `Failed to update shipping address for order ` +
+          `'${dto.orderId}': ` +
+          `${reason}`,
+        timestamp: moment().toDate(),
+        error: type,
+        details: {
+          orderId: dto.orderId,
+          shippingAddress: dto.shippingAddress,
+          reason,
+          inner,
+        },
+      },
+      `Failed to update shipping address for order ` +
+        `'${dto.orderId}': ` +
+        `${reason}`
     );
   }
 }

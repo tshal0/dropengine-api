@@ -11,7 +11,7 @@ import { invalidPersonalization } from "./fixtures/create.invalidPersonalization
 import { validDto } from "./fixtures/create.validDto";
 
 import { mockAddress } from "../../mocks/mockAddress";
-import { SalesOrder } from "./SalesOrder";
+import { InvalidShippingAddressException, SalesOrder } from "./SalesOrder";
 import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
 import {
   mockUuid1,
@@ -24,6 +24,7 @@ import {
   mockInitial,
 } from "@sales/mocks";
 import { cloneDeep } from "lodash";
+import safeJsonStringify from "safe-json-stringify";
 export class NoErrorThrownError extends Error {}
 
 export const getAsyncError = async <TError>(
@@ -107,6 +108,91 @@ describe("SalesOrder", () => {
     updatedAt: undefined,
     createdAt: undefined,
   };
+  describe("updateShippingAddress", () => {
+    describe("given valid ShippingAddress", () => {
+      it("should update the SalesOrder with the given Address", async () => {
+        const order = await SalesOrder.load(cloneDeep(mock));
+        const mockDto = {
+          shippingAddress: cloneDeep(mockAddress),
+        };
+        const result = await order.updateShippingAddress(mockDto);
+        const props = result.props().shippingAddress;
+        const value = result.value().shippingAddress.value();
+        expect(props).toEqual(mockAddress);
+        expect(value).toEqual(mockAddress);
+      });
+    });
+    describe("given invalid ShippingAddress (countryCode:null)", () => {
+      it("should throw InvalidShippingAddressException", async () => {
+        const order = await SalesOrder.load(cloneDeep(mock));
+        const mockDto = {
+          shippingAddress: cloneDeep(mockAddress),
+        };
+        mockDto.shippingAddress.countryCode = null;
+        const error: InvalidShippingAddressException = await getAsyncError(
+          async () => order.updateShippingAddress(mockDto)
+        );
+        console.log(safeJsonStringify(error as any, null, 2));
+
+        expect(error).not.toBeInstanceOf(NoErrorThrownError);
+        expect(error).toBeInstanceOf(InvalidShippingAddressException);
+        const expected = {
+          response: {
+            statusCode: 500,
+            message:
+              "Failed to update shipping address for order '00000000515bd494ed80cfbd': InvalidSalesOrderAddress: SalesOrderAddress encountered validation errors. See inner for details.",
+            timestamp: now,
+            error: "InvalidShippingAddress",
+            details: {
+              orderId: "00000000515bd494ed80cfbd",
+              shippingAddress: {
+                  zip: "43844-9406",
+                  city: "Warsaw",
+                  name: "Tony Stark",
+                  phone: "2563472777",
+                  company: "MyEasySuite Inc.",
+                  country: "United States",
+                  address1: "19936 County Road 18",
+                  address2: "",
+                  address3: "",
+                  latitude: 40.2496938,
+                  province: "Ohio",
+                  lastName: "Stark",
+                  longitude: -82.1265222,
+                  firstName: "Tony",
+                  countryCode: null,
+                  provinceCode: "OH",
+              },
+              reason:
+                "InvalidSalesOrderAddress: SalesOrderAddress encountered validation errors. See inner for details.",
+              inner: [
+                {
+                  value: {
+                    value: null,
+                    property: "countryCode",
+                    children: [],
+                    constraints: {
+                      isNotEmpty: "countryCode should not be empty",
+                      isString: "countryCode must be a string",
+                    },
+                  },
+                  reason: "'countryCode' is invalid.",
+                  name: "AddressValidationError",
+                  message:
+                    "AddressValidationError 'An instance of an object has failed the validation:\n - property countryCode has failed the following constraints: isNotEmpty, isString \n': 'countryCode' is invalid.",
+                },
+              ],
+            },
+          },
+          status: 500,
+          message:
+            "Failed to update shipping address for order '00000000515bd494ed80cfbd': InvalidSalesOrderAddress: SalesOrderAddress encountered validation errors. See inner for details.",
+          name: "InvalidShippingAddressException",
+        };
+        expect(error.getResponse()).toEqual(expected.response);
+      });
+    });
+  });
   describe("updatePersonalization", () => {
     describe("given LineItem exists and personalization valid", () => {
       it("should update personalization for the given line item", async () => {
@@ -746,7 +832,7 @@ describe("SalesOrder", () => {
         };
         const error = await getAsyncError(async () => SalesOrder.load(mock));
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
-        expect(error).toMatchObject(expected);
+        expect(error).toEqual(expected);
       });
     });
   });
