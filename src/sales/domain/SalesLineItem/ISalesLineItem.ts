@@ -1,15 +1,13 @@
-import { SalesOrderID } from "../SalesOrder";
 import { SalesVariant } from "../SalesVariant";
 import { ISalesVariantProps } from "../SalesVariant/ISalesVariant";
-import { LineItemID } from "./LineItemID";
-import { LineNumber } from "./LineNumber";
-import { OrderFlag } from "./OrderFlag";
-import { Quantity } from "./Quantity";
+import {
+  OrderFlag,
+  LineItemID,
+  LineNumber,
+  Quantity,
+  ILineItemProperty,
+} from "../ValueObjects";
 
-export interface ILineItemProperty {
-  name: string;
-  value: string;
-}
 export interface ISalesLineItemProps {
   id?: string | undefined;
   lineNumber: number;

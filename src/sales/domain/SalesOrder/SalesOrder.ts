@@ -1,62 +1,25 @@
 import moment from "moment";
 import { ResultError, IAggregate, Result } from "@shared/domain";
-
 import { MongoSalesLineItem, MongoSalesOrder } from "@sales/database";
-
 import { ISalesOrder, ISalesOrderProps } from "./ISalesOrder";
-import { SalesOrderNumber } from "./SalesOrderNumber";
-import { OrderStatus, SalesOrderStatus } from "./SalesOrderStatus";
-import { SalesOrderCustomer } from "./SalesOrderCustomer";
-import { SalesOrderAddress } from "./SalesOrderAddress";
-import { SalesOrderID } from "./SalesOrderID";
-import { ILineItemProperty, SalesLineItem, LineItemID } from "../SalesLineItem";
-import { SalesOrderDate } from "./SalesOrderDate";
-import { AddressDto, CreateOrderDto } from "@sales/dto";
+import { CreateOrderDto } from "@sales/dto";
 import { AccountId } from "@auth/domain/valueObjects/AccountId";
 import { EditShippingAddressDto } from "@sales/api";
-import { HttpStatus, InternalServerErrorException } from "@nestjs/common";
-
-/**
- * Aggregates need: events, domain methods, initializers, converters
- */
-export enum SalesOrderError {
-  InvalidSalesOrder = "InvalidSalesOrder",
-  InvalidSalesOrderProperty = "InvalidSalesOrderProperty",
-  FailedToCreateLineItems = "FailedToCreateLineItems",
-  FailedToLoadLineItems = "FailedToLoadLineItems",
-  InvalidShippingAddress = "InvalidShippingAddress",
-}
-export class InvalidSalesOrder implements ResultError {
-  public stack: string;
-  public name = SalesOrderError.InvalidSalesOrder;
-  public message: string;
-  constructor(
-    public inner: ResultError[],
-    public value: any,
-    public reason: string
-  ) {
-    this.message = `${this.name} '${this.value.id}' '${this.value.name}': ${reason}`;
-  }
-}
-export class FailedToCreateLineItemsError implements ResultError {
-  public stack: string;
-  public name = SalesOrderError.FailedToCreateLineItems;
-  public value: any;
-
-  public message: string;
-  constructor(public inner: ResultError[], public reason: string) {
-    this.message = `${this.name}: ${reason}`;
-  }
-}
-export class FailedToLoadLineItemsError implements ResultError {
-  public stack: string;
-  public name = SalesOrderError.FailedToLoadLineItems;
-  public message: string;
-  public value: any;
-  constructor(public inner: ResultError[], public reason: string) {
-    this.message = `${this.name}: ${reason}`;
-  }
-}
+import { SalesLineItem } from "../SalesLineItem";
+import {
+  SalesOrderAddress,
+  SalesOrderNumber,
+  SalesOrderDate,
+  SalesOrderStatus,
+  OrderStatus,
+  SalesOrderCustomer,
+  SalesOrderID,
+} from "../ValueObjects";
+import { FailedToLoadLineItemsError } from "./FailedToLoadLineItemsError";
+import { FailedToCreateLineItemsError } from "./FailedToCreateLineItemsError";
+import { InvalidSalesOrder } from "./InvalidSalesOrder";
+import { SalesOrderError } from "./SalesOrderError";
+import { InvalidShippingAddressException } from "./InvalidShippingAddressException";
 
 export class SalesOrder extends IAggregate<
   ISalesOrderProps,
@@ -150,6 +113,11 @@ export class SalesOrder extends IAggregate<
     results.billingAddress = await SalesOrderAddress.from(dto.billingAddress);
 
     results.accountId = AccountId.from(dto.accountId);
+
+    dto.lineItems.map(async (li) => {
+      SalesLineItem.create(li);
+    });
+
     // Errors
     let errors = Object.values(results)
       .filter((r) => r.isFailure)
@@ -274,38 +242,6 @@ export class SalesOrder extends IAggregate<
     return new FailedToLoadLineItemsError(
       errors,
       `Failed to load LineItems from Mongo. See inner error for details.`
-    );
-  }
-}
-export class InvalidShippingAddressException extends InternalServerErrorException {
-  constructor(
-    dto: {
-      orderId: string;
-      shippingAddress: AddressDto;
-    },
-    reason: any,
-    type: SalesOrderError,
-    inner: any[]
-  ) {
-    super(
-      {
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        message:
-          `Failed to update shipping address for order ` +
-          `'${dto.orderId}': ` +
-          `${reason}`,
-        timestamp: moment().toDate(),
-        error: type,
-        details: {
-          orderId: dto.orderId,
-          shippingAddress: dto.shippingAddress,
-          reason,
-          inner,
-        },
-      },
-      `Failed to update shipping address for order ` +
-        `'${dto.orderId}': ` +
-        `${reason}`
     );
   }
 }

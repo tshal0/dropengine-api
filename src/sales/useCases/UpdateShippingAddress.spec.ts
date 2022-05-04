@@ -80,7 +80,6 @@ describe("UpdateShippingAddress", () => {
     const mockUid = "000000000000000000000001";
     const mockVariant = mockCatalogVariant();
     let mockLineItem: MongoSalesLineItem = {
-      orderId: mockUid,
       lineNumber: 1,
       quantity: 1,
       variant: cloneDeep(mockVariant),

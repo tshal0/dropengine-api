@@ -82,7 +82,6 @@ describe("UpdatePersonalization", () => {
     const mockVariant = mockCatalogVariant();
     let mockLineItem: MongoSalesLineItem = {
       lineNumber: 1,
-      orderId: mockUid,
       quantity: 1,
       variant: cloneDeep(mockVariant),
       personalization: [],

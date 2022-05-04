@@ -1,7 +1,6 @@
 import { cloneDeep } from "lodash";
-import { SalesOrderAddress } from ".";
 import { mockAddress } from "../../mocks/mockAddress";
-import { ISalesOrderAddress } from "./SalesOrderAddress";
+import { ISalesOrderAddress, SalesOrderAddress } from "./SalesOrderAddress";
 
 describe("SalesOrderAddress", () => {
   describe("given valid AddressDto", () => {

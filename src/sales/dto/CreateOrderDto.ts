@@ -22,6 +22,12 @@ export class CreateOrderDto {
     this.shippingAddress = dto?.shippingAddress;
     this.billingAddress = dto?.billingAddress;
     this.accountId = dto?.accountId;
+    this.lineItems = [];
+  }
+
+  public applyLineItems(lineItems: CreateLineItemDto[]) {
+    this.lineItems = lineItems;
+    return this;
   }
   @IsString()
   @IsNotEmpty()
@@ -40,7 +46,10 @@ export class CreateOrderDto {
   @ValidateNested()
   @Type(() => CustomerDto)
   customer: CustomerDto;
-
+  @IsArrayOfObjects()
+  @ValidateNested({ each: true })
+  @Type(() => CreateLineItemDto)
+  lineItems: CreateLineItemDto[];
   @ValidateNested()
   @Type(() => AddressDto)
   shippingAddress: AddressDto;

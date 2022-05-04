@@ -11,7 +11,8 @@ import { invalidPersonalization } from "./fixtures/create.invalidPersonalization
 import { validDto } from "./fixtures/create.validDto";
 
 import { mockAddress } from "../../mocks/mockAddress";
-import { InvalidShippingAddressException, SalesOrder } from "./SalesOrder";
+import { SalesOrder } from "./SalesOrder";
+import { InvalidShippingAddressException } from "./InvalidShippingAddressException";
 import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
 import {
   mockUuid1,
@@ -208,7 +209,8 @@ describe("SalesOrder", () => {
           ],
         };
         const lineItems: CreateLineItemDto[] = [mockLineItem1];
-        const createOrderDto: CreateOrderDto = new CreateOrderDto(dto);
+        const mockDto = cloneDeep(dto);
+        const createOrderDto: CreateOrderDto = new CreateOrderDto(mockDto);
 
         let order = await SalesOrder.create(createOrderDto);
 

@@ -1,12 +1,17 @@
 import { AccountId } from "@auth/domain/valueObjects/AccountId";
 import { SalesLineItem, ISalesLineItemProps } from "../SalesLineItem";
+import {
+  OrderStatus,
+  ISalesOrderCustomer,
+  ISalesOrderAddress,
+  SalesOrderID,
+  SalesOrderNumber,
+  SalesOrderStatus,
+  SalesOrderDate,
+  SalesOrderCustomer,
+  SalesOrderAddress,
+} from "../ValueObjects";
 
-import { ISalesOrderAddress, SalesOrderAddress } from "./SalesOrderAddress";
-import { ISalesOrderCustomer, SalesOrderCustomer } from "./SalesOrderCustomer";
-import { SalesOrderDate } from "./SalesOrderDate";
-import { SalesOrderID } from "./SalesOrderID";
-import { SalesOrderNumber } from "./SalesOrderNumber";
-import { OrderStatus, SalesOrderStatus } from "./SalesOrderStatus";
 export interface ISalesOrderFlag {
   type: string;
   message: string;

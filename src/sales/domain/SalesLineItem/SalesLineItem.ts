@@ -3,19 +3,20 @@ import { IAggregate, Result, ResultError } from "@shared/domain";
 import { MongoSalesLineItem } from "@sales/database";
 import {
   ISalesLineItem,
-  ILineItemProperty,
   ISalesLineItemProps,
 } from "./ISalesLineItem";
-import { Personalization } from "./Personalization";
-import { OrderFlag } from "./OrderFlag";
+import { ILineItemProperty } from "../ValueObjects/ILineItemProperty";
 import { SalesVariant } from "../SalesVariant";
-import { LineItemID } from "./LineItemID";
-import { LineNumber } from "./LineNumber";
-import { Quantity } from "./Quantity";
+import { Quantity } from "../ValueObjects/Quantity";
 import { isNull } from "lodash";
-import { CreateLineItemDto, LineItemPropertyDto } from "@sales/dto";
+import { CreateLineItemDto } from "@sales/dto";
 import { HttpStatus, InternalServerErrorException } from "@nestjs/common";
-import { SalesOrderID } from "../SalesOrder";
+import {
+  OrderFlag,
+  Personalization,
+  LineItemID,
+  LineNumber,
+} from "../ValueObjects";
 
 /**
  * Aggregates need: events, domain methods, initializers, converters

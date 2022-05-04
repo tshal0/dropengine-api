@@ -1,4 +1,5 @@
-import { ILineItemProperty, ISalesLineItemProps } from "./ISalesLineItem";
+import { ISalesLineItemProps } from "../SalesLineItem";
+import { ILineItemProperty } from "./ILineItemProperty";
 import {
   BadCharacterFlag,
   InvalidPersonalizationFlag,

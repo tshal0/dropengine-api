@@ -7,18 +7,14 @@ export class ResultError {
   constructor(
     error: Error,
     inner?: ResultError[] | undefined,
-    value?: any | undefined,
+    value?: any | undefined
   ) {
     this.message = error.message;
     this.value = value;
-
+    this.stack = error.stack;
     this.name = error.name;
     this.inner = inner;
   }
-}
-
-interface HasValue<T> {
-  value?: T | undefined;
 }
 
 export class Result<T> {
@@ -31,7 +27,7 @@ export class Result<T> {
     isSuccess: boolean,
     error?: ResultError,
     value?: T,
-    id?: any | undefined,
+    id?: any | undefined
   ) {
     if (isSuccess && error) {
       throw new Error(`InvalidOperation: A result cannot be 
@@ -69,7 +65,7 @@ export class Result<T> {
 
   public static fail<U>(
     error?: ResultError,
-    id?: string | undefined,
+    id?: string | undefined
   ): Result<U> {
     return new Result<U>(false, error, null, id);
   }
