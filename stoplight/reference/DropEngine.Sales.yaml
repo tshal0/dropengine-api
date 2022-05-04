@@ -3,6 +3,10 @@ info:
   title: Sales
   version: '1'
   summary: DropEngine™ Sales API
+  description: TBD
+  contact:
+    name: Thomas Shallenberger
+    email: thomas@drop-engine.com
 servers:
   - url: 'https://dev.drop-engine.com/api/v1/sales'
     description: Dev
@@ -10,16 +14,28 @@ paths:
   /orders:
     get:
       summary: Retrieve a list of orders
-      responses: {}
+      description: TBD
+      responses:
+        '200':
+          $ref: '#/components/responses/QueryOrdersResponseDto'
       operationId: get-orders
       tags:
         - v1
     post:
       summary: Create an order
-      responses: {}
+      description: TBD
+      responses:
+        '200':
+          $ref: '#/components/responses/SalesOrderDto'
       operationId: post-orders
       tags:
         - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSalesOrder'
+        description: ''
   '/orders/{id}':
     parameters:
       - schema:
@@ -70,6 +86,7 @@ paths:
       operationId: get-orders-id
       description: Lookup SalesOrder by ID.
     delete:
+      description: TBD
       summary: Delete an order
       operationId: delete-orders-id
       responses:
@@ -90,6 +107,7 @@ paths:
         in: path
         required: true
     patch:
+      description: TBD
       summary: Update a line items personalization
       operationId: patch-orders-id-lineItems-lid
       responses:
@@ -110,6 +128,7 @@ paths:
         in: path
         required: true
     patch:
+      description: TBD
       summary: Update an orders shipping address
       operationId: patch-orders-id-shippingAddress
       responses:
@@ -142,7 +161,7 @@ paths:
               $ref: '#/components/schemas/CreateSalesOrderCustomer'
       tags:
         - v1
-      description: ''
+      description: TBD
   '/orders/{id}/send':
     parameters:
       - schema:
@@ -151,6 +170,7 @@ paths:
         in: path
         required: true
     post:
+      description: TBD
       summary: Send an order to a manufacturer
       operationId: post-orders-id-send
       responses:
@@ -171,7 +191,7 @@ paths:
       responses:
         '200':
           description: OK
-      description: ''
+      description: TBD
       tags:
         - v1
   '/orders/{id}/cancel':
@@ -187,7 +207,7 @@ paths:
       responses:
         '200':
           description: OK
-      description: ''
+      description: TBD
       tags:
         - v1
 components:
