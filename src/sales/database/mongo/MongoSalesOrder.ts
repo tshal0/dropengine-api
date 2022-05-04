@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
-import { Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 import { IMongoEntity } from "./IMongoEntity";
 import { MongoAddress, MongoAddressSchema } from "./MongoAddress";
 import { MongoCustomer, MongoCustomerSchema } from "./MongoCustomer";
-import { MongoLineItem, MongoLineItemSchema } from "./MongoLineItem";
+import { MongoSalesLineItem } from "./MongoSalesLineItem";
 
 @Schema({ collection: "orders" })
 export class MongoSalesOrder extends IMongoEntity {
@@ -22,8 +22,12 @@ export class MongoSalesOrder extends IMongoEntity {
   @Prop({ required: false })
   orderName?: string;
 
-  @Prop({ type: [MongoLineItemSchema], required: true })
-  lineItems: MongoLineItem[];
+  @Prop({
+    type: [mongoose.Schema.Types.ObjectId],
+    required: true,
+    ref: MongoSalesLineItem.name,
+  })
+  lineItems?: MongoSalesLineItem[];
   @Prop({ type: MongoCustomerSchema, required: true })
   customer: MongoCustomer;
   @Prop({ type: MongoAddressSchema, required: true })

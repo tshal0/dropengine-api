@@ -1,4 +1,4 @@
-import { ILineItemProperty, ILineItemProps } from "./ISalesLineItem";
+import { ILineItemProperty, ISalesLineItemProps } from "./ISalesLineItem";
 import {
   BadCharacterFlag,
   InvalidPersonalizationFlag,
@@ -8,7 +8,7 @@ import {
 } from "./OrderFlag";
 
 export class Personalization {
-  static validate(li: ILineItemProps): OrderFlag[] {
+  static validate(li: ISalesLineItemProps): OrderFlag[] {
     const props = li.personalization;
     const rules = li?.variant?.personalizationRules;
 
@@ -34,7 +34,7 @@ export class Personalization {
   }
 
   private static badCharacter(
-    li: ILineItemProps,
+    li: ISalesLineItemProps,
     prop: ILineItemProperty,
     pattern: string
   ): BadCharacterFlag {
@@ -48,7 +48,7 @@ export class Personalization {
   }
 
   private static missingProperty(
-    li: ILineItemProps,
+    li: ISalesLineItemProps,
     prop: string
   ): InvalidPersonalizationFlag {
     return new MissingPersonalizationFlag({
@@ -57,7 +57,7 @@ export class Personalization {
     });
   }
   private static invalidLength(
-    li: ILineItemProps,
+    li: ISalesLineItemProps,
     prop: ILineItemProperty
   ): InvalidPersonalizationFlag {
     return new InvalidPersonalizationFlag({

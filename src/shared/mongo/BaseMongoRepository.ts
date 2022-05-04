@@ -1,3 +1,4 @@
+import { MongoSalesLineItem } from "@sales/database";
 import { aqp } from "@shared/utils";
 import { IsNumberString } from "class-validator";
 import * as mongoose from "mongoose";
@@ -25,9 +26,7 @@ export interface IRead<T> {
   all: () => Promise<T[]>;
 }
 
-export class BaseMongoRepository<T>
-  implements IRead<T>, IWrite<T>
-{
+export class BaseMongoRepository<T> implements IRead<T>, IWrite<T> {
   protected _model: mongoose.Model<T>;
 
   constructor(model: mongoose.Model<T>) {

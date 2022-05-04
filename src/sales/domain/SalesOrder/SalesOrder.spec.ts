@@ -1,8 +1,8 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 import { CreateOrderApiDto, CreateOrderLineItemApiDto } from "@sales/api";
 import {
-  MongoLineItem,
+  MongoSalesLineItem,
   MongoSalesOrder,
   MongoSalesVariant,
 } from "@sales/database";
@@ -78,22 +78,21 @@ describe("SalesOrder", () => {
   const oid = new Types.ObjectId(orderId);
   const lineItemId = "000000000000000000000002";
   const lid = new Types.ObjectId(lineItemId);
-  const mli: MongoLineItem = {
-    _id: lid,
-    id: lineItemId,
-    lineNumber: 1,
-    quantity: mockLineItem.quantity,
-    variant: mockVariant,
-    personalization: [
-      { name: mockTopText, value: "ValidText" },
-      { name: mockMiddleText, value: "ValidText" },
-      { name: mockBottomText, value: "ValidText" },
-      { name: mockInitial, value: "M" },
-    ],
-    flags: [],
-    updatedAt: now,
-    createdAt: now,
-  };
+  const mli: MongoSalesLineItem = new MongoSalesLineItem();
+  mli._id = lid;
+  mli.id = lineItemId;
+  mli.lineNumber = 1;
+  mli.quantity = mockLineItem.quantity;
+  mli.variant = mockVariant;
+  mli.personalization = [
+    { name: mockTopText, value: "ValidText" },
+    { name: mockMiddleText, value: "ValidText" },
+    { name: mockBottomText, value: "ValidText" },
+    { name: mockInitial, value: "M" },
+  ];
+  mli.flags = [];
+  mli.updatedAt = now;
+  mli.createdAt = now;
   const mock: MongoSalesOrder = {
     _id: oid,
     id: orderId,
@@ -146,22 +145,22 @@ describe("SalesOrder", () => {
             details: {
               orderId: "000000000000000000000001",
               shippingAddress: {
-                  zip: "43844-9406",
-                  city: "Warsaw",
-                  name: "Tony Stark",
-                  phone: "2563472777",
-                  company: "MyEasySuite Inc.",
-                  country: "United States",
-                  address1: "19936 County Road 18",
-                  address2: "",
-                  address3: "",
-                  latitude: 40.2496938,
-                  province: "Ohio",
-                  lastName: "Stark",
-                  longitude: -82.1265222,
-                  firstName: "Tony",
-                  countryCode: null,
-                  provinceCode: "OH",
+                zip: "43844-9406",
+                city: "Warsaw",
+                name: "Tony Stark",
+                phone: "2563472777",
+                company: "MyEasySuite Inc.",
+                country: "United States",
+                address1: "19936 County Road 18",
+                address2: "",
+                address3: "",
+                latitude: 40.2496938,
+                province: "Ohio",
+                lastName: "Stark",
+                longitude: -82.1265222,
+                firstName: "Tony",
+                countryCode: null,
+                provinceCode: "OH",
               },
               reason:
                 "InvalidSalesOrderAddress: SalesOrderAddress encountered validation errors. See inner for details.",
@@ -193,50 +192,7 @@ describe("SalesOrder", () => {
       });
     });
   });
-  describe("updatePersonalization", () => {
-    describe("given LineItem exists and personalization valid", () => {
-      it("should update personalization for the given line item", async () => {
-        const order = await SalesOrder.load(cloneDeep(mock));
 
-        const mockDto = {
-          lineItemId: mli.id,
-          personalization: [
-            { name: mockTopText, value: "ValidText2" },
-            { name: mockMiddleText, value: "ValidText2" },
-            { name: mockBottomText, value: "ValidText2" },
-            { name: mockInitial, value: "Z" },
-          ],
-        };
-        await order.updatePersonalization(mockDto);
-        const expected = {
-          id: orderId,
-          accountId: mockUuid1,
-          orderNumber: 1000,
-          orderDate: now,
-          orderStatus: "OPEN",
-          lineItems: [
-            {
-              id: lineItemId,
-              lineNumber: 1,
-              quantity: 1,
-              variant: mockVariant,
-              personalization: cloneDeep(mockDto.personalization),
-              flags: [],
-              createdAt: now,
-              updatedAt: now,
-            },
-          ],
-          customer: mockCustomer,
-          shippingAddress: mockAddress,
-          billingAddress: mockAddress,
-        };
-
-        const props = order.props();
-        const value = order.value();
-        expect(props).toEqual(expected);
-      });
-    });
-  });
   describe("create", () => {
     describe("with a valid DTO", () => {
       it("should generate a valid SalesOrder", async () => {
@@ -252,16 +208,13 @@ describe("SalesOrder", () => {
           ],
         };
         const lineItems: CreateLineItemDto[] = [mockLineItem1];
-        const createOrderDto: CreateOrderDto = new CreateOrderDto(
-          dto,
-          lineItems
-        );
+        const createOrderDto: CreateOrderDto = new CreateOrderDto(dto);
 
         let order = await SalesOrder.create(createOrderDto);
 
         const props = order.props();
-
         const expected = validDto(now);
+        expected.lineItems = [];
         expect(props).toEqual(expected);
       });
     });
@@ -291,16 +244,13 @@ describe("SalesOrder", () => {
           ],
         };
         const lineItems: CreateLineItemDto[] = [mockLineItem1];
-        const createOrderDto: CreateOrderDto = new CreateOrderDto(
-          dto,
-          lineItems
-        );
+        const createOrderDto: CreateOrderDto = new CreateOrderDto(dto);
 
         let order = await SalesOrder.create(createOrderDto);
 
         const props = order.props();
         const expected = invalidPersonalization(now);
-
+        expected.lineItems = [];
         expect(props).toEqual(expected);
       });
     });
@@ -330,10 +280,7 @@ describe("SalesOrder", () => {
           ],
         };
         const lineItems: CreateLineItemDto[] = [null];
-        const createOrderDto: CreateOrderDto = new CreateOrderDto(
-          dto,
-          lineItems
-        );
+        const createOrderDto: CreateOrderDto = new CreateOrderDto(dto);
 
         const expected = {
           inner: [
@@ -376,22 +323,6 @@ describe("SalesOrder", () => {
               message:
                 "InvalidSalesOrderAddress: SalesOrderAddress must be a valid Address.",
             },
-            {
-              inner: [
-                {
-                  inner: [],
-                  value: null,
-                  reason: "Failed to create LineItem. LineItem is undefined.",
-                  name: "InvalidLineItem",
-                  message:
-                    "InvalidLineItem 'undefined' 'undefined': Failed to create LineItem. LineItem is undefined.",
-                },
-              ],
-              reason: "Failed to create LineItems. See inner for details.",
-              name: "FailedToCreateLineItems",
-              message:
-                "FailedToCreateLineItems: Failed to create LineItems. See inner for details.",
-            },
           ],
           value: {
             accountId: null,
@@ -399,7 +330,6 @@ describe("SalesOrder", () => {
             orderDate: null,
             orderNumber: null,
             customer: null,
-            lineItems: [null],
             shippingAddress: null,
             billingAddress: null,
           },
@@ -428,154 +358,10 @@ describe("SalesOrder", () => {
           orderNumber: 1000,
           orderDate: now,
           orderStatus: "OPEN",
-          lineItems: [
-            {
-              id: lineItemId,
-              lineNumber: 1,
-              quantity: 1,
-              variant: {
-                id: "00000000-0000-0000-0000-000000000001",
-                sku: "MU-C004-00-18-Black",
-                image: "mock_image",
-                svg: "mock_svg",
-                type: "2DMetalArt",
-                option1: {
-                  name: "Size",
-                  option: '18"',
-                  enabled: true,
-                },
-                option2: {
-                  name: "Color",
-                  option: "Black",
-                  enabled: true,
-                },
-                option3: {
-                  option: null,
-                  enabled: false,
-                },
-                manufacturingCost: {
-                  currency: "USD",
-                  total: 650,
-                },
-                shippingCost: {
-                  currency: "USD",
-                  total: 1200,
-                },
-                weight: {
-                  units: "oz",
-                  dimension: 738,
-                },
-                productionData: {
-                  material: "Mild Steel",
-                  route: "1",
-                  thickness: "0.06",
-                },
-                personalizationRules: [
-                  {
-                    name: "top_text",
-                    label: "Top Text",
-                    placeholder: "Enter up to 16 characters",
-                    required: true,
-                    type: "input",
-                    maxLength: 16,
-                    pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
-                    options: "",
-                  },
-                  {
-                    name: "middle_text",
-                    label: "Middle Text",
-                    placeholder: "Enter up to 14 characters",
-                    required: true,
-                    type: "input",
-                    maxLength: 14,
-                    pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
-                    options: "",
-                  },
-                  {
-                    name: "bottom_text",
-                    label: "Bottom Text",
-                    placeholder: "Enter up to 16 characters",
-                    required: true,
-                    type: "input",
-                    maxLength: 16,
-                    pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
-                    options: "",
-                  },
-                  {
-                    name: "initial",
-                    label: "Initial",
-                    placeholder: "Select Initial",
-                    required: true,
-                    type: "dropdownlist",
-                    maxLength: null,
-                    options:
-                      "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z",
-                  },
-                ],
-              },
-              personalization: [
-                {
-                  name: "Top Text",
-                  value: "ValidText",
-                },
-                {
-                  name: "Middle Text",
-                  value: "ValidText",
-                },
-                {
-                  name: "Bottom Text",
-                  value: "ValidText",
-                },
-                {
-                  name: "Initial",
-                  value: "M",
-                },
-              ],
-              flags: [],
-              createdAt: now,
-              updatedAt: now,
-            },
-          ],
-          customer: {
-            email: "mock.customer@email.com",
-            name: "Mock Customer",
-          },
-          shippingAddress: {
-            zip: "43844-9406",
-            city: "Warsaw",
-            name: "Tony Stark",
-            phone: "2563472777",
-            company: "MyEasySuite Inc.",
-            country: "United States",
-            address1: "19936 County Road 18",
-            address2: "",
-            address3: "",
-            latitude: 40.2496938,
-            longitude: -82.1265222,
-            province: "Ohio",
-            lastName: "Stark",
-            firstName: "Tony",
-            countryCode: "US",
-            provinceCode: "OH",
-          },
-          billingAddress: {
-            zip: "43844-9406",
-            city: "Warsaw",
-            name: "Tony Stark",
-            phone: "2563472777",
-            company: "MyEasySuite Inc.",
-            country: "United States",
-            address1: "19936 County Road 18",
-            address2: "",
-            address3: "",
-            latitude: 40.2496938,
-            longitude: -82.1265222,
-            province: "Ohio",
-            lastName: "Stark",
-            firstName: "Tony",
-            countryCode: "US",
-            provinceCode: "OH",
-          },
+          lineItems: [],
+          customer: mockCustomer,
+          shippingAddress: mockAddress,
+          billingAddress: mockAddress,
         };
         expect(props).toEqual(expected);
         expect(entity).toEqual(mock);
@@ -583,54 +369,8 @@ describe("SalesOrder", () => {
     });
     describe("with invalid properties", () => {
       it("should fail", async () => {
-        const mockVariant: MongoSalesVariant = {
-          id: mockCatalogVariant1.id,
-          sku: mockCatalogVariant1.sku,
-          image: mockCatalogVariant1.image,
-          svg: mockCatalogVariant1.svg,
-          type: mockCatalogVariant1.type,
-          option1: mockCatalogVariant1.option1,
-          option2: mockCatalogVariant1.option2,
-          option3: mockCatalogVariant1.option3,
-          manufacturingCost: mockCatalogVariant1.manufacturingCost,
-          shippingCost: mockCatalogVariant1.shippingCost,
-          weight: mockCatalogVariant1.weight,
-          productionData: mockCatalogVariant1.productionData,
-          personalizationRules: mockCatalogVariant1.personalizationRules,
-        };
-        const orderId = "000000000000000000000001";
-        const oid = new Types.ObjectId(orderId);
-        const lineItemId = "000000000000000000000002";
-        const lid = new Types.ObjectId(lineItemId);
-        const mli: MongoLineItem = {
-          _id: lid,
-          id: lineItemId,
-          lineNumber: 1,
-          quantity: mockLineItem.quantity,
-          variant: mockVariant,
-          personalization: [
-            { name: mockTopText, value: "ValidText" },
-            { name: mockMiddleText, value: "ValidText" },
-            { name: mockBottomText, value: "ValidText" },
-          ],
-          flags: [],
-          updatedAt: now,
-          createdAt: now,
-        };
-        const mock: MongoSalesOrder = {
-          _id: oid,
-          id: orderId,
-          accountId: mockUuid1,
-          orderStatus: "OPEN",
-          orderDate: null,
-          orderNumber: +dto.orderNumber,
-          lineItems: [mli, null],
-          customer: dto.customer,
-          shippingAddress: dto.shippingAddress,
-          billingAddress: dto.billingAddress,
-          updatedAt: now,
-          createdAt: now,
-        };
+        const mockOrder = cloneDeep(mock);
+        mockOrder.orderDate = null;
         const expected = {
           inner: [
             {
@@ -639,23 +379,6 @@ describe("SalesOrder", () => {
               message:
                 "InvalidSalesOrderDate 'null': SalesOrderDate must be a valid Date.",
               value: null,
-            },
-            {
-              inner: [
-                {
-                  inner: [],
-                  value: null,
-                  reason: "Failed to create LineItem. LineItem is undefined.",
-                  name: "InvalidLineItem",
-                  message:
-                    "InvalidLineItem 'undefined' 'undefined': Failed to create LineItem. LineItem is undefined.",
-                },
-              ],
-              reason:
-                "Failed to load LineItems from Mongo. See inner error for details.",
-              name: "FailedToLoadLineItems",
-              message:
-                "FailedToLoadLineItems: Failed to load LineItems from Mongo. See inner error for details.",
             },
           ],
           value: {
@@ -671,158 +394,16 @@ describe("SalesOrder", () => {
                 id: "000000000000000000000002",
                 lineNumber: 1,
                 quantity: 1,
-                variant: {
-                  id: "00000000-0000-0000-0000-000000000001",
-                  sku: "MU-C004-00-18-Black",
-                  image: "mock_image",
-                  svg: "mock_svg",
-                  type: "2DMetalArt",
-                  option1: {
-                    name: "Size",
-                    option: '18"',
-                    enabled: true,
-                  },
-                  option2: {
-                    name: "Color",
-                    option: "Black",
-                    enabled: true,
-                  },
-                  option3: {
-                    option: null,
-                    enabled: false,
-                  },
-                  manufacturingCost: {
-                    total: 650,
-                    currency: "USD",
-                  },
-                  shippingCost: {
-                    total: 1200,
-                    currency: "USD",
-                  },
-                  weight: {
-                    units: "oz",
-                    dimension: 738,
-                  },
-                  productionData: {
-                    material: "Mild Steel",
-                    route: "1",
-                    thickness: "0.06",
-                  },
-                  personalizationRules: [
-                    {
-                      name: "top_text",
-                      type: "input",
-                      label: "Top Text",
-                      options: "",
-                      pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
-                      required: true,
-                      maxLength: 16,
-                      placeholder: "Enter up to 16 characters",
-                    },
-                    {
-                      name: "middle_text",
-                      type: "input",
-                      label: "Middle Text",
-                      options: "",
-                      pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
-                      required: true,
-                      maxLength: 14,
-                      placeholder: "Enter up to 14 characters",
-                    },
-                    {
-                      name: "bottom_text",
-                      type: "input",
-                      label: "Bottom Text",
-                      options: "",
-                      pattern: "^[a-zA-Z0-9\\s.\\()&/]*$",
-                      required: true,
-                      maxLength: 16,
-                      placeholder: "Enter up to 16 characters",
-                    },
-                    {
-                      name: "initial",
-                      type: "dropdownlist",
-                      label: "Initial",
-                      options:
-                        "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z",
-                      required: true,
-                      maxLength: null,
-                      placeholder: "Select Initial",
-                    },
-                  ],
-                },
-                personalization: [
-                  {
-                    name: "Top Text",
-                    value: "ValidText",
-                  },
-                  {
-                    name: "Middle Text",
-                    value: "ValidText",
-                  },
-                  {
-                    name: "Bottom Text",
-                    value: "ValidText",
-                  },
-                ],
-                flags: [
-                  {
-                    type: "MissingPersonalization",
-                    details: {
-                      lineNumber: 1,
-                      property: "Initial",
-                      reason: "MISSING",
-                    },
-                    message: "Line Item #1 is missing property 'Initial'.",
-                  },
-                ],
+                variant: mockVariant,
+                personalization: mockOrder.lineItems[0].personalization,
+                flags: [],
                 updatedAt: now,
                 createdAt: now,
               },
-              null,
             ],
-            customer: {
-              email: "mock.customer@email.com",
-              name: "Mock Customer",
-            },
-            shippingAddress: {
-              zip: "43844-9406",
-              city: "Warsaw",
-              name: "Tony Stark",
-              phone: "2563472777",
-              company: "MyEasySuite Inc.",
-              country: "United States",
-              address1: "19936 County Road 18",
-              address2: "",
-              address3: "",
-              latitude: 40.2496938,
-              province: "Ohio",
-              lastName: "Stark",
-              longitude: -82.1265222,
-              firstName: "Tony",
-              countryCode: "US",
-              provinceCode: "OH",
-            },
-            billingAddress: {
-              zip: "43844-9406",
-              city: "Warsaw",
-              name: "Tony Stark",
-              phone: "2563472777",
-              company: "MyEasySuite Inc.",
-              country: "United States",
-              address1: "19936 County Road 18",
-              address2: "",
-              address3: "",
-              latitude: 40.2496938,
-              province: "Ohio",
-              lastName: "Stark",
-              longitude: -82.1265222,
-              firstName: "Tony",
-              countryCode: "US",
-              provinceCode: "OH",
-            },
-            updatedAt: now,
-            createdAt: now,
+            customer: mockCustomer,
+            shippingAddress: mockAddress,
+            billingAddress: mockAddress,
           },
           reason:
             "Failed to load SalesOrder from Mongo. See inner for details.",
@@ -830,7 +411,9 @@ describe("SalesOrder", () => {
           message:
             "InvalidSalesOrder '000000000000000000000001' 'undefined': Failed to load SalesOrder from Mongo. See inner for details.",
         };
-        const error = await getAsyncError(async () => SalesOrder.load(mock));
+        const error = await getAsyncError(async () =>
+          SalesOrder.load(mockOrder)
+        );
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toEqual(expected);
       });

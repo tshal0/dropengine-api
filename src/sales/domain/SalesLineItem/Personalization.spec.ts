@@ -5,12 +5,13 @@ import {
   mockInitial,
   mockMiddleText,
 } from "@sales/mocks";
-import { ILineItemProps, Personalization } from ".";
+import { ISalesLineItemProps, Personalization } from ".";
 import {
   ISalesVariant,
   ISalesVariantProps,
   SalesPersonalizationRule,
 } from "..";
+const mockOrderId = "000000000000000000000002";
 
 describe("Personalization", () => {
   describe("validate", () => {
@@ -33,7 +34,7 @@ describe("Personalization", () => {
             (r) => SalesPersonalizationRule.from(r).value().value()
           ),
         };
-        const mockProps: ILineItemProps = {
+        const mockProps: ISalesLineItemProps = {
           lineNumber: 1,
           quantity: 1,
           variant: mockVariant,
@@ -103,7 +104,7 @@ describe("Personalization", () => {
             (r) => SalesPersonalizationRule.from(r).value().value()
           ),
         };
-        const mockProps: ILineItemProps = {
+        const mockProps: ISalesLineItemProps = {
           lineNumber: 1,
           quantity: 1,
           variant: mockVariant,

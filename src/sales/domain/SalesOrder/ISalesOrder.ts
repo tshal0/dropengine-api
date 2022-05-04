@@ -1,5 +1,5 @@
 import { AccountId } from "@auth/domain/valueObjects/AccountId";
-import { LineItem, ILineItemProps } from "../SalesLineItem";
+import { SalesLineItem, ISalesLineItemProps } from "../SalesLineItem";
 
 import { ISalesOrderAddress, SalesOrderAddress } from "./SalesOrderAddress";
 import { ISalesOrderCustomer, SalesOrderCustomer } from "./SalesOrderCustomer";
@@ -28,7 +28,7 @@ export interface ISalesOrderProps {
   orderNumber: number;
   orderDate: Date;
   orderStatus: OrderStatus;
-  lineItems: ILineItemProps[];
+  lineItems: ISalesLineItemProps[];
   customer: ISalesOrderCustomer;
   shippingAddress: ISalesOrderAddress;
   billingAddress: ISalesOrderAddress;
@@ -43,7 +43,7 @@ export interface ISalesOrder {
   orderNumber: SalesOrderNumber;
   orderStatus: SalesOrderStatus;
   orderDate: SalesOrderDate;
-  lineItems: LineItem[];
+  lineItems: SalesLineItem[];
   customer: SalesOrderCustomer;
   shippingAddress: SalesOrderAddress;
   billingAddress: SalesOrderAddress;

@@ -41,7 +41,7 @@ export class CreateSalesOrder
         )
       );
 
-      const createOrderDto: CreateOrderDto = new CreateOrderDto(dto, lineItems);
+      const createOrderDto: CreateOrderDto = new CreateOrderDto(dto);
       await this.validateDomainDto(createOrderDto);
       let result = await SalesOrder.create(createOrderDto);
 

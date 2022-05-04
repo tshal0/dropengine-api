@@ -1,4 +1,4 @@
-import { MongoLineItem, MongoSalesVariant } from "@sales/database";
+import { MongoSalesLineItem, MongoSalesVariant } from "@sales/database";
 import { CreateLineItemDto } from "@sales/dto";
 import {
   mockCatalogVariant1,
@@ -12,7 +12,7 @@ import moment from "moment";
 import { Types } from "mongoose";
 import safeJsonStringify from "safe-json-stringify";
 
-import { LineItem } from ".";
+import { SalesLineItem } from ".";
 import { SalesPersonalizationRule } from "..";
 
 const nowStr = "2021-01-01T00:00:00.000Z";
@@ -49,7 +49,8 @@ describe("LineItem", () => {
       SalesPersonalizationRule.from(r).value().value()
     ),
   };
-  const mockLineItem1: MongoLineItem = {
+  const mockOrderId = "000000000000000000000002";
+  const mockLineItem1: MongoSalesLineItem = {
     _id: new Types.ObjectId("000000000000000000000001"),
     lineNumber: 1,
     quantity: 1,
@@ -66,10 +67,7 @@ describe("LineItem", () => {
   };
   describe("updatePersonalization", () => {
     it("given valid personalization, should update both value and entity personalization", async () => {
-      let result = LineItem.load(cloneDeep(mockLineItem1));
-      expect(result.isFailure).toBe(false);
-
-      let lineItem = result.value();
+      let lineItem = SalesLineItem.load(cloneDeep(mockLineItem1));
 
       await lineItem.updatePersonalization([
         { name: mockTopText, value: "ValidText2" },
@@ -175,10 +173,8 @@ describe("LineItem", () => {
       expect(props).toEqual(expected);
     });
     it("given invalid personalization, should throw err", async () => {
-      let result = LineItem.load(cloneDeep(mockLineItem1));
-      expect(result.isFailure).toBe(false);
+      let lineItem = SalesLineItem.load(cloneDeep(mockLineItem1));
 
-      let lineItem = result.value();
       let expected = {
         response: {
           statusCode: 500,
@@ -260,9 +256,8 @@ describe("LineItem", () => {
             { name: mockInitial, value: "M" },
           ],
         };
-        let result = LineItem.create(mockLineItem1);
-        expect(result.isFailure).toBe(false);
-        const props = result.value().props();
+        let lineItem = SalesLineItem.create(mockLineItem1);
+        const props = lineItem.props();
         const expected = {
           id: null,
           lineNumber: 1,
@@ -372,7 +367,7 @@ describe("LineItem", () => {
       });
     });
     describe("given CreateLineItemDto with no variant", () => {
-      it("should fail", () => {
+      it("should fail", async () => {
         const mockLineItem1: CreateLineItemDto = {
           lineNumber: 1,
           quantity: 1,
@@ -384,9 +379,9 @@ describe("LineItem", () => {
             { name: mockInitial, value: "M" },
           ],
         };
-        let result = LineItem.create(mockLineItem1);
-        expect(result.isFailure).toBe(true);
-        const error = result.error;
+
+        // THEN
+
         const expected = {
           inner: [
             {
@@ -427,6 +422,10 @@ describe("LineItem", () => {
           message:
             "InvalidLineItem 'undefined' '1': Failed to create LineItem. See inner error for details.",
         };
+        const error: any = await getAsyncError(
+          async () => await SalesLineItem.create(mockLineItem1)
+        );
+        expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toEqual(expected);
       });
     });
@@ -434,9 +433,8 @@ describe("LineItem", () => {
   describe("load", () => {
     describe("given valid MongoLineItem", () => {
       it("should return LineItem", () => {
-        let result = LineItem.load(cloneDeep(mockLineItem1));
-        expect(result.isFailure).toBe(false);
-        const props = result.value().props();
+        let lineItem = SalesLineItem.load(cloneDeep(mockLineItem1));
+        const props = lineItem.props();
         const expected = {
           id: "000000000000000000000001",
           lineNumber: 1,
@@ -546,10 +544,10 @@ describe("LineItem", () => {
       });
     });
     describe("given invalid MongoLineItem", () => {
-      it("should fail", () => {
+      it("should fail", async () => {
         const mockId = "00000000515bd494ed80cfbd";
         const mockObjectId = new Types.ObjectId(mockId);
-        const mockLineItem1: MongoLineItem = {
+        const mockLineItem1: MongoSalesLineItem = {
           _id: mockObjectId,
           id: mockId,
           lineNumber: 1,
@@ -565,9 +563,7 @@ describe("LineItem", () => {
           updatedAt: now,
           createdAt: now,
         };
-        let result = LineItem.load(mockLineItem1);
-        expect(result.isFailure).toBe(true);
-        const error = result.error;
+
         const expected = {
           inner: [
             {
@@ -612,7 +608,11 @@ describe("LineItem", () => {
           name: "InvalidLineItem",
           message: `InvalidLineItem '${mockId}' '1': Failed to load LineItem. See inner error for details.`,
         };
-        expect(error).toMatchObject(expected);
+        const error: any = await getAsyncError(
+          async () => await SalesLineItem.load(mockLineItem1)
+        );
+        expect(error).not.toBeInstanceOf(NoErrorThrownError);
+        expect(error).toEqual(expected);
       });
     });
   });

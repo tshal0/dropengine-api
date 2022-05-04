@@ -15,6 +15,7 @@ import { MongoSalesOrder } from "./mongo/MongoSalesOrder";
 import { MongoOrdersRepository } from "./mongo/MongoSalesOrderRepository";
 
 import { ISalesOrderProps, SalesOrder } from "../domain";
+import { MongoLineItemsRepository, MongoSalesLineItem } from "./mongo";
 
 export class SalesOrderNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -88,16 +89,20 @@ export class SalesOrderRepository {
       throw err;
     }
   }
-  constructor(private readonly _mongo: MongoOrdersRepository) {}
+  constructor(
+    private readonly _orders: MongoOrdersRepository,
+    private readonly _lineItems: MongoLineItemsRepository
+  ) {}
 
   public async load(id: string): Promise<SalesOrder> {
-    let doc = await this._mongo.findById(id);
+    let doc = await this._orders.findById(id);
     if (doc) return SalesOrder.load(doc);
     else throw new SalesOrderNotFoundException(id);
   }
   public async save(agg: SalesOrder): Promise<SalesOrder> {
     let result: SalesOrder = null;
     const props = agg.entity();
+
     if (props.id?.length) {
       result = await this.upsertById(agg);
     } else {
@@ -106,19 +111,21 @@ export class SalesOrderRepository {
     return result;
   }
   public async delete(id: string): Promise<void> {
-    await this._mongo.delete(id);
+    await this._orders.delete(id);
   }
 
   private async upsertById(agg: SalesOrder): Promise<SalesOrder> {
     let dbe = agg.entity();
-    let updated = await this._mongo.update(dbe);
-    return SalesOrder.load(updated);
+    let updated = await this._orders.update(dbe);
+    dbe = await this._orders.findById(updated.id);
+    return SalesOrder.load(dbe);
   }
 
   private async create(agg: SalesOrder): Promise<SalesOrder> {
     let dbe = agg.entity();
-    let updated = await this._mongo.create(dbe);
-    return SalesOrder.load(updated);
+    let updated = await this._orders.create(dbe);
+    dbe = await this._orders.findById(updated.id);
+    return SalesOrder.load(dbe);
   }
 
   private async persist(

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 import mongoose from "mongoose";
-import { MongoLineItemProperty } from ".";
+import { MongoLineItemProperty, MongoSalesOrder } from ".";
 import { IMongoEntity } from "./IMongoEntity";
 import { MongoLineItemPropertySchema } from "./MongoLineItemProperty";
 import {
@@ -9,8 +9,8 @@ import {
   MongoSalesVariantSchema,
 } from "./MongoSalesVariant";
 
-@Schema({ _id: true })
-export class MongoLineItem extends IMongoEntity {
+@Schema({ collection: "lineItems" })
+export class MongoSalesLineItem extends IMongoEntity {
   @Prop()
   lineNumber: number;
   @Prop()
@@ -22,4 +22,7 @@ export class MongoLineItem extends IMongoEntity {
   @Prop({ type: [mongoose.Schema.Types.Mixed] })
   flags: any[];
 }
-export const MongoLineItemSchema = SchemaFactory.createForClass(MongoLineItem);
+export type MongoSalesLineItemDocument = MongoSalesLineItem & Document;
+
+export const MongoSalesLineItemSchema =
+  SchemaFactory.createForClass(MongoSalesLineItem);

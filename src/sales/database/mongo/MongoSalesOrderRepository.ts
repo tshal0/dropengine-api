@@ -2,8 +2,8 @@ import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Query, QueryWithHelpers } from "mongoose";
 import { BaseMongoRepository } from "@shared/mongo";
-import { AzureTelemetryService } from "@shared/modules";
 import { MongoSalesOrder, MongoSalesOrderDocument } from "./MongoSalesOrder";
+import { MongoSalesLineItem } from ".";
 
 @Injectable()
 export class MongoOrdersRepository extends BaseMongoRepository<MongoSalesOrder> {
@@ -24,16 +24,22 @@ export class MongoOrdersRepository extends BaseMongoRepository<MongoSalesOrder> 
   }
   async findById(id: string): Promise<MongoSalesOrder> {
     return await this.handle<QueryWithHelpers<any, any>>(() =>
-      this._model.findById(id)
+      this._model
+        .findById(id)
+        .populate("lineItems", null, MongoSalesLineItem.name)
     );
   }
   async update(doc: MongoSalesOrder): Promise<MongoSalesOrder> {
     return await this.handle<Query<any, any>>(() =>
-      this._model.findByIdAndUpdate(doc.id, doc, {
-        useFindAndModify: true,
-        upsert: true,
-        new: true,
-      })
+      this._model.findByIdAndUpdate(
+        doc.id,
+        { ...doc },
+        {
+          useFindAndModify: true,
+          upsert: true,
+          new: true,
+        }
+      )
     );
   }
 }

@@ -7,7 +7,8 @@ import {
   MongoSalesOrder,
   MongoOrdersRepository,
   SalesOrderRepository,
-  MongoLineItem,
+  MongoSalesLineItem,
+  MongoLineItemsRepository,
 } from "@sales/database";
 import {
   mockAddress,
@@ -42,6 +43,7 @@ describe("UpdateShippingAddress", () => {
   const modelToken = getModelToken(MongoSalesOrder.name);
   let catalogService: CatalogService;
   let ordersRepo: MongoOrdersRepository;
+  let lineItemsRepo: MongoLineItemsRepository;
   let salesRepo: SalesOrderRepository;
   beforeAll(() => {});
 
@@ -59,6 +61,9 @@ describe("UpdateShippingAddress", () => {
     catalogService = await module.resolve<CatalogService>(CatalogService);
 
     // Set up Repo
+    lineItemsRepo = await module.resolve<MongoLineItemsRepository>(
+      MongoLineItemsRepository
+    );
     ordersRepo = await module.resolve<MongoOrdersRepository>(
       MongoOrdersRepository
     );
@@ -74,7 +79,8 @@ describe("UpdateShippingAddress", () => {
   describe("given valid SalesOrder, Address", () => {
     const mockUid = "000000000000000000000001";
     const mockVariant = mockCatalogVariant();
-    const mockLineItem: MongoLineItem = {
+    let mockLineItem: MongoSalesLineItem = {
+      orderId: mockUid,
       lineNumber: 1,
       quantity: 1,
       variant: cloneDeep(mockVariant),
@@ -100,6 +106,8 @@ describe("UpdateShippingAddress", () => {
       createdAt: now,
     };
     beforeEach(async () => {
+      mockLineItem = await lineItemsRepo.create(mockLineItem);
+      mockOrder.lineItems = [mockLineItem.id] as any;
       mockOrder = await ordersRepo.create(mockOrder);
       mockLineItem.id = mockOrder.lineItems[0].id;
     });

@@ -14,15 +14,11 @@ import { AddressDto } from "./AddressDto";
 import { IsArrayOfObjects } from "./IsArrayOfObjects";
 
 export class CreateOrderDto {
-  constructor(
-    dto?: CreateOrderApiDto | undefined,
-    lineItems?: CreateLineItemDto[] | undefined
-  ) {
+  constructor(dto?: CreateOrderApiDto | undefined) {
     this.orderName = dto?.orderName;
     this.orderDate = dto?.orderDate;
     this.orderNumber = dto?.orderNumber;
     this.customer = dto?.customer;
-    this.lineItems = lineItems;
     this.shippingAddress = dto?.shippingAddress;
     this.billingAddress = dto?.billingAddress;
     this.accountId = dto?.accountId;
@@ -44,10 +40,7 @@ export class CreateOrderDto {
   @ValidateNested()
   @Type(() => CustomerDto)
   customer: CustomerDto;
-  @IsArrayOfObjects()
-  @ValidateNested({ each: true })
-  @Type(() => CreateLineItemDto)
-  lineItems: CreateLineItemDto[];
+
   @ValidateNested()
   @Type(() => AddressDto)
   shippingAddress: AddressDto;

@@ -16,7 +16,10 @@ import { OrdersController } from "@sales/api";
 import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 
 import {
+  MongoLineItemsRepository,
   MongoOrdersRepository,
+  MongoSalesLineItem,
+  MongoSalesLineItemSchema,
   MongoSalesOrder,
   MongoSalesOrderSchema,
   SalesOrderQuery,
@@ -51,6 +54,9 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       MongooseModule.forFeature([
         { name: MongoSalesOrder.name, schema: MongoSalesOrderSchema },
       ]),
+      MongooseModule.forFeature([
+        { name: MongoSalesLineItem.name, schema: MongoSalesLineItemSchema },
+      ]),
       HttpModule,
       ConfigModule.forRoot(),
       AzureTelemetryModule,
@@ -66,6 +72,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       { provide: HttpService, useValue: httpMock },
       { provide: WINSTON_MODULE_PROVIDER, useValue: {} },
       MongoOrdersRepository,
+      MongoLineItemsRepository,
       SalesOrderRepository,
       CreateSalesOrder,
       {

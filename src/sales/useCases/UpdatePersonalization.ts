@@ -28,10 +28,10 @@ export class UpdatePersonalization
     this.logger.log(
       `Updating personalization for SalesLineItem '${dto.lineItemId}'`
     );
-    await order.updatePersonalization({
-      lineItemId: dto.lineItemId,
-      personalization: dto.personalization,
-    });
+    // await order.updatePersonalization({
+    //   lineItemId: dto.lineItemId,
+    //   personalization: dto.personalization,
+    // });
     this.logger.log(`Saving SalesOrder '${dto.orderId}'`);
     await this._repo.save(order);
     order = await this._repo.load(dto.orderId);

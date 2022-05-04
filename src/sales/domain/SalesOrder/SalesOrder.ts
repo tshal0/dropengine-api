@@ -1,7 +1,7 @@
 import moment from "moment";
 import { ResultError, IAggregate, Result } from "@shared/domain";
 
-import { MongoSalesOrder } from "@sales/database";
+import { MongoSalesLineItem, MongoSalesOrder } from "@sales/database";
 
 import { ISalesOrder, ISalesOrderProps } from "./ISalesOrder";
 import { SalesOrderNumber } from "./SalesOrderNumber";
@@ -9,7 +9,7 @@ import { OrderStatus, SalesOrderStatus } from "./SalesOrderStatus";
 import { SalesOrderCustomer } from "./SalesOrderCustomer";
 import { SalesOrderAddress } from "./SalesOrderAddress";
 import { SalesOrderID } from "./SalesOrderID";
-import { ILineItemProperty, LineItem, LineItemID } from "../SalesLineItem";
+import { ILineItemProperty, SalesLineItem, LineItemID } from "../SalesLineItem";
 import { SalesOrderDate } from "./SalesOrderDate";
 import { AddressDto, CreateOrderDto } from "@sales/dto";
 import { AccountId } from "@auth/domain/valueObjects/AccountId";
@@ -67,6 +67,9 @@ export class SalesOrder extends IAggregate<
   private constructor(props: ISalesOrder, doc: MongoSalesOrder) {
     super(props, doc);
   }
+  public get id(): string {
+    return this._entity.id;
+  }
 
   /**
    * Returns the database entity.
@@ -74,6 +77,7 @@ export class SalesOrder extends IAggregate<
    */
   public entity(): MongoSalesOrder {
     const value: MongoSalesOrder = this._entity;
+
     return Object.seal(value);
   }
   /**
@@ -108,21 +112,6 @@ export class SalesOrder extends IAggregate<
 
   /** Domain Actions */
 
-  public async updatePersonalization(dto: {
-    lineItemId: string;
-    personalization: ILineItemProperty[];
-  }): Promise<SalesOrder> {
-    let lineItem = this._value.lineItems.find(matchesLineItemId());
-    if (lineItem) {
-      await lineItem.updatePersonalization(dto.personalization);
-    }
-    return this;
-
-    function matchesLineItemId(): (value: LineItem) => unknown {
-      return (li) => li.id == dto.lineItemId;
-    }
-  }
-
   public async updateShippingAddress(
     dto: EditShippingAddressDto
   ): Promise<SalesOrder> {
@@ -152,7 +141,6 @@ export class SalesOrder extends IAggregate<
    */
   public static async create(dto: CreateOrderDto): Promise<SalesOrder> {
     //TODO: ValidateLineItems
-
     let results: { [key: string]: Result<any> } = {};
     results.number = SalesOrderNumber.from(dto.orderNumber);
     results.orderDate = SalesOrderDate.from(dto.orderDate);
@@ -160,7 +148,7 @@ export class SalesOrder extends IAggregate<
     results.customer = await SalesOrderCustomer.from(dto.customer);
     results.shippingAddress = await SalesOrderAddress.from(dto.shippingAddress);
     results.billingAddress = await SalesOrderAddress.from(dto.billingAddress);
-    results.lineItems = SalesOrder.createLineItems(dto);
+
     results.accountId = AccountId.from(dto.accountId);
     // Errors
     let errors = Object.values(results)
@@ -179,13 +167,13 @@ export class SalesOrder extends IAggregate<
       orderName: dto.orderName,
       orderNumber: orderNumber,
       orderStatus: results.status.value(),
-      lineItems: results.lineItems.value(),
       customer: results.customer.value(),
       shippingAddress: results.shippingAddress.value(),
       billingAddress: results.billingAddress.value(),
       updatedAt: now,
       createdAt: now,
       orderDate: results.orderDate.value(),
+      lineItems: [],
     };
 
     // DBEntity
@@ -217,7 +205,6 @@ export class SalesOrder extends IAggregate<
     results.customer = await SalesOrderCustomer.from(doc.customer);
     results.shippingAddress = await SalesOrderAddress.from(doc.shippingAddress);
     results.billingAddress = await SalesOrderAddress.from(doc.billingAddress);
-    results.lineItems = SalesOrder.loadLineItems(doc);
     // Errors
 
     let errors = Object.values(results)
@@ -238,37 +225,21 @@ export class SalesOrder extends IAggregate<
       customer: results.customer.value(),
       shippingAddress: results.shippingAddress.value(),
       billingAddress: results.billingAddress.value(),
-      lineItems: results.lineItems.value(),
       updatedAt: doc.updatedAt,
       createdAt: doc.createdAt,
       orderDate: results.orderDate.value(),
+      lineItems: [],
     };
     const value = new SalesOrder(props, doc);
     return value;
   }
 
-  private static createLineItems(dto: CreateOrderDto): Result<LineItem[]> {
-    let results = dto.lineItems.map((li) => LineItem.create(li));
-    const failures = results
-      .filter((res) => res.isFailure)
-      .map((res) => res.error);
-    const lineItems = results.filter((r) => r.isSuccess).map((r) => r.value());
-    if (failures.length) {
-      return Result.fail(SalesOrder.invalidLineItemsFound(failures));
-    }
-    return Result.ok(lineItems);
-  }
+  private static loadLineItems(doc: MongoSalesOrder): SalesLineItem[] {
+    let lineItems = doc.lineItems
+      .filter((li) => li instanceof MongoSalesLineItem)
+      .map((li: MongoSalesLineItem) => SalesLineItem.load(li));
 
-  private static loadLineItems(doc: MongoSalesOrder): Result<LineItem[]> {
-    let results = doc.lineItems.map((li) => LineItem.load(li));
-    const failures = results
-      .filter((res) => res.isFailure)
-      .map((res) => res.error);
-    const successes = results.filter((r) => r.isSuccess).map((r) => r.value());
-    if (failures.length) {
-      return Result.fail(SalesOrder.failedToLoadLineItems(failures));
-    }
-    return Result.ok(successes);
+    return lineItems;
   }
 
   /** ERROR METHODS */

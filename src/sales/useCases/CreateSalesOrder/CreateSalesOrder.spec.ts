@@ -365,7 +365,6 @@ describe("CreateSalesOrder", () => {
         orderDate: mockDto.orderDate,
         orderNumber: mockDto.orderNumber,
         customer: mockDto.customer,
-        lineItems: [],
         shippingAddress: mockDto.shippingAddress,
         billingAddress: mockDto.billingAddress,
       };
@@ -396,7 +395,6 @@ describe("CreateSalesOrder", () => {
         mockLi.variant = null;
         mockLi.properties = null;
 
-        params.lineItems = [mockLi];
         params.shippingAddress = null;
         params.billingAddress = null;
 

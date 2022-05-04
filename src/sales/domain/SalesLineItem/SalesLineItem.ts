@@ -1,7 +1,11 @@
 import moment from "moment";
 import { IAggregate, Result, ResultError } from "@shared/domain";
-import { MongoLineItem } from "@sales/database";
-import { ILineItem, ILineItemProperty, ILineItemProps } from "./ISalesLineItem";
+import { MongoSalesLineItem } from "@sales/database";
+import {
+  ISalesLineItem,
+  ILineItemProperty,
+  ISalesLineItemProps,
+} from "./ISalesLineItem";
 import { Personalization } from "./Personalization";
 import { OrderFlag } from "./OrderFlag";
 import { SalesVariant } from "../SalesVariant";
@@ -11,6 +15,7 @@ import { Quantity } from "./Quantity";
 import { isNull } from "lodash";
 import { CreateLineItemDto, LineItemPropertyDto } from "@sales/dto";
 import { HttpStatus, InternalServerErrorException } from "@nestjs/common";
+import { SalesOrderID } from "../SalesOrder";
 
 /**
  * Aggregates need: events, domain methods, initializers, converters
@@ -32,12 +37,12 @@ export class InvalidLineItem implements ResultError {
   }
 }
 
-export class LineItem extends IAggregate<
-  ILineItemProps,
-  ILineItem,
-  MongoLineItem
+export class SalesLineItem extends IAggregate<
+  ISalesLineItemProps,
+  ISalesLineItem,
+  MongoSalesLineItem
 > {
-  private constructor(val: ILineItem, doc: MongoLineItem) {
+  private constructor(val: ISalesLineItem, doc: MongoSalesLineItem) {
     super(val, doc);
   }
 
@@ -45,8 +50,8 @@ export class LineItem extends IAggregate<
     return this._value.id.value();
   }
 
-  public props(): ILineItemProps {
-    let props: ILineItemProps = {
+  public props(): ISalesLineItemProps {
+    let props: ISalesLineItemProps = {
       id: this._value.id.value(),
       lineNumber: this._value.lineNumber.value(),
       quantity: this._value.quantity.value(),
@@ -58,7 +63,7 @@ export class LineItem extends IAggregate<
     };
     return props;
   }
-  public entity(): MongoLineItem {
+  public entity(): MongoSalesLineItem {
     return Object.seal(this._entity);
   }
 
@@ -72,7 +77,7 @@ export class LineItem extends IAggregate<
 
   public async updatePersonalization(
     personalization: ILineItemProperty[]
-  ): Promise<LineItem> {
+  ): Promise<SalesLineItem> {
     this._entity.personalization = personalization;
     this._value.personalization = personalization;
     let flags = this.validatePersonalization();
@@ -89,8 +94,8 @@ export class LineItem extends IAggregate<
 
   /** UTILITY METHODS */
 
-  public static create(dto: CreateLineItemDto): Result<LineItem> {
-    if (isNull(dto)) return Result.fail(LineItem.nullLineItem());
+  public static create(dto: CreateLineItemDto): SalesLineItem {
+    if (isNull(dto)) throw SalesLineItem.nullLineItem();
     const variantResult = SalesVariant.create(dto.variant);
 
     let results: { [key: string]: Result<any> } = {};
@@ -105,13 +110,13 @@ export class LineItem extends IAggregate<
       .map((r) => r as Result<any>)
       .map((r) => r.error);
     if (errors.length) {
-      return Result.fail(LineItem.invalidLineItem(errors, dto));
+      throw SalesLineItem.invalidLineItem(errors, dto);
     }
 
     const now = moment().toDate();
     const variant = results.variant.value();
 
-    const value: ILineItem = {
+    const value: ISalesLineItem = {
       id: results.id.value(),
       lineNumber: results.lineNumber.value(),
       quantity: results.quantity.value(),
@@ -122,24 +127,25 @@ export class LineItem extends IAggregate<
       flags: [],
     };
 
-    const doc = new MongoLineItem();
+    const doc = new MongoSalesLineItem();
     doc.lineNumber = value.lineNumber.value();
     doc.quantity = value.quantity.value();
     doc.variant = value.variant.entity();
     doc.personalization = value.personalization;
     doc.createdAt = now;
     doc.updatedAt = now;
-    const lineItem = new LineItem(value, doc);
+    const lineItem = new SalesLineItem(value, doc);
     value.flags = lineItem.validatePersonalization();
     doc.flags = value.flags;
-    return Result.ok(lineItem);
+    return lineItem;
   }
 
-  public static load(doc: MongoLineItem): Result<LineItem> {
-    if (isNull(doc)) return Result.fail(LineItem.nullLineItem());
+  public static load(doc: MongoSalesLineItem): SalesLineItem {
+    if (isNull(doc)) throw SalesLineItem.nullLineItem();
     const variantResult = SalesVariant.db(doc.variant);
 
     let results: { [key: string]: Result<any> } = {};
+
     results.id = LineItemID.from(doc._id);
     results.lineNumber = LineNumber.from(doc.lineNumber);
     results.quantity = Quantity.from(doc.quantity);
@@ -151,13 +157,13 @@ export class LineItem extends IAggregate<
       .map((r) => r as Result<any>)
       .map((r) => r.error);
     if (errors.length) {
-      return Result.fail(LineItem.failedToLoadLineItem(errors, doc));
+      throw SalesLineItem.failedToLoadLineItem(errors, doc);
     }
 
     const now = moment().toDate();
     const variant = results.variant.value();
 
-    const value: ILineItem = {
+    const value: ISalesLineItem = {
       id: results.id.value(),
       lineNumber: results.lineNumber.value(),
       quantity: results.quantity.value(),
@@ -168,10 +174,10 @@ export class LineItem extends IAggregate<
       flags: [],
     };
 
-    const lineItem = new LineItem(value, doc);
+    const lineItem = new SalesLineItem(value, doc);
     value.flags = lineItem.validatePersonalization();
     doc.flags = value.flags;
-    return Result.ok(lineItem);
+    return lineItem;
   }
   private static nullLineItem(): ResultError {
     return new InvalidLineItem(
@@ -193,7 +199,7 @@ export class LineItem extends IAggregate<
 
   private static failedToLoadLineItem(
     errors: ResultError[],
-    doc: MongoLineItem
+    doc: MongoSalesLineItem
   ): ResultError {
     return new InvalidLineItem(
       errors,

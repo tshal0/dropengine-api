@@ -5,11 +5,14 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
 import { AzureTelemetryModule, AzureStorageModule } from "@shared/modules";
 import {
+  MongoSalesLineItemSchema,
   MongoOrdersRepository,
+  MongoSalesLineItem,
   MongoSalesOrder,
   MongoSalesOrderSchema,
   SalesOrderQuery,
   SalesOrderRepository,
+  MongoLineItemsRepository,
 } from "./database";
 import { OrdersController } from "./api";
 
@@ -22,14 +25,17 @@ import {
   UpdateShippingAddress,
 } from "./useCases";
 import { CatalogModule } from "@catalog/catalog.module";
-import { AuthModule } from "@auth/auth.module";
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
     MongooseModule.forFeature([
+      { name: MongoSalesLineItem.name, schema: MongoSalesLineItemSchema },
+    ]),
+    MongooseModule.forFeature([
       { name: MongoSalesOrder.name, schema: MongoSalesOrderSchema },
     ]),
+
     HttpModule,
     AzureTelemetryModule,
     ConfigModule,
@@ -39,6 +45,7 @@ import { AuthModule } from "@auth/auth.module";
   controllers: [OrdersController],
   providers: [
     MongoOrdersRepository,
+    MongoLineItemsRepository,
     SalesOrderRepository,
     SalesOrderQuery,
     CreateSalesOrder,

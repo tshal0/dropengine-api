@@ -1,3 +1,4 @@
+import { SalesOrderID } from "../SalesOrder";
 import { SalesVariant } from "../SalesVariant";
 import { ISalesVariantProps } from "../SalesVariant/ISalesVariant";
 import { LineItemID } from "./LineItemID";
@@ -9,7 +10,7 @@ export interface ILineItemProperty {
   name: string;
   value: string;
 }
-export interface ILineItemProps {
+export interface ISalesLineItemProps {
   id?: string | undefined;
   lineNumber: number;
   quantity: number;
@@ -20,7 +21,7 @@ export interface ILineItemProps {
   updatedAt: Date;
 }
 
-export interface ILineItem {
+export interface ISalesLineItem {
   id: LineItemID;
   lineNumber: LineNumber;
   quantity: Quantity;
