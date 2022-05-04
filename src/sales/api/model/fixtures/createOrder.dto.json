@@ -1,15 +1,29 @@
 {
   "orderDate": "2021-01-01T00:00:00.000Z",
+  "accountId": "06572d24-6a92-4139-8bcf-ce55e96bbafe",
   "orderNumber": "1001",
+  "orderName": "SLI-1001",
   "customer": {
     "email": "test@example.com",
     "name": "Test Example"
   },
   "lineItems": [
     {
-      "sku": "MEM-001-01",
-      "variantId": "00000000-0000-0000-0000-000000000001",
-      "lineItemProperties": [{ "name": "Name", "value": "TestExample" }],
+      "sku": "MU-C004-00-24-Black",
+      "lineItemProperties": [
+        {
+          "name": "Top Text",
+          "value": "ValidText"
+        },
+        {
+          "name": "Bottom Text",
+          "value": "ValidText"
+        },
+        {
+          "name": "Initial",
+          "value": "M"
+        }
+      ],
       "quantity": 1
     }
   ],

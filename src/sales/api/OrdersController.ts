@@ -16,6 +16,7 @@ import {
   LoggerService,
   Logger,
   Patch,
+  NotImplementedException,
 } from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
@@ -60,11 +61,6 @@ export class OrdersController {
 
   @Get(":id")
   async getById(@Param("id") id: string) {
-    this.logger.debug({
-      message: `ORDERS REQUEST`,
-      route: `/api/orders/${id}`,
-      id,
-    });
     let result = await this.load.execute(id);
     const aggregate = result;
     return aggregate.props();
@@ -74,28 +70,40 @@ export class OrdersController {
     let result = await this.query.execute(query);
     return new QueryOrdersResponseDto(query, result);
   }
-  @Patch(":id/lineItems/:lid")
+  @Patch(":id/lineItems/:lid/personalization")
   async patchPersonalization(
     @Param("id") id: string,
     @Param("lid") lid: string,
     @Body() dto: EditPersonalizationDto
-  ) {}
+  ) {
+    throw new NotImplementedException({ dto, id, lineItemId: lid });
+  }
   @Patch(":id/customer")
-  async patchCustomer(@Param("id") id: string, @Body() dto: EditCustomerDto) {}
+  async patchCustomer(@Param("id") id: string, @Body() dto: EditCustomerDto) {
+    throw new NotImplementedException({ dto, id });
+  }
   @Patch(":id/shippingAddress")
   async patchShippingAddress(
     @Param("id") id: string,
     @Body() dto: EditShippingAddressDto
-  ) {}
+  ) {
+    throw new NotImplementedException({ dto, id });
+  }
   @Post(":id/send")
-  async postSend(@Param("id") id: string, @Body() dto: any) {}
+  async postSend(@Param("id") id: string, @Body() dto: any) {
+    throw new NotImplementedException({ dto, id });
+  }
   @Post(":id/recall")
-  async postRecall(@Param("id") id: string, @Body() dto: CancelOrderDto) {}
+  async postRecall(@Param("id") id: string, @Body() dto: CancelOrderDto) {
+    throw new NotImplementedException({ dto, id });
+  }
   @Post(":id/cancel")
   async postCancel(
     @Param("id") id: string,
     @Body() dto: EditPersonalizationDto
-  ) {}
+  ) {
+    throw new NotImplementedException({ dto, id });
+  }
 
   @Delete(":id")
   async delete(@Param("id") id: string) {
@@ -109,6 +117,7 @@ export class OrdersController {
     @Body(CreateOrderValidationPipe) dto: CreateOrderApiDto
   ) {
     const useCaseDto = new CreateSalesOrderDto(dto, user);
+    this.logger.debug(useCaseDto);
     let order = await this.create.execute(useCaseDto);
     return res.status(HttpStatus.CREATED).json(order.props());
   }
