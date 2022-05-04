@@ -29,7 +29,7 @@ export class MongoOrdersRepository extends BaseMongoRepository<MongoSalesOrder> 
   }
   async update(doc: MongoSalesOrder): Promise<MongoSalesOrder> {
     return await this.handle<Query<any, any>>(() =>
-      this._model.findByIdAndUpdate(doc, {
+      this._model.findByIdAndUpdate(doc.id, doc, {
         useFindAndModify: true,
         upsert: true,
         new: true,

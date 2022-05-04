@@ -54,9 +54,7 @@ export class SalesVariant extends IAggregate<
   public entity(): MongoSalesVariant {
     return Object.seal(this._entity);
   }
-  public value(): ISalesVariant {
-    return Object.seal(this._value);
-  }
+
   public static create(dto: CatalogVariant): Result<SalesVariant> {
     if (dto === null || dto === undefined)
       return Result.fail(SalesVariant.nullCatalogVariant());

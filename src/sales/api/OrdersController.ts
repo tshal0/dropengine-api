@@ -44,6 +44,7 @@ import { AuthenticatedUser } from "@shared/decorators/AuthenticatedUser";
 import { SalesLoggingInterceptor } from "./middleware/SalesLoggingInterceptor";
 import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 import { CreateSalesOrderDto } from "@sales/useCases/CreateSalesOrder/CreateSalesOrderDto";
+import { UpdatePersonalization } from "@sales/useCases/UpdatePersonalization";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
@@ -56,7 +57,8 @@ export class OrdersController {
     private readonly create: CreateSalesOrder,
     private readonly load: GetSalesOrder,
     private readonly query: QuerySalesOrders,
-    private readonly remove: DeleteSalesOrder
+    private readonly remove: DeleteSalesOrder,
+    private readonly updatePersonalization: UpdatePersonalization
   ) {}
 
   @Get(":id")
@@ -76,7 +78,12 @@ export class OrdersController {
     @Param("lid") lid: string,
     @Body() dto: EditPersonalizationDto
   ) {
-    throw new NotImplementedException({ dto, id, lineItemId: lid });
+    let order = await this.updatePersonalization.execute({
+      orderId: id,
+      lineItemId: lid,
+      personalization: dto.personalization,
+    });
+    return order.props();
   }
   @Patch(":id/customer")
   async patchCustomer(@Param("id") id: string, @Body() dto: EditCustomerDto) {

@@ -1,5 +1,5 @@
-export * from "./ILineItem";
-export * from "./LineItem";
+export * from "./ISalesLineItem";
+export * from "./SalesLineItem";
 export * from "./LineItemID";
 export * from "./LineNumber";
 export * from "./Personalization";

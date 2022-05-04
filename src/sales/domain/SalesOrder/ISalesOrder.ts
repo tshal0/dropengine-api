@@ -1,5 +1,5 @@
 import { AccountId } from "@auth/domain/valueObjects/AccountId";
-import { LineItem, ILineItemProps } from "../LineItem";
+import { LineItem, ILineItemProps } from "../SalesLineItem";
 
 import { ISalesOrderAddress, SalesOrderAddress } from "./SalesOrderAddress";
 import { ISalesOrderCustomer, SalesOrderCustomer } from "./SalesOrderCustomer";

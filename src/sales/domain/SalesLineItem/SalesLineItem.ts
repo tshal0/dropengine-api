@@ -1,7 +1,7 @@
 import moment from "moment";
 import { IAggregate, Result, ResultError } from "@shared/domain";
 import { MongoLineItem } from "@sales/database";
-import { ILineItem, ILineItemProps } from "./ILineItem";
+import { ILineItem, ILineItemProperty, ILineItemProps } from "./ISalesLineItem";
 import { Personalization } from "./Personalization";
 import { OrderFlag } from "./OrderFlag";
 import { SalesVariant } from "../SalesVariant";
@@ -9,17 +9,19 @@ import { LineItemID } from "./LineItemID";
 import { LineNumber } from "./LineNumber";
 import { Quantity } from "./Quantity";
 import { isNull } from "lodash";
-import { CreateLineItemDto } from "@sales/dto";
+import { CreateLineItemDto, LineItemPropertyDto } from "@sales/dto";
+import { HttpStatus, InternalServerErrorException } from "@nestjs/common";
 
 /**
  * Aggregates need: events, domain methods, initializers, converters
  */
-export enum LineItemError {
+export enum SalesLineItemError {
   InvalidLineItem = "InvalidLineItem",
+  InvalidPersonalization = "InvalidPersonalization",
 }
 export class InvalidLineItem implements ResultError {
   public stack: string;
-  public name = LineItemError.InvalidLineItem;
+  public name = SalesLineItemError.InvalidLineItem;
   public message: string;
   constructor(
     public inner: ResultError[],
@@ -37,6 +39,10 @@ export class LineItem extends IAggregate<
 > {
   private constructor(val: ILineItem, doc: MongoLineItem) {
     super(val, doc);
+  }
+
+  public get id(): string {
+    return this._value.id.value();
   }
 
   public props(): ILineItemProps {
@@ -64,6 +70,23 @@ export class LineItem extends IAggregate<
     return flags;
   }
 
+  public async updatePersonalization(
+    personalization: ILineItemProperty[]
+  ): Promise<LineItem> {
+    this._entity.personalization = personalization;
+    this._value.personalization = personalization;
+    let flags = this.validatePersonalization();
+    if (flags.length) {
+      throw new InvalidPersonalizationException(
+        { lineItemId: this.id, personalization, flags },
+        `Flagged for validation errors.`,
+        SalesLineItemError.InvalidPersonalization,
+        flags
+      );
+    }
+    return this;
+  }
+
   /** UTILITY METHODS */
 
   public static create(dto: CreateLineItemDto): Result<LineItem> {
@@ -78,7 +101,7 @@ export class LineItem extends IAggregate<
 
     // Errors
     let errors = Object.values(results)
-      .filter((r) => r?.isFailure)
+      .filter((r) => r.isFailure)
       .map((r) => r as Result<any>)
       .map((r) => r.error);
     if (errors.length) {
@@ -176,6 +199,40 @@ export class LineItem extends IAggregate<
       errors,
       { ...doc },
       `Failed to load LineItem. See inner error for details.`
+    );
+  }
+}
+
+export class InvalidPersonalizationException extends InternalServerErrorException {
+  constructor(
+    dto: {
+      lineItemId: string;
+      personalization: ILineItemProperty[];
+      flags: OrderFlag[];
+    },
+    reason: any,
+    type: SalesLineItemError,
+    inner: any[]
+  ) {
+    super(
+      {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message:
+          `Failed to update personalization for line item ` +
+          `'${dto.lineItemId}': ` +
+          `${reason}`,
+        timestamp: moment().toDate(),
+        error: type,
+        details: {
+          lineItemId: dto.lineItemId,
+          personalization: dto.personalization,
+          reason,
+          inner,
+        },
+      },
+      `Failed to update personalization for line item ` +
+        `'${dto.lineItemId}': ` +
+        `${reason}`
     );
   }
 }

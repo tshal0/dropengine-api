@@ -16,8 +16,6 @@ import {
   CreateSalesOrderError,
   FailedToPlaceSalesOrderException,
 } from "..";
-import { mockSalesModule } from "./createSalesOrder.mock";
-import { createSalesOrderDto } from "./fixtures";
 
 import { CreateOrderLineItemApiDto } from "@sales/api";
 import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
@@ -27,26 +25,21 @@ import {
   MongoSalesOrderDocument,
   SalesOrderRepository,
 } from "@sales/database";
-import { SalesOrder } from "@sales/domain";
 import {
-  mockCatalogVariant1,
-  mockCustomer,
-  mockOrderName1,
-  mockOrderNumber1,
-  mockUuid1,
-  mockAddress,
   mockTopText,
   mockMiddleText,
   mockBottomText,
   mockInitial,
-  mockLineItem,
+  mockSalesModule,
+  mockCatalogVariant,
+  newMockCreateSalesOrderDto,
+  newMockInvalidCreateSalesOrderDto,
+  newMockUser,
 } from "@sales/mocks";
 
-import { cloneDeep } from "lodash";
 import { CreateSalesOrderDto } from "./CreateSalesOrderDto";
 import { AuthenticatedUser } from "@shared/decorators";
 import { CreateSalesOrderLineItemDto } from "./CreateSalesOrderLineItemDto";
-import { ICustomOptionProps } from "@catalog/domain";
 class NoErrorThrownError extends Error {}
 
 const getAsyncError = async <TError>(call: () => unknown): Promise<TError> => {
@@ -958,122 +951,3 @@ describe("CreateSalesOrder", () => {
     });
   });
 });
-
-function newMockUser() {
-  return new AuthenticatedUser({
-    email: "mockUser@email.com",
-    id: "MOCK_USER_ID",
-    metadata: {
-      accounts: [
-        {
-          companyCode: "MOCK_COMPANY_CODE",
-          id: "MOCK_ACCOUNT_ID",
-          name: "Mock Company",
-          permissions: ["manage:orders"],
-          roles: [],
-        },
-      ],
-      authorization: {},
-    },
-  });
-}
-
-function mockCatalogVariant(): CatalogVariant {
-  const customOptionTop: ICustomOptionProps = {
-    maxLength: 12,
-    pattern: "^[a-zA-Z0-9\\s.,()&$#@/]*$",
-    type: "input",
-    required: true,
-    label: "Top Text",
-    placeholder: "Enter up to 12 characters",
-    name: "top_text",
-  };
-  const customOptionBottom: ICustomOptionProps = {
-    maxLength: 12,
-    pattern: "^[a-zA-Z0-9\\s.,()&$#@/]*$",
-    type: "input",
-    required: true,
-    label: "Bottom Text",
-    placeholder: "Enter up to 12 characters",
-    name: "bottom_text",
-  };
-  return {
-    id: "MOCK_ID",
-    sku: "MOCK_SKU",
-    image: "MOCK_IMAGE",
-    svg: "MOCK_SVG",
-    type: "MOCK_TYPE",
-    option1: { enabled: true, name: "Size", option: "12" },
-    option2: { enabled: true, name: "Color", option: "Black" },
-    option3: null,
-    productionData: null,
-    personalizationRules: [customOptionTop, customOptionBottom],
-    manufacturingCost: { total: 11, currency: "USD" },
-    shippingCost: { total: 11, currency: "USD" },
-    weight: { dimension: 120, units: "oz" },
-  };
-}
-
-function newMockCreateSalesOrderDto() {
-  const mockAccountId = mockUuid1;
-  const mockShipping = mockAddress;
-  const mockBilling = mockAddress;
-  const mockLi1 = cloneDeep(mockLineItem);
-  mockLi1.sku = mockCatalogVariant1.sku;
-  mockLi1.lineItemProperties = [
-    { name: mockTopText, value: "ValidText" },
-    { name: mockMiddleText, value: "ValidText" },
-    { name: mockBottomText, value: "ValidText" },
-    { name: mockInitial, value: "M" },
-  ];
-  const mockAuthUser = new AuthenticatedUser({
-    email: "sample@mail.com",
-    id: "userId",
-    metadata: { accounts: [], authorization: {} },
-  });
-  const mockDto: CreateSalesOrderDto = new CreateSalesOrderDto();
-  mockDto.accountId = mockAccountId;
-  mockDto.orderName = mockOrderName1;
-  mockDto.orderDate = now;
-  mockDto.orderNumber = mockOrderNumber1;
-  mockDto.customer = mockCustomer;
-  mockDto.lineItems = [mockLi1];
-  mockDto.shippingAddress = mockShipping;
-  mockDto.billingAddress = mockBilling;
-  mockDto.user = mockAuthUser;
-  const mockSalesOrderDto1: CreateOrderDto = cloneDeep(createSalesOrderDto);
-  const mockSalesOrder1 = SalesOrder.create(mockSalesOrderDto1);
-  return mockDto;
-}
-function newMockInvalidCreateSalesOrderDto() {
-  const mockAccountId = mockUuid1;
-  const mockShipping = mockAddress;
-  const mockBilling = mockAddress;
-  const mockLi1 = cloneDeep(mockLineItem);
-  mockLi1.sku = mockCatalogVariant1.sku;
-  mockLi1.lineItemProperties = [
-    { name: mockTopText, value: "ValidText" },
-    { name: mockMiddleText, value: "ValidText" },
-    { name: mockBottomText, value: "ValidText" },
-    { name: mockInitial, value: "M" },
-  ];
-  const mockAuthUser = new AuthenticatedUser({
-    email: "sample@mail.com",
-    id: "userId",
-    metadata: { accounts: [], authorization: {} },
-  });
-  const mockDto: CreateSalesOrderDto = {
-    accountId: mockAccountId,
-    orderName: null,
-    orderDate: null,
-    orderNumber: null,
-    customer: null,
-    lineItems: [mockLi1],
-    shippingAddress: null,
-    billingAddress: null,
-    user: mockAuthUser,
-  };
-  const mockSalesOrderDto1: CreateOrderDto = cloneDeep(createSalesOrderDto);
-  const mockSalesOrder1 = SalesOrder.create(mockSalesOrderDto1);
-  return mockDto;
-}

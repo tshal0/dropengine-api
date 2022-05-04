@@ -23,7 +23,21 @@ import {
   mockBottomText,
   mockInitial,
 } from "@sales/mocks";
-import { getAsyncError, NoErrorThrownError } from "@shared/utils";
+import { cloneDeep } from "lodash";
+export class NoErrorThrownError extends Error {}
+
+export const getAsyncError = async <TError>(
+  call: () => unknown
+): Promise<TError> => {
+  try {
+    await call();
+
+    throw new NoErrorThrownError();
+  } catch (error: unknown) {
+    return error as TError;
+  }
+};
+
 const nowStr = "2021-01-01T00:00:00.000Z";
 jest
   .spyOn(global.Date, "now")
@@ -44,6 +58,99 @@ describe("SalesOrder", () => {
     shippingAddress: mockAddress,
     billingAddress: mockAddress,
   };
+  const mockVariant: MongoSalesVariant = {
+    id: mockCatalogVariant1.id,
+    sku: mockCatalogVariant1.sku,
+    image: mockCatalogVariant1.image,
+    svg: mockCatalogVariant1.svg,
+    type: mockCatalogVariant1.type,
+    option1: mockCatalogVariant1.option1,
+    option2: mockCatalogVariant1.option2,
+    option3: mockCatalogVariant1.option3,
+    manufacturingCost: mockCatalogVariant1.manufacturingCost,
+    shippingCost: mockCatalogVariant1.shippingCost,
+    weight: mockCatalogVariant1.weight,
+    productionData: mockCatalogVariant1.productionData,
+    personalizationRules: mockCatalogVariant1.personalizationRules,
+  };
+  const orderId = "00000000515bd494ed80cfbd";
+  const oid = new Types.ObjectId(orderId);
+  const lineItemId = "00000000515bd494ed80cfbd";
+  const lid = new Types.ObjectId(lineItemId);
+  const mli: MongoLineItem = {
+    _id: lid,
+    id: lineItemId,
+    lineNumber: 1,
+    quantity: mockLineItem.quantity,
+    variant: mockVariant,
+    personalization: [
+      { name: mockTopText, value: "ValidText" },
+      { name: mockMiddleText, value: "ValidText" },
+      { name: mockBottomText, value: "ValidText" },
+      { name: mockInitial, value: "M" },
+    ],
+    flags: [],
+    updatedAt: now,
+    createdAt: now,
+  };
+  const mock: MongoSalesOrder = {
+    _id: oid,
+    id: orderId,
+    accountId: mockUuid1,
+    orderStatus: "OPEN",
+    orderDate: dto.orderDate,
+    orderNumber: +dto.orderNumber,
+    lineItems: [mli],
+    customer: dto.customer,
+    shippingAddress: dto.shippingAddress,
+    billingAddress: dto.billingAddress,
+    updatedAt: undefined,
+    createdAt: undefined,
+  };
+  describe("updatePersonalization", () => {
+    describe("given LineItem exists and personalization valid", () => {
+      it("should update personalization for the given line item", async () => {
+        const order = await SalesOrder.load(cloneDeep(mock));
+
+        const mockDto = {
+          lineItemId: mli.id,
+          personalization: [
+            { name: mockTopText, value: "ValidText2" },
+            { name: mockMiddleText, value: "ValidText2" },
+            { name: mockBottomText, value: "ValidText2" },
+            { name: mockInitial, value: "Z" },
+          ],
+        };
+        await order.updatePersonalization(mockDto);
+        const expected = {
+          id: orderId,
+          accountId: mockUuid1,
+          orderNumber: 1000,
+          orderDate: now,
+          orderStatus: "OPEN",
+          lineItems: [
+            {
+              id: lineItemId,
+              lineNumber: 1,
+              quantity: 1,
+              variant: mockVariant,
+              personalization: cloneDeep(mockDto.personalization),
+              flags: [],
+              createdAt: now,
+              updatedAt: now,
+            },
+          ],
+          customer: mockCustomer,
+          shippingAddress: mockAddress,
+          billingAddress: mockAddress,
+        };
+
+        const props = order.props();
+        const value = order.value();
+        expect(props).toEqual(expected);
+      });
+    });
+  });
   describe("create", () => {
     describe("with a valid DTO", () => {
       it("should generate a valid SalesOrder", async () => {
@@ -226,59 +333,9 @@ describe("SalesOrder", () => {
   describe("load", () => {
     describe("with a valid MongoSalesOrder", () => {
       it("should return SalesOrder", async () => {
-        const mockVariant: MongoSalesVariant = {
-          id: mockCatalogVariant1.id,
-          sku: mockCatalogVariant1.sku,
-          image: mockCatalogVariant1.image,
-          svg: mockCatalogVariant1.svg,
-          type: mockCatalogVariant1.type,
-          option1: mockCatalogVariant1.option1,
-          option2: mockCatalogVariant1.option2,
-          option3: mockCatalogVariant1.option3,
-          manufacturingCost: mockCatalogVariant1.manufacturingCost,
-          shippingCost: mockCatalogVariant1.shippingCost,
-          weight: mockCatalogVariant1.weight,
-          productionData: mockCatalogVariant1.productionData,
-          personalizationRules: mockCatalogVariant1.personalizationRules,
-        };
-        const orderId = "00000000515bd494ed80cfbd";
-        const oid = new Types.ObjectId(orderId);
-        const lineItemId = "00000000515bd494ed80cfbd";
-        const lid = new Types.ObjectId(lineItemId);
-        const mli: MongoLineItem = {
-          _id: lid,
-          id: lineItemId,
-          lineNumber: 1,
-          quantity: mockLineItem.quantity,
-          variant: mockVariant,
-          personalization: [
-            { name: mockTopText, value: "ValidText" },
-            { name: mockMiddleText, value: "ValidText" },
-            { name: mockBottomText, value: "ValidText" },
-            { name: mockInitial, value: "M" },
-          ],
-          flags: [],
-          updatedAt: now,
-          createdAt: now,
-        };
-        const mock: MongoSalesOrder = {
-          _id: oid,
-          id: orderId,
-          accountId: mockUuid1,
-          orderStatus: "OPEN",
-          orderDate: dto.orderDate,
-          orderNumber: +dto.orderNumber,
-          lineItems: [mli],
-          customer: dto.customer,
-          shippingAddress: dto.shippingAddress,
-          billingAddress: dto.billingAddress,
-          updatedAt: undefined,
-          createdAt: undefined,
-        };
-        const order = await SalesOrder.load(mock);
+        const order = await SalesOrder.load(cloneDeep(mock));
         const props = order.props();
         const entity = order.entity();
-        const value = order.value();
         const expected = {
           id: orderId,
           accountId: mockUuid1,

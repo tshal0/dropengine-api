@@ -1844,6 +1844,11 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
 
+at-least-node@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
+  integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
+
 atob@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
@@ -2825,6 +2830,11 @@ defaults@^1.0.3:
   dependencies:
     clone "^1.0.2"
 
+define-lazy-prop@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/define-lazy-prop/-/define-lazy-prop-2.0.0.tgz#3f7ae421129bcaaac9bc74905c98a0009ec9ee7f"
+  integrity sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og==
+
 define-property@^0.2.5:
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/define-property/-/define-property-0.2.5.tgz#c35b1ef918ec3c990f9a5bc57be04aacec5c8116"
@@ -3756,6 +3766,16 @@ fs-extra@10.1.0, fs-extra@^10.0.0:
     jsonfile "^6.0.1"
     universalify "^2.0.0"
 
+fs-extra@^9.0.1:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-9.1.0.tgz#5954460c764a8da2094ba3554bf839e6b9a7c86d"
+  integrity sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==
+  dependencies:
+    at-least-node "^1.0.0"
+    graceful-fs "^4.2.0"
+    jsonfile "^6.0.1"
+    universalify "^2.0.0"
+
 fs-jetpack@^4.1.0:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/fs-jetpack/-/fs-jetpack-4.3.1.tgz#cdfd4b64e6bfdec7c7dc55c76b39efaa7853bb20"
@@ -4373,6 +4393,11 @@ is-descriptor@^1.0.0, is-descriptor@^1.0.2:
     is-data-descriptor "^1.0.0"
     kind-of "^6.0.2"
 
+is-docker@^2.0.0, is-docker@^2.1.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/is-docker/-/is-docker-2.2.1.tgz#33eeabe23cfe86f14bde4408a02c0cfb853acdaa"
+  integrity sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==
+
 is-even@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-even/-/is-even-1.0.0.tgz#76b5055fbad8d294a86b6a949015e1c97b717c06"
@@ -4507,6 +4532,13 @@ is-windows@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
   integrity sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==
+
+is-wsl@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-2.2.0.tgz#74a4c76e77ca9fd3f932f290c17ea326cd157271"
+  integrity sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==
+  dependencies:
+    is-docker "^2.0.0"
 
 isarray@0.0.1:
   version "0.0.1"
@@ -4751,6 +4783,14 @@ jest-haste-map@^27.5.1:
     walker "^1.0.7"
   optionalDependencies:
     fsevents "^2.3.2"
+
+jest-html-reporters@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/jest-html-reporters/-/jest-html-reporters-3.0.6.tgz#e2451a7918ca3449ba527eacde308ca613c1c9d3"
+  integrity sha512-snTlUuZ0FyFmXEkYrNiCH1Zym/u3owI45yG24morKmVJSlTmcjZsaEtbbmL58buxj2Bo6NWukJFaFX7w2aGkXA==
+  dependencies:
+    fs-extra "^9.0.1"
+    open "^8.0.3"
 
 jest-jasmine2@^27.5.1:
   version "27.5.1"
@@ -6089,6 +6129,15 @@ onetime@^5.1.0, onetime@^5.1.2:
   integrity sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==
   dependencies:
     mimic-fn "^2.1.0"
+
+open@^8.0.3:
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/open/-/open-8.4.0.tgz#345321ae18f8138f82565a910fdc6b39e8c244f8"
+  integrity sha512-XgFPPM+B28FtCCgSb9I+s9szOC1vZRSwgWsRUA5ylIxRTgKozqjOCrVOqGsYABPYK5qnfqClxZTFBa8PKt2v6Q==
+  dependencies:
+    define-lazy-prop "^2.0.0"
+    is-docker "^2.1.1"
+    is-wsl "^2.2.0"
 
 optional@0.1.4:
   version "0.1.4"

@@ -21,6 +21,7 @@ import {
 } from "./useCases";
 import { CatalogModule } from "@catalog/catalog.module";
 import { AuthModule } from "@auth/auth.module";
+import { UpdatePersonalization } from "./useCases/UpdatePersonalization";
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { AuthModule } from "@auth/auth.module";
     GetSalesOrder,
     QuerySalesOrders,
     DeleteSalesOrder,
+    UpdatePersonalization,
   ],
 })
 export class SalesModule {}

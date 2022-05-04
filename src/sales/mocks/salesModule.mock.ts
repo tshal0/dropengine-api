@@ -28,12 +28,13 @@ import {
   GetSalesOrder,
   QuerySalesOrders,
   DeleteSalesOrder,
-} from "..";
+} from "../useCases";
 import { rootMongooseTestModule } from "@jestconfig/mongodb-memory-server";
 import { TraceTelemetry } from "applicationinsights/out/Declarations/Contracts";
 
 import safeJsonStringify from "safe-json-stringify";
 import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
+import { UpdatePersonalization } from "../useCases/UpdatePersonalization";
 /** MOCK UTILS */
 jest.mock("@shared/utils", () => {
   return {
@@ -74,6 +75,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       { provide: GetSalesOrder, useValue: {} },
       { provide: QuerySalesOrders, useValue: {} },
       { provide: DeleteSalesOrder, useValue: {} },
+      UpdatePersonalization,
     ],
   })
     .overrideProvider(AzureTelemetryService)

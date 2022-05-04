@@ -9,7 +9,7 @@ import { OrderStatus, SalesOrderStatus } from "./SalesOrderStatus";
 import { SalesOrderCustomer } from "./SalesOrderCustomer";
 import { SalesOrderAddress } from "./SalesOrderAddress";
 import { SalesOrderID } from "./SalesOrderID";
-import { LineItem } from "../LineItem";
+import { ILineItemProperty, LineItem, LineItemID } from "../SalesLineItem";
 import { SalesOrderDate } from "./SalesOrderDate";
 import { CreateOrderDto } from "@sales/dto";
 import { AccountId } from "@auth/domain/valueObjects/AccountId";
@@ -104,6 +104,22 @@ export class SalesOrder extends IAggregate<
   }
 
   /** Domain Actions */
+
+  public async updatePersonalization(dto: {
+    lineItemId: string;
+    personalization: ILineItemProperty[];
+  }): Promise<SalesOrder> {
+    let lineItem = this._value.lineItems.find(matchesLineItemId());
+    if (lineItem) {
+      await lineItem.updatePersonalization(dto.personalization);
+    }
+    return this;
+
+    function matchesLineItemId(): (value: LineItem) => unknown {
+      return (li) => li.id == dto.lineItemId;
+    }
+  }
+
   /** Utility Methods */
 
   /**
