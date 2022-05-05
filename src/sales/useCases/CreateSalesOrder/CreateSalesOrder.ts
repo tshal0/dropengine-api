@@ -42,10 +42,10 @@ export class CreateSalesOrder
       );
 
       const createOrderDto: CreateOrderDto = new CreateOrderDto(dto);
+      createOrderDto.applyLineItems(lineItems);
       await this.validateDomainDto(createOrderDto);
-      let result = await SalesOrder.create(createOrderDto);
+      let order = await SalesOrder.create(createOrderDto);
 
-      let order = result;
       return await this._repo.save(order);
     } catch (error) {
       this.logger.error(safeJsonStringify(error, null, 2));

@@ -1,6 +1,10 @@
 import moment from "moment";
 import { ResultError, IAggregate, Result } from "@shared/domain";
-import { MongoSalesLineItem, MongoSalesOrder } from "@sales/database";
+import {
+  MongoSalesLineItem,
+  MongoSalesOrder,
+  MongoSalesLineItemDocument,
+} from "@sales/database";
 import { ISalesOrder, ISalesOrderProps } from "./ISalesOrder";
 import { CreateOrderDto } from "@sales/dto";
 import { AccountId } from "@auth/domain/valueObjects/AccountId";
@@ -114,10 +118,14 @@ export class SalesOrder extends IAggregate<
 
     results.accountId = AccountId.from(dto.accountId);
 
-    dto.lineItems.map(async (li) => {
-      SalesLineItem.create(li);
-    });
-
+    const lineItems = await Promise.all(
+      dto.lineItems.map(async (li) => {
+        return SalesLineItem.create(li);
+      })
+    );
+    if (!lineItems.length) {
+      console.warn(`CreateSalesOrderError:LineItemsNotFound`);
+    }
     // Errors
     let errors = Object.values(results)
       .filter((r) => r.isFailure)
@@ -141,7 +149,7 @@ export class SalesOrder extends IAggregate<
       updatedAt: now,
       createdAt: now,
       orderDate: results.orderDate.value(),
-      lineItems: [],
+      lineItems: lineItems,
     };
 
     // DBEntity
@@ -174,7 +182,15 @@ export class SalesOrder extends IAggregate<
     results.shippingAddress = await SalesOrderAddress.from(doc.shippingAddress);
     results.billingAddress = await SalesOrderAddress.from(doc.billingAddress);
     // Errors
+    const lineItems = doc.lineItems
+      .filter((li) => li._id)
+      .map((li) => {
+        return SalesLineItem.load(li);
+      });
 
+    if (!lineItems.length) {
+      console.warn(`LoadSalesOrderError:LineItemsNotFound`);
+    }
     let errors = Object.values(results)
       .filter((r) => r.isFailure)
       .map((r) => r as Result<any>)
@@ -196,7 +212,7 @@ export class SalesOrder extends IAggregate<
       updatedAt: doc.updatedAt,
       createdAt: doc.createdAt,
       orderDate: results.orderDate.value(),
-      lineItems: [],
+      lineItems: lineItems,
     };
     const value = new SalesOrder(props, doc);
     return value;

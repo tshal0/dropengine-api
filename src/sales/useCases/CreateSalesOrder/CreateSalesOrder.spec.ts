@@ -359,15 +359,15 @@ describe("CreateSalesOrder", () => {
     it("should work", async () => {
       const mockDto = newMockCreateSalesOrderDto();
       // GIVEN
-      const params: CreateOrderDto = {
-        accountId: mockDto.accountId,
-        orderName: mockDto.orderName,
-        orderDate: mockDto.orderDate,
-        orderNumber: mockDto.orderNumber,
-        customer: mockDto.customer,
-        shippingAddress: mockDto.shippingAddress,
-        billingAddress: mockDto.billingAddress,
-      };
+      const params: CreateOrderDto = new CreateOrderDto();
+      params.accountId = mockDto.accountId;
+      params.orderName = mockDto.orderName;
+      params.orderDate = mockDto.orderDate;
+      params.orderNumber = mockDto.orderNumber;
+      params.customer = mockDto.customer;
+      params.shippingAddress = mockDto.shippingAddress;
+      params.billingAddress = mockDto.billingAddress;
+
       const expected = {};
       // WHEN
       // THEN
@@ -394,7 +394,7 @@ describe("CreateSalesOrder", () => {
         mockLi.quantity = null;
         mockLi.variant = null;
         mockLi.properties = null;
-
+        params.applyLineItems([mockLi]);
         params.shippingAddress = null;
         params.billingAddress = null;
 

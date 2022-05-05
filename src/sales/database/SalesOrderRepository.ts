@@ -116,16 +116,34 @@ export class SalesOrderRepository {
 
   private async upsertById(agg: SalesOrder): Promise<SalesOrder> {
     let dbe = agg.entity();
-    let updated = await this._orders.update(dbe);
+    const lineItems = await Promise.all(
+      dbe.lineItems.map(async (li) => this._lineItems.create(li))
+    );
+    const identifiers = lineItems.map((li) => li.id);
+    let updated = await this._orders.create({
+      ...dbe,
+      lineItems: identifiers as any, // Hack
+    });
     dbe = await this._orders.findById(updated.id);
     return SalesOrder.load(dbe);
   }
 
   private async create(agg: SalesOrder): Promise<SalesOrder> {
     let dbe = agg.entity();
-    let updated = await this._orders.create(dbe);
+
+    const lineItems = await Promise.all(
+      dbe.lineItems.map(async (li) => this._lineItems.create(li))
+    );
+    const identifiers = lineItems.map((li) => li.id);
+    if (!identifiers.length) {
+      this.logger.warn(`CreateSalesOrder:LineItemsNotFound`);
+    }
+    let updated = await this._orders.create({
+      ...dbe,
+      lineItems: identifiers as any, // Hack
+    });
     dbe = await this._orders.findById(updated.id);
-    return SalesOrder.load(dbe);
+    return await SalesOrder.load(dbe);
   }
 
   private async persist(

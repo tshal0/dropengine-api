@@ -211,12 +211,11 @@ describe("SalesOrder", () => {
         const lineItems: CreateLineItemDto[] = [mockLineItem1];
         const mockDto = cloneDeep(dto);
         const createOrderDto: CreateOrderDto = new CreateOrderDto(mockDto);
-
+        createOrderDto.applyLineItems(lineItems);
         let order = await SalesOrder.create(createOrderDto);
 
         const props = order.props();
         const expected = validDto(now);
-        expected.lineItems = [];
         expect(props).toEqual(expected);
       });
     });
@@ -360,7 +359,7 @@ describe("SalesOrder", () => {
           orderNumber: 1000,
           orderDate: now,
           orderStatus: "OPEN",
-          lineItems: [],
+          lineItems: [{ ...mli, _id: undefined }],
           customer: mockCustomer,
           shippingAddress: mockAddress,
           billingAddress: mockAddress,

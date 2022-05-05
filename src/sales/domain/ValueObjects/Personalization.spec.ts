@@ -5,10 +5,11 @@ import {
   mockInitial,
   mockMiddleText,
 } from "@sales/mocks";
-import { ISalesLineItemProps, Personalization } from ".";
 import {
+  ISalesLineItemProps,
   ISalesVariant,
   ISalesVariantProps,
+  Personalization,
   SalesPersonalizationRule,
 } from "..";
 const mockOrderId = "000000000000000000000002";
