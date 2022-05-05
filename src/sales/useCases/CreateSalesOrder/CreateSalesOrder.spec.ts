@@ -19,12 +19,7 @@ import {
 
 import { CreateOrderLineItemApiDto } from "@sales/api";
 import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
-import {
-  MongoOrdersRepository,
-  MongoSalesOrder,
-  MongoSalesOrderDocument,
-  SalesOrderRepository,
-} from "@sales/database";
+
 import {
   mockTopText,
   mockMiddleText,
@@ -40,6 +35,12 @@ import {
 import { CreateSalesOrderDto } from "./CreateSalesOrderDto";
 import { AuthenticatedUser } from "@shared/decorators";
 import { CreateSalesOrderLineItemDto } from "./CreateSalesOrderLineItemDto";
+import {
+  MongoSalesOrderDocument,
+  MongoSalesOrder,
+} from "@sales/database/mongo/MongoSalesOrder";
+import { MongoOrdersRepository } from "@sales/database/mongo/MongoSalesOrderRepository";
+import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 spyOnDate();
 class NoErrorThrownError extends Error {}
 

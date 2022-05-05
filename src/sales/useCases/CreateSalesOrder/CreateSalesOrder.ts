@@ -11,7 +11,6 @@ import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
 import { SalesOrder } from "@sales/domain";
 import { CreateOrderLineItemApiDto } from "@sales/api";
-import { SalesOrderRepository } from "@sales/database";
 import { CatalogService, CatalogVariant } from "@catalog/services";
 
 import { CreateOrderDto, CreateLineItemDto } from "@sales/dto";
@@ -19,6 +18,7 @@ import { validate } from "class-validator";
 import { CreateSalesOrderDto } from "./CreateSalesOrderDto";
 import { CreateSalesOrderLineItemDto } from "./CreateSalesOrderLineItemDto";
 import safeJsonStringify from "safe-json-stringify";
+import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateSalesOrder

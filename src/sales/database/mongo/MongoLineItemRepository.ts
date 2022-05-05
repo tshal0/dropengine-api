@@ -2,7 +2,10 @@ import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Query, QueryWithHelpers } from "mongoose";
 import { BaseMongoRepository } from "@shared/mongo";
-import { MongoSalesLineItem, MongoSalesLineItemDocument } from ".";
+import {
+  MongoSalesLineItem,
+  MongoSalesLineItemDocument,
+} from "./MongoSalesLineItem";
 
 @Injectable()
 export class MongoLineItemsRepository extends BaseMongoRepository<MongoSalesLineItem> {

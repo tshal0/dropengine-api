@@ -4,16 +4,7 @@ import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
 import { AzureTelemetryModule, AzureStorageModule } from "@shared/modules";
-import {
-  MongoSalesLineItemSchema,
-  MongoOrdersRepository,
-  MongoSalesLineItem,
-  MongoSalesOrder,
-  MongoSalesOrderSchema,
-  SalesOrderQuery,
-  SalesOrderRepository,
-  MongoLineItemsRepository,
-} from "./database";
+
 import { OrdersController } from "./api";
 
 import {
@@ -25,6 +16,19 @@ import {
   UpdateShippingAddress,
 } from "./useCases";
 import { CatalogModule } from "@catalog/catalog.module";
+import { MongoLineItemsRepository } from "./database/mongo/MongoLineItemRepository";
+import {
+  MongoSalesLineItem,
+  MongoSalesLineItemSchema,
+} from "./database/mongo/MongoSalesLineItem";
+import {
+  MongoSalesOrder,
+  MongoSalesOrderSchema,
+} from "./database/mongo/MongoSalesOrder";
+import { MongoOrdersRepository } from "./database/mongo/MongoSalesOrderRepository";
+import { SalesOrderQuery } from "./database/SalesOrderQueries";
+import { SalesOrderRepository } from "./database/SalesOrderRepository";
+import { SalesLineItemRepository } from "./database/SalesLineItemRepository";
 
 @Module({
   imports: [
@@ -46,6 +50,7 @@ import { CatalogModule } from "@catalog/catalog.module";
   providers: [
     MongoOrdersRepository,
     MongoLineItemsRepository,
+    SalesLineItemRepository,
     SalesOrderRepository,
     SalesOrderQuery,
     CreateSalesOrder,

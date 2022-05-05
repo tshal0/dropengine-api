@@ -1,10 +1,10 @@
 import { IAggregate, Money, Result, ResultError, Weight } from "@shared/domain";
-import { MongoSalesVariant } from "@sales/database";
 import { CatalogVariant } from "@catalog/services";
 import { ISalesVariantProps, ISalesVariant } from "./ISalesVariant";
 import { SalesPersonalizationRule } from "./SalesPersonalizationRule";
 import { SalesVariantOption } from "./SalesVariantOption";
 import { isNull } from "lodash";
+import { MongoSalesVariant } from "@sales/database/mongo/MongoSalesVariant";
 
 export enum SalesVariantError {
   InvalidSalesVariant = "InvalidSalesVariant",

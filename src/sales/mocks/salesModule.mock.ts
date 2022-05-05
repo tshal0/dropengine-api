@@ -15,16 +15,6 @@ import { TestingModule, Test } from "@nestjs/testing";
 import { OrdersController } from "@sales/api";
 import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 
-import {
-  MongoLineItemsRepository,
-  MongoOrdersRepository,
-  MongoSalesLineItem,
-  MongoSalesLineItemSchema,
-  MongoSalesOrder,
-  MongoSalesOrderSchema,
-  SalesOrderQuery,
-  SalesOrderRepository,
-} from "@sales/database";
 import { AzureTelemetryModule, AzureTelemetryService } from "@shared/modules";
 import {
   CreateSalesOrder,
@@ -39,6 +29,19 @@ import { TraceTelemetry } from "applicationinsights/out/Declarations/Contracts";
 import safeJsonStringify from "safe-json-stringify";
 import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
 import { UpdatePersonalization } from "../useCases/UpdatePersonalization";
+import { SalesLineItemRepository } from "@sales/database/SalesLineItemRepository";
+import {
+  MongoSalesOrder,
+  MongoSalesOrderSchema,
+} from "@sales/database/mongo/MongoSalesOrder";
+import { MongoLineItemsRepository } from "@sales/database/mongo/MongoLineItemRepository";
+import {
+  MongoSalesLineItem,
+  MongoSalesLineItemSchema,
+} from "@sales/database/mongo/MongoSalesLineItem";
+import { MongoOrdersRepository } from "@sales/database/mongo/MongoSalesOrderRepository";
+import { SalesOrderQuery } from "@sales/database/SalesOrderQueries";
+import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 /** MOCK UTILS */
 jest.mock("@shared/utils", () => {
   return {
@@ -53,8 +56,6 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       rootMongooseTestModule(),
       MongooseModule.forFeature([
         { name: MongoSalesOrder.name, schema: MongoSalesOrderSchema },
-      ]),
-      MongooseModule.forFeature([
         { name: MongoSalesLineItem.name, schema: MongoSalesLineItemSchema },
       ]),
       HttpModule,
@@ -74,6 +75,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       MongoOrdersRepository,
       MongoLineItemsRepository,
       SalesOrderRepository,
+      SalesLineItemRepository,
       CreateSalesOrder,
       {
         provide: ProductTypesRepository,

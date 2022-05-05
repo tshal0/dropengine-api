@@ -1,10 +1,5 @@
 import moment from "moment";
 import { ResultError, IAggregate, Result } from "@shared/domain";
-import {
-  MongoSalesLineItem,
-  MongoSalesOrder,
-  MongoSalesLineItemDocument,
-} from "@sales/database";
 import { ISalesOrder, ISalesOrderProps } from "./ISalesOrder";
 import { CreateOrderDto } from "@sales/dto";
 import { AccountId } from "@auth/domain/valueObjects/AccountId";
@@ -24,6 +19,8 @@ import { FailedToCreateLineItemsError } from "./FailedToCreateLineItemsError";
 import { InvalidSalesOrder } from "./InvalidSalesOrder";
 import { SalesOrderError } from "./SalesOrderError";
 import { InvalidShippingAddressException } from "./InvalidShippingAddressException";
+import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
+import { MongoSalesOrder } from "@sales/database/mongo/MongoSalesOrder";
 
 export class SalesOrder extends IAggregate<
   ISalesOrderProps,

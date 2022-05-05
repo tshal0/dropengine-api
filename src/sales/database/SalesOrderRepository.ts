@@ -4,18 +4,16 @@
  * - persisting the SalesOrder Aggregate (and its CustomOptions, Variants, etc)
  */
 import { Injectable, Logger, NotImplementedException } from "@nestjs/common";
-import moment from "moment";
 
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
 import { ResultError, Result } from "@shared/domain/Result";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
-import { AzureTelemetryService } from "@shared/modules";
 import { MongoSalesOrder } from "./mongo/MongoSalesOrder";
 
 import { MongoOrdersRepository } from "./mongo/MongoSalesOrderRepository";
 
 import { ISalesOrderProps, SalesOrder } from "../domain";
-import { MongoLineItemsRepository, MongoSalesLineItem } from "./mongo";
+import { MongoLineItemsRepository } from "./mongo/MongoLineItemRepository";
 
 export class SalesOrderNotFoundException extends EntityNotFoundException {
   constructor(id: string) {

@@ -10,6 +10,7 @@ export function mockCatalogVariant(): CatalogVariant {
     label: "Top Text",
     placeholder: "Enter up to 12 characters",
     name: "top_text",
+    options: undefined
   };
   const customOptionBottom: ICustomOptionProps = {
     maxLength: 12,
@@ -19,6 +20,7 @@ export function mockCatalogVariant(): CatalogVariant {
     label: "Bottom Text",
     placeholder: "Enter up to 12 characters",
     name: "bottom_text",
+    options: undefined
   };
   return {
     id: "MOCK_ID",

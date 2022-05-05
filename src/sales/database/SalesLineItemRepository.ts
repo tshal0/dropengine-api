@@ -9,8 +9,9 @@ import moment from "moment";
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
 import { ResultError, Result } from "@shared/domain/Result";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
-import { MongoSalesLineItem, MongoLineItemsRepository } from "./mongo";
-import { ISalesLineItemProps, SalesLineItem } from "..";
+import { MongoLineItemsRepository } from "./mongo/MongoLineItemRepository";
+import { MongoSalesLineItem } from "./mongo/MongoSalesLineItem";
+import { ISalesLineItemProps, SalesLineItem } from "@sales/domain";
 
 export class SalesLineItemNotFoundException extends EntityNotFoundException {
   constructor(id: string) {

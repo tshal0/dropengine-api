@@ -2,14 +2,15 @@ import { CatalogService } from "@catalog/services";
 import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
 import { getModelToken } from "@nestjs/mongoose";
 import { TestingModule } from "@nestjs/testing";
+import { MongoLineItemsRepository } from "@sales/database/mongo/MongoLineItemRepository";
+import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
 import {
   MongoSalesOrderDocument,
   MongoSalesOrder,
-  MongoOrdersRepository,
-  SalesOrderRepository,
-  MongoSalesLineItem,
-  MongoLineItemsRepository,
-} from "@sales/database";
+} from "@sales/database/mongo/MongoSalesOrder";
+import { MongoOrdersRepository } from "@sales/database/mongo/MongoSalesOrderRepository";
+import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
+
 import {
   mockAddress,
   mockBottomText,
@@ -123,30 +124,12 @@ describe("UpdatePersonalization", () => {
 
       const result = await service.execute(mockDto);
       const expected = {
-        id: mockOrder.id,
-        accountId: "000000000000000000000001",
-        orderNumber: 1001,
-        orderDate: now,
-        orderName: "SLI-1001",
-        orderStatus: "OPEN",
-        lineItems: [
-          {
-            id: mockLineItem.id,
-            lineNumber: 1,
-            quantity: 1,
-            variant: mockVariant,
-            personalization: mockDto.personalization,
-            flags: [],
-            createdAt: now,
-            updatedAt: now,
-          },
-        ],
-        customer: {
-          email: "mock.customer@email.com",
-          name: "Mock Customer",
-        },
-        shippingAddress: mockAddress,
-        billingAddress: mockAddress,
+        id: mockLineItem.id,
+        lineNumber: 1,
+        quantity: 1,
+        variant: mockVariant,
+        personalization: mockDto.personalization,
+        flags: [],
         createdAt: now,
         updatedAt: now,
       };
@@ -154,7 +137,7 @@ describe("UpdatePersonalization", () => {
       // THEN
       const props = result.props();
 
-      expect(props).toMatchObject(expected);
+      expect(props).toEqual(expected);
     });
   });
   // GIVEN

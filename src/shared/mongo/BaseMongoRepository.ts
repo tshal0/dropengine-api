@@ -1,4 +1,3 @@
-import { MongoSalesLineItem } from "@sales/database";
 import { aqp } from "@shared/utils";
 import { IsNumberString } from "class-validator";
 import * as mongoose from "mongoose";

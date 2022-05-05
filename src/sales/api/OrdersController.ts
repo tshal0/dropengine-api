@@ -59,8 +59,8 @@ export class OrdersController {
     private readonly load: GetSalesOrder,
     private readonly query: QuerySalesOrders,
     private readonly remove: DeleteSalesOrder,
+    private readonly updateShipping: UpdateShippingAddress,
     private readonly updatePersonalization: UpdatePersonalization,
-    private readonly updateShipping: UpdateShippingAddress
   ) {}
 
   @Get(":id")

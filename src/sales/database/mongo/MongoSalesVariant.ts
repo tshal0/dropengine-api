@@ -1,15 +1,19 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 import { IMoney, IWeight } from "@shared/domain";
+import { MongoMoneySchema } from "./MongoMoney";
 import {
   MongoPersonalizationRule,
+  MongoPersonalizationRuleSchema,
+} from "./MongoPersonalizationRule";
+import {
   MongoProductionData,
+  MongoProductionDataSchema,
+} from "./MongoProductionData";
+import {
   MongoSalesVariantOption,
-} from "..";
-import { MongoMoneySchema } from "./MongoMoney";
-import { MongoPersonalizationRuleSchema } from "./MongoPersonalizationRule";
-import { MongoProductionDataSchema } from "./MongoProductionData";
-import { MongoSalesVariantOptionSchema } from "./MongoSalesVariantOption";
+  MongoSalesVariantOptionSchema,
+} from "./MongoSalesVariantOption";
 import { MongoWeightSchema } from "./MongoWeight";
 
 @Schema({ _id: false })

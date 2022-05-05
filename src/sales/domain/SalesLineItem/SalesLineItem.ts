@@ -1,10 +1,6 @@
 import moment from "moment";
 import { IAggregate, Result, ResultError } from "@shared/domain";
-import { MongoSalesLineItem } from "@sales/database";
-import {
-  ISalesLineItem,
-  ISalesLineItemProps,
-} from "./ISalesLineItem";
+import { ISalesLineItem, ISalesLineItemProps } from "./ISalesLineItem";
 import { ILineItemProperty } from "../ValueObjects/ILineItemProperty";
 import { SalesVariant } from "../SalesVariant";
 import { Quantity } from "../ValueObjects/Quantity";
@@ -17,6 +13,7 @@ import {
   LineItemID,
   LineNumber,
 } from "../ValueObjects";
+import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
 
 /**
  * Aggregates need: events, domain methods, initializers, converters
@@ -57,7 +54,10 @@ export class SalesLineItem extends IAggregate<
       lineNumber: this._value.lineNumber.value(),
       quantity: this._value.quantity.value(),
       variant: this._value.variant.props(),
-      personalization: this._value.personalization,
+      personalization: this._value.personalization.map((p) => ({
+        name: p.name,
+        value: p.value,
+      })),
       flags: this._value.flags,
       createdAt: this._value.createdAt,
       updatedAt: this._value.updatedAt,
@@ -122,7 +122,10 @@ export class SalesLineItem extends IAggregate<
       lineNumber: results.lineNumber.value(),
       quantity: results.quantity.value(),
       variant: variant,
-      personalization: dto.properties,
+      personalization: dto.properties.map((p) => ({
+        name: p.name,
+        value: p.value,
+      })),
       createdAt: now,
       updatedAt: now,
       flags: [],
@@ -169,7 +172,10 @@ export class SalesLineItem extends IAggregate<
       lineNumber: results.lineNumber.value(),
       quantity: results.quantity.value(),
       variant: variant,
-      personalization: doc.personalization,
+      personalization: doc.personalization.map((p) => ({
+        name: p.name,
+        value: p.value,
+      })),
       createdAt: now,
       updatedAt: now,
       flags: [],
