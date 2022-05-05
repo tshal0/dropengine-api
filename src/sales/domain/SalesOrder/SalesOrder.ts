@@ -21,6 +21,7 @@ import { SalesOrderError } from "./SalesOrderError";
 import { InvalidShippingAddressException } from "./InvalidShippingAddressException";
 import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
 import { MongoSalesOrder } from "@sales/database/mongo/MongoSalesOrder";
+import { Types } from "mongoose";
 
 export class SalesOrder extends IAggregate<
   ISalesOrderProps,
@@ -49,6 +50,10 @@ export class SalesOrder extends IAggregate<
    * @returns {ISalesOrderProps}
    */
   public props(maxDepth?: number | undefined): ISalesOrderProps {
+    const lineItems = this._value.lineItems.map((li) => li.props());
+    const identifiers: any = this._entity.lineItems.map((li) =>
+      li instanceof Types.ObjectId ? li : li.id
+    );
     const props: ISalesOrderProps = {
       id: this._value.id.value() || this._entity.id,
       accountId: this._value.accountId.value(),
@@ -56,7 +61,7 @@ export class SalesOrder extends IAggregate<
       orderNumber: this._value.orderNumber.value(),
       orderDate: this._value.orderDate.value(),
       orderStatus: this._value.orderStatus.value(),
-      lineItems: this._value.lineItems.map((li) => li.props()),
+      lineItems: lineItems.length ? lineItems : identifiers,
       customer: this._value.customer.value(),
       shippingAddress: this._value.shippingAddress.value(),
       billingAddress: this._value.billingAddress.value(),
@@ -180,7 +185,7 @@ export class SalesOrder extends IAggregate<
     results.billingAddress = await SalesOrderAddress.from(doc.billingAddress);
     // Errors
     const lineItems = doc.lineItems
-      .filter((li) => li._id)
+      .filter((li) => !(li instanceof Types.ObjectId))
       .map((li) => {
         return SalesLineItem.load(li);
       });

@@ -107,8 +107,9 @@ export class SalesVariant extends IAggregate<
     return Result.ok(variant);
   }
 
-  public static db(doc: MongoSalesVariant): Result<SalesVariant> {
-    if (isNull(doc)) return Result.fail(SalesVariant.nullDocument(doc));
+  public static load(doc: MongoSalesVariant): Result<SalesVariant> {
+    if (doc == null || doc == undefined)
+      return Result.fail(SalesVariant.nullDocument());
     let results: { [key: string]: Result<any> } = {};
     results.option1 = SalesVariantOption.from(doc.option1);
     results.option2 = SalesVariantOption.from(doc.option2);
@@ -151,10 +152,10 @@ export class SalesVariant extends IAggregate<
       `Failed to create SalesVariant: CatalogVariant was undefined.`
     );
   }
-  private static nullDocument(doc: null): ResultError {
+  private static nullDocument(): ResultError {
     return new InvalidSalesVariant(
       [],
-      doc,
+      null,
       `Failed to load SalesVariant: MongoSalesVariant is undefined.`
     );
   }

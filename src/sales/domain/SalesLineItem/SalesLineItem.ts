@@ -146,7 +146,7 @@ export class SalesLineItem extends IAggregate<
 
   public static load(doc: MongoSalesLineItem): SalesLineItem {
     if (isNull(doc)) throw SalesLineItem.nullLineItem();
-    const variantResult = SalesVariant.db(doc.variant);
+    const variantResult = SalesVariant.load(doc.variant);
 
     let results: { [key: string]: Result<any> } = {};
 

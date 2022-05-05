@@ -245,7 +245,7 @@ describe("SalesVariant", () => {
             SalesPersonalizationRule.from(r).value().value()
           ),
         };
-        let result = SalesVariant.db(mockVariant);
+        let result = SalesVariant.load(mockVariant);
         expect(result.isFailure).toBe(false);
         const props = result.value().props();
         const expected = {
@@ -351,7 +351,7 @@ describe("SalesVariant", () => {
             (r) => null
           ),
         };
-        let result = SalesVariant.db(mockVariant);
+        let result = SalesVariant.load(mockVariant);
         expect(result.isFailure).toBe(true);
         const error = result.error;
         const expected = {

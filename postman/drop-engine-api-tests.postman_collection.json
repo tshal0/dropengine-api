@@ -1,2048 +1,2141 @@
 {
-  "info": {
-    "_postman_id": "326c0e40-0ab6-482c-8ad9-c3b159cdaa5c",
-    "name": "drop-engine-api-tests",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "scenarios",
-      "item": [
-        {
-          "name": "UserRegistration",
-          "item": [
-            {
-              "name": "SignUp",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"Status code is 201\", function () {\r",
-                      "    pm.response.to.have.status(201);\r",
-                      "});\r",
-                      "\r",
-                      "const resp = pm.response.json()\r",
-                      "const sample = {\r",
-                      "    \"id\": \"682cad3a-f574-48f2-853d-9b222b41d07f\",\r",
-                      "    \"email\": \"test@sample.com\",\r",
-                      "    \"externalUserId\": \"auth0|61ef42f486e6f5006a3c28b2\",\r",
-                      "    \"status\": \"ACTIVATED\",\r",
-                      "    \"picture\": \"\",\r",
-                      "    \"firstName\": \"Test\",\r",
-                      "    \"lastName\": \"Sample\",\r",
-                      "    \"createdAt\": \"2022-01-25T00:23:15.755Z\",\r",
-                      "    \"updatedAt\": \"2022-01-25T00:23:15.755Z\",\r",
-                      "    \"events\": []\r",
-                      "}\r",
-                      "\r",
-                      "const userId = resp.id;\r",
-                      "const email = resp.email;\r",
-                      "const pic = resp.picture\r",
-                      "\r",
-                      "pm.test(`Created User should have a valid email`, () => {\r",
-                      "    pm.expect(email).to.eq(`test@sample.com`)\r",
-                      "    pm.collectionVariables.set(`userEmail`, email)\r",
-                      "})\r",
-                      "\r",
-                      "pm.test(`Created User should have valid UserId`, () => {\r",
-                      "    pm.expect(userId?.length).greaterThan(0)\r",
-                      "    pm.collectionVariables.set(`testUserId`, userId)\r",
-                      "})\r",
-                      "pm.test(`Created User should have Picture`, () => {\r",
-                      "    pm.expect(pic?.length).greaterThan(0)\r",
-                      "    pm.collectionVariables.set('testUserPicture', pic)\r",
-                      "})\r",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"email\": \"test@sample.com\",\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"Sample\",\r\n    \"password\": \"password123!\",\r\n    \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14GhKJE3lkI5CMtaZH6J1MQVd7Hbp5-MxcwwmQCQl=s96-c\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
-                  "host": ["{{base_url}}"],
-                  "path": ["{{prefix}}", "{{version}}", "{{module}}", "users"]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "FindUserById",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"FindUserById Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{testUserId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "FindAllUsers",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"FindAllUsers Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
-                  "host": ["{{base_url}}"],
-                  "path": ["{{prefix}}", "{{version}}", "{{module}}", "users"]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "CreateAccount",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"CreateAccount Status code is 201\", function () {\r",
-                      "    pm.response.to.have.status(201);\r",
-                      "});\r",
-                      "\r",
-                      "const account = pm.response.json()\r",
-                      "\r",
-                      "const accountId = account?.id\r",
-                      "pm.test(`Created Account should have valid AccountId`, () => {\r",
-                      "    pm.expect(accountId?.length).greaterThan(0)\r",
-                      "    console.log(`Setting collectionVariables 'accountId' to '${accountId}'`)\r",
-                      "    pm.collectionVariables.set(`accountId`, accountId)\r",
-                      "    console.log(`Set`, pm.collectionVariables.get(`accountId`))\r",
-                      "})\r",
-                      "\r",
-                      "const testUserId = pm.collectionVariables.get('testUserId')\r",
-                      "const testUserEmail = pm.collectionVariables.get('testUserEmail')\r",
-                      "const testUserPic = pm.collectionVariables.get('testUserPicture')\r",
-                      "const expected = {\r",
-                      "    \"name\": \"Test Account\",\r",
-                      "    \"ownerId\": testUserId,\r",
-                      "    \"companyCode\": \"TEST_ACCOUNT\",\r",
-                      "    \"members\": [\r",
-                      "        {\r",
-                      "            \"email\": testUserEmail,\r",
-                      "            \"picture\": testUserPic,\r",
-                      "            \"userId\": testUserId\r",
-                      "        }\r",
-                      "    ]\r",
-                      "}\r",
-                      "pm.test(`CreateAccount response should match Expected Account`, () => {\r",
-                      "    const keys = Object.keys(expected)\r",
-                      "    keys.forEach(k => {\r",
-                      "        const testSet = { key: k, given: account[k], expected: expected[k] }\r",
-                      "        const isArray = Array.isArray(testSet.expected)\r",
-                      "        const notEmpty = testSet.expected?.length > 0\r",
-                      "        if ([null, undefined].includes(testSet.expected)) {\r",
-                      "            pm.test(`Account.${k} should equal null`, () => {\r",
-                      "                pm.expect(testSet.given).to.eq(null)\r",
-                      "            })\r",
-                      "        } else if (isArray && notEmpty) {\r",
-                      "            testSet.expected.forEach(e => {\r",
-                      "                pm.test(`Account.${k} should include ${JSON.stringify(e, null, 2)}`, () => {\r",
-                      "                    pm.expect(testSet.given).to.deep.include(e)\r",
-                      "                })\r",
-                      "            })\r",
-                      "        } else if (isArray && !notEmpty) {\r",
-                      "            pm.test(`Account.${k} should be an empty Array`, () => {\r",
-                      "                pm.expect(testSet.given).to.have.length(0)\r",
-                      "            })\r",
-                      "        } else {\r",
-                      "            pm.test(`Account.${k} should equal ${JSON.stringify(testSet.expected, null, 2)}`, () => {\r",
-                      "                pm.expect(testSet.given).to.deep.include(testSet.expected)\r",
-                      "            })\r",
-                      "        }\r",
-                      "    })\r",
-                      "})\r",
-                      "console.log(`Exiting`, pm.collectionVariables.get(`accountId`))\r",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Test Account\",\r\n    \"companyCode\": \"TEST_ACCOUNT\",\r\n    \"ownerId\": \"{{testUserId}}\",\r\n    \"defaultStoreName\": \"Store 1\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "accounts"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "AddStore",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "console.log(`Test`, pm.collectionVariables.get(`accountId`))\r",
-                      "\r",
-                      "pm.test(\"AddStore Status code is 201\", function () {\r",
-                      "    pm.response.to.have.status(201);\r",
-                      "});\r",
-                      "\r",
-                      "const account = pm.response.json()\r",
-                      "const store = account.stores?.find(s => s.name == pm.collectionVariables.get('storeName'))\r",
-                      "const storeId = store?.id\r",
-                      "pm.test(`Created Store should have valid storeId`, () => {\r",
-                      "    pm.expect(storeId?.length).greaterThan(0)\r",
-                      "    pm.collectionVariables.set(`storeId`, storeId)\r",
-                      "})"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "console.log(`Pre`, pm.collectionVariables.get(`accountId`))"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"storeName\": \"Test Store 1\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/stores",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "accounts",
-                    ":id",
-                    "stores"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{accountId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "RemoveStore",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"RemoveStore Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      "\r",
-                      "const account = pm.response.json()\r",
-                      "const store = account.stores.find(s => s.name == pm.collectionVariables.get('storeName'))\r",
-                      "pm.test(`Removed Store should be undefined`, () => {\r",
-                      "    pm.expect(store).to.eq(undefined)\r",
-                      "})"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/stores/:storeId",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "accounts",
-                    ":id",
-                    "stores",
-                    ":storeId"
-                  ],
-                  "query": [
-                    {
-                      "key": "",
-                      "value": "",
-                      "disabled": true
-                    }
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{accountId}}"
-                    },
-                    {
-                      "key": "storeId",
-                      "value": "{{storeId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "GetAccount",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"GetAccount Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "accounts",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{accountId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "GetAccounts",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"GetAccounts Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "accounts"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "CreateNewUser",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"Status code is 201\", function () {\r",
-                      "    pm.response.to.have.status(201);\r",
-                      "});\r",
-                      "\r",
-                      "const resp = pm.response.json()\r",
-                      "\r",
-                      "const userId = resp.id;\r",
-                      "const email = resp.email;\r",
-                      "const pic = resp.picture\r",
-                      "\r",
-                      "pm.test(`Created User should have a valid email`, () => {\r",
-                      "    pm.expect(email).to.eq(`new@sample.com`)\r",
-                      "    pm.collectionVariables.set(`newUserEmail`, email)\r",
-                      "})\r",
-                      "\r",
-                      "pm.test(`Created User should have valid UserId`, () => {\r",
-                      "    pm.expect(userId?.length).greaterThan(0)\r",
-                      "    pm.collectionVariables.set(`newUserId`, userId)\r",
-                      "})\r",
-                      "pm.test(`Created User should have Picture`, () => {\r",
-                      "    pm.expect(pic?.length).greaterThan(0)\r",
-                      "    pm.collectionVariables.set('newUserPicture', pic)\r",
-                      "})\r",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"email\": \"new@sample.com\",\r\n    \"firstName\": \"New\",\r\n    \"lastName\": \"User\",\r\n    \"password\": \"password123!\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
-                  "host": ["{{base_url}}"],
-                  "path": ["{{prefix}}", "{{version}}", "{{module}}", "users"]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "AddMember",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"AddMember Status code is 201\", function () {\r",
-                      "    pm.response.to.have.status(201);\r",
-                      "});\r",
-                      "\r",
-                      "const account = pm.response.json()\r",
-                      "\r",
-                      "const members = account.members;\r",
-                      "const newUserId = pm.collectionVariables.get('newUserId')\r",
-                      "const newUserEmail = pm.collectionVariables.get('newUserEmail')\r",
-                      "const newUserPic = pm.collectionVariables.get('newUserPicture')\r",
-                      "const expected = {\r",
-                      "    \"email\": newUserEmail,\r",
-                      "    \"picture\": newUserPic,\r",
-                      "    \"userId\": newUserId\r",
-                      "}\r",
-                      "pm.test(`Account should have new Member with UserId, Email, and Picture matching the NewUser`, () => {\r",
-                      "    const newUser = members.find(m => m.userId == newUserId)\r",
-                      "    console.log({ newUser, expected })\r",
-                      "    pm.expect(newUser).to.deep.include(expected)\r",
-                      "})"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"userId\":\"{{newUserId}}\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/members",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "accounts",
-                    ":id",
-                    "members"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{accountId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "RemoveMember",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"RemoveMember Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      "\r",
-                      "const account = pm.response.json()\r",
-                      "\r",
-                      "const members = account.members;\r",
-                      "const newUserId = pm.collectionVariables.get('newUserId')\r",
-                      "\r",
-                      "pm.test(`Account should have new Member with UserId, Email, and Picture matching the NewUser`, () => {\r",
-                      "    const newUser = members.find(m => m.userId == newUserId)\r",
-                      "    pm.expect(newUser).to.eq(undefined)\r",
-                      "})"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/members/:userId",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "accounts",
-                    ":id",
-                    "members",
-                    ":userId"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{accountId}}"
-                    },
-                    {
-                      "key": "userId",
-                      "value": "{{newUserId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "DeleteAccount",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"DeleteAccount Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "accounts",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{accountId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "DeleteUser",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"DeleteUser Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{testUserId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            }
-          ],
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "type": "text/javascript",
-                "exec": ["pm.collectionVariables.set('module', 'auth')"]
-              }
-            },
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [""]
-              }
-            }
-          ]
-        },
-        {
-          "name": "ImportProductsAndVariants",
-          "item": [
-            {
-              "name": "CreateProductType",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "const productTypeName = pm.collectionVariables.get('productTypeName')\r",
-                      "pm.test(`POST: ProductType ${productTypeName} code is 201`, function () {\r",
-                      "    pm.response.to.have.status(201);\r",
-                      "});\r",
-                      "\r",
-                      "\r",
-                      "\r",
-                      "const resp = pm.response.json()\r",
-                      "pm.test(`Name should be '${productTypeName}'`, () => {\r",
-                      "    pm.expect(resp.name).to.eq(productTypeName)\r",
-                      "})\r",
-                      "pm.test(`UUID should not be empty`, () => {\r",
-                      "    pm.expect(resp.id.length).to.be.greaterThan(0)\r",
-                      "})\r",
-                      "\r",
-                      "pm.collectionVariables.set(`productTypeUuid`, resp.id)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"{{productTypeName}}\",\r\n    \"image\":\"MockImage\",\r\n    \"productionData\": {\r\n        \"material\": \"Mild Steel\",\r\n        \"thickness\": \"0.06\",\r\n        \"route\": \"1\"\r\n    },\r\n    \"option1\": {\r\n        \"name\": \"Size\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"12\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"15\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"18\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"24\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"30\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Color\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Black\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"White\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Gold\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Copper\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Silver\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option3\": null,\r\n    \"livePreview\": null\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "productTypes"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "GetProductType",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(`GET: ProductType ${pm.collectionVariables.get('productTypeUuid')} code is 200`, function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      "\r",
-                      "const resp = pm.response.json()\r",
-                      "const productTypeName = pm.collectionVariables.get('productTypeName')\r",
-                      "const uuid = pm.collectionVariables.get('productTypeUuid')\r",
-                      "\r",
-                      "const expected = {\r",
-                      "    \"name\": \"APITestProductType\",\r",
-                      "    \"image\": \"MockImage\",\r",
-                      "    \"productionData\": {\r",
-                      "        \"route\": \"1\",\r",
-                      "        \"material\": \"Mild Steel\",\r",
-                      "        \"thickness\": \"0.06\"\r",
-                      "    },\r",
-                      "    \"option1\": {\r",
-                      "        \"name\": \"Size\",\r",
-                      "        \"values\": [\r",
-                      "            {\r",
-                      "                \"name\": \"Size\",\r",
-                      "                \"value\": \"12\",\r",
-                      "                \"enabled\": true\r",
-                      "            },\r",
-                      "            {\r",
-                      "                \"name\": \"Size\",\r",
-                      "                \"value\": \"15\",\r",
-                      "                \"enabled\": true\r",
-                      "            },\r",
-                      "            {\r",
-                      "                \"name\": \"Size\",\r",
-                      "                \"value\": \"18\",\r",
-                      "                \"enabled\": true\r",
-                      "            },\r",
-                      "            {\r",
-                      "                \"name\": \"Size\",\r",
-                      "                \"value\": \"24\",\r",
-                      "                \"enabled\": true\r",
-                      "            },\r",
-                      "            {\r",
-                      "                \"name\": \"Size\",\r",
-                      "                \"value\": \"30\",\r",
-                      "                \"enabled\": true\r",
-                      "            }\r",
-                      "        ]\r",
-                      "    },\r",
-                      "    \"option2\": {\r",
-                      "        \"name\": \"Color\",\r",
-                      "        \"values\": [\r",
-                      "            {\r",
-                      "                \"name\": \"Color\",\r",
-                      "                \"value\": \"Black\",\r",
-                      "                \"enabled\": true\r",
-                      "            },\r",
-                      "            {\r",
-                      "                \"name\": \"Color\",\r",
-                      "                \"value\": \"White\",\r",
-                      "                \"enabled\": true\r",
-                      "            },\r",
-                      "            {\r",
-                      "                \"name\": \"Color\",\r",
-                      "                \"value\": \"Gold\",\r",
-                      "                \"enabled\": true\r",
-                      "            },\r",
-                      "            {\r",
-                      "                \"name\": \"Color\",\r",
-                      "                \"value\": \"Copper\",\r",
-                      "                \"enabled\": true\r",
-                      "            },\r",
-                      "            {\r",
-                      "                \"name\": \"Color\",\r",
-                      "                \"value\": \"Silver\",\r",
-                      "                \"enabled\": true\r",
-                      "            }\r",
-                      "        ]\r",
-                      "    },\r",
-                      "    \"option3\": null,\r",
-                      "    \"livePreview\": {\r",
-                      "        \"link\": null,\r",
-                      "        \"name\": null,\r",
-                      "        \"enabled\": false,\r",
-                      "        \"version\": null\r",
-                      "    },\r",
-                      "    \"products\": null\r",
-                      "}\r",
-                      "\r",
-                      "pm.test(`ProductType ${uuid} should have Name: '${productTypeName}'`, () => {\r",
-                      "    pm.expect(resp.name).to.eq(productTypeName)\r",
-                      "})\r",
-                      "pm.test(`ProductType ${uuid} should have been imported correctly`, () => {\r",
-                      "    const keys = Object.keys(expected)\r",
-                      "    console.info(keys)\r",
-                      "    keys.forEach(k => {\r",
-                      "        const testSet = { key: k, given: resp[k], expected: expected[k] }\r",
-                      "        console.info(testSet)\r",
-                      "        if (testSet.expected == null) {\r",
-                      "            pm.test(`ProductType.${k} should equal null`, () => {\r",
-                      "                pm.expect(resp[k]).to.eq(null)\r",
-                      "            })\r",
-                      "        } else {\r",
-                      "            pm.test(`ProductType.${k} should equal ${JSON.stringify(testSet.expected)}`, () => {\r",
-                      "                pm.expect(resp[k]).to.deep.include(expected[k])\r",
-                      "            })\r",
-                      "        }\r",
-                      "    })\r",
-                      "})"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:uuid",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "productTypes",
-                    ":uuid"
-                  ],
-                  "variable": [
-                    {
-                      "key": "uuid",
-                      "value": "{{productTypeUuid}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "ImportProducts",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(`IMPORT: Products code is 201`, function () {\r",
-                      "    pm.response.to.have.status(201);\r",
-                      "});\r",
-                      "\r",
-                      "const products = pm.response.json().imported\r",
-                      "\r",
-                      "const productIds = products.map(p => p.id)\r",
-                      "\r",
-                      "pm.collectionVariables.set(`productIds`, productIds)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "file",
-                      "type": "file",
-                      "src": ".\\products.v1.csv"
-                    }
-                  ]
-                },
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products/import",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "products",
-                    "import"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "GetProducts (ProductType)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(`GET: Products code is 200`, function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      "\r",
-                      "console.info(pm.response)\r",
-                      "const resp = pm.response.json().data;\r",
-                      "pm.test(\"(6) Products should have been imported\", function () {\r",
-                      "    console.info(`Response:`, { resp })\r",
-                      "    pm.expect(resp).to.be.an('array')\r",
-                      "    pm.expect(resp.length).to.eq(6)\r",
-                      "});\r",
-                      "const productTypeName = pm.collectionVariables.get('productTypeName')\r",
-                      "\r",
-                      "const expectedProducts = {\r",
-                      "    \"MU-C001-00\": {\r",
-                      "        type: productTypeName,\r",
-                      "        pricingTier: \"1\",\r",
-                      "        sku: \"MU-C001-00\",\r",
-                      "        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
-                      "        image:\r",
-                      "            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-Black.png\",\r",
-                      "        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/7329271441/MU-C001-00.svg\",\r",
-                      "        customOptions: [\r",
-                      "            {\r",
-                      "                name: \"name\",\r",
-                      "                type: \"input\",\r",
-                      "                label: \"Name\",\r",
-                      "                pattern: \"A-Z,a-z,0-9\",\r",
-                      "                required: true,\r",
-                      "                maxLength: 16,\r",
-                      "                placeholder: \"Enter up to 16 characters\",\r",
-                      "            },\r",
-                      "            {\r",
-                      "                name: \"initial\",\r",
-                      "                type: \"dropdown\",\r",
-                      "                label: \"Initial\",\r",
-                      "                options: \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\",\r",
-                      "                required: true,\r",
-                      "                placeholder: \"Select Initial\",\r",
-                      "            },\r",
-                      "        ],\r",
-                      "        variants: [],\r",
-                      "        productType: null,\r",
-                      "    },\r",
-                      "    \"MU-C004-00\": {\r",
-                      "        type: productTypeName,\r",
-                      "        pricingTier: \"2\",\r",
-                      "        sku: \"MU-C004-00\",\r",
-                      "        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
-                      "        image:\r",
-                      "            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C004-00-Black.png\",\r",
-                      "        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/1486874782/MU-C004-00.svg\",\r",
-                      "        customOptions: [\r",
-                      "            {\r",
-                      "                name: \"top_text\",\r",
-                      "                type: \"input\",\r",
-                      "                label: \"Top Text\",\r",
-                      "                pattern: \"A-Z,a-z,0-9\",\r",
-                      "                required: true,\r",
-                      "                maxLength: 24,\r",
-                      "                placeholder: \"Enter up to 24 characters\",\r",
-                      "            },\r",
-                      "            {\r",
-                      "                name: \"bottom_text\",\r",
-                      "                type: \"input\",\r",
-                      "                label: \"Bottom Text\",\r",
-                      "                pattern: \"A-Z,a-z,0-9\",\r",
-                      "                required: true,\r",
-                      "                maxLength: 24,\r",
-                      "                placeholder: \"Enter up to 24 characters\",\r",
-                      "            },\r",
-                      "            {\r",
-                      "                name: \"initial\",\r",
-                      "                type: \"dropdown\",\r",
-                      "                label: \"Initial\",\r",
-                      "                options: \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\",\r",
-                      "                required: true,\r",
-                      "                placeholder: \"Select Initial\",\r",
-                      "            },\r",
-                      "        ],\r",
-                      "        variants: [],\r",
-                      "        productType: null,\r",
-                      "    },\r",
-                      "    \"MU-C005-00\": {\r",
-                      "        type: productTypeName,\r",
-                      "        pricingTier: \"3\",\r",
-                      "        sku: \"MU-C005-00\",\r",
-                      "        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
-                      "        image:\r",
-                      "            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C005-00-Black.png\",\r",
-                      "        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7191694457/7636424154/MU-C005-00.svg\",\r",
-                      "        customOptions: [\r",
-                      "            {\r",
-                      "                name: \"top_text\",\r",
-                      "                type: \"input\",\r",
-                      "                label: \"Top Text\",\r",
-                      "                pattern: \"A-Z,a-z,0-9\",\r",
-                      "                required: true,\r",
-                      "                maxLength: 24,\r",
-                      "                placeholder: \"Enter up to 24 characters\",\r",
-                      "            },\r",
-                      "            {\r",
-                      "                name: \"bottom_text\",\r",
-                      "                type: \"input\",\r",
-                      "                label: \"Bottom Text\",\r",
-                      "                pattern: \"A-Z,a-z,0-9\",\r",
-                      "                required: true,\r",
-                      "                maxLength: 24,\r",
-                      "                placeholder: \"Enter up to 24 characters\",\r",
-                      "            },\r",
-                      "        ],\r",
-                      "        variants: [],\r",
-                      "        productType: null,\r",
-                      "    },\r",
-                      "    \"MU-C116-00\": {\r",
-                      "        type: productTypeName,\r",
-                      "        pricingTier: \"3\",\r",
-                      "        sku: \"MU-C116-00\",\r",
-                      "        tags: [\"Steel\", \"Custom\", \"Outdoors\", \"Tree\"],\r",
-                      "        image:\r",
-                      "            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C116-00-Black.png\",\r",
-                      "        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/1891427748/MU-C116-00.svg\",\r",
-                      "        customOptions: [\r",
-                      "            {\r",
-                      "                name: \"top_text\",\r",
-                      "                type: \"input\",\r",
-                      "                label: \"Top Text\",\r",
-                      "                pattern: \"A-Z,a-z,0-9\",\r",
-                      "                required: true,\r",
-                      "                maxLength: 24,\r",
-                      "                placeholder: \"Enter up to 24 characters\",\r",
-                      "            },\r",
-                      "            {\r",
-                      "                name: \"middle_text\",\r",
-                      "                type: \"input\",\r",
-                      "                label: \"Middle Text\",\r",
-                      "                pattern: \"A-Z,a-z,0-9\",\r",
-                      "                required: true,\r",
-                      "                maxLength: 16,\r",
-                      "                placeholder: \"Enter up to 16 characters\",\r",
-                      "            },\r",
-                      "            {\r",
-                      "                name: \"bottom_text\",\r",
-                      "                type: \"input\",\r",
-                      "                label: \"Bottom Text\",\r",
-                      "                pattern: \"A-Z,a-z,0-9\",\r",
-                      "                required: true,\r",
-                      "                maxLength: 24,\r",
-                      "                placeholder: \"Enter up to 24 characters\",\r",
-                      "            },\r",
-                      "        ],\r",
-                      "        variants: [],\r",
-                      "        productType: null,\r",
-                      "    },\r",
-                      "    \"MU-C017-00\": {\r",
-                      "        type: productTypeName,\r",
-                      "        pricingTier: \"2\",\r",
-                      "        sku: \"MU-C017-00\",\r",
-                      "        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
-                      "        image:\r",
-                      "            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C017-00-Black.png\",\r",
-                      "        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/5233468681/MU-C017-00.svg\",\r",
-                      "        customOptions: [\r",
-                      "            {\r",
-                      "                name: \"name\",\r",
-                      "                type: \"input\",\r",
-                      "                label: \"Name\",\r",
-                      "                pattern: \"A-Z,a-z,0-9\",\r",
-                      "                required: true,\r",
-                      "                maxLength: 16,\r",
-                      "                placeholder: \"Enter up to 16 characters\",\r",
-                      "            },\r",
-                      "            {\r",
-                      "                name: \"initial\",\r",
-                      "                type: \"dropdown\",\r",
-                      "                label: \"Initial\",\r",
-                      "                options: \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\",\r",
-                      "                required: true,\r",
-                      "                placeholder: \"Select Initial\",\r",
-                      "            },\r",
-                      "        ],\r",
-                      "        variants: [],\r",
-                      "        productType: null,\r",
-                      "    },\r",
-                      "    \"MEM-27-00\": {\r",
-                      "        type: productTypeName,\r",
-                      "        pricingTier: \"2\",\r",
-                      "        sku: \"MEM-27-00\",\r",
-                      "        tags: [\"Steel\", \"Custom\", \"Nurse\"],\r",
-                      "        image:\r",
-                      "            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MEM-27-00-Black.png\",\r",
-                      "        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3499663496/9643599499/27_04.20.2021.svg\",\r",
-                      "        customOptions: [\r",
-                      "            {\r",
-                      "                name: \"name\",\r",
-                      "                type: \"input\",\r",
-                      "                label: \"Name\",\r",
-                      "                pattern: \"A-Z,a-z,0-9\",\r",
-                      "                required: true,\r",
-                      "                maxLength: 16,\r",
-                      "                placeholder: \"Enter up to 16 characters\",\r",
-                      "            },\r",
-                      "        ],\r",
-                      "        variants: [],\r",
-                      "        productType: null,\r",
-                      "    },\r",
-                      "}\r",
-                      "\r",
-                      "const skus = Object.keys(expectedProducts)\r",
-                      "skus.forEach(sku => {\r",
-                      "    pm.test(`Product ${sku} should have been imported correctly`, () => {\r",
-                      "        const product = resp.find(r => r.sku == sku)\r",
-                      "        const expected = expectedProducts[sku]\r",
-                      "        // console.info(`Product ${sku}:`, { ...product })\r",
-                      "        const keys = Object.keys(expected)\r",
-                      "        // console.info(keys)\r",
-                      "        keys.forEach(k => {\r",
-                      "            const testSet = { key: k, given: product[k], expected: expected[k] }\r",
-                      "            const isArray = Array.isArray(testSet.expected)\r",
-                      "            if (k == \"variants\") console.log({ isArray, testSet })\r",
-                      "            const notEmpty = testSet.expected?.length > 0\r",
-                      "            if ([null, undefined].includes(testSet.expected)) {\r",
-                      "                pm.test(`Product.${k} should equal null`, () => {\r",
-                      "                    pm.expect(testSet.given).to.eq(null)\r",
-                      "                })\r",
-                      "            } else if (isArray && notEmpty) {\r",
-                      "                testSet.expected.forEach(e => {\r",
-                      "                    pm.test(`Product.${k} should include ${JSON.stringify(e, null, 2)}`, () => {\r",
-                      "                        pm.expect(testSet.given).to.deep.include(e)\r",
-                      "                    })\r",
-                      "                })\r",
-                      "            } else if (isArray && !notEmpty) {\r",
-                      "                pm.test(`Product.${k} should be an empty Array`, () => {\r",
-                      "                    pm.expect(testSet.given).to.have.length(0)\r",
-                      "                })\r",
-                      "            } else {\r",
-                      "                pm.test(`Product.${k} should equal ${JSON.stringify(testSet.expected, null, 2)}`, () => {\r",
-                      "                    pm.expect(testSet.given).to.deep.include(testSet.expected)\r",
-                      "                })\r",
-                      "            }\r",
-                      "        })\r",
-                      "    })\r",
-                      "})\r",
-                      "\r",
-                      "const uuids = pm.collectionVariables.get(`productIds`)\r",
-                      "console.info(uuids)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products?productTypeId={{productTypeUuid}}",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "products"
-                  ],
-                  "query": [
-                    {
-                      "key": "productTypeId",
-                      "value": "{{productTypeUuid}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "ImportVariants",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(`IMPORT: ProductVariants code is 201`, function () {\r",
-                      "    pm.response.to.have.status(201);\r",
-                      "});\r",
-                      "\r",
-                      "const resp = pm.response.json()\r",
-                      "console.log(pm.response)"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "file",
-                      "type": "file",
-                      "src": ".\\variants.v1.csv"
-                    }
-                  ]
-                },
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/import",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "productVariants",
-                    "import"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "GetVariants (ProductType)",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "const productTypeName = pm.collectionVariables.get('productTypeName')\r",
-                      "\r",
-                      "pm.test(`GET: ProductVariants for ProductType: ${productTypeName} code is 200`, function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      "\r",
-                      "const resp = pm.response.json()\r",
-                      "const expectedVariants = {\r",
-                      "    \"MU-C001-00\": {\r",
-                      "         \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
-                      "        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
-                      "        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
-                      "        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-12-Black\",\r",
-                      "        \"sku\": \"MU-C001-00-12-Black\",\r",
-                      "        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
-                      "        \"manufacturingCost\": { \"total\": 16, \"currency\": \"USD\" },\r",
-                      "        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
-                      "        \"product\": null\r",
-                      "    },\r",
-                      "    \"MU-C004-00\": {\r",
-                      "        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
-                      "        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
-                      "        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
-                      "        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C004-00-12-Black\",\r",
-                      "        \"sku\": \"MU-C004-00-12-Black\",\r",
-                      "        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
-                      "        \"manufacturingCost\": { \"total\": 21, \"currency\": \"USD\" },\r",
-                      "        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
-                      "        \"product\": null\r",
-                      "    },\r",
-                      "    \"MU-C005-00\": {\r",
-                      "         \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
-                      "        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
-                      "        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
-                      "        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C005-00-12-Black\",\r",
-                      "        \"sku\": \"MU-C005-00-12-Black\",\r",
-                      "        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
-                      "        \"manufacturingCost\": { \"total\": 2550, \"currency\": \"USD\" },\r",
-                      "        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
-                      "        \"product\": null\r",
-                      "    },\r",
-                      "    \"MU-C116-00\": {\r",
-                      "        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
-                      "        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
-                      "        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
-                      "        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C116-00-12-Black\",\r",
-                      "        \"sku\": \"MU-C116-00-12-Black\",\r",
-                      "        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
-                      "        \"manufacturingCost\": { \"total\": 2550, \"currency\": \"USD\" },\r",
-                      "        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
-                      "        \"product\": null\r",
-                      "    },\r",
-                      "    \"MU-C017-00\": {\r",
-                      "        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
-                      "        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
-                      "        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
-                      "        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C017-00-12-Black\",\r",
-                      "        \"sku\": \"MU-C017-00-12-Black\",\r",
-                      "        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
-                      "        \"manufacturingCost\": { \"total\": 21, \"currency\": \"USD\" },\r",
-                      "        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
-                      "        \"product\": null\r",
-                      "    },\r",
-                      "    \"MEM-27-00\": {\r",
-                      "        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
-                      "        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
-                      "        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
-                      "        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MEM-27-00-12-Black\",\r",
-                      "        \"sku\": \"MEM-27-00-12-Black\",\r",
-                      "        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
-                      "        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
-                      "        \"manufacturingCost\": { \"total\": 21, \"currency\": \"USD\" },\r",
-                      "        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
-                      "        \"product\": null\r",
-                      "    }\r",
-                      "}\r",
-                      "\r",
-                      "const skus = Object.keys(expectedVariants)\r",
-                      "skus.forEach(sku => {\r",
-                      "    pm.test(`Product ${sku} should have imported a Variant: Black, 12 correctly`, () => {\r",
-                      "        const variant = resp.find(r => r.sku == `${sku}-12-Black`)\r",
-                      "        const expected = expectedVariants[sku]\r",
-                      "        const keys = Object.keys(expected)\r",
-                      "        keys.forEach(k => {\r",
-                      "            const testSet = { key: k, given: variant[k], expected: expected[k] }\r",
-                      "            const isArray = Array.isArray(testSet.expected)\r",
-                      "            const notEmpty = testSet.expected?.length > 0\r",
-                      "            if ([null, undefined].includes(testSet.expected)) {\r",
-                      "                pm.test(`Product.${k} should equal null`, () => {\r",
-                      "                    pm.expect(testSet.given).to.eq(null)\r",
-                      "                })\r",
-                      "            } else if (isArray && notEmpty) {\r",
-                      "                testSet.expected.forEach(e => {\r",
-                      "                    pm.test(`Product.${k} should include ${JSON.stringify(e, null, 2)}`, () => {\r",
-                      "                        pm.expect(testSet.given).to.deep.include(e)\r",
-                      "                    })\r",
-                      "                })\r",
-                      "            } else {\r",
-                      "                pm.test(`Product.${k} should equal ${JSON.stringify(testSet.expected, null, 2)}`, () => {\r",
-                      "                    pm.expect(testSet.given).to.deep.include(testSet.expected)\r",
-                      "                })\r",
-                      "            }\r",
-                      "        })\r",
-                      "    })\r",
-                      "})\r",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "productVariants"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Cleanup",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(`DELETE: ProductType ${pm.collectionVariables.get('productTypeUuid')} code is 200`, function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:uuid",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "productTypes",
-                    ":uuid"
-                  ],
-                  "variable": [
-                    {
-                      "key": "uuid",
-                      "value": "{{productTypeUuid}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            }
-          ],
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "type": "text/javascript",
-                "exec": ["pm.collectionVariables.set('module', 'catalog')"]
-              }
-            },
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [""]
-              }
-            }
-          ]
-        },
-        {
-          "name": "PlaceOrder",
-          "item": [
-            {
-              "name": "Setup",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "// Create User\r",
-                      "// Create Account\r",
-                      "// Add Store\r",
-                      "// Get Account\r",
-                      "pm.collectionVariables.set('module', 'auth')\r",
-                      "const token = pm.collectionVariables.get(\"auth0_access_token\")\r",
-                      "const base_url = pm.environment.get(\"base_url\")\r",
-                      "const prefix = pm.collectionVariables.get(\"prefix\")\r",
-                      "const version = pm.collectionVariables.get(\"version\")\r",
-                      "const _module = pm.collectionVariables.get(\"module\")\r",
-                      "const apiUrl = `${base_url}/${prefix}/${version}/${_module}`\r",
-                      "const createUserUrl = `${apiUrl}/users`\r",
-                      "const createAccountUrl = `${apiUrl}/accounts`\r",
-                      "const addStoreUrl = `${apiUrl}/accounts/{{accountId}}/stores`\r",
-                      "\r",
-                      "const placeOrderVariables = {\r",
-                      "    userId: \"\",\r",
-                      "    accountId: \"\",\r",
-                      "    storeId: \"\",\r",
-                      "}\r",
-                      "const headers = { 'content-type': 'application/json', 'Authorization': `Bearer ${token}` }\r",
-                      "const createUserPayload = {\r",
-                      "    \"email\": \"test@sample.com\",\r",
-                      "    \"firstName\": \"Test\",\r",
-                      "    \"lastName\": \"Sample\",\r",
-                      "    \"password\": \"password123!\",\r",
-                      "    \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14GhKJE3lkI5CMtaZH6J1MQVd7Hbp5-MxcwwmQCQl=s96-c\"\r",
-                      "}\r",
-                      "\r",
-                      "const createUserOptions = {\r",
-                      "    url: createUserUrl,\r",
-                      "    method: 'POST',\r",
-                      "    header: headers,\r",
-                      "    body: {\r",
-                      "        mode: 'raw',\r",
-                      "        raw: JSON.stringify(createUserPayload)\r",
-                      "    }\r",
-                      "};\r",
-                      "console.log({ createUserOptions })\r",
-                      "\r",
-                      "pm.sendRequest(createUserOptions, function (err, response) {\r",
-                      "    const resp = response.json()\r",
-                      "    const userId = resp.id;\r",
-                      "    placeOrderVariables.userId = userId;\r",
-                      "    pm.collectionVariables.set(`placeOrder_userId`, userId)\r",
-                      "    const createAccountPayload = {\r",
-                      "        \"name\": \"Test Account\",\r",
-                      "        \"companyCode\": \"TEST_ACCOUNT\",\r",
-                      "        \"ownerId\": userId,\r",
-                      "        \"defaultStoreName\": \"Store 1\"\r",
-                      "    }\r",
-                      "    const createAccountOptions = {\r",
-                      "        url: createAccountUrl,\r",
-                      "        method: 'POST',\r",
-                      "        header: headers,\r",
-                      "        body: {\r",
-                      "            mode: 'raw',\r",
-                      "            raw: JSON.stringify(createAccountPayload)\r",
-                      "        }\r",
-                      "    };\r",
-                      "    console.log({ createUserOptions, createAccountOptions })\r",
-                      "    pm.sendRequest(createAccountOptions, function (err, response) {\r",
-                      "        const resp = response.json()\r",
-                      "        const accountId = resp.id;\r",
-                      "        pm.test(`PREREQUEST: Created Account should have valid AccountId`, () => {\r",
-                      "            pm.expect(accountId?.length).greaterThan(0)\r",
-                      "            console.log(`Setting collectionVariables 'accountId' to '${accountId}'`)\r",
-                      "            pm.collectionVariables.set(`accountId`, accountId)\r",
-                      "            console.log(`Set`, pm.collectionVariables.get(`accountId`))\r",
-                      "        })\r",
-                      "        placeOrderVariables.accountId = accountId;\r",
-                      "        pm.collectionVariables.set(`placeOrder_accountId`, accountId)\r",
-                      "\r",
-                      "    });\r",
-                      "\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"Successful POST request\", function () {\r",
-                      "    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
-                      "});\r",
-                      "pm.collectionVariables.set('module', 'sales')\r",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "accounts",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{placeOrder_accountId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "QueryOrders",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      "\r",
-                      "const resp = pm.response.json()\r",
-                      "const sample = {\r",
-                      "    \"total\": 0,\r",
-                      "    \"page\": 0,\r",
-                      "    \"pages\": 0,\r",
-                      "    \"size\": 100,\r",
-                      "    \"options\": []\r",
-                      "}\r",
-                      "\r",
-                      "pm.test(`QueryOrders response should match expected response`, () => {\r",
-                      "    pm.expect(resp).to.deep.include(sample)\r",
-                      "})\r",
-                      "pm.test(`QueryOrders response should contain 'data' array`, () => {\r",
-                      "    pm.expect(resp.data).to.be.an(\"array\")\r",
-                      "\r",
-                      "})\r",
-                      "const sampleOrder = {\r",
-                      "    \"id\": \"6259b633276bcf24daa94645\",\r",
-                      "    \"orderName\": \"SLI-3838315397200\",\r",
-                      "    \"orderStatus\": \"OPEN\",\r",
-                      "    \"orderDate\": \"2022-04-15T18:15:15.298Z\",\r",
-                      "    \"orderNumber\": 1001,\r",
-                      "    \"customer\": {\r",
-                      "        \"email\": \"test@example.com\",\r",
-                      "        \"name\": \"Test Example\"\r",
-                      "    },\r",
-                      "    \"shippingAddress\": {},\r",
-                      "    \"billingAddress\": {},\r",
-                      "    \"lineItems\": []\r",
-                      "}\r",
-                      "if (resp.data?.length) {\r",
-                      "    const order = resp.data[0]\r",
-                      "    pm.test(`If QueryOrders returns at least one Order, it should contain valid properties`, () => {\r",
-                      "        Object.keys(sampleOrder).forEach(k => {\r",
-                      "            pm.test(`QueryOrders > data > '${order.id}' '${order.orderName}' should contain prop '${k}'`, () => {\r",
-                      "                pm.expect(order).to.haveOwnProperty(k)\r",
-                      "            })\r",
-                      "        })\r",
-                      "    })\r",
-                      "}\r",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": ["pm.collectionVariables.set('module', 'sales')"],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/orders?page=0&size=100",
-                  "host": ["{{base_url}}"],
-                  "path": ["{{prefix}}", "{{version}}", "{{module}}", "orders"],
-                  "query": [
-                    {
-                      "key": "page",
-                      "value": "0"
-                    },
-                    {
-                      "key": "size",
-                      "value": "100"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "DeleteOrder",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "// pm.test(\"Status code is 200\", function () {\r",
-                      "//     pm.response.to.have.status(200);\r",
-                      "// });\r",
-                      "\r",
-                      "// const resp = pm.response.json()\r",
-                      "// const sample = {\r",
-                      "//     \"id\": \"test\",\r",
-                      "//     \"message\": \"SalesOrder 'test' has been deleted.\",\r",
-                      "// }\r",
-                      "\r",
-                      "// pm.test(`DeleteOrder 'test' response should match expected response`, () => {\r",
-                      "//     pm.expect(resp).to.deep.include(sample)\r",
-                      "// })\r",
-                      "\r",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": ["pm.collectionVariables.set('module', 'sales')"],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/orders/:id",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "orders",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "test"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "DeleteAccount",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"DeleteAccount Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": ["pm.collectionVariables.set('module', 'auth')"],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "accounts",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{placeOrder_accountId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "DeleteUser",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"DeleteUser Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": ["pm.collectionVariables.set('module', 'auth')"],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
-                  "host": ["{{base_url}}"],
-                  "path": [
-                    "{{prefix}}",
-                    "{{version}}",
-                    "{{module}}",
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{placeOrder_userId}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Health",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Status code is 200\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "const resp = `DropEngine™ API Up!`\r",
-              "pm.test(`Response should contain status: '${resp}'`, function () {\r",
-              "    const body = pm.response.json()\r",
-              "    pm.expect(body?.status).to.eq(resp)\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/{{prefix}}/health",
-          "host": ["{{base_url}}"],
-          "path": ["{{prefix}}", "health"]
-        }
-      },
-      "response": []
-    }
-  ],
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{auth0_access_token}}",
-        "type": "string"
-      }
-    ]
-  },
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          "const access_token = pm.environment.get('auth0_access_token');",
-          "const expiry = pm.environment.get('auth0_access_token_expiration');",
-          "const limitDate = new Date(new Date().getTime() - (12 * 60 * 60 * 1000));",
-          "const expiryDate = Date.parse(expiry)",
-          "console.warn({ limitDate, expiryDate, expiry })",
-          "if (!expiryDate || expiryDate < limitDate || expiryDate && !access_token?.length) {",
-          "    console.warn(`No Access Token. Loading new one now...`)",
-          "    const domain = pm.environment.get('auth0_domain')",
-          "    const authUrl = pm.environment.get('auth0_authUrl').replace('{{auth0_domain}}', domain)",
-          "    const tokenUrl = pm.environment.get('auth0_access_token_url').replace('{{auth0_domain}}', domain)",
-          "    pm.environment.set('auth0_authUrl', authUrl)",
-          "    pm.environment.set('auth0_access_token_url', tokenUrl)",
-          "    const client_id = pm.environment.get('auth0_client_id')",
-          "    const client_secret = pm.environment.get('auth0_client_secret')",
-          "    const audience = pm.environment.get('auth0_audience')",
-          "    const username = pm.environment.get('auth0_user')",
-          "    const password = pm.environment.get('auth0_password')",
-          "    const scope = pm.environment.get('auth0_scope')",
-          "    const grant_type = 'password'",
-          "    const authPayload = {",
-          "        \"client_id\": client_id,",
-          "        \"client_secret\": client_secret,",
-          "        \"audience\": audience,",
-          "        \"username\": username,",
-          "        \"password\": password,",
-          "        \"scope\": scope,",
-          "        \"grant_type\": grant_type,",
-          "    }",
-          "",
-          "    const authTokenUrl = pm.environment.get('auth0_access_token_url')",
-          "    console.log(authTokenUrl)",
-          "    const options = {",
-          "        url: authTokenUrl,",
-          "        method: 'POST',",
-          "        header: { 'content-type': 'application/json' },",
-          "        body: {",
-          "            mode: 'raw',",
-          "            raw: JSON.stringify(authPayload)",
-          "",
-          "        }",
-          "    };",
-          "    console.warn(authPayload, authTokenUrl)",
-          "    pm.sendRequest(options, function (err, response) {",
-          "        const resp = response.json()",
-          "        pm.environment.set('auth0_access_token', resp.access_token);",
-          "        pm.environment.set('auth0_access_token_expiration', `${new Date(Date.now())}`);",
-          "",
-          "    });",
-          "}",
-          "",
-          "console.log(`Exiting PreRequest Script...`)"
-        ]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    }
-  ],
-  "variable": [
-    {
-      "key": "base_url",
-      "value": "http://localhost:8802"
-    },
-    {
-      "key": "createdUserId",
-      "value": "93119315-5cda-4b93-8c54-636b61bd7623"
-    },
-    {
-      "key": "testUserEmail",
-      "value": "test@sample.com"
-    },
-    {
-      "key": "testUserId",
-      "value": "auth0|62476f564bf50d006af01379"
-    },
-    {
-      "key": "testUserPicture",
-      "value": "https://s.gravatar.com/avatar/a265d5b83f09a26f759f09a931601b8f?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png",
-      "type": "string"
-    },
-    {
-      "key": "userEmail",
-      "value": "test@sample.com"
-    },
-    {
-      "key": "productTypeUuid",
-      "value": "f3d6d75f-6d39-4cd8-ab41-2f65d8a5c522",
-      "type": "string"
-    },
-    {
-      "key": "productIds",
-      "value": [
-        "954d8beb-cfb0-46fd-9d77-570cab6ad2ed",
-        "4d710180-3408-47fe-b3a0-4bfada9174d4",
-        "a88c433f-7b3b-48b9-9160-e872a609275a",
-        "5af27fe6-252a-49af-8fca-b0de7b24f49b",
-        "0497474b-40ce-4168-bc03-ab46243dd2ca",
-        "5e266a28-c5e7-4557-887e-611838217e7b"
-      ]
-    },
-    {
-      "key": "productTypeName",
-      "value": "APITestProductType",
-      "type": "string"
-    },
-    {
-      "key": "accountId",
-      "value": "afdc3bdd-66a5-4eba-83c0-4aa02174d12f",
-      "type": "string"
-    },
-    {
-      "key": "newUserId",
-      "value": "auth0|62474d5bf7b105007088bb6c",
-      "type": "string"
-    },
-    {
-      "key": "newUserEmail",
-      "value": "new@sample.com",
-      "type": "string"
-    },
-    {
-      "key": "newUserPicture",
-      "value": "https://s.gravatar.com/avatar/f07fb651991b8923f6751cbb79907323?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fne.png",
-      "type": "string"
-    },
-    {
-      "key": "storeId",
-      "value": "afdc3bdd-66a5-4eba-83c0-4aa02174d12f",
-      "type": "string"
-    },
-    {
-      "key": "storeName",
-      "value": "Test Store 1",
-      "type": "string"
-    },
-    {
-      "key": "prefix",
-      "value": "api",
-      "type": "string"
-    },
-    {
-      "key": "version",
-      "value": "v1",
-      "type": "string"
-    },
-    {
-      "key": "module",
-      "value": "auth",
-      "type": "string"
-    },
-    {
-      "key": "placeOrder_userId",
-      "value": ""
-    },
-    {
-      "key": "placeOrder_accountId",
-      "value": ""
-    }
-  ]
+	"info": {
+		"_postman_id": "326c0e40-0ab6-482c-8ad9-c3b159cdaa5c",
+		"name": "drop-engine-api-tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "scenarios",
+			"item": [
+				{
+					"name": "UserRegistration",
+					"item": [
+						{
+							"name": "SignUp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"const sample = {\r",
+											"    \"id\": \"682cad3a-f574-48f2-853d-9b222b41d07f\",\r",
+											"    \"email\": \"test@sample.com\",\r",
+											"    \"externalUserId\": \"auth0|61ef42f486e6f5006a3c28b2\",\r",
+											"    \"status\": \"ACTIVATED\",\r",
+											"    \"picture\": \"\",\r",
+											"    \"firstName\": \"Test\",\r",
+											"    \"lastName\": \"Sample\",\r",
+											"    \"createdAt\": \"2022-01-25T00:23:15.755Z\",\r",
+											"    \"updatedAt\": \"2022-01-25T00:23:15.755Z\",\r",
+											"    \"events\": []\r",
+											"}\r",
+											"\r",
+											"const userId = resp.id;\r",
+											"const email = resp.email;\r",
+											"const pic = resp.picture\r",
+											"\r",
+											"pm.test(`Created User should have a valid email`, () => {\r",
+											"    pm.expect(email).to.eq(`test@sample.com`)\r",
+											"    pm.collectionVariables.set(`userEmail`, email)\r",
+											"})\r",
+											"\r",
+											"pm.test(`Created User should have valid UserId`, () => {\r",
+											"    pm.expect(userId?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set(`testUserId`, userId)\r",
+											"})\r",
+											"pm.test(`Created User should have Picture`, () => {\r",
+											"    pm.expect(pic?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set('testUserPicture', pic)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"test@sample.com\",\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"Sample\",\r\n    \"password\": \"password123!\",\r\n    \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14GhKJE3lkI5CMtaZH6J1MQVd7Hbp5-MxcwwmQCQl=s96-c\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FindUserById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"FindUserById Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{testUserId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "FindAllUsers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"FindAllUsers Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateAccount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"CreateAccount Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const account = pm.response.json()\r",
+											"\r",
+											"const accountId = account?.id\r",
+											"pm.test(`Created Account should have valid AccountId`, () => {\r",
+											"    pm.expect(accountId?.length).greaterThan(0)\r",
+											"    console.log(`Setting collectionVariables 'accountId' to '${accountId}'`)\r",
+											"    pm.collectionVariables.set(`accountId`, accountId)\r",
+											"    console.log(`Set`, pm.collectionVariables.get(`accountId`))\r",
+											"})\r",
+											"\r",
+											"const testUserId = pm.collectionVariables.get('testUserId')\r",
+											"const testUserEmail = pm.collectionVariables.get('testUserEmail')\r",
+											"const testUserPic = pm.collectionVariables.get('testUserPicture')\r",
+											"const expected = {\r",
+											"    \"name\": \"Test Account\",\r",
+											"    \"ownerId\": testUserId,\r",
+											"    \"companyCode\": \"TEST_ACCOUNT\",\r",
+											"    \"members\": [\r",
+											"        {\r",
+											"            \"email\": testUserEmail,\r",
+											"            \"picture\": testUserPic,\r",
+											"            \"userId\": testUserId\r",
+											"        }\r",
+											"    ]\r",
+											"}\r",
+											"pm.test(`CreateAccount response should match Expected Account`, () => {\r",
+											"    const keys = Object.keys(expected)\r",
+											"    keys.forEach(k => {\r",
+											"        const testSet = { key: k, given: account[k], expected: expected[k] }\r",
+											"        const isArray = Array.isArray(testSet.expected)\r",
+											"        const notEmpty = testSet.expected?.length > 0\r",
+											"        if ([null, undefined].includes(testSet.expected)) {\r",
+											"            pm.test(`Account.${k} should equal null`, () => {\r",
+											"                pm.expect(testSet.given).to.eq(null)\r",
+											"            })\r",
+											"        } else if (isArray && notEmpty) {\r",
+											"            testSet.expected.forEach(e => {\r",
+											"                pm.test(`Account.${k} should include ${JSON.stringify(e, null, 2)}`, () => {\r",
+											"                    pm.expect(testSet.given).to.deep.include(e)\r",
+											"                })\r",
+											"            })\r",
+											"        } else if (isArray && !notEmpty) {\r",
+											"            pm.test(`Account.${k} should be an empty Array`, () => {\r",
+											"                pm.expect(testSet.given).to.have.length(0)\r",
+											"            })\r",
+											"        } else {\r",
+											"            pm.test(`Account.${k} should equal ${JSON.stringify(testSet.expected, null, 2)}`, () => {\r",
+											"                pm.expect(testSet.given).to.deep.include(testSet.expected)\r",
+											"            })\r",
+											"        }\r",
+											"    })\r",
+											"})\r",
+											"console.log(`Exiting`, pm.collectionVariables.get(`accountId`))\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Test Account\",\r\n    \"companyCode\": \"TEST_ACCOUNT\",\r\n    \"ownerId\": \"{{testUserId}}\",\r\n    \"defaultStoreName\": \"Store 1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AddStore",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"console.log(`Test`, pm.collectionVariables.get(`accountId`))\r",
+											"\r",
+											"pm.test(\"AddStore Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const account = pm.response.json()\r",
+											"const store = account.stores?.find(s => s.name == pm.collectionVariables.get('storeName'))\r",
+											"const storeId = store?.id\r",
+											"pm.test(`Created Store should have valid storeId`, () => {\r",
+											"    pm.expect(storeId?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set(`storeId`, storeId)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.log(`Pre`, pm.collectionVariables.get(`accountId`))"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"storeName\": \"Test Store 1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/stores",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"accounts",
+										":id",
+										"stores"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RemoveStore",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"RemoveStore Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const account = pm.response.json()\r",
+											"const store = account.stores.find(s => s.name == pm.collectionVariables.get('storeName'))\r",
+											"pm.test(`Removed Store should be undefined`, () => {\r",
+											"    pm.expect(store).to.eq(undefined)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/stores/:storeId",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"accounts",
+										":id",
+										"stores",
+										":storeId"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										},
+										{
+											"key": "storeId",
+											"value": "{{storeId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GetAccount Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"accounts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAccounts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GetAccounts Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateNewUser",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"\r",
+											"const userId = resp.id;\r",
+											"const email = resp.email;\r",
+											"const pic = resp.picture\r",
+											"\r",
+											"pm.test(`Created User should have a valid email`, () => {\r",
+											"    pm.expect(email).to.eq(`new@sample.com`)\r",
+											"    pm.collectionVariables.set(`newUserEmail`, email)\r",
+											"})\r",
+											"\r",
+											"pm.test(`Created User should have valid UserId`, () => {\r",
+											"    pm.expect(userId?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set(`newUserId`, userId)\r",
+											"})\r",
+											"pm.test(`Created User should have Picture`, () => {\r",
+											"    pm.expect(pic?.length).greaterThan(0)\r",
+											"    pm.collectionVariables.set('newUserPicture', pic)\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"new@sample.com\",\r\n    \"firstName\": \"New\",\r\n    \"lastName\": \"User\",\r\n    \"password\": \"password123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AddMember",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"AddMember Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const account = pm.response.json()\r",
+											"\r",
+											"const members = account.members;\r",
+											"const newUserId = pm.collectionVariables.get('newUserId')\r",
+											"const newUserEmail = pm.collectionVariables.get('newUserEmail')\r",
+											"const newUserPic = pm.collectionVariables.get('newUserPicture')\r",
+											"const expected = {\r",
+											"    \"email\": newUserEmail,\r",
+											"    \"picture\": newUserPic,\r",
+											"    \"userId\": newUserId\r",
+											"}\r",
+											"pm.test(`Account should have new Member with UserId, Email, and Picture matching the NewUser`, () => {\r",
+											"    const newUser = members.find(m => m.userId == newUserId)\r",
+											"    console.log({ newUser, expected })\r",
+											"    pm.expect(newUser).to.deep.include(expected)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":\"{{newUserId}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/members",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"accounts",
+										":id",
+										"members"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RemoveMember",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"RemoveMember Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const account = pm.response.json()\r",
+											"\r",
+											"const members = account.members;\r",
+											"const newUserId = pm.collectionVariables.get('newUserId')\r",
+											"\r",
+											"pm.test(`Account should have new Member with UserId, Email, and Picture matching the NewUser`, () => {\r",
+											"    const newUser = members.find(m => m.userId == newUserId)\r",
+											"    pm.expect(newUser).to.eq(undefined)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id/members/:userId",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"accounts",
+										":id",
+										"members",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										},
+										{
+											"key": "userId",
+											"value": "{{newUserId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteAccount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DeleteAccount Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"accounts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteUser",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DeleteUser Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{testUserId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.collectionVariables.set('module', 'auth')"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "ImportProductsAndVariants",
+					"item": [
+						{
+							"name": "CreateProductType",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const productTypeName = pm.collectionVariables.get('productTypeName')\r",
+											"pm.test(`POST: ProductType ${productTypeName} code is 201`, function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"pm.test(`Name should be '${productTypeName}'`, () => {\r",
+											"    pm.expect(resp.name).to.eq(productTypeName)\r",
+											"})\r",
+											"pm.test(`UUID should not be empty`, () => {\r",
+											"    pm.expect(resp.id.length).to.be.greaterThan(0)\r",
+											"})\r",
+											"\r",
+											"pm.collectionVariables.set(`productTypeUuid`, resp.id)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"{{productTypeName}}\",\r\n    \"image\":\"MockImage\",\r\n    \"productionData\": {\r\n        \"material\": \"Mild Steel\",\r\n        \"thickness\": \"0.06\",\r\n        \"route\": \"1\"\r\n    },\r\n    \"option1\": {\r\n        \"name\": \"Size\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"12\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"15\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"18\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"24\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Size\",\r\n                \"value\": \"30\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option2\": {\r\n        \"name\": \"Color\",\r\n        \"values\": [\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Black\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"White\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Gold\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Copper\",\r\n                \"enabled\": true\r\n            },\r\n            {\r\n                \"name\": \"Color\",\r\n                \"value\": \"Silver\",\r\n                \"enabled\": true\r\n            }\r\n        ]\r\n    },\r\n    \"option3\": null,\r\n    \"livePreview\": null\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productTypes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetProductType",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(`GET: ProductType ${pm.collectionVariables.get('productTypeUuid')} code is 200`, function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"const productTypeName = pm.collectionVariables.get('productTypeName')\r",
+											"const uuid = pm.collectionVariables.get('productTypeUuid')\r",
+											"\r",
+											"const expected = {\r",
+											"    \"name\": \"APITestProductType\",\r",
+											"    \"image\": \"MockImage\",\r",
+											"    \"productionData\": {\r",
+											"        \"route\": \"1\",\r",
+											"        \"material\": \"Mild Steel\",\r",
+											"        \"thickness\": \"0.06\"\r",
+											"    },\r",
+											"    \"option1\": {\r",
+											"        \"name\": \"Size\",\r",
+											"        \"values\": [\r",
+											"            {\r",
+											"                \"name\": \"Size\",\r",
+											"                \"value\": \"12\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Size\",\r",
+											"                \"value\": \"15\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Size\",\r",
+											"                \"value\": \"18\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Size\",\r",
+											"                \"value\": \"24\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Size\",\r",
+											"                \"value\": \"30\",\r",
+											"                \"enabled\": true\r",
+											"            }\r",
+											"        ]\r",
+											"    },\r",
+											"    \"option2\": {\r",
+											"        \"name\": \"Color\",\r",
+											"        \"values\": [\r",
+											"            {\r",
+											"                \"name\": \"Color\",\r",
+											"                \"value\": \"Black\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Color\",\r",
+											"                \"value\": \"White\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Color\",\r",
+											"                \"value\": \"Gold\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Color\",\r",
+											"                \"value\": \"Copper\",\r",
+											"                \"enabled\": true\r",
+											"            },\r",
+											"            {\r",
+											"                \"name\": \"Color\",\r",
+											"                \"value\": \"Silver\",\r",
+											"                \"enabled\": true\r",
+											"            }\r",
+											"        ]\r",
+											"    },\r",
+											"    \"option3\": null,\r",
+											"    \"livePreview\": {\r",
+											"        \"link\": null,\r",
+											"        \"name\": null,\r",
+											"        \"enabled\": false,\r",
+											"        \"version\": null\r",
+											"    },\r",
+											"    \"products\": null\r",
+											"}\r",
+											"\r",
+											"pm.test(`ProductType ${uuid} should have Name: '${productTypeName}'`, () => {\r",
+											"    pm.expect(resp.name).to.eq(productTypeName)\r",
+											"})\r",
+											"pm.test(`ProductType ${uuid} should have been imported correctly`, () => {\r",
+											"    const keys = Object.keys(expected)\r",
+											"    console.info(keys)\r",
+											"    keys.forEach(k => {\r",
+											"        const testSet = { key: k, given: resp[k], expected: expected[k] }\r",
+											"        console.info(testSet)\r",
+											"        if (testSet.expected == null) {\r",
+											"            pm.test(`ProductType.${k} should equal null`, () => {\r",
+											"                pm.expect(resp[k]).to.eq(null)\r",
+											"            })\r",
+											"        } else {\r",
+											"            pm.test(`ProductType.${k} should equal ${JSON.stringify(testSet.expected)}`, () => {\r",
+											"                pm.expect(resp[k]).to.deep.include(expected[k])\r",
+											"            })\r",
+											"        }\r",
+											"    })\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:uuid",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productTypes",
+										":uuid"
+									],
+									"variable": [
+										{
+											"key": "uuid",
+											"value": "{{productTypeUuid}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ImportProducts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(`IMPORT: Products code is 201`, function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const products = pm.response.json().imported\r",
+											"\r",
+											"const productIds = products.map(p => p.id)\r",
+											"\r",
+											"pm.collectionVariables.set(`productIds`, productIds)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": ".\\products.v1.csv"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products/import",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"products",
+										"import"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetProducts (ProductType)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(`GET: Products code is 200`, function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"console.info(pm.response)\r",
+											"const resp = pm.response.json().data;\r",
+											"pm.test(\"(6) Products should have been imported\", function () {\r",
+											"    console.info(`Response:`, { resp })\r",
+											"    pm.expect(resp).to.be.an('array')\r",
+											"    pm.expect(resp.length).to.eq(6)\r",
+											"});\r",
+											"const productTypeName = pm.collectionVariables.get('productTypeName')\r",
+											"\r",
+											"const expectedProducts = {\r",
+											"    \"MU-C001-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"1\",\r",
+											"        sku: \"MU-C001-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/7329271441/MU-C001-00.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"name\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Name\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 16,\r",
+											"                placeholder: \"Enter up to 16 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"initial\",\r",
+											"                type: \"dropdown\",\r",
+											"                label: \"Initial\",\r",
+											"                options: \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\",\r",
+											"                required: true,\r",
+											"                placeholder: \"Select Initial\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: [],\r",
+											"        productType: null,\r",
+											"    },\r",
+											"    \"MU-C004-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"2\",\r",
+											"        sku: \"MU-C004-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C004-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/1486874782/MU-C004-00.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"top_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Top Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"bottom_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Bottom Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"initial\",\r",
+											"                type: \"dropdown\",\r",
+											"                label: \"Initial\",\r",
+											"                options: \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\",\r",
+											"                required: true,\r",
+											"                placeholder: \"Select Initial\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: [],\r",
+											"        productType: null,\r",
+											"    },\r",
+											"    \"MU-C005-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"3\",\r",
+											"        sku: \"MU-C005-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C005-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7191694457/7636424154/MU-C005-00.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"top_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Top Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"bottom_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Bottom Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: [],\r",
+											"        productType: null,\r",
+											"    },\r",
+											"    \"MU-C116-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"3\",\r",
+											"        sku: \"MU-C116-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Outdoors\", \"Tree\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C116-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/1891427748/MU-C116-00.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"top_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Top Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"middle_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Middle Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 16,\r",
+											"                placeholder: \"Enter up to 16 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"bottom_text\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Bottom Text\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 24,\r",
+											"                placeholder: \"Enter up to 24 characters\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: [],\r",
+											"        productType: null,\r",
+											"    },\r",
+											"    \"MU-C017-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"2\",\r",
+											"        sku: \"MU-C017-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Initial\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C017-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/5233468681/MU-C017-00.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"name\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Name\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 16,\r",
+											"                placeholder: \"Enter up to 16 characters\",\r",
+											"            },\r",
+											"            {\r",
+											"                name: \"initial\",\r",
+											"                type: \"dropdown\",\r",
+											"                label: \"Initial\",\r",
+											"                options: \"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\",\r",
+											"                required: true,\r",
+											"                placeholder: \"Select Initial\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: [],\r",
+											"        productType: null,\r",
+											"    },\r",
+											"    \"MEM-27-00\": {\r",
+											"        type: productTypeName,\r",
+											"        pricingTier: \"2\",\r",
+											"        sku: \"MEM-27-00\",\r",
+											"        tags: [\"Steel\", \"Custom\", \"Nurse\"],\r",
+											"        image:\r",
+											"            \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MEM-27-00-Black.png\",\r",
+											"        svg: \"https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3499663496/9643599499/27_04.20.2021.svg\",\r",
+											"        customOptions: [\r",
+											"            {\r",
+											"                name: \"name\",\r",
+											"                type: \"input\",\r",
+											"                label: \"Name\",\r",
+											"                pattern: \"A-Z,a-z,0-9\",\r",
+											"                required: true,\r",
+											"                maxLength: 16,\r",
+											"                placeholder: \"Enter up to 16 characters\",\r",
+											"            },\r",
+											"        ],\r",
+											"        variants: [],\r",
+											"        productType: null,\r",
+											"    },\r",
+											"}\r",
+											"\r",
+											"const skus = Object.keys(expectedProducts)\r",
+											"skus.forEach(sku => {\r",
+											"    pm.test(`Product ${sku} should have been imported correctly`, () => {\r",
+											"        const product = resp.find(r => r.sku == sku)\r",
+											"        const expected = expectedProducts[sku]\r",
+											"        // console.info(`Product ${sku}:`, { ...product })\r",
+											"        const keys = Object.keys(expected)\r",
+											"        // console.info(keys)\r",
+											"        keys.forEach(k => {\r",
+											"            const testSet = { key: k, given: product[k], expected: expected[k] }\r",
+											"            const isArray = Array.isArray(testSet.expected)\r",
+											"            if (k == \"variants\") console.log({ isArray, testSet })\r",
+											"            const notEmpty = testSet.expected?.length > 0\r",
+											"            if ([null, undefined].includes(testSet.expected)) {\r",
+											"                pm.test(`Product.${k} should equal null`, () => {\r",
+											"                    pm.expect(testSet.given).to.eq(null)\r",
+											"                })\r",
+											"            } else if (isArray && notEmpty) {\r",
+											"                testSet.expected.forEach(e => {\r",
+											"                    pm.test(`Product.${k} should include ${JSON.stringify(e, null, 2)}`, () => {\r",
+											"                        pm.expect(testSet.given).to.deep.include(e)\r",
+											"                    })\r",
+											"                })\r",
+											"            } else if (isArray && !notEmpty) {\r",
+											"                pm.test(`Product.${k} should be an empty Array`, () => {\r",
+											"                    pm.expect(testSet.given).to.have.length(0)\r",
+											"                })\r",
+											"            } else {\r",
+											"                pm.test(`Product.${k} should equal ${JSON.stringify(testSet.expected, null, 2)}`, () => {\r",
+											"                    pm.expect(testSet.given).to.deep.include(testSet.expected)\r",
+											"                })\r",
+											"            }\r",
+											"        })\r",
+											"    })\r",
+											"})\r",
+											"\r",
+											"const uuids = pm.collectionVariables.get(`productIds`)\r",
+											"console.info(uuids)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/products?productTypeId={{productTypeUuid}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"products"
+									],
+									"query": [
+										{
+											"key": "productTypeId",
+											"value": "{{productTypeUuid}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ImportVariants",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(`IMPORT: ProductVariants code is 201`, function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"console.log(pm.response)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": ".\\variants.v1.csv"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants/import",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productVariants",
+										"import"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetVariants (ProductType)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const productTypeName = pm.collectionVariables.get('productTypeName')\r",
+											"\r",
+											"pm.test(`GET: ProductVariants for ProductType: ${productTypeName} code is 200`, function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"const expectedVariants = {\r",
+											"    \"MU-C001-00\": {\r",
+											"         \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-12-Black\",\r",
+											"        \"sku\": \"MU-C001-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 16, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    },\r",
+											"    \"MU-C004-00\": {\r",
+											"        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C004-00-12-Black\",\r",
+											"        \"sku\": \"MU-C004-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 21, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    },\r",
+											"    \"MU-C005-00\": {\r",
+											"         \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C005-00-12-Black\",\r",
+											"        \"sku\": \"MU-C005-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 2550, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    },\r",
+											"    \"MU-C116-00\": {\r",
+											"        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C116-00-12-Black\",\r",
+											"        \"sku\": \"MU-C116-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 2550, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    },\r",
+											"    \"MU-C017-00\": {\r",
+											"        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C017-00-12-Black\",\r",
+											"        \"sku\": \"MU-C017-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 21, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    },\r",
+											"    \"MEM-27-00\": {\r",
+											"        \"option1\": { \"name\": \"Size\", \"option\": \"12\", \"enabled\": true },\r",
+											"        \"option2\": { \"name\": \"Color\", \"option\": \"Black\", \"enabled\": true },\r",
+											"        \"option3\": { \"option\": \"\", \"enabled\": false },\r",
+											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MEM-27-00-12-Black\",\r",
+											"        \"sku\": \"MEM-27-00-12-Black\",\r",
+											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"width\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
+											"        \"weight\": { \"units\": \"g\", \"dimension\": 365 },\r",
+											"        \"manufacturingCost\": { \"total\": 21, \"currency\": \"USD\" },\r",
+											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
+											"        \"product\": null\r",
+											"    }\r",
+											"}\r",
+											"\r",
+											"const skus = Object.keys(expectedVariants)\r",
+											"skus.forEach(sku => {\r",
+											"    pm.test(`Product ${sku} should have imported a Variant: Black, 12 correctly`, () => {\r",
+											"        const variant = resp.find(r => r.sku == `${sku}-12-Black`)\r",
+											"        const expected = expectedVariants[sku]\r",
+											"        const keys = Object.keys(expected)\r",
+											"        keys.forEach(k => {\r",
+											"            const testSet = { key: k, given: variant[k], expected: expected[k] }\r",
+											"            const isArray = Array.isArray(testSet.expected)\r",
+											"            const notEmpty = testSet.expected?.length > 0\r",
+											"            if ([null, undefined].includes(testSet.expected)) {\r",
+											"                pm.test(`Product.${k} should equal null`, () => {\r",
+											"                    pm.expect(testSet.given).to.eq(null)\r",
+											"                })\r",
+											"            } else if (isArray && notEmpty) {\r",
+											"                testSet.expected.forEach(e => {\r",
+											"                    pm.test(`Product.${k} should include ${JSON.stringify(e, null, 2)}`, () => {\r",
+											"                        pm.expect(testSet.given).to.deep.include(e)\r",
+											"                    })\r",
+											"                })\r",
+											"            } else {\r",
+											"                pm.test(`Product.${k} should equal ${JSON.stringify(testSet.expected, null, 2)}`, () => {\r",
+											"                    pm.expect(testSet.given).to.deep.include(testSet.expected)\r",
+											"                })\r",
+											"            }\r",
+											"        })\r",
+											"    })\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productVariants",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productVariants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cleanup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(`DELETE: ProductType ${pm.collectionVariables.get('productTypeUuid')} code is 200`, function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/productTypes/:uuid",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"productTypes",
+										":uuid"
+									],
+									"variable": [
+										{
+											"key": "uuid",
+											"value": "{{productTypeUuid}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.collectionVariables.set('module', 'catalog')"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "PlaceOrder",
+					"item": [
+						{
+							"name": "Setup",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Create User\r",
+											"// Create Account\r",
+											"// Add Store\r",
+											"// Get Account\r",
+											"pm.collectionVariables.set('module', 'auth')\r",
+											"const token = pm.collectionVariables.get(\"auth0_access_token\")\r",
+											"const base_url = pm.environment.get(\"base_url\")\r",
+											"const prefix = pm.collectionVariables.get(\"prefix\")\r",
+											"const version = pm.collectionVariables.get(\"version\")\r",
+											"const _module = pm.collectionVariables.get(\"module\")\r",
+											"const apiUrl = `${base_url}/${prefix}/${version}/${_module}`\r",
+											"const createUserUrl = `${apiUrl}/users`\r",
+											"const createAccountUrl = `${apiUrl}/accounts`\r",
+											"const addStoreUrl = `${apiUrl}/accounts/{{accountId}}/stores`\r",
+											"\r",
+											"const placeOrderVariables = {\r",
+											"    userId: \"\",\r",
+											"    accountId: \"\",\r",
+											"    storeId: \"\",\r",
+											"}\r",
+											"const headers = { 'content-type': 'application/json', 'Authorization': `Bearer ${token}` }\r",
+											"const createUserPayload = {\r",
+											"    \"email\": \"test@sample.com\",\r",
+											"    \"firstName\": \"Test\",\r",
+											"    \"lastName\": \"Sample\",\r",
+											"    \"password\": \"password123!\",\r",
+											"    \"picture\": \"https://lh3.googleusercontent.com/a-/AOh14GhKJE3lkI5CMtaZH6J1MQVd7Hbp5-MxcwwmQCQl=s96-c\"\r",
+											"}\r",
+											"\r",
+											"const createUserOptions = {\r",
+											"    url: createUserUrl,\r",
+											"    method: 'POST',\r",
+											"    header: headers,\r",
+											"    body: {\r",
+											"        mode: 'raw',\r",
+											"        raw: JSON.stringify(createUserPayload)\r",
+											"    }\r",
+											"};\r",
+											"console.log({ createUserOptions })\r",
+											"\r",
+											"pm.sendRequest(createUserOptions, function (err, response) {\r",
+											"    const resp = response.json()\r",
+											"    const userId = resp.id;\r",
+											"    placeOrderVariables.userId = userId;\r",
+											"    pm.collectionVariables.set(`placeOrder_userId`, userId)\r",
+											"    const createAccountPayload = {\r",
+											"        \"name\": \"Test Account\",\r",
+											"        \"companyCode\": \"TEST_ACCOUNT\",\r",
+											"        \"ownerId\": userId,\r",
+											"        \"defaultStoreName\": \"Store 1\"\r",
+											"    }\r",
+											"    const createAccountOptions = {\r",
+											"        url: createAccountUrl,\r",
+											"        method: 'POST',\r",
+											"        header: headers,\r",
+											"        body: {\r",
+											"            mode: 'raw',\r",
+											"            raw: JSON.stringify(createAccountPayload)\r",
+											"        }\r",
+											"    };\r",
+											"    console.log({ createUserOptions, createAccountOptions })\r",
+											"    pm.sendRequest(createAccountOptions, function (err, response) {\r",
+											"        const resp = response.json()\r",
+											"        const accountId = resp.id;\r",
+											"        pm.test(`PREREQUEST: Created Account should have valid AccountId`, () => {\r",
+											"            pm.expect(accountId?.length).greaterThan(0)\r",
+											"            console.log(`Setting collectionVariables 'accountId' to '${accountId}'`)\r",
+											"            pm.collectionVariables.set(`accountId`, accountId)\r",
+											"            console.log(`Set`, pm.collectionVariables.get(`accountId`))\r",
+											"        })\r",
+											"        placeOrderVariables.accountId = accountId;\r",
+											"        pm.collectionVariables.set(`placeOrder_accountId`, accountId)\r",
+											"\r",
+											"    });\r",
+											"\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+											"});\r",
+											"pm.collectionVariables.set('module', 'sales')\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"accounts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{placeOrder_accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "QueryOrders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const resp = pm.response.json()\r",
+											"const sample = {\r",
+											"    \"total\": 0,\r",
+											"    \"page\": 0,\r",
+											"    \"pages\": 0,\r",
+											"    \"size\": 100,\r",
+											"    \"options\": []\r",
+											"}\r",
+											"\r",
+											"pm.test(`QueryOrders response should match expected response`, () => {\r",
+											"    pm.expect(resp).to.deep.include(sample)\r",
+											"})\r",
+											"pm.test(`QueryOrders response should contain 'data' array`, () => {\r",
+											"    pm.expect(resp.data).to.be.an(\"array\")\r",
+											"\r",
+											"})\r",
+											"const sampleOrder = {\r",
+											"    \"id\": \"6259b633276bcf24daa94645\",\r",
+											"    \"orderName\": \"SLI-3838315397200\",\r",
+											"    \"orderStatus\": \"OPEN\",\r",
+											"    \"orderDate\": \"2022-04-15T18:15:15.298Z\",\r",
+											"    \"orderNumber\": 1001,\r",
+											"    \"customer\": {\r",
+											"        \"email\": \"test@example.com\",\r",
+											"        \"name\": \"Test Example\"\r",
+											"    },\r",
+											"    \"shippingAddress\": {},\r",
+											"    \"billingAddress\": {},\r",
+											"    \"lineItems\": []\r",
+											"}\r",
+											"if (resp.data?.length) {\r",
+											"    const order = resp.data[0]\r",
+											"    pm.test(`If QueryOrders returns at least one Order, it should contain valid properties`, () => {\r",
+											"        Object.keys(sampleOrder).forEach(k => {\r",
+											"            pm.test(`QueryOrders > data > '${order.id}' '${order.orderName}' should contain prop '${k}'`, () => {\r",
+											"                pm.expect(order).to.haveOwnProperty(k)\r",
+											"            })\r",
+											"        })\r",
+											"    })\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('module', 'sales')"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/orders?page=0&size=100",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteOrder",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// pm.test(\"Status code is 200\", function () {\r",
+											"//     pm.response.to.have.status(200);\r",
+											"// });\r",
+											"\r",
+											"// const resp = pm.response.json()\r",
+											"// const sample = {\r",
+											"//     \"id\": \"test\",\r",
+											"//     \"message\": \"SalesOrder 'test' has been deleted.\",\r",
+											"// }\r",
+											"\r",
+											"// pm.test(`DeleteOrder 'test' response should match expected response`, () => {\r",
+											"//     pm.expect(resp).to.deep.include(sample)\r",
+											"// })\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('module', 'sales')"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/orders/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"orders",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "test"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteAccount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DeleteAccount Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('module', 'auth')"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/accounts/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"accounts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{placeOrder_accountId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteUser",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DeleteUser Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('module', 'auth')"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{prefix}}/{{version}}/{{module}}/users/:id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{prefix}}",
+										"{{version}}",
+										"{{module}}",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{placeOrder_userId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"const resp = `DropEngine™ API Up!`\r",
+							"pm.test(`Response should contain status: '${resp}'`, function () {\r",
+							"    const body = pm.response.json()\r",
+							"    pm.expect(body?.status).to.eq(resp)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth0_access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const access_token = pm.environment.get('auth0_access_token');",
+					"const expiry = pm.environment.get('auth0_access_token_expiration');",
+					"const limitDate = new Date(new Date().getTime() - (12 * 60 * 60 * 1000));",
+					"const expiryDate = Date.parse(expiry)",
+					"console.warn({ limitDate, expiryDate, expiry })",
+					"if (!expiryDate || expiryDate < limitDate || expiryDate && !access_token?.length) {",
+					"    console.warn(`No Access Token. Loading new one now...`)",
+					"    const domain = pm.environment.get('auth0_domain')",
+					"    const authUrl = pm.environment.get('auth0_authUrl').replace('{{auth0_domain}}', domain)",
+					"    const tokenUrl = pm.environment.get('auth0_access_token_url').replace('{{auth0_domain}}', domain)",
+					"    pm.environment.set('auth0_authUrl', authUrl)",
+					"    pm.environment.set('auth0_access_token_url', tokenUrl)",
+					"    const client_id = pm.environment.get('auth0_client_id')",
+					"    const client_secret = pm.environment.get('auth0_client_secret')",
+					"    const audience = pm.environment.get('auth0_audience')",
+					"    const username = pm.environment.get('auth0_user')",
+					"    const password = pm.environment.get('auth0_password')",
+					"    const scope = pm.environment.get('auth0_scope')",
+					"    const grant_type = 'password'",
+					"    const authPayload = {",
+					"        \"client_id\": client_id,",
+					"        \"client_secret\": client_secret,",
+					"        \"audience\": audience,",
+					"        \"username\": username,",
+					"        \"password\": password,",
+					"        \"scope\": scope,",
+					"        \"grant_type\": grant_type,",
+					"    }",
+					"",
+					"    const authTokenUrl = pm.environment.get('auth0_access_token_url')",
+					"    console.log(authTokenUrl)",
+					"    const options = {",
+					"        url: authTokenUrl,",
+					"        method: 'POST',",
+					"        header: { 'content-type': 'application/json' },",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify(authPayload)",
+					"",
+					"        }",
+					"    };",
+					"    console.warn(authPayload, authTokenUrl)",
+					"    pm.sendRequest(options, function (err, response) {",
+					"        const resp = response.json()",
+					"        pm.environment.set('auth0_access_token', resp.access_token);",
+					"        pm.environment.set('auth0_access_token_expiration', `${new Date(Date.now())}`);",
+					"",
+					"    });",
+					"}",
+					"",
+					"console.log(`Exiting PreRequest Script...`)"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8802"
+		},
+		{
+			"key": "createdUserId",
+			"value": "93119315-5cda-4b93-8c54-636b61bd7623"
+		},
+		{
+			"key": "testUserEmail",
+			"value": "test@sample.com"
+		},
+		{
+			"key": "testUserId",
+			"value": "auth0|62476f564bf50d006af01379"
+		},
+		{
+			"key": "testUserPicture",
+			"value": "https://s.gravatar.com/avatar/a265d5b83f09a26f759f09a931601b8f?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png",
+			"type": "string"
+		},
+		{
+			"key": "userEmail",
+			"value": "test@sample.com"
+		},
+		{
+			"key": "productTypeUuid",
+			"value": "f3d6d75f-6d39-4cd8-ab41-2f65d8a5c522",
+			"type": "string"
+		},
+		{
+			"key": "productIds",
+			"value": [
+				"954d8beb-cfb0-46fd-9d77-570cab6ad2ed",
+				"4d710180-3408-47fe-b3a0-4bfada9174d4",
+				"a88c433f-7b3b-48b9-9160-e872a609275a",
+				"5af27fe6-252a-49af-8fca-b0de7b24f49b",
+				"0497474b-40ce-4168-bc03-ab46243dd2ca",
+				"5e266a28-c5e7-4557-887e-611838217e7b"
+			]
+		},
+		{
+			"key": "productTypeName",
+			"value": "APITestProductType",
+			"type": "string"
+		},
+		{
+			"key": "accountId",
+			"value": "afdc3bdd-66a5-4eba-83c0-4aa02174d12f",
+			"type": "string"
+		},
+		{
+			"key": "newUserId",
+			"value": "auth0|62474d5bf7b105007088bb6c",
+			"type": "string"
+		},
+		{
+			"key": "newUserEmail",
+			"value": "new@sample.com",
+			"type": "string"
+		},
+		{
+			"key": "newUserPicture",
+			"value": "https://s.gravatar.com/avatar/f07fb651991b8923f6751cbb79907323?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fne.png",
+			"type": "string"
+		},
+		{
+			"key": "storeId",
+			"value": "afdc3bdd-66a5-4eba-83c0-4aa02174d12f",
+			"type": "string"
+		},
+		{
+			"key": "storeName",
+			"value": "Test Store 1",
+			"type": "string"
+		},
+		{
+			"key": "prefix",
+			"value": "api",
+			"type": "string"
+		},
+		{
+			"key": "version",
+			"value": "v1",
+			"type": "string"
+		},
+		{
+			"key": "module",
+			"value": "auth",
+			"type": "string"
+		},
+		{
+			"key": "placeOrder_userId",
+			"value": ""
+		},
+		{
+			"key": "placeOrder_accountId",
+			"value": ""
+		}
+	]
 }
