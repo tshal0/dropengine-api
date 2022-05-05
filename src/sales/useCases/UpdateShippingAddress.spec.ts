@@ -20,7 +20,7 @@ import {
   mockTopText,
 } from "@sales/mocks";
 import { now, spyOnDate } from "@shared/mocks";
-import { cloneDeep } from "lodash";
+import { cloneDeep, rearg } from "lodash";
 import { Model } from "mongoose";
 import safeJsonStringify from "safe-json-stringify";
 import { UpdateShippingAddress } from "./UpdateShippingAddress";
@@ -98,18 +98,20 @@ describe("UpdateShippingAddress", () => {
       orderDate: now,
       orderName: "SLI-1001",
       orderNumber: 1001,
-      lineItems: [mockLineItem],
+      lineItems: [cloneDeep(mockLineItem)],
       customer: mockCustomer,
       shippingAddress: mockAddress,
       billingAddress: mockAddress,
       updatedAt: now,
       createdAt: now,
     };
+    let realOrder: MongoSalesOrder;
+    let realLineItem: MongoSalesLineItem;
     beforeEach(async () => {
-      mockLineItem = await lineItemsRepo.create(mockLineItem);
-      mockOrder.lineItems = [mockLineItem.id] as any;
-      mockOrder = await ordersRepo.create(mockOrder);
-      mockLineItem.id = mockOrder.lineItems[0].id;
+      realLineItem = await lineItemsRepo.create(cloneDeep(mockLineItem));
+      mockOrder.lineItems = [realLineItem.id] as any;
+      realOrder = await ordersRepo.create(mockOrder);
+      mockLineItem.id = realLineItem.id;
     });
     it("should update the shippingAddress and save the SalesOrder", async () => {
       // GIVEN
@@ -117,7 +119,7 @@ describe("UpdateShippingAddress", () => {
       mockAddressDto.province = "Alabama";
       mockAddressDto.provinceCode = "AL";
       const mockDto = {
-        orderId: mockOrder.id,
+        orderId: realOrder.id,
         shippingAddress: mockAddressDto,
       };
 
@@ -125,7 +127,7 @@ describe("UpdateShippingAddress", () => {
 
       const result = await service.execute(mockDto);
       const expected = {
-        id: mockOrder.id,
+        id: realOrder.id,
         accountId: "000000000000000000000001",
         orderNumber: 1001,
         orderDate: now,
@@ -149,7 +151,7 @@ describe("UpdateShippingAddress", () => {
       // THEN
       const props = result.props();
 
-      expect(props).toMatchObject(expected);
+      expect(props).toStrictEqual(expected);
     });
   });
   // GIVEN

@@ -33,9 +33,9 @@ export class MongoOrdersRepository extends BaseMongoRepository<MongoSalesOrder> 
     return await this.handle<Query<any, any>>(() =>
       this._model.findByIdAndUpdate(
         doc.id,
-        { ...doc },
+        { ...doc, _id: undefined },
         {
-          useFindAndModify: true,
+          useFindAndModify: false,
           upsert: true,
           new: true,
         }

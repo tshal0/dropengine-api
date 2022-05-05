@@ -118,10 +118,21 @@ export class SalesOrderRepository {
       dbe.lineItems.map(async (li) => this._lineItems.create(li))
     );
     const identifiers = lineItems.map((li) => li.id);
-    let updated = await this._orders.create({
-      ...dbe,
+    const payload: MongoSalesOrder = {
+      accountId: dbe.accountId,
+      orderName: dbe.orderName,
+      orderStatus: dbe.orderStatus,
+      orderDate: dbe.orderDate,
+      orderNumber: dbe.orderNumber,
+      customer: dbe.customer,
+      shippingAddress: dbe.shippingAddress,
+      billingAddress: dbe.billingAddress,
+      updatedAt: dbe.updatedAt,
+      createdAt: dbe.createdAt,
+      id: dbe.id,
       lineItems: identifiers as any, // Hack
-    });
+    };
+    let updated = await this._orders.update(payload);
     dbe = await this._orders.findById(updated.id);
     return SalesOrder.load(dbe);
   }

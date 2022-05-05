@@ -1,5 +1,5 @@
 import { CatalogVariant } from "@catalog/services";
-import { MongoSalesVariant } from "@sales/database";
+import { MongoSalesVariant } from "@sales/database/mongo/MongoSalesVariant";
 import { mockCatalogVariant1 } from "@sales/mocks";
 import { cloneDeep } from "lodash";
 import { SalesPersonalizationRule, SalesVariant } from ".";

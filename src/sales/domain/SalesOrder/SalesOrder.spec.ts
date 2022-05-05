@@ -1,11 +1,7 @@
 import mongoose, { Types } from "mongoose";
 
 import { CreateOrderApiDto, CreateOrderLineItemApiDto } from "@sales/api";
-import {
-  MongoSalesLineItem,
-  MongoSalesOrder,
-  MongoSalesVariant,
-} from "@sales/database";
+
 import moment from "moment";
 import { invalidPersonalization } from "./fixtures/create.invalidPersonalization";
 import { validDto } from "./fixtures/create.validDto";
@@ -26,6 +22,9 @@ import {
 } from "@sales/mocks";
 import { cloneDeep } from "lodash";
 import safeJsonStringify from "safe-json-stringify";
+import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
+import { MongoSalesOrder } from "@sales/database/mongo/MongoSalesOrder";
+import { MongoSalesVariant } from "@sales/database/mongo/MongoSalesVariant";
 export class NoErrorThrownError extends Error {}
 
 export const getAsyncError = async <TError>(
