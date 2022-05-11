@@ -31,7 +31,7 @@ import {
 import { CreateSalesOrder } from "../useCases/CreateSalesOrder/CreateSalesOrder";
 import { CreateOrderValidationPipe } from "./middleware";
 import {
-  CancelOrderDto,
+  CancelOrderApiDto,
   CreateOrderApiDto,
   EditCustomerDto,
   EditPersonalizationDto,
@@ -107,7 +107,7 @@ export class OrdersController {
     throw new NotImplementedException({ dto, id });
   }
   @Post(":id/recall")
-  async postRecall(@Param("id") id: string, @Body() dto: CancelOrderDto) {
+  async postRecall(@Param("id") id: string, @Body() dto: CancelOrderApiDto) {
     throw new NotImplementedException({ dto, id });
   }
   @Post(":id/cancel")

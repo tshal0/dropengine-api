@@ -190,9 +190,6 @@ export class SalesOrder extends IAggregate<
         return SalesLineItem.load(li);
       });
 
-    if (!lineItems.length) {
-      console.warn(`LoadSalesOrderError:LineItemsNotFound`);
-    }
     let errors = Object.values(results)
       .filter((r) => r.isFailure)
       .map((r) => r as Result<any>)
@@ -220,14 +217,6 @@ export class SalesOrder extends IAggregate<
     return value;
   }
 
-  private static loadLineItems(doc: MongoSalesOrder): SalesLineItem[] {
-    let lineItems = doc.lineItems
-      .filter((li) => li instanceof MongoSalesLineItem)
-      .map((li: MongoSalesLineItem) => SalesLineItem.load(li));
-
-    return lineItems;
-  }
-
   /** ERROR METHODS */
 
   private static invalidSalesOrder(
@@ -240,12 +229,7 @@ export class SalesOrder extends IAggregate<
       `Failed to create SalesOrder. See inner for details.`
     );
   }
-  private static invalidLineItemsFound(failures: ResultError[]): ResultError {
-    return new FailedToCreateLineItemsError(
-      failures,
-      `Failed to create LineItems. See inner for details.`
-    );
-  }
+
   private static failedToLoadSalesOrder(
     errors: ResultError[],
     doc: MongoSalesOrder
@@ -254,12 +238,6 @@ export class SalesOrder extends IAggregate<
       errors,
       { ...doc },
       `Failed to load SalesOrder from Mongo. See inner for details.`
-    );
-  }
-  private static failedToLoadLineItems(errors: ResultError[]): ResultError {
-    return new FailedToLoadLineItemsError(
-      errors,
-      `Failed to load LineItems from Mongo. See inner error for details.`
     );
   }
 }

@@ -8,6 +8,7 @@ export enum SalesOrderEventType {
 }
 export enum SalesOrderEventName {
   SalesOrderPlaced = "sales.order.placed",
+  SalesOrderCanceled = "sales.order.canceled",
 }
 export class SalesOrderEvent<T> extends DomainEvent<T> {
   constructor(
@@ -19,3 +20,5 @@ export class SalesOrderEvent<T> extends DomainEvent<T> {
     super(AggregateType.SalesOrder, aggId, type, name, details);
   }
 }
+
+
