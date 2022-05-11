@@ -77,9 +77,7 @@ export abstract class MES {
 
           try {
             accessToken = await loadAccessToken(tokenOptions);
-            console.log(
-              `New MyEasySuite Token Received: ${accessToken?.length}`
-            );
+
             cache.set(MES.MES_AUTH0_ACCESS_TOKEN, accessToken, { ttl: 3600 });
           } catch (error) {
             accessToken = "TOKEN_FAILED_TO_LOAD";

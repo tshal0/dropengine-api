@@ -1,8 +1,3 @@
-import mongoose, { Types } from "mongoose";
-
-import { CreateOrderApiDto, CreateOrderLineItemApiDto } from "@sales/api";
-
-import moment from "moment";
 import { invalidPersonalization } from "./fixtures/create.invalidPersonalization";
 import { validDto } from "./fixtures/create.validDto";
 
@@ -13,7 +8,6 @@ import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
 import {
   mockUuid1,
   mockCustomer,
-  mockLineItem,
   mockCatalogVariant1,
   mockTopText,
   mockMiddleText,
@@ -22,9 +16,15 @@ import {
 } from "@sales/mocks";
 import { cloneDeep } from "lodash";
 import safeJsonStringify from "safe-json-stringify";
-import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
-import { MongoSalesOrder } from "@sales/database/mongo/MongoSalesOrder";
-import { MongoSalesVariant } from "@sales/database/mongo/MongoSalesVariant";
+import {
+  mockCreateOrderApiDto,
+  mockOrderId,
+  now,
+} from "@sales/dto/CreateOrderDto.mock";
+import {
+  mockMongoSalesLineItem,
+  mockMongoSalesOrder,
+} from "./SalesOrder.mocks";
 export class NoErrorThrownError extends Error {}
 
 export const getAsyncError = async <TError>(
@@ -38,79 +38,11 @@ export const getAsyncError = async <TError>(
     return error as TError;
   }
 };
-
-const nowStr = "2021-01-01T00:00:00.000Z";
-jest
-  .spyOn(global.Date, "now")
-  .mockImplementation(() => new Date(nowStr).valueOf());
-
 describe("SalesOrder", () => {
-  const now = moment().toDate();
-  const mockOrderName = "SLI-1000";
-  const mockOrderNumber = "1000";
-
-  const dto: CreateOrderApiDto = {
-    accountId: mockUuid1,
-    orderName: mockOrderName,
-    orderDate: now,
-    orderNumber: mockOrderNumber,
-    customer: mockCustomer,
-    lineItems: [mockLineItem],
-    shippingAddress: mockAddress,
-    billingAddress: mockAddress,
-  };
-  const mockVariant: MongoSalesVariant = {
-    id: mockCatalogVariant1.id,
-    sku: mockCatalogVariant1.sku,
-    image: mockCatalogVariant1.image,
-    svg: mockCatalogVariant1.svg,
-    type: mockCatalogVariant1.type,
-    option1: mockCatalogVariant1.option1,
-    option2: mockCatalogVariant1.option2,
-    option3: mockCatalogVariant1.option3,
-    manufacturingCost: mockCatalogVariant1.manufacturingCost,
-    shippingCost: mockCatalogVariant1.shippingCost,
-    weight: mockCatalogVariant1.weight,
-    productionData: mockCatalogVariant1.productionData,
-    personalizationRules: mockCatalogVariant1.personalizationRules,
-  };
-  const orderId = "000000000000000000000001";
-  const oid = new Types.ObjectId(orderId);
-  const lineItemId = "000000000000000000000002";
-  const lid = new Types.ObjectId(lineItemId);
-  const mli: MongoSalesLineItem = new MongoSalesLineItem();
-  mli._id = lid;
-  mli.id = lineItemId;
-  mli.lineNumber = 1;
-  mli.quantity = mockLineItem.quantity;
-  mli.variant = mockVariant;
-  mli.personalization = [
-    { name: mockTopText, value: "ValidText" },
-    { name: mockMiddleText, value: "ValidText" },
-    { name: mockBottomText, value: "ValidText" },
-    { name: mockInitial, value: "M" },
-  ];
-  mli.flags = [];
-  mli.updatedAt = now;
-  mli.createdAt = now;
-  const mock: MongoSalesOrder = {
-    _id: oid,
-    id: orderId,
-    accountId: mockUuid1,
-    orderStatus: "OPEN",
-    orderDate: dto.orderDate,
-    orderNumber: +dto.orderNumber,
-    lineItems: [mli],
-    customer: dto.customer,
-    shippingAddress: dto.shippingAddress,
-    billingAddress: dto.billingAddress,
-    updatedAt: undefined,
-    createdAt: undefined,
-  };
   describe("updateShippingAddress", () => {
     describe("given valid ShippingAddress", () => {
       it("should update the SalesOrder with the given Address", async () => {
-        const order = await SalesOrder.load(cloneDeep(mock));
+        const order = await SalesOrder.load(cloneDeep(mockMongoSalesOrder));
         const mockDto = {
           shippingAddress: cloneDeep(mockAddress),
         };
@@ -123,15 +55,15 @@ describe("SalesOrder", () => {
     });
     describe("given invalid ShippingAddress (countryCode:null)", () => {
       it("should throw InvalidShippingAddressException", async () => {
-        const order = await SalesOrder.load(cloneDeep(mock));
+        const order = await SalesOrder.load(cloneDeep(mockMongoSalesOrder));
+        const mockUpdateShippingAddress = cloneDeep(mockAddress);
+        mockUpdateShippingAddress.countryCode = null;
         const mockDto = {
-          shippingAddress: cloneDeep(mockAddress),
+          shippingAddress: cloneDeep(mockUpdateShippingAddress),
         };
-        mockDto.shippingAddress.countryCode = null;
         const error: InvalidShippingAddressException = await getAsyncError(
           async () => order.updateShippingAddress(mockDto)
         );
-        console.log(safeJsonStringify(error as any, null, 2));
 
         expect(error).not.toBeInstanceOf(NoErrorThrownError);
         expect(error).toBeInstanceOf(InvalidShippingAddressException);
@@ -144,24 +76,7 @@ describe("SalesOrder", () => {
             error: "InvalidShippingAddress",
             details: {
               orderId: "000000000000000000000001",
-              shippingAddress: {
-                zip: "43844-9406",
-                city: "Warsaw",
-                name: "Tony Stark",
-                phone: "2563472777",
-                company: "MyEasySuite Inc.",
-                country: "United States",
-                address1: "19936 County Road 18",
-                address2: "",
-                address3: "",
-                latitude: 40.2496938,
-                province: "Ohio",
-                lastName: "Stark",
-                longitude: -82.1265222,
-                firstName: "Tony",
-                countryCode: null,
-                provinceCode: "OH",
-              },
+              shippingAddress: mockUpdateShippingAddress,
               reason:
                 "InvalidSalesOrderAddress: SalesOrderAddress encountered validation errors. See inner for details.",
               inner: [
@@ -208,7 +123,7 @@ describe("SalesOrder", () => {
           ],
         };
         const lineItems: CreateLineItemDto[] = [mockLineItem1];
-        const mockDto = cloneDeep(dto);
+        const mockDto = cloneDeep(mockCreateOrderApiDto);
         const createOrderDto: CreateOrderDto = new CreateOrderDto(mockDto);
         createOrderDto.applyLineItems(lineItems);
         let order = await SalesOrder.create(createOrderDto);
@@ -220,31 +135,9 @@ describe("SalesOrder", () => {
     });
     describe("with invalid Personalization", () => {
       it("should create an Order, flagged with PersonalizationErrors", async () => {
-        const mockOrderName = "SLI-1000";
-        const mockOrderNumber = "1000";
-
-        const dto: CreateOrderApiDto = {
-          accountId: mockUuid1,
-          orderName: mockOrderName,
-          orderDate: now,
-          orderNumber: mockOrderNumber,
-          customer: mockCustomer,
-          lineItems: [mockLineItem],
-          shippingAddress: mockAddress,
-          billingAddress: mockAddress,
-        };
-        const mockLineItem1: CreateLineItemDto = {
-          lineNumber: 1,
-          quantity: 1,
-          variant: mockCatalogVariant1,
-          properties: [
-            { name: mockTopText, value: "TooLongExample1234" },
-            { name: mockBottomText, value: "Bad-Character" },
-            { name: mockInitial, value: "M" },
-          ],
-        };
-        const lineItems: CreateLineItemDto[] = [mockLineItem1];
-        const createOrderDto: CreateOrderDto = new CreateOrderDto(dto);
+        const createOrderDto: CreateOrderDto = new CreateOrderDto(
+          mockCreateOrderApiDto
+        );
 
         let order = await SalesOrder.create(createOrderDto);
 
@@ -256,32 +149,16 @@ describe("SalesOrder", () => {
     });
     describe("with invalid properties", () => {
       it("should fail", async () => {
-        const mockOrderName = "SLI-1000";
-        const mockOrderNumber = "1000";
+        const mockDto = cloneDeep(mockCreateOrderApiDto);
+        mockDto.orderNumber = null;
+        mockDto.orderName = null;
 
-        const dto: CreateOrderApiDto = {
-          accountId: null,
-          orderName: null,
-          orderDate: null,
-          orderNumber: null,
-          customer: null,
-          lineItems: [null],
-          shippingAddress: null,
-          billingAddress: null,
-        };
-        const mockLineItem1: CreateLineItemDto = {
-          lineNumber: 1,
-          quantity: 1,
-          variant: mockCatalogVariant1,
-          properties: [
-            { name: mockTopText, value: "TooLongExample1234" },
-            { name: mockBottomText, value: "Bad-Character" },
-            { name: mockInitial, value: "M" },
-          ],
-        };
-        const lineItems: CreateLineItemDto[] = [null];
-        const createOrderDto: CreateOrderDto = new CreateOrderDto(dto);
-
+        mockDto.orderDate = null;
+        mockDto.accountId = null;
+        mockDto.customer = null;
+        mockDto.shippingAddress = null;
+        mockDto.billingAddress = null;
+        const createOrderDto = new CreateOrderDto(mockDto);
         const expected = {
           inner: [
             {
@@ -349,27 +226,27 @@ describe("SalesOrder", () => {
   describe("load", () => {
     describe("with a valid MongoSalesOrder", () => {
       it("should return SalesOrder", async () => {
-        const order = await SalesOrder.load(cloneDeep(mock));
+        const order = await SalesOrder.load(cloneDeep(mockMongoSalesOrder));
         const props = order.props();
         const entity = order.entity();
         const expected = {
-          id: orderId,
+          id: mockOrderId,
           accountId: mockUuid1,
           orderNumber: 1000,
           orderDate: now,
           orderStatus: "OPEN",
-          lineItems: [{ ...mli, _id: undefined }],
+          lineItems: [{ ...mockMongoSalesLineItem, _id: undefined }],
           customer: mockCustomer,
           shippingAddress: mockAddress,
           billingAddress: mockAddress,
         };
         expect(props).toEqual(expected);
-        expect(entity).toEqual(mock);
+        expect(entity).toEqual(mockMongoSalesOrder);
       });
     });
     describe("with invalid properties", () => {
       it("should fail", async () => {
-        const mockOrder = cloneDeep(mock);
+        const mockOrder = cloneDeep(mockMongoSalesOrder);
         mockOrder.orderDate = null;
         const expected = {
           inner: [
@@ -382,7 +259,7 @@ describe("SalesOrder", () => {
             },
           ],
           value: {
-            _id: oid,
+            _id: mockMongoSalesOrder._id,
             id: "000000000000000000000001",
             accountId: mockUuid1,
             orderStatus: "OPEN",
@@ -390,11 +267,11 @@ describe("SalesOrder", () => {
             orderNumber: 1000,
             lineItems: [
               {
-                _id: lid,
+                _id: mockMongoSalesLineItem._id,
                 id: "000000000000000000000002",
                 lineNumber: 1,
                 quantity: 1,
-                variant: mockVariant,
+                variant: mockMongoSalesLineItem.variant,
                 personalization: mockOrder.lineItems[0].personalization,
                 flags: [],
                 updatedAt: now,
