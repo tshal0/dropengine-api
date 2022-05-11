@@ -32,15 +32,15 @@ import {
   newMockUser,
 } from "@sales/mocks";
 
-import { CreateSalesOrderDto } from "./CreateSalesOrderDto";
+import { CreateSalesOrderDto } from "../../dto/CreateSalesOrderDto";
 import { AuthenticatedUser } from "@shared/decorators";
-import { CreateSalesOrderLineItemDto } from "./CreateSalesOrderLineItemDto";
 import {
   MongoSalesOrderDocument,
   MongoSalesOrder,
 } from "@sales/database/mongo/MongoSalesOrder";
 import { MongoOrdersRepository } from "@sales/database/mongo/MongoSalesOrderRepository";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
+import { CreateSalesOrderLineItemDto } from "@sales/dto/CreateSalesOrderLineItemDto";
 spyOnDate();
 class NoErrorThrownError extends Error {}
 

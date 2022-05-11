@@ -125,9 +125,7 @@ export class SalesOrder extends IAggregate<
         return SalesLineItem.create(li);
       })
     );
-    if (!lineItems.length) {
-      console.warn(`CreateSalesOrderError:LineItemsNotFound`);
-    }
+ 
     // Errors
     let errors = Object.values(results)
       .filter((r) => r.isFailure)

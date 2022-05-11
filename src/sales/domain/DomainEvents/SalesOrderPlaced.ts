@@ -6,7 +6,7 @@ export class SalesOrderPlaced extends SalesOrderEvent<CreateOrderDto> {
     super(
       aggId,
       SalesOrderPlaced.name,
-      SalesOrderEventName.SalesOrderPlaced,
+      SalesOrderEventName.OrderPlaced,
       details
     );
   }

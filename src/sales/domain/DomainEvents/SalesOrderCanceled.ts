@@ -6,7 +6,7 @@ export class SalesOrderCanceled extends SalesOrderEvent<CancelOrderDto> {
     super(
       aggId,
       SalesOrderCanceled.name,
-      SalesOrderEventName.SalesOrderCanceled,
+      SalesOrderEventName.OrderCanceled,
       details
     );
   }

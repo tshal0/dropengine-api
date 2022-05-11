@@ -15,10 +15,10 @@ import { CatalogService, CatalogVariant } from "@catalog/services";
 
 import { CreateOrderDto, CreateLineItemDto } from "@sales/dto";
 import { validate } from "class-validator";
-import { CreateSalesOrderDto } from "./CreateSalesOrderDto";
-import { CreateSalesOrderLineItemDto } from "./CreateSalesOrderLineItemDto";
+import { CreateSalesOrderDto } from "../../dto/CreateSalesOrderDto";
 import safeJsonStringify from "safe-json-stringify";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
+import { CreateSalesOrderLineItemDto } from "@sales/dto/CreateSalesOrderLineItemDto";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateSalesOrder

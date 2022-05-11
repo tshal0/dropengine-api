@@ -12,7 +12,7 @@ import {
 } from "@sales/mocks";
 import { cloneDeep } from "lodash";
 import { AuthenticatedUser } from "@shared/decorators";
-import { CreateSalesOrderDto } from "@sales/useCases/CreateSalesOrder/CreateSalesOrderDto";
+import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
 import { createSalesOrderDto } from "@sales/useCases/CreateSalesOrder/fixtures";
 
 export function newMockInvalidCreateSalesOrderDto() {

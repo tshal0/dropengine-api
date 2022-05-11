@@ -1,5 +1,5 @@
 import { mockUuid1 } from "@sales/mocks";
-import { SalesOrderShipmentAdded } from "./SalesOrderShipmentAdded";
+import { ShipmentAdded } from "./ShipmentAdded";
 
 import { v4 as uuidv4 } from "uuid";
 import { mockOrderId, now } from "../../dto/CreateOrderDto.mock";
@@ -35,12 +35,12 @@ describe("SalesOrderShipmentAdded", () => {
 
       // WHEN
 
-      let result = new SalesOrderShipmentAdded(mockOrderId, mockDto);
+      let result = new ShipmentAdded(mockOrderId, mockDto);
 
-      const expected: SalesOrderShipmentAdded = {
+      const expected: ShipmentAdded = {
         eventId: mockUuid1,
-        eventName: SalesOrderEventName.SalesOrderShipmentAdded,
-        eventType: "SalesOrderShipmentAdded",
+        eventName: SalesOrderEventName.ShipmentAdded,
+        eventType: "ShipmentAdded",
         details: mockDto,
         aggregateType: "SalesOrder",
         aggregateId: mockOrderId,

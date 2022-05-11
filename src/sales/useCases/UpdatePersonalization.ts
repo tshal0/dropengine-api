@@ -1,16 +1,11 @@
 import { CatalogService } from "@catalog/services";
 import { Injectable, Scope, Logger } from "@nestjs/common";
 import { SalesLineItem, SalesOrder } from "@sales/domain";
-import { LineItemPropertyDto } from "@sales/dto";
 import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
 import { SalesLineItemRepository } from "@sales/database/SalesLineItemRepository";
+import { UpdatePersonalizationDto } from "../dto/UpdatePersonalizationDto";
 
-export class UpdatePersonalizationDto {
-  orderId: string;
-  lineItemId: string;
-  personalization: LineItemPropertyDto[];
-}
 @Injectable({ scope: Scope.DEFAULT })
 export class UpdatePersonalization
   implements UseCase<UpdatePersonalizationDto, SalesLineItem>
@@ -23,7 +18,7 @@ export class UpdatePersonalization
   ) {}
 
   async execute(dto: UpdatePersonalizationDto): Promise<SalesLineItem> {
-    this.logger.log(`Loading SalesOrder '${dto.lineItemId}'`);
+    this.logger.log(`Loading SalesLineItem '${dto.lineItemId}'`);
     let lineItem = await this._repo.load(dto.lineItemId);
     this.logger.log(
       `Updating personalization for SalesLineItem '${dto.lineItemId}'`

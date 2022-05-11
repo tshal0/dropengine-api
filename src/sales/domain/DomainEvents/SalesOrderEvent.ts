@@ -6,9 +6,10 @@ export enum EventSchemaVersion {
   v1 = "v1",
 }
 export enum SalesOrderEventName {
-  SalesOrderPlaced = "Sales.OrderPlaced",
-  SalesOrderCanceled = "Sales.OrderCanceled",
-  SalesOrderShipmentAdded = "Sales.ShipmentAdded",
+  OrderPlaced = "Sales.OrderPlaced",
+  OrderCanceled = "Sales.OrderCanceled",
+  ShipmentAdded = "Sales.ShipmentAdded",
+  PersonalizationChanged = "Sales.PersonalizationChanged",
 }
 export class SalesOrderEvent<T> extends DomainEvent<T> {
   constructor(
@@ -28,3 +29,4 @@ export class SalesOrderEvent<T> extends DomainEvent<T> {
     );
   }
 }
+

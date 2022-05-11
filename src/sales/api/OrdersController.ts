@@ -43,7 +43,7 @@ import { User } from "@shared/decorators";
 import { AuthenticatedUser } from "@shared/decorators/AuthenticatedUser";
 import { SalesLoggingInterceptor } from "./middleware/SalesLoggingInterceptor";
 import { WINSTON_MODULE_PROVIDER } from "nest-winston";
-import { CreateSalesOrderDto } from "@sales/useCases/CreateSalesOrder/CreateSalesOrderDto";
+import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
 import { UpdatePersonalization } from "@sales/useCases/UpdatePersonalization";
 import { UpdateShippingAddress } from "@sales/useCases";
 

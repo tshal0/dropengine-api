@@ -40,7 +40,7 @@ describe("SalesOrderCanceled", () => {
 
       const expected: SalesOrderCanceled = {
         eventId: mockUuid1,
-        eventName: SalesOrderEventName.SalesOrderCanceled,
+        eventName: SalesOrderEventName.OrderCanceled,
         eventType: "SalesOrderCanceled",
         details: mockDto,
         aggregateType: "SalesOrder",
