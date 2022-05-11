@@ -13,6 +13,7 @@ import {
   mockOrderId,
   now,
 } from "../../dto/CreateOrderDto.mock";
+import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
 
@@ -33,12 +34,13 @@ describe("SalesOrderPlaced", () => {
 
       const expected: SalesOrderPlaced = {
         eventId: mockUuid1,
-        eventName: "sales.order.placed",
+        eventName: SalesOrderEventName.SalesOrderPlaced,
         eventType: "SalesOrderPlaced",
         details: expectedCreateOrderDto,
         aggregateType: "SalesOrder",
         aggregateId: mockOrderId,
         timestamp: now,
+        eventVersion: EventSchemaVersion.v1
       };
       // THEN
 

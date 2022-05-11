@@ -17,6 +17,7 @@ import {
   CancelOrderDto,
   CancelOrderRequesterDto,
 } from "@sales/dto/CancelOrderDto";
+import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
 
@@ -39,12 +40,13 @@ describe("SalesOrderCanceled", () => {
 
       const expected: SalesOrderCanceled = {
         eventId: mockUuid1,
-        eventName: "sales.order.canceled",
+        eventName: SalesOrderEventName.SalesOrderCanceled,
         eventType: "SalesOrderCanceled",
         details: mockDto,
         aggregateType: "SalesOrder",
         aggregateId: mockOrderId,
         timestamp: now,
+        eventVersion: EventSchemaVersion.v1,
       };
       // THEN
 
