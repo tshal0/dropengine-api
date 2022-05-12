@@ -65,7 +65,6 @@ export const consoleFormat = (
         }
       } catch (error) {
         // eslint-disable-next-line no-empty
-        console.log(level);
       }
     }
 

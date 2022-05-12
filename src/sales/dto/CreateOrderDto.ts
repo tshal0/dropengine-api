@@ -24,17 +24,14 @@ export class CreateOrderDto {
   @ValidateNested({
     message: `customer should contain both 'name' and 'email'.`,
   })
-  @Type(() => CustomerDto)
   customer: CustomerDto;
 
   @IsNotEmpty()
   @IsArrayOfObjects()
   @ValidateNested({ each: true })
-  @Type(() => CreateLineItemDto)
   lineItems: CreateLineItemDto[];
   @IsNotEmpty()
   @ValidateNested()
-  @Type(() => AddressDto)
   shippingAddress: AddressDto;
   billingAddress: AddressDto;
 }

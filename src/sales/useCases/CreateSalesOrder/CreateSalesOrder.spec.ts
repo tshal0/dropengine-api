@@ -538,7 +538,7 @@ describe("CreateSalesOrder", () => {
                 },
                 {
                   property: "customer",
-                  message: "customer must be a non-empty object",
+                  message: "customer should not be empty",
                   type: "SalesOrderValidationError",
                 },
                 {
@@ -548,7 +548,7 @@ describe("CreateSalesOrder", () => {
                 },
                 {
                   property: "shippingAddress",
-                  message: "shippingAddress must be a non-empty object",
+                  message: "shippingAddress should not be empty",
                   type: "SalesOrderValidationError",
                 },
               ],
