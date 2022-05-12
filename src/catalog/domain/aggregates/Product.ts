@@ -1,5 +1,4 @@
 import { Result, ResultError, UUID } from "@shared/domain";
-import { ProductEvent } from "../events";
 
 import moment from "moment";
 
@@ -20,7 +19,6 @@ import {
   ProductSvg,
   ProductTags,
   ProductUUID,
-  ProductNID,
   ProductTypeName,
 } from "../valueObjects";
 import { ProductType } from "./ProductType";
@@ -49,7 +47,6 @@ export class InvalidProduct implements ResultError {
 }
 
 export class Product extends IAggregate<IProductProps, IProduct, DbProduct> {
-  protected _events: ProductEvent[];
   private constructor(props: IProduct, entity: DbProduct) {
     super(props, entity);
   }
@@ -170,10 +167,7 @@ export class Product extends IAggregate<IProductProps, IProduct, DbProduct> {
     this._entity.customOptions = value.map((v) => v.props());
     return this;
   }
-  public raiseEvent(event: ProductEvent): Product {
-    this._events.push(event);
-    return this;
-  }
+
   //TODO: Given ProductVariant, either Add (create), or Update
 
   public importVariant(dto: CreateProductVariantDto): Result<ProductVariant> {

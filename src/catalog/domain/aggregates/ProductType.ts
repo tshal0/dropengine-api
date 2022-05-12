@@ -1,14 +1,6 @@
-import {
-  IAggregate,
-  NumberID,
-  Result,
-  ResultError,
-  UUID,
-} from "@shared/domain";
+import { IAggregate, Result, ResultError, UUID } from "@shared/domain";
 import moment from "moment";
 
-import { UnprocessableEntityException } from "@nestjs/common";
-import { ProductTypeEvent } from "../events/ProductTypeEvent";
 import { CreateProductTypeDto } from "@catalog/dto/ProductType/CreateProductTypeDto";
 import {
   Product,
@@ -22,10 +14,7 @@ import { DbProductType } from "../entities/ProductType.entity";
 import { IProductType, IProductTypeProps } from "../interfaces";
 import { cloneDeep } from "lodash";
 import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
-import {
-  InvalidProducts,
-  InvalidProductVariants,
-} from "../errors/ProductErrors";
+import { InvalidProducts } from "../errors/ProductErrors";
 
 /**
  * Aggregates need: events, domain methods, initializers, converters
@@ -77,7 +66,6 @@ export class ProductType extends IAggregate<
   IProductType,
   DbProductType
 > {
-  protected _events: ProductTypeEvent[];
   protected constructor(val: IProductType, dbe: DbProductType) {
     super(val, dbe);
   }
@@ -280,11 +268,6 @@ export class ProductType extends IAggregate<
 
     const productType = new ProductType(props, dbe);
     return Result.ok(productType);
-  }
-
-  raiseEvent(event: ProductTypeEvent) {
-    this._events.push(event);
-    return this;
   }
 
   private static loadProducts(dbe: DbProductType): Result<Product[]> {

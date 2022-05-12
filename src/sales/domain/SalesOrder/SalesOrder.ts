@@ -21,14 +21,19 @@ import { SalesOrderError } from "./SalesOrderError";
 import { InvalidShippingAddressException } from "./InvalidShippingAddressException";
 import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
 import { MongoSalesOrder } from "@sales/database/mongo/MongoSalesOrder";
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
+import { SalesOrderEvent, SalesOrderPlaced } from "../DomainEvents";
+import { cloneDeep } from "lodash";
 
 export class SalesOrder extends IAggregate<
   ISalesOrderProps,
   ISalesOrder,
   MongoSalesOrder
 > {
-  protected _events: any[];
+  protected _events: SalesOrderEvent<any>[] = [];
+  public get events(): SalesOrderEvent<any>[] {
+    return cloneDeep(this._events);
+  }
   private constructor(props: ISalesOrder, doc: MongoSalesOrder) {
     super(props, doc);
   }
@@ -81,6 +86,11 @@ export class SalesOrder extends IAggregate<
 
   /** Domain Actions */
 
+  public async raise<T>(event: SalesOrderEvent<T>) {
+    this._events.push(event);
+    return this;
+  }
+
   public async updateShippingAddress(
     dto: EditShippingAddressDto
   ): Promise<SalesOrder> {
@@ -125,7 +135,7 @@ export class SalesOrder extends IAggregate<
         return SalesLineItem.create(li);
       })
     );
- 
+
     // Errors
     let errors = Object.values(results)
       .filter((r) => r.isFailure)
@@ -137,8 +147,9 @@ export class SalesOrder extends IAggregate<
     // Timestamp
     const now = moment().toDate();
     const orderNumber = results.number.value();
+    const salesOrderId = SalesOrderID.from(null).value();
     const value: ISalesOrder = {
-      id: SalesOrderID.from(null).value(),
+      id: salesOrderId,
       accountId: results.accountId.value(),
       orderName: dto.orderName,
       orderNumber: orderNumber,
@@ -168,7 +179,6 @@ export class SalesOrder extends IAggregate<
     doc.orderName = value.orderName;
     // SalesOrder
     const aggregate = new SalesOrder(value, doc);
-
     return aggregate;
   }
 

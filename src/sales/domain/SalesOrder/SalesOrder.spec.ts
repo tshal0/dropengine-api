@@ -4,20 +4,13 @@ import { validDto } from "./fixtures/create.validDto";
 import { mockAddress } from "../../mocks/mockAddress";
 import { SalesOrder } from "./SalesOrder";
 import { InvalidShippingAddressException } from "./InvalidShippingAddressException";
-import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
-import {
-  mockUuid1,
-  mockCustomer,
-  mockCatalogVariant1,
-  mockTopText,
-  mockMiddleText,
-  mockBottomText,
-  mockInitial,
-} from "@sales/mocks";
+import { CreateOrderDto } from "@sales/dto";
+import { mockUuid1, mockCustomer } from "@sales/mocks";
 import { cloneDeep } from "lodash";
-import safeJsonStringify from "safe-json-stringify";
 import {
   mockCreateOrderApiDto,
+  mockCreateOrderDto,
+  mockCreateOrderDtoLineItems,
   mockOrderId,
   now,
 } from "@sales/dto/CreateOrderDto.mock";
@@ -25,6 +18,7 @@ import {
   mockMongoSalesLineItem,
   mockMongoSalesOrder,
 } from "./SalesOrder.mocks";
+import { SalesOrderID } from "../ValueObjects";
 export class NoErrorThrownError extends Error {}
 
 export const getAsyncError = async <TError>(
@@ -111,21 +105,8 @@ describe("SalesOrder", () => {
   describe("create", () => {
     describe("with a valid DTO", () => {
       it("should generate a valid SalesOrder", async () => {
-        const mockLineItem1: CreateLineItemDto = {
-          lineNumber: 1,
-          quantity: 1,
-          variant: mockCatalogVariant1,
-          properties: [
-            { name: mockTopText, value: "ValidText" },
-            { name: mockMiddleText, value: "ValidText" },
-            { name: mockBottomText, value: "ValidText" },
-            { name: mockInitial, value: "M" },
-          ],
-        };
-        const lineItems: CreateLineItemDto[] = [mockLineItem1];
-        const mockDto = cloneDeep(mockCreateOrderApiDto);
-        const createOrderDto: CreateOrderDto = new CreateOrderDto(mockDto);
-        createOrderDto.applyLineItems(lineItems);
+        let createOrderDto = new CreateOrderDto(mockCreateOrderDto);
+        createOrderDto.applyLineItems(mockCreateOrderDtoLineItems);
         let order = await SalesOrder.create(createOrderDto);
 
         const props = order.props();
@@ -135,15 +116,27 @@ describe("SalesOrder", () => {
     });
     describe("with invalid Personalization", () => {
       it("should create an Order, flagged with PersonalizationErrors", async () => {
-        const createOrderDto: CreateOrderDto = new CreateOrderDto(
-          mockCreateOrderApiDto
-        );
-
+        let createOrderDto = new CreateOrderDto(mockCreateOrderDto);
+        const mli = cloneDeep(mockCreateOrderDtoLineItems[0]);
+        mli.properties = [
+          {
+            name: "Top Text",
+            value: "TooLongExample1234",
+          },
+          {
+            name: "Bottom Text",
+            value: "Bad-Character",
+          },
+          {
+            name: "Initial",
+            value: "M",
+          },
+        ];
+        createOrderDto.applyLineItems([mli]);
         let order = await SalesOrder.create(createOrderDto);
 
         const props = order.props();
         const expected = invalidPersonalization(now);
-        expected.lineItems = [];
         expect(props).toEqual(expected);
       });
     });

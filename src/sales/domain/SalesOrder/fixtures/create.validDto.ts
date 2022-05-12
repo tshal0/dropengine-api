@@ -1,3 +1,4 @@
+import { mockOrderId } from "@sales/dto/CreateOrderDto.mock";
 import { mockUuid1 } from "@sales/mocks";
 
 export const validDto = (now) => ({
