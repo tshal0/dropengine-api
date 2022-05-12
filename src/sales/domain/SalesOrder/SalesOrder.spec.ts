@@ -105,8 +105,11 @@ describe("SalesOrder", () => {
   describe("create", () => {
     describe("with a valid DTO", () => {
       it("should generate a valid SalesOrder", async () => {
-        let createOrderDto = new CreateOrderDto(mockCreateOrderDto);
-        createOrderDto.applyLineItems(mockCreateOrderDtoLineItems);
+        const createOrderDto: CreateOrderDto = Object.assign(
+          new CreateOrderDto(),
+          mockCreateOrderDto
+        );
+        createOrderDto.lineItems = mockCreateOrderDtoLineItems;
         let order = await SalesOrder.create(createOrderDto);
 
         const props = order.props();
@@ -116,7 +119,6 @@ describe("SalesOrder", () => {
     });
     describe("with invalid Personalization", () => {
       it("should create an Order, flagged with PersonalizationErrors", async () => {
-        let createOrderDto = new CreateOrderDto(mockCreateOrderDto);
         const mli = cloneDeep(mockCreateOrderDtoLineItems[0]);
         mli.properties = [
           {
@@ -132,7 +134,11 @@ describe("SalesOrder", () => {
             value: "M",
           },
         ];
-        createOrderDto.applyLineItems([mli]);
+        const createOrderDto: CreateOrderDto = Object.assign(
+          new CreateOrderDto(),
+          mockCreateOrderDto
+        );
+        createOrderDto.lineItems = [mli];
         let order = await SalesOrder.create(createOrderDto);
 
         const props = order.props();
@@ -151,7 +157,11 @@ describe("SalesOrder", () => {
         mockDto.customer = null;
         mockDto.shippingAddress = null;
         mockDto.billingAddress = null;
-        const createOrderDto = new CreateOrderDto(mockDto);
+        const createOrderDto: CreateOrderDto = Object.assign(
+          new CreateOrderDto(),
+          mockDto
+        );
+        createOrderDto.lineItems = mockCreateOrderDtoLineItems;
         const expected = {
           inner: [
             {

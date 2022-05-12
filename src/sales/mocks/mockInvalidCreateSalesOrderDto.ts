@@ -27,11 +27,7 @@ export function newMockInvalidCreateSalesOrderDto() {
     { name: mockBottomText, value: "ValidText" },
     { name: mockInitial, value: "M" },
   ];
-  const mockAuthUser = new AuthenticatedUser({
-    email: "sample@mail.com",
-    id: "userId",
-    metadata: { accounts: [], authorization: {} },
-  });
+
   const mockDto: CreateSalesOrderDto = {
     accountId: mockAccountId,
     orderName: null,
@@ -41,7 +37,6 @@ export function newMockInvalidCreateSalesOrderDto() {
     lineItems: [mockLi1],
     shippingAddress: null,
     billingAddress: null,
-    user: mockAuthUser,
   };
   const mockSalesOrderDto1: CreateOrderDto = cloneDeep(createSalesOrderDto);
   const mockSalesOrder1 = SalesOrder.create(mockSalesOrderDto1);

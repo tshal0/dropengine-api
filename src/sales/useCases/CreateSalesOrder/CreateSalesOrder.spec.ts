@@ -11,36 +11,27 @@ import {
   FailedToLoadVariantBySkuException,
 } from "@catalog/services";
 
-import {
-  CreateSalesOrder,
-  CreateSalesOrderError,
-  FailedToPlaceSalesOrderException,
-} from "..";
-
 import { CreateOrderLineItemApiDto } from "@sales/api";
-import { CreateLineItemDto, CreateOrderDto } from "@sales/dto";
+import { CreateLineItemDto, CreateOrderDto, CustomerDto } from "@sales/dto";
 
 import {
-  mockTopText,
-  mockMiddleText,
-  mockBottomText,
-  mockInitial,
   mockSalesModule,
   mockCatalogVariant,
   newMockCreateSalesOrderDto,
   newMockInvalidCreateSalesOrderDto,
-  newMockUser,
+  mockCatalogVariant1,
 } from "@sales/mocks";
 
-import { CreateSalesOrderDto } from "../../dto/CreateSalesOrderDto";
-import { AuthenticatedUser } from "@shared/decorators";
 import {
   MongoSalesOrderDocument,
   MongoSalesOrder,
 } from "@sales/database/mongo/MongoSalesOrder";
 import { MongoOrdersRepository } from "@sales/database/mongo/MongoSalesOrderRepository";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
-import { CreateSalesOrderLineItemDto } from "@sales/dto/CreateSalesOrderLineItemDto";
+import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
+import { CreateSalesOrder } from "./CreateSalesOrder";
+import { CreateSalesOrderError } from "./CreateSalesOrderError";
+import { FailedToPlaceSalesOrderException } from "./FailedToPlaceSalesOrderException";
 spyOnDate();
 class NoErrorThrownError extends Error {}
 
@@ -368,7 +359,14 @@ describe("CreateSalesOrder", () => {
       params.customer = mockDto.customer;
       params.shippingAddress = mockDto.shippingAddress;
       params.billingAddress = mockDto.billingAddress;
-
+      params.lineItems = mockDto.lineItems.map((li, i) => {
+        let nli = new CreateLineItemDto();
+        nli.lineNumber = i + 1;
+        nli.properties = li.lineItemProperties;
+        nli.quantity = li.quantity;
+        nli.variant = mockCatalogVariant1;
+        return nli;
+      });
       const expected = {};
       // WHEN
       // THEN
@@ -386,16 +384,15 @@ describe("CreateSalesOrder", () => {
         params.orderName = null;
         params.orderDate = null;
         params.orderNumber = null;
-        params.customer = {
-          email: null,
-          name: null,
-        };
+        params.customer = new CustomerDto();
+        params.customer.email = null;
+        params.customer.name = null;
         const mockLi: CreateLineItemDto = new CreateLineItemDto();
         mockLi.lineNumber = null;
         mockLi.quantity = null;
         mockLi.variant = null;
         mockLi.properties = null;
-        params.applyLineItems([mockLi]);
+        params.lineItems = [mockLi];
         params.shippingAddress = null;
         params.billingAddress = null;
 
@@ -430,6 +427,16 @@ describe("CreateSalesOrder", () => {
                   type: "SalesOrderValidationError",
                 },
                 {
+                  property: "customer.name",
+                  message: "name should not be empty",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "customer.email",
+                  message: "email should not be empty",
+                  type: "SalesOrderValidationError",
+                },
+                {
                   property: "lineItems.0.lineNumber",
                   message:
                     "lineNumber should not be empty; lineNumber must be a number conforming to the specified constraints",
@@ -450,6 +457,11 @@ describe("CreateSalesOrder", () => {
                   property: "lineItems.0.properties",
                   message:
                     "properties must be an array; properties should not be empty",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress",
+                  message: "shippingAddress should not be empty",
                   type: "SalesOrderValidationError",
                 },
                 {
@@ -539,12 +551,6 @@ describe("CreateSalesOrder", () => {
                   message: "shippingAddress must be a non-empty object",
                   type: "SalesOrderValidationError",
                 },
-                {
-                  property: "user",
-                  message:
-                    "user should not be empty; user must be a non-empty object",
-                  type: "SalesOrderValidationError",
-                },
               ],
             },
           },
@@ -568,197 +574,7 @@ describe("CreateSalesOrder", () => {
       });
     });
   });
-  describe("validateUserAuthorization", () => {
-    it("should work", async () => {
-      // GIVEN
-      const params = newMockCreateSalesOrderDto();
 
-      params.user = newMockUser();
-      params.accountId = params.user.account.id;
-      const expected = {};
-      // WHEN
-      // THEN
-      expect(() =>
-        service.validateUserAuthorization(params)
-      ).not.toThrowError();
-    });
-    describe("given User with no Account matching given AccountId", () => {
-      it("should throw FailedToPlaceSalesOrderException: UserNotAuthorizedForAccount", async () => {
-        // GIVEN
-        const params = newMockCreateSalesOrderDto();
-        params.accountId = "MOCK_ACCOUNT_ID";
-        params.user = new AuthenticatedUser({
-          email: "mockUser@email.com",
-          id: "MOCK_USER_ID",
-          metadata: {
-            accounts: [],
-            authorization: {},
-          },
-        });
-        const expected = {
-          response: {
-            statusCode: 500,
-            message:
-              "Failed to place SalesOrder for order 'SLI-10000000001': User 'mockUser@email.com' not authorized to place orders for given Account: 'MOCK_ACCOUNT_ID'",
-            timestamp: now,
-            error: CreateSalesOrderError.UserNotAuthorizedForAccount,
-            details: {
-              orderName: "SLI-10000000001",
-              orderNumber: "1001",
-              reason:
-                "User 'mockUser@email.com' not authorized to place orders for given Account: 'MOCK_ACCOUNT_ID'",
-              inner: [],
-            },
-          },
-          status: 500,
-          message:
-            "Failed to place SalesOrder for order 'SLI-10000000001': User not authorized to place orders for given Account: 'MOCK_ACCOUNT_ID'",
-          name: FailedToPlaceSalesOrderException.name,
-        };
-        // WHEN
-        // THEN
-        const error: any = await getAsyncError(
-          async () => await service.validateUserAuthorization(params)
-        );
-
-        // THEN
-        expect(error).not.toBeInstanceOf(NoErrorThrownError);
-        expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
-        expect(error.getResponse()).toEqual(expected.response);
-        expect(error.name).toEqual(expected.name);
-      });
-    });
-    describe("given User with Account matching given AccountId and no manage:orders permission", () => {
-      it("should throw FailedToPlaceSalesOrderException: UserNotAuthorizedForAccount", async () => {
-        // GIVEN
-        const params = newMockCreateSalesOrderDto();
-        params.accountId = "MOCK_ACCOUNT_ID";
-        params.user = new AuthenticatedUser({
-          email: "mockUser@email.com",
-          id: "MOCK_USER_ID",
-          metadata: {
-            accounts: [
-              {
-                companyCode: "MOCK_COMPANY_CODE",
-                id: params.accountId,
-                name: "Mock Company",
-                permissions: ["read:orders"],
-                roles: [],
-              },
-            ],
-            authorization: {},
-          },
-        });
-        const expected = {
-          response: {
-            statusCode: 500,
-            message:
-              "Failed to place SalesOrder for order 'SLI-10000000001': User 'mockUser@email.com' not authorized to place orders for given Account: 'MOCK_ACCOUNT_ID'",
-            timestamp: now,
-            error: CreateSalesOrderError.UserNotAuthorizedForAccount,
-            details: {
-              orderName: "SLI-10000000001",
-              orderNumber: "1001",
-              reason:
-                "User 'mockUser@email.com' not authorized to place orders for given Account: 'MOCK_ACCOUNT_ID'",
-              inner: [],
-            },
-          },
-          status: 500,
-          message:
-            "Failed to place SalesOrder for order 'SLI-10000000001': User 'mockUser@email.com' not authorized to place orders for given Account: 'MOCK_ACCOUNT_ID'",
-          name: FailedToPlaceSalesOrderException.name,
-        };
-        // WHEN
-        // THEN
-        const error: any = await getAsyncError(
-          async () => await service.validateUserAuthorization(params)
-        );
-        // THEN
-        expect(error).not.toBeInstanceOf(NoErrorThrownError);
-        expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
-        expect(error.getResponse()).toEqual(expected.response);
-        expect(error.name).toEqual(expected.name);
-      });
-    });
-  });
-  describe("generateLineItemDto", () => {
-    it("should work", async () => {
-      // GIVEN
-      const variant = mockCatalogVariant();
-      let skuSpy = jest
-        .spyOn(catalogService, "loadVariantBySku")
-        .mockResolvedValue(variant);
-      let idSpy = jest
-        .spyOn(catalogService, "loadVariantById")
-        .mockResolvedValue(variant);
-      const params: CreateSalesOrderLineItemDto = {
-        quantity: 1,
-        lineItemProperties: [
-          { name: mockTopText, value: "ValidTopText" },
-          { name: mockBottomText, value: "ValidBottomText" },
-        ],
-        sku: null,
-        variantId: "MOCK_ID",
-      };
-      const index = 0;
-      const expected = {
-        lineNumber: 1,
-        quantity: 1,
-        variant: variant,
-        properties: [
-          { name: "Top Text", value: "ValidTopText" },
-          { name: "Bottom Text", value: "ValidBottomText" },
-        ],
-      };
-      // WHEN
-      // THEN
-      await expect(
-        service.generateLineItemDto(params, index, null)
-      ).resolves.toEqual(expected);
-      expect(idSpy).toBeCalledTimes(1);
-      expect(skuSpy).toBeCalledTimes(0);
-    });
-    describe("given null LineItemDto", () => {
-      it("should throw FailedToPlaceSalesOrderException: MissingLineItem", async () => {
-        // GIVEN
-
-        const params: CreateSalesOrderLineItemDto = null;
-        const index = 0;
-        const dto = new CreateSalesOrderDto();
-        dto.orderName = `MOCK_ORDER_NAME`;
-        const expected = {
-          response: {
-            statusCode: 500,
-            message:
-              "Failed to place SalesOrder for order 'MOCK_ORDER_NAME': LineItem '1' was null or undefined.",
-            timestamp: now,
-            error: CreateSalesOrderError.MissingLineItem,
-            details: {
-              orderName: "MOCK_ORDER_NAME",
-              reason: "LineItem '1' was null or undefined.",
-              inner: [],
-            },
-          },
-          status: 500,
-          message:
-            "Failed to place SalesOrder for order 'MOCK_ORDER_NAME': LineItem '1' was null or undefined.",
-          name: FailedToPlaceSalesOrderException.name,
-        };
-        const error: any = await getAsyncError(
-          async () => await service.generateLineItemDto(params, index, dto)
-        );
-        // THEN
-        expect(error).not.toBeInstanceOf(NoErrorThrownError);
-        expect(error).toBeInstanceOf(FailedToPlaceSalesOrderException);
-        expect(error.getResponse()).toEqual(expected.response);
-        expect(error.name).toEqual(expected.name);
-      });
-    });
-    describe("given invalid SKU", () => {
-      it("should throw FailedToPlaceSalesOrderException: FailedToLoadVariant", () => {});
-    });
-  });
   describe("execute", () => {
     it("should work", async () => {
       // GIVEN
@@ -766,26 +582,12 @@ describe("CreateSalesOrder", () => {
       let skuSpy = jest
         .spyOn(catalogService, "loadVariantBySku")
         .mockResolvedValue(mockVariant);
-      let params = newMockCreateSalesOrderDto();
-      params.user = newMockUser();
-      params.accountId = params.user.account.id;
-      const mockLi: CreateSalesOrderLineItemDto =
-        new CreateSalesOrderLineItemDto();
-      mockLi.quantity = null;
-      mockLi.quantity = 1;
-      mockLi.sku = "MOCK_SKU";
-      mockLi.variantId = null;
-      mockLi.lineItemProperties = [
-        { name: mockTopText, value: "ValidText" },
-        { name: mockMiddleText, value: "ValidText" },
-        { name: mockBottomText, value: "ValidText" },
-        { name: mockInitial, value: "M" },
-      ];
-      params.lineItems = [mockLi];
+      let dto = newMockCreateSalesOrderDto();
+
       const expected = {
-        accountId: "MOCK_ACCOUNT_ID",
-        orderName: "SLI-10000000001",
-        orderNumber: 1001,
+        accountId: dto.accountId,
+        orderName: dto.orderName,
+        orderNumber: +dto.orderNumber,
         orderDate: now,
         orderStatus: "OPEN",
         lineItems: [
@@ -816,14 +618,14 @@ describe("CreateSalesOrder", () => {
             updatedAt: now,
           },
         ],
-        customer: params.customer,
-        shippingAddress: params.shippingAddress,
-        billingAddress: params.billingAddress,
+        customer: dto.customer,
+        shippingAddress: dto.shippingAddress,
+        billingAddress: dto.billingAddress,
         createdAt: now,
         updatedAt: now,
       };
       // WHEN
-      const result = await service.execute(params);
+      const result = await service.execute(dto);
 
       // THEN
       expect(result.props()).toMatchObject(expected);
@@ -836,8 +638,11 @@ describe("CreateSalesOrder", () => {
           .spyOn(catalogService, "loadVariantBySku")
           .mockResolvedValue(mockVariant);
         const params = newMockInvalidCreateSalesOrderDto();
-        params.user = newMockUser();
-        params.accountId = params.user.account.id;
+        const invalidCustomerDto = new CustomerDto();
+        invalidCustomerDto.email = null;
+        invalidCustomerDto.name = null;
+        params.customer = invalidCustomerDto;
+
         const expected = {
           response: {
             statusCode: 500,
@@ -869,20 +674,96 @@ describe("CreateSalesOrder", () => {
                   type: "SalesOrderValidationError",
                 },
                 {
-                  property: "customer",
-                  message: "customer should not be empty",
+                  property: "customer.name",
+                  message: "name should not be empty",
                   type: "SalesOrderValidationError",
                 },
                 {
-                  property: "customer",
-                  message:
-                    "nested property customer must be either object or array",
+                  property: "customer.email",
+                  message: "email should not be empty",
                   type: "SalesOrderValidationError",
                 },
                 {
-                  property: "shippingAddress",
+                  property: "shippingAddress.zip",
+                  message: "zip must be a string; zip should not be empty",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.city",
+                  message: "city should not be empty; city must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.name",
+                  message: "name should not be empty; name must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.phone",
+                  message: "phone must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.company",
+                  message: "company must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.country",
                   message:
-                    "nested property shippingAddress must be either object or array",
+                    "country should not be empty; country must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.address1",
+                  message:
+                    "address1 should not be empty; address1 must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.address2",
+                  message: "address2 must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.address3",
+                  message: "address3 must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.latitude",
+                  message:
+                    "latitude must be a number conforming to the specified constraints",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.longitude",
+                  message:
+                    "longitude must be a number conforming to the specified constraints",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.province",
+                  message:
+                    "province should not be empty; province must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.lastName",
+                  message:
+                    "lastName should not be empty; lastName must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.countryCode",
+                  message:
+                    "countryCode should not be empty; countryCode must be a string",
+                  type: "SalesOrderValidationError",
+                },
+                {
+                  property: "shippingAddress.provinceCode",
+                  message:
+                    "provinceCode should not be empty; provinceCode must be a string",
                   type: "SalesOrderValidationError",
                 },
               ],
@@ -913,8 +794,6 @@ describe("CreateSalesOrder", () => {
           .spyOn(catalogService, "loadVariantBySku")
           .mockResolvedValue(mockVariant);
         const params = newMockCreateSalesOrderDto();
-        params.user = newMockUser();
-        params.accountId = params.user.account.id;
         const saveSpy = jest.spyOn(salesRepo, "save").mockImplementation(() => {
           throw "Unexpected Error";
         });

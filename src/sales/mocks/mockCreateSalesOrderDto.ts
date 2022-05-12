@@ -17,12 +17,11 @@ import {
 import { cloneDeep } from "lodash";
 import { AuthenticatedUser } from "@shared/decorators";
 import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
-import { createSalesOrderDto } from "@sales/useCases/CreateSalesOrder/fixtures";
 
 export function newMockCreateSalesOrderDto() {
   const mockAccountId = mockUuid1;
-  const mockShipping = mockAddress;
-  const mockBilling = mockAddress;
+  const mockShipping = cloneDeep(mockAddress);
+  const mockBilling = cloneDeep(mockAddress);
   const mockLi1 = cloneDeep(mockLineItem);
   mockLi1.sku = mockCatalogVariant1.sku;
   mockLi1.lineItemProperties = [
@@ -31,11 +30,7 @@ export function newMockCreateSalesOrderDto() {
     { name: mockBottomText, value: "ValidText" },
     { name: mockInitial, value: "M" },
   ];
-  const mockAuthUser = new AuthenticatedUser({
-    email: "sample@mail.com",
-    id: "userId",
-    metadata: { accounts: [], authorization: {} },
-  });
+
   const mockDto: CreateSalesOrderDto = new CreateSalesOrderDto();
   mockDto.accountId = mockAccountId;
   mockDto.orderName = mockOrderName1;
@@ -45,8 +40,5 @@ export function newMockCreateSalesOrderDto() {
   mockDto.lineItems = [mockLi1];
   mockDto.shippingAddress = mockShipping;
   mockDto.billingAddress = mockBilling;
-  mockDto.user = mockAuthUser;
-  const mockSalesOrderDto1: CreateOrderDto = cloneDeep(createSalesOrderDto);
-  const mockSalesOrder1 = SalesOrder.create(mockSalesOrderDto1);
   return mockDto;
 }

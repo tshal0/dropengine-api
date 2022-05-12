@@ -22,7 +22,8 @@ import { CreateOrderDto } from "@sales/dto/CreateOrderDto";
 const oid = new Types.ObjectId(mockOrderId);
 const lineItemId = "000000000000000000000002";
 const lid = new Types.ObjectId(lineItemId);
-export const mockMongoSalesLineItem: MongoSalesLineItem = new MongoSalesLineItem();
+export const mockMongoSalesLineItem: MongoSalesLineItem =
+  new MongoSalesLineItem();
 mockMongoSalesLineItem._id = lid;
 mockMongoSalesLineItem.id = lineItemId;
 mockMongoSalesLineItem.lineNumber = 1;
@@ -37,20 +38,28 @@ mockMongoSalesLineItem.personalization = [
 mockMongoSalesLineItem.flags = [];
 mockMongoSalesLineItem.updatedAt = now;
 mockMongoSalesLineItem.createdAt = now;
-const createOrderDto: CreateOrderDto = new CreateOrderDto(mockCreateOrderDto);
-createOrderDto.applyLineItems(mockCreateOrderDtoLineItems);
+
+const cdto: CreateOrderDto = new CreateOrderDto();
+cdto.accountId = mockCreateOrderDto.accountId;
+cdto.billingAddress = mockCreateOrderDto.billingAddress;
+cdto.shippingAddress = mockCreateOrderDto.shippingAddress;
+cdto.customer = mockCreateOrderDto.customer;
+cdto.orderDate = mockCreateOrderDto.orderDate;
+cdto.orderName = mockCreateOrderDto.orderName;
+cdto.orderNumber = mockCreateOrderDto.orderNumber;
+cdto.lineItems = mockCreateOrderDtoLineItems;
 
 export const mockMongoSalesOrder: MongoSalesOrder = {
   _id: oid,
   id: mockOrderId,
   accountId: mockUuid1,
   orderStatus: "OPEN",
-  orderDate: createOrderDto.orderDate,
-  orderNumber: +createOrderDto.orderNumber,
+  orderDate: cdto.orderDate,
+  orderNumber: +cdto.orderNumber,
   lineItems: [mockMongoSalesLineItem],
-  customer: createOrderDto.customer,
-  shippingAddress: createOrderDto.shippingAddress,
-  billingAddress: createOrderDto.billingAddress,
+  customer: cdto.customer,
+  shippingAddress: cdto.shippingAddress,
+  billingAddress: cdto.billingAddress,
   updatedAt: undefined,
   createdAt: undefined,
 };

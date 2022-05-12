@@ -82,30 +82,4 @@ export class AppModule implements OnModuleDestroy, OnModuleInit {
   async onModuleDestroy(): Promise<void> {
     await this.orm.close();
   }
-  static register(options?: {
-    mikroOrmOptions?: MikroOrmModuleOptions;
-  }): DynamicModule {
-    return {
-      module: AppModule,
-      imports: [
-        MikroOrmModule.forRoot({
-          entities: ["./dist/**/entities/*.entity.js"],
-          entitiesTs: ["./src/**/entities/*.entity.ts"],
-          clientUrl: process.env.DATABASE_URL || undefined,
-          host: process.env.DB_HOST,
-          port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
-          user: process.env.DB_USER,
-          password: process.env.DB_PASS,
-          dbName: process.env.DB_NAME,
-          schema: process.env.DB_SCHEMA,
-          driverOptions: {
-            connection: { ssl: process.env.POSTGRES_SSL || false },
-          },
-          debug: true,
-          type: "postgresql",
-          ...options?.mikroOrmOptions,
-        }),
-      ],
-    };
-  }
 }

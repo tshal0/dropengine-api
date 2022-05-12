@@ -11,14 +11,15 @@ describe("CreateOrderDto", () => {
       // GIVEN valid DTO
 
       // WHEN
-      const createOrderDto: CreateOrderDto = new CreateOrderDto(
+      const createOrderDto: CreateOrderDto = Object.assign(
+        new CreateOrderDto(),
         mockCreateOrderDto
       );
-      let result = createOrderDto.applyLineItems(mockCreateOrderDtoLineItems);
+      createOrderDto.lineItems = mockCreateOrderDtoLineItems;
 
       // THEN
 
-      expect(result).toEqual(expectedCreateOrderDto);
+      expect(createOrderDto).toEqual(expectedCreateOrderDto);
     });
   });
 });

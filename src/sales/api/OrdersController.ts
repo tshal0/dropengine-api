@@ -46,6 +46,8 @@ import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
 import { UpdatePersonalization } from "@sales/useCases/UpdatePersonalization";
 import { UpdateShippingAddress } from "@sales/useCases";
+import { FailedToPlaceSalesOrderException } from "@sales/useCases/CreateSalesOrder/FailedToPlaceSalesOrderException";
+import { CreateSalesOrderError } from "@sales/useCases/CreateSalesOrder/CreateSalesOrderError";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
@@ -60,7 +62,7 @@ export class OrdersController {
     private readonly query: QuerySalesOrders,
     private readonly remove: DeleteSalesOrder,
     private readonly updateShipping: UpdateShippingAddress,
-    private readonly updatePersonalization: UpdatePersonalization,
+    private readonly updatePersonalization: UpdatePersonalization
   ) {}
 
   @Get(":id")
@@ -129,9 +131,28 @@ export class OrdersController {
     @User() user: AuthenticatedUser,
     @Body(CreateOrderValidationPipe) dto: CreateOrderApiDto
   ) {
-    const useCaseDto = new CreateSalesOrderDto(dto, user);
-    this.logger.debug(useCaseDto);
+    if (!user.canManageOrders(dto.accountId)) {
+      throw new FailedToPlaceSalesOrderException(
+        dto,
+        `User '${user.email}' not authorized to place orders for given Account: '${dto.accountId}'`,
+        CreateSalesOrderError.UserNotAuthorizedForAccount
+      );
+    }
+    const useCaseDto = new CreateSalesOrderDto();
+    useCaseDto.accountId = dto.accountId;
+    useCaseDto.orderName = dto.orderName;
+    useCaseDto.orderDate = dto.orderDate;
+    useCaseDto.orderNumber = dto.orderNumber;
+    useCaseDto.customer = dto.customer;
+    useCaseDto.lineItems = dto.lineItems;
+    useCaseDto.shippingAddress = dto.shippingAddress;
+    useCaseDto.billingAddress = dto.billingAddress;
     let order = await this.create.execute(useCaseDto);
     return res.status(HttpStatus.CREATED).json(order.props());
   }
+
+  public validateUserAuthorization(
+    user: AuthenticatedUser,
+    accountId: string
+  ) {}
 }

@@ -14,20 +14,7 @@ import { AuthenticatedUser } from "@shared/decorators";
 import { CreateOrderApiDto } from "@sales/api";
 
 export class CreateSalesOrderDto {
-  constructor(
-    dto?: CreateOrderApiDto | undefined,
-    user?: AuthenticatedUser | undefined
-  ) {
-    this.accountId = dto?.accountId;
-    this.orderName = dto?.orderName;
-    this.orderDate = dto?.orderDate;
-    this.orderNumber = dto?.orderNumber;
-    this.customer = dto?.customer;
-    this.lineItems = dto?.lineItems;
-    this.shippingAddress = dto?.shippingAddress;
-    this.billingAddress = dto?.billingAddress;
-    this.user = user;
-  }
+  constructor() {}
   @IsString()
   @IsNotEmpty()
   accountId: string;
@@ -51,9 +38,4 @@ export class CreateSalesOrderDto {
   @ValidateNested()
   shippingAddress: AddressDto;
   billingAddress: AddressDto;
-  @IsNotEmptyObject()
-  @IsNotEmpty()
-  @Type(() => AuthenticatedUser)
-  @ValidateNested()
-  user: AuthenticatedUser;
 }

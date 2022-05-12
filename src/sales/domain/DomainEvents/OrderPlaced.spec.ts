@@ -20,10 +20,11 @@ describe("SalesOrderPlaced", () => {
     it("should generate a valid SalesOrderPlaced event", () => {
       // GIVEN valid DTO
 
-      const createOrderDto: CreateOrderDto = new CreateOrderDto(
+      const createOrderDto: CreateOrderDto = Object.assign(
+        new CreateOrderDto(),
         mockCreateOrderDto
       );
-      createOrderDto.applyLineItems(mockCreateOrderDtoLineItems);
+      createOrderDto.lineItems = mockCreateOrderDtoLineItems;
 
       // WHEN
 

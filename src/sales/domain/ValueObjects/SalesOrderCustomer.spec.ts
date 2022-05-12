@@ -29,13 +29,12 @@ describe("SalesOrderCustomer", () => {
               children: [],
               constraints: {
                 isNotEmpty: "name should not be empty",
-                isString: "name must be a string",
               },
             },
             reason: "'name' is invalid.",
             name: "CustomerValidationError",
             message:
-              "CustomerValidationError 'An instance of CustomerDto has failed the validation:\n - property name has failed the following constraints: isNotEmpty, isString \n': 'name' is invalid.",
+              "CustomerValidationError 'An instance of CustomerDto has failed the validation:\n - property name has failed the following constraints: isNotEmpty \n': 'name' is invalid.",
           },
         ],
         value: {
@@ -69,13 +68,12 @@ describe("SalesOrderCustomer", () => {
               children: [],
               constraints: {
                 isNotEmpty: "email should not be empty",
-                isString: "email must be a string",
               },
             },
             reason: "'email' is invalid.",
             name: "CustomerValidationError",
             message:
-              "CustomerValidationError 'An instance of CustomerDto has failed the validation:\n - property email has failed the following constraints: isNotEmpty, isString \n': 'email' is invalid.",
+              "CustomerValidationError 'An instance of CustomerDto has failed the validation:\n - property email has failed the following constraints: isNotEmpty \n': 'email' is invalid.",
           },
         ],
         value: {

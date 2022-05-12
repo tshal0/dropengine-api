@@ -1,24 +1,20 @@
-import {
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-  Scope,
-  ValidationError,
-} from "@nestjs/common";
-import moment from "moment";
+import { Injectable, Logger, Scope } from "@nestjs/common";
 import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
-import { SalesOrder } from "@sales/domain";
+import { SalesOrder, SalesOrderPlaced } from "@sales/domain";
 import { CreateOrderLineItemApiDto } from "@sales/api";
 import { CatalogService, CatalogVariant } from "@catalog/services";
 
-import { CreateOrderDto, CreateLineItemDto } from "@sales/dto";
+import { CreateOrderDto, CreateLineItemDto, CustomerDto, AddressDto } from "@sales/dto";
 import { validate } from "class-validator";
 import { CreateSalesOrderDto } from "../../dto/CreateSalesOrderDto";
 import safeJsonStringify from "safe-json-stringify";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 import { CreateSalesOrderLineItemDto } from "@sales/dto/CreateSalesOrderLineItemDto";
+import { CreateSalesOrderError } from "./CreateSalesOrderError";
+import { CreateSalesOrderException } from "./CreateSalesOrderException";
+import { FailedToPlaceSalesOrderException } from "./FailedToPlaceSalesOrderException";
+import { generateValidationError } from "./generateValidationError";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateSalesOrder
@@ -34,17 +30,42 @@ export class CreateSalesOrder
   async execute(dto: CreateSalesOrderDto): Promise<SalesOrder> {
     try {
       await this.validateUseCaseDto(dto);
-      this.validateUserAuthorization(dto);
-      let lineItems = await Promise.all(
-        dto.lineItems.map(
-          async (li, i) => await this.generateLineItemDto(li, i, dto)
-        )
-      );
 
-      const createOrderDto: CreateOrderDto = new CreateOrderDto(dto);
-      createOrderDto.applyLineItems(lineItems);
-      await this.validateDomainDto(createOrderDto);
-      let order = await SalesOrder.create(createOrderDto);
+      // Load Variants, Generate LineItems
+      const lineItems: CreateLineItemDto[] = [];
+      for (let i = 0; i < dto.lineItems.length; i++) {
+        const li = dto.lineItems[i];
+        const catalogVariant = await this.loadCatalogVariant(li);
+        const cli = new CreateLineItemDto();
+        cli.lineNumber = i + 1;
+        cli.properties = li.lineItemProperties;
+        cli.quantity = li.quantity;
+        cli.variant = catalogVariant;
+        lineItems.push(cli);
+      }
+
+      // Generate the DTO
+      const cdto: CreateOrderDto = new CreateOrderDto();
+      cdto.accountId = dto.accountId;
+
+      
+      cdto.billingAddress = new AddressDto(dto.billingAddress)
+      cdto.shippingAddress = new AddressDto(dto.shippingAddress);
+      cdto.customer = Object.assign(new CustomerDto(), dto.customer);;
+      cdto.lineItems = lineItems;
+      cdto.orderDate = dto.orderDate;
+      cdto.orderName = dto.orderName;
+      cdto.orderNumber = dto.orderNumber;
+
+      await this.validateDomainDto(cdto);
+
+      // Create/Save the SalesOrder
+      let order = await SalesOrder.create(cdto);
+      order = await this._repo.save(order);
+
+      // Generate/Raise OrderPlaced event
+      let $event = new SalesOrderPlaced(order.id, cdto);
+      order.raise($event);
 
       return await this._repo.save(order);
     } catch (error) {
@@ -60,55 +81,6 @@ export class CreateSalesOrder
 
     function weRecognize(error: any) {
       return error instanceof CreateSalesOrderException;
-    }
-  }
-
-  public async generateLineItemDto(
-    li: CreateSalesOrderLineItemDto,
-    i: number,
-    dto: CreateSalesOrderDto
-  ) {
-    guardLineItemNotNull();
-    const lineNumber = generateLineNumber();
-    const quantity = li.quantity;
-    const properties = generateLineItemProperties();
-    const catalogVariant = await this.loadCatalogVariant(li);
-
-    let lineItem: CreateLineItemDto = {
-      lineNumber: lineNumber,
-      quantity: quantity,
-      variant: catalogVariant,
-      properties: properties,
-    };
-    return lineItem;
-
-    function guardLineItemNotNull() {
-      if (li === undefined || li === null) {
-        throw new FailedToPlaceSalesOrderException(
-          dto,
-          `LineItem '${generateLineNumber()}' was null or undefined.`,
-          CreateSalesOrderError.MissingLineItem
-        );
-      }
-    }
-
-    function generateLineItemProperties() {
-      return li.lineItemProperties || [];
-    }
-
-    function generateLineNumber() {
-      return i + 1;
-    }
-  }
-
-  public validateUserAuthorization(dto: CreateSalesOrderDto) {
-    let user = dto.user;
-    if (!user.canManageOrders(dto.accountId)) {
-      throw new FailedToPlaceSalesOrderException(
-        dto,
-        `User '${user.email}' not authorized to place orders for given Account: '${dto.accountId}'`,
-        CreateSalesOrderError.UserNotAuthorizedForAccount
-      );
     }
   }
 
@@ -134,7 +106,7 @@ export class CreateSalesOrder
     if (validationErrors.length) {
       const reason = `Validation errors found.`;
       const valErrors = generateValidationError(validationErrors);
-
+      console.log(safeJsonStringify(valErrors, null, 2));
       throw new FailedToPlaceSalesOrderException(
         createOrderDto,
         reason,
@@ -163,92 +135,5 @@ export class CreateSalesOrder
 
   public async loadVariantById(id: string): Promise<CatalogVariant> {
     return await this._catalog.loadVariantById({ id });
-  }
-}
-export class SalesOrderValidationError {
-  public type: CreateSalesOrderError =
-    CreateSalesOrderError.SalesOrderValidationError;
-  constructor(public property: string, public message: string) {}
-}
-/**
- * CSO ErrorTypes:
- * FailedToLoadVariant (conection failed, SKU or ID is invalid, etc)
- * InvalidLineItem (Personalization missing, invalid quantity, etc )
- * InvalidSalesOrder (Invalid AccountId/Name/Number/Date/LineItem(s)/Customer/ShippingAddress)
- * FailedToSaveSalesOrder (DbConnection failed)
- */
-export enum CreateSalesOrderError {
-  UnknownSalesError = "UnknownSalesError",
-  SalesOrderValidationError = "SalesOrderValidationError",
-
-  InvalidSalesOrder = "InvalidSalesOrder",
-  InvalidLineItem = "InvalidLineItem",
-  MissingLineItem = "MissingLineItem",
-  FailedToSaveSalesOrder = "FailedToSaveSalesOrder",
-  UserNotAuthorizedForAccount = "UserNotAuthorizedForAccount",
-  AccountNotFound = "AccountNotFound",
-  FailedToLoadVariantBySku = "FailedToLoadVariantBySku",
-  FailedToLoadVariantById = "FailedToLoadVariantById",
-}
-
-export class CreateSalesOrderException extends InternalServerErrorException {
-  public type: CreateSalesOrderError;
-  constructor(objectOrError: any, description: string) {
-    super(objectOrError, description);
-  }
-}
-
-export function generateValidationError(
-  errors: ValidationError[],
-  parent: string = null
-) {
-  return errors.reduce((finalErrors, err): SalesOrderValidationError[] => {
-    let property = "";
-    if (parent) {
-      property = `${parent}`;
-      if (parent != err.property) property = `${property}.`;
-    }
-    if (parent != err.property) property = `${property}${err.property}`;
-    if (err.constraints) {
-      const message = Object.values(err.constraints).join("; ");
-      finalErrors.push(new SalesOrderValidationError(property, message));
-    }
-
-    if (err.children?.length) {
-      const childErr = generateValidationError(err.children, property);
-      finalErrors = finalErrors.concat(childErr);
-    }
-
-    return finalErrors;
-  }, [] as SalesOrderValidationError[]);
-}
-
-export class FailedToPlaceSalesOrderException extends CreateSalesOrderException {
-  constructor(
-    dto: CreateSalesOrderDto | CreateOrderDto,
-    reason: any,
-    type: CreateSalesOrderError = CreateSalesOrderError.UnknownSalesError,
-    inner: any[] = []
-  ) {
-    super(
-      {
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        message:
-          `Failed to place SalesOrder for order ` +
-          `'${dto.orderName}': ` +
-          `${reason?.message || reason}`,
-        timestamp: moment().toDate(),
-        error: type,
-        details: {
-          orderName: dto.orderName,
-          orderNumber: dto.orderNumber,
-          reason,
-          inner,
-        },
-      },
-      `Failed to place SalesOrder for order ` +
-        `'${dto.orderName}': ` +
-        `${reason?.message || reason}`
-    );
   }
 }

@@ -1,34 +1,12 @@
-import { CreateOrderApiDto } from "@sales/api";
 import { Type } from "class-transformer";
-import {
-  ArrayNotEmpty,
-  IsArray,
-  IsDate,
-  IsNotEmpty,
-  IsNotEmptyObject,
-  IsString,
-  ValidateNested,
-} from "class-validator";
+import { IsDate, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 import { CreateLineItemDto, CustomerDto } from ".";
 import { AddressDto } from "./AddressDto";
 import { IsArrayOfObjects } from "./IsArrayOfObjects";
 
 export class CreateOrderDto {
-  constructor(dto?: CreateOrderApiDto | undefined) {
-    this.orderName = dto?.orderName;
-    this.orderDate = dto?.orderDate;
-    this.orderNumber = dto?.orderNumber;
-    this.customer = dto?.customer;
-    this.shippingAddress = dto?.shippingAddress;
-    this.billingAddress = dto?.billingAddress;
-    this.accountId = dto?.accountId;
-    this.lineItems = [];
-  }
+  constructor() {}
 
-  public applyLineItems(lineItems: CreateLineItemDto[]) {
-    this.lineItems = lineItems;
-    return this;
-  }
   @IsString()
   @IsNotEmpty()
   accountId: string;
@@ -43,13 +21,18 @@ export class CreateOrderDto {
   orderNumber: string;
 
   @IsNotEmpty()
-  @ValidateNested()
+  @ValidateNested({
+    message: `customer should contain both 'name' and 'email'.`,
+  })
   @Type(() => CustomerDto)
   customer: CustomerDto;
+
+  @IsNotEmpty()
   @IsArrayOfObjects()
   @ValidateNested({ each: true })
   @Type(() => CreateLineItemDto)
   lineItems: CreateLineItemDto[];
+  @IsNotEmpty()
   @ValidateNested()
   @Type(() => AddressDto)
   shippingAddress: AddressDto;
