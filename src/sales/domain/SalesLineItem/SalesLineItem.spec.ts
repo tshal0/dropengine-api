@@ -1,5 +1,4 @@
-import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
-import { MongoSalesVariant } from "@sales/database/mongo/MongoSalesVariant";
+import { MongoSalesVariant, MongoSalesLineItem } from "@sales/database/mongo";
 import { CreateLineItemDto } from "@sales/dto";
 import {
   mockCatalogVariant1,

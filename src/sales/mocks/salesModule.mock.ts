@@ -30,18 +30,16 @@ import safeJsonStringify from "safe-json-stringify";
 import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
 import { UpdatePersonalization } from "../useCases/UpdatePersonalization";
 import { SalesLineItemRepository } from "@sales/database/SalesLineItemRepository";
+import { MongoOrdersRepository } from "@sales/database/mongo/repositories/MongoOrdersRepository";
+import { SalesOrderQuery } from "@sales/database/SalesOrderQueries";
+import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 import {
   MongoSalesOrder,
   MongoSalesOrderSchema,
-} from "@sales/database/mongo/MongoSalesOrder";
-import { MongoLineItemsRepository } from "@sales/database/mongo/MongoLineItemRepository";
-import {
   MongoSalesLineItem,
   MongoSalesLineItemSchema,
-} from "@sales/database/mongo/MongoSalesLineItem";
-import { MongoOrdersRepository } from "@sales/database/mongo/MongoSalesOrderRepository";
-import { SalesOrderQuery } from "@sales/database/SalesOrderQueries";
-import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
+  MongoLineItemsRepository,
+} from "@sales/database/mongo";
 /** MOCK UTILS */
 jest.mock("@shared/utils", () => {
   return {

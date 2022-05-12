@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Result, ResultError } from "@shared/domain";
 import { MongoQueryParams } from "@shared/mongo";
 import moment from "moment";
-import { MongoOrdersRepository } from "./mongo/MongoSalesOrderRepository";
+import { MongoOrdersRepository } from "./mongo/repositories/MongoOrdersRepository";
 import { QueryOrdersDto } from "../api/model";
 import { SalesOrder } from "../domain";
 

@@ -14,16 +14,13 @@ import {
   SalesOrderCustomer,
   SalesOrderID,
 } from "../ValueObjects";
-import { FailedToLoadLineItemsError } from "./FailedToLoadLineItemsError";
-import { FailedToCreateLineItemsError } from "./FailedToCreateLineItemsError";
 import { InvalidSalesOrder } from "./InvalidSalesOrder";
 import { SalesOrderError } from "./SalesOrderError";
 import { InvalidShippingAddressException } from "./InvalidShippingAddressException";
-import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
-import { MongoSalesOrder } from "@sales/database/mongo/MongoSalesOrder";
-import mongoose, { Types } from "mongoose";
-import { SalesOrderEvent, SalesOrderPlaced } from "../DomainEvents";
+import { Types } from "mongoose";
+import { SalesOrderEvent } from "../DomainEvents";
 import { cloneDeep } from "lodash";
+import { MongoSalesOrder } from "@sales/database/mongo";
 
 export class SalesOrder extends IAggregate<
   ISalesOrderProps,

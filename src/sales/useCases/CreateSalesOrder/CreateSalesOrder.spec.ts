@@ -22,16 +22,16 @@ import {
   mockCatalogVariant1,
 } from "@sales/mocks";
 
-import {
-  MongoSalesOrderDocument,
-  MongoSalesOrder,
-} from "@sales/database/mongo/MongoSalesOrder";
-import { MongoOrdersRepository } from "@sales/database/mongo/MongoSalesOrderRepository";
+import { MongoOrdersRepository } from "@sales/database/mongo/repositories/MongoOrdersRepository";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
 import { CreateSalesOrder } from "./CreateSalesOrder";
 import { CreateSalesOrderError } from "./CreateSalesOrderError";
 import { FailedToPlaceSalesOrderException } from "./FailedToPlaceSalesOrderException";
+import {
+  MongoSalesOrderDocument,
+  MongoSalesOrder,
+} from "@sales/database/mongo";
 spyOnDate();
 class NoErrorThrownError extends Error {}
 

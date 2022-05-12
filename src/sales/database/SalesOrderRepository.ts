@@ -8,12 +8,11 @@ import { Injectable, Logger, NotImplementedException } from "@nestjs/common";
 import { FailedToCreateError, FailedToSaveError } from "@shared/database";
 import { ResultError, Result } from "@shared/domain/Result";
 import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
-import { MongoSalesOrder } from "./mongo/MongoSalesOrder";
 
-import { MongoOrdersRepository } from "./mongo/MongoSalesOrderRepository";
+import { MongoOrdersRepository } from "./mongo/repositories/MongoOrdersRepository";
 
 import { ISalesOrderProps, SalesOrder } from "../domain";
-import { MongoLineItemsRepository } from "./mongo/MongoLineItemRepository";
+import { MongoSalesOrder, MongoLineItemsRepository } from "./mongo";
 
 export class SalesOrderNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -161,32 +160,5 @@ export class SalesOrderRepository {
   ): Promise<Result<SalesOrder>> {
     throw new NotImplementedException();
     // await repo.persistAndFlush(dbe);
-  }
-
-  private failedToSave(props: MongoSalesOrder, err: any) {
-    this.logger.error(err);
-    return Result.fail<SalesOrder>(
-      new FailedToSaveError(
-        {
-          id: props.id,
-          type: SalesOrder.name,
-          name: props.orderName,
-        },
-        err.message
-      )
-    );
-  }
-  private failedToCreate(props: MongoSalesOrder, err: any) {
-    this.logger.error(err);
-    return Result.fail<SalesOrder>(
-      new FailedToCreateError(
-        {
-          id: props.id,
-          type: SalesOrder.name,
-          name: props.orderName,
-        },
-        err.message
-      )
-    );
   }
 }

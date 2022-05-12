@@ -2,13 +2,13 @@ import { CatalogService } from "@catalog/services";
 import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
 import { getModelToken } from "@nestjs/mongoose";
 import { TestingModule } from "@nestjs/testing";
-import { MongoLineItemsRepository } from "@sales/database/mongo/MongoLineItemRepository";
-import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
 import {
   MongoSalesOrderDocument,
   MongoSalesOrder,
-} from "@sales/database/mongo/MongoSalesOrder";
-import { MongoOrdersRepository } from "@sales/database/mongo/MongoSalesOrderRepository";
+  MongoOrdersRepository,
+  MongoLineItemsRepository,
+  MongoSalesLineItem,
+} from "@sales/database/mongo";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 
 import {

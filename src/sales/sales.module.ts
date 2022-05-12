@@ -16,19 +16,17 @@ import {
   UpdateShippingAddress,
 } from "./useCases";
 import { CatalogModule } from "@catalog/catalog.module";
-import { MongoLineItemsRepository } from "./database/mongo/MongoLineItemRepository";
-import {
-  MongoSalesLineItem,
-  MongoSalesLineItemSchema,
-} from "./database/mongo/MongoSalesLineItem";
-import {
-  MongoSalesOrder,
-  MongoSalesOrderSchema,
-} from "./database/mongo/MongoSalesOrder";
-import { MongoOrdersRepository } from "./database/mongo/MongoSalesOrderRepository";
+import { MongoOrdersRepository } from "./database/mongo/repositories/MongoOrdersRepository";
 import { SalesOrderQuery } from "./database/SalesOrderQueries";
 import { SalesOrderRepository } from "./database/SalesOrderRepository";
 import { SalesLineItemRepository } from "./database/SalesLineItemRepository";
+import {
+  MongoSalesLineItem,
+  MongoSalesLineItemSchema,
+  MongoSalesOrder,
+  MongoSalesOrderSchema,
+  MongoLineItemsRepository,
+} from "./database/mongo";
 
 @Module({
   imports: [

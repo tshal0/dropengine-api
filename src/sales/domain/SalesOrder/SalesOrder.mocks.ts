@@ -1,10 +1,7 @@
-import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
-import mongoose, { Types } from "mongoose";
+import { Types } from "mongoose";
 import {
   mockUuid1,
-  mockCustomer,
   mockLineItem,
-  mockCatalogVariant1,
   mockTopText,
   mockMiddleText,
   mockBottomText,
@@ -17,8 +14,8 @@ import {
   mockOrderId,
   now,
 } from "@sales/dto/CreateOrderDto.mock";
-import { MongoSalesOrder } from "@sales/database/mongo/MongoSalesOrder";
 import { CreateOrderDto } from "@sales/dto/CreateOrderDto";
+import { MongoSalesLineItem, MongoSalesOrder } from "@sales/database/mongo";
 const oid = new Types.ObjectId(mockOrderId);
 const lineItemId = "000000000000000000000002";
 const lid = new Types.ObjectId(lineItemId);

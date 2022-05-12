@@ -2,8 +2,11 @@ import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Query, QueryWithHelpers } from "mongoose";
 import { BaseMongoRepository } from "@shared/mongo";
-import { MongoSalesOrder, MongoSalesOrderDocument } from "./MongoSalesOrder";
-import { MongoSalesLineItem } from "./MongoSalesLineItem";
+import {
+  MongoSalesOrder,
+  MongoSalesOrderDocument,
+  MongoSalesLineItem,
+} from "../schemas";
 
 @Injectable()
 export class MongoOrdersRepository extends BaseMongoRepository<MongoSalesOrder> {
@@ -40,6 +43,11 @@ export class MongoOrdersRepository extends BaseMongoRepository<MongoSalesOrder> 
           new: true,
         }
       )
+    );
+  }
+  async updateV2(doc: MongoSalesOrder): Promise<MongoSalesOrder> {
+    return await this.handle<Query<any, any>>(() =>
+      this._model.updateOne(doc, {}, { upsert: true, new: true, lean: true })
     );
   }
 }

@@ -3,8 +3,7 @@ import { CatalogVariant } from "@catalog/services";
 import { ISalesVariantProps, ISalesVariant } from "./ISalesVariant";
 import { SalesPersonalizationRule } from "./SalesPersonalizationRule";
 import { SalesVariantOption } from "./SalesVariantOption";
-import { isNull } from "lodash";
-import { MongoSalesVariant } from "@sales/database/mongo/MongoSalesVariant";
+import { MongoSalesVariant } from "@sales/database/mongo";
 
 export enum SalesVariantError {
   InvalidSalesVariant = "InvalidSalesVariant",

@@ -12,8 +12,8 @@ import {
   LineItemID,
   LineNumber,
 } from "../ValueObjects";
-import { MongoSalesLineItem } from "@sales/database/mongo/MongoSalesLineItem";
 import { InvalidPersonalizationException } from "./InvalidPersonalizationException";
+import { MongoSalesLineItem } from "@sales/database/mongo";
 
 /**
  * Aggregates need: events, domain methods, initializers, converters
@@ -215,5 +215,3 @@ export class SalesLineItem extends IAggregate<
     );
   }
 }
-
-
