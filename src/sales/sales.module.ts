@@ -1,6 +1,6 @@
 import { HttpModule } from "@nestjs/axios";
 import { CacheModule, Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
 import { AzureTelemetryModule, AzureStorageModule } from "@shared/modules";
@@ -37,7 +37,22 @@ import {
     MongooseModule.forFeature([
       { name: MongoSalesOrder.name, schema: MongoSalesOrderSchema },
     ]),
-
+    MongooseModule.forFeatureAsync([
+      {
+        name: MongoSalesOrder.name,
+        imports: [ConfigModule],
+        useFactory: (configService: ConfigService) => {
+          const schema = MongoSalesOrderSchema;
+          schema.post("save", function () {
+            console.log(
+              `${configService.get("APP_NAME")}: Hello from pre save`
+            );
+          });
+          return schema;
+        },
+        inject: [ConfigService],
+      },
+    ]),
     HttpModule,
     AzureTelemetryModule,
     ConfigModule,

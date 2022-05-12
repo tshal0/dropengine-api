@@ -107,7 +107,6 @@ describe("UpdatePersonalization", () => {
       mockLineItem = await lineItemsRepo.create(mockLineItem);
       mockOrder.lineItems = [mockLineItem.id] as any;
       mockOrder = await ordersRepo.create(mockOrder);
-      mockLineItem.id = mockOrder.lineItems[0].id;
     });
     it("should update the personalization and save the SalesOrder", async () => {
       // GIVEN

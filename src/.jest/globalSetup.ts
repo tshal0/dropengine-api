@@ -23,6 +23,12 @@ export default {} = async function globalSetup() {
   } else {
     process.env.MONGO_CONNECTION_STRING = `mongodb://${config.ip}:${config.port}`;
   }
+  console.log(
+    "🚀 ~ file: globalSetup.ts ~ line 27 ~" +
+      process.env.MONGO_CONNECTION_STRING +
+      "/" +
+      config.db
+  );
 
   // The following is to make sure the database is clean before an test starts
   await mongoose.connect(

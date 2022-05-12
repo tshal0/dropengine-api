@@ -14,14 +14,14 @@ const config: Config.InitialOptions = {
   coverageReporters: ["json", "lcov", "text", "clover", "cobertura"],
   reporters: [
     "default",
-    [
-      "jest-html-reporters",
-      {
-        publicPath: "./coverage",
-        filename: "report.html",
-        openReport: true,
-      },
-    ],
+    // [
+    //   "jest-html-reporters",
+    //   {
+    //     publicPath: "./coverage",
+    //     filename: "report.html",
+    //     openReport: true,
+    //   },
+    // ],
     ["jest-junit", { outputDirectory: "results", outputName: "junit.xml" }],
   ],
 

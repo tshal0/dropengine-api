@@ -38,7 +38,7 @@ export class BaseMongoRepository<T> implements IRead<T>, IWrite<T> {
   }
 
   async create(item: T): Promise<T> {
-    return await this._model.create(item);
+    return await (await this._model.create(item)).toObject();
   }
 
   async all(): Promise<T[]> {

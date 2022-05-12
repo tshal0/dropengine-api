@@ -8,6 +8,9 @@ import {
   MongoSalesLineItem,
 } from "../schemas";
 
+const options = {
+  new: true,
+};
 @Injectable()
 export class MongoOrdersRepository extends BaseMongoRepository<MongoSalesOrder> {
   private readonly logger: Logger = new Logger(MongoOrdersRepository.name);
@@ -32,22 +35,16 @@ export class MongoOrdersRepository extends BaseMongoRepository<MongoSalesOrder> 
         .populate("lineItems", null, MongoSalesLineItem.name)
     );
   }
-  async update(doc: MongoSalesOrder): Promise<MongoSalesOrder> {
-    return await this.handle<Query<any, any>>(() =>
-      this._model.findByIdAndUpdate(
-        doc.id,
-        { ...doc, _id: undefined },
-        {
-          useFindAndModify: false,
-          upsert: true,
-          new: true,
-        }
-      )
-    );
-  }
-  async updateV2(doc: MongoSalesOrder): Promise<MongoSalesOrder> {
-    return await this.handle<Query<any, any>>(() =>
-      this._model.updateOne(doc, {}, { upsert: true, new: true, lean: true })
+
+  async findByIdAndUpdateOrCreate(
+    doc: MongoSalesOrder
+  ): Promise<MongoSalesOrder> {
+    return await this.handle(() =>
+      doc.id
+        ? this._model
+            .findByIdAndUpdate(doc.id, doc, options)
+            .then((d) => d.toObject())
+        : this._model.create<MongoSalesOrder>(doc).then((d) => d.toObject())
     );
   }
 }

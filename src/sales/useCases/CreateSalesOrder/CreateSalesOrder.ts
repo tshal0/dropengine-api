@@ -5,7 +5,12 @@ import { SalesOrder, SalesOrderPlaced } from "@sales/domain";
 import { CreateOrderLineItemApiDto } from "@sales/api";
 import { CatalogService, CatalogVariant } from "@catalog/services";
 
-import { CreateOrderDto, CreateLineItemDto, CustomerDto, AddressDto } from "@sales/dto";
+import {
+  CreateOrderDto,
+  CreateLineItemDto,
+  CustomerDto,
+  AddressDto,
+} from "@sales/dto";
 import { validate } from "class-validator";
 import { CreateSalesOrderDto } from "../../dto/CreateSalesOrderDto";
 import safeJsonStringify from "safe-json-stringify";
@@ -48,10 +53,9 @@ export class CreateSalesOrder
       const cdto: CreateOrderDto = new CreateOrderDto();
       cdto.accountId = dto.accountId;
 
-      
-      cdto.billingAddress = new AddressDto(dto.billingAddress)
+      cdto.billingAddress = new AddressDto(dto.billingAddress);
       cdto.shippingAddress = new AddressDto(dto.shippingAddress);
-      cdto.customer = Object.assign(new CustomerDto(), dto.customer);;
+      cdto.customer = Object.assign(new CustomerDto(), dto.customer);
       cdto.lineItems = lineItems;
       cdto.orderDate = dto.orderDate;
       cdto.orderName = dto.orderName;
@@ -69,6 +73,7 @@ export class CreateSalesOrder
 
       return await this._repo.save(order);
     } catch (error) {
+      console.error(error);
       this.logger.error(safeJsonStringify(error, null, 2));
       if (weRecognize(error)) throw error;
       else {

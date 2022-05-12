@@ -13,6 +13,7 @@ import { MongoOrdersRepository } from "./mongo/repositories/MongoOrdersRepositor
 
 import { ISalesOrderProps, SalesOrder } from "../domain";
 import { MongoSalesOrder, MongoLineItemsRepository } from "./mongo";
+import { compact } from "lodash";
 
 export class SalesOrderNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -131,7 +132,7 @@ export class SalesOrderRepository {
       id: dbe.id,
       lineItems: identifiers as any, // Hack
     };
-    let updated = await this._orders.update(payload);
+    let updated = await this._orders.findByIdAndUpdateOrCreate(payload);
     dbe = await this._orders.findById(updated.id);
     return SalesOrder.load(dbe);
   }
@@ -142,11 +143,13 @@ export class SalesOrderRepository {
     const lineItems = await Promise.all(
       dbe.lineItems.map(async (li) => this._lineItems.create(li))
     );
-    const identifiers = lineItems.map((li) => li.id);
+    const identifiers = compact(
+      lineItems.map((li) => li.id || li._id.toHexString())
+    );
     if (!identifiers.length) {
       this.logger.warn(`CreateSalesOrder:LineItemsNotFound`);
     }
-    let updated = await this._orders.create({
+    let updated = await this._orders.findByIdAndUpdateOrCreate({
       ...dbe,
       lineItems: identifiers as any, // Hack
     });

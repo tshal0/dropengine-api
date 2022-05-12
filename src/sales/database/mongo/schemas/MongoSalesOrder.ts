@@ -7,7 +7,7 @@ import { MongoAddress, MongoAddressSchema } from "./MongoAddress";
 import { MongoCustomer, MongoCustomerSchema } from "./MongoCustomer";
 import { MongoSalesLineItem } from "./MongoSalesLineItem";
 
-@Schema({ collection: "orders" })
+@Schema({ collection: "orders", id: true, toObject: { virtuals: true } })
 export class MongoSalesOrder extends IMongoEntity {
   @Prop({ required: true })
   accountId: string;
