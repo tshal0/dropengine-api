@@ -1,8 +1,5 @@
 import { CreateOrderDto } from "@sales/dto";
-import { mockAddress, mockUuid1 } from "@sales/mocks";
-import { spyOnDate } from "@shared/mocks";
-import moment from "moment";
-import safeJsonStringify from "safe-json-stringify";
+import { mockUuid1 } from "@sales/mocks";
 import { SalesOrderPlaced } from "./OrderPlaced";
 
 import { v4 as uuidv4 } from "uuid";
@@ -40,7 +37,7 @@ describe("SalesOrderPlaced", () => {
         aggregateType: "SalesOrder",
         aggregateId: mockOrderId,
         timestamp: now,
-        eventVersion: EventSchemaVersion.v1
+        eventVersion: EventSchemaVersion.v1,
       };
       // THEN
 

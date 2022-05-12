@@ -1,18 +1,8 @@
-import { CreateOrderDto } from "@sales/dto";
-import { mockAddress, mockUuid1 } from "@sales/mocks";
-import { spyOnDate } from "@shared/mocks";
-import moment from "moment";
-import safeJsonStringify from "safe-json-stringify";
+import { mockUuid1 } from "@sales/mocks";
 import { SalesOrderCanceled } from "./OrderCanceled";
 
 import { v4 as uuidv4 } from "uuid";
-import {
-  expectedCreateOrderDto,
-  mockCreateOrderDto,
-  mockCreateOrderDtoLineItems,
-  mockOrderId,
-  now,
-} from "../../dto/CreateOrderDto.mock";
+import { mockOrderId, now } from "../../dto/CreateOrderDto.mock";
 import {
   CancelOrderDto,
   CancelOrderRequesterDto,

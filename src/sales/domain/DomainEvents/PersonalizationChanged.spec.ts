@@ -4,7 +4,6 @@ import { PersonalizationChanged } from "./PersonalizationChanged";
 import { v4 as uuidv4 } from "uuid";
 import { mockOrderId, now } from "../../dto/CreateOrderDto.mock";
 import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
-import { AddShipmentDto, IAddShipmentDto } from "@sales/dto/AddShipmentDto";
 import { UpdatePersonalizationDto } from "@sales/dto/UpdatePersonalizationDto";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
