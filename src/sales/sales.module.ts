@@ -27,31 +27,23 @@ import {
   MongoSalesOrderSchema,
   MongoLineItemsRepository,
 } from "./database/mongo";
+import {
+  MongoDomainEvent,
+  MongoDomainEventSchema,
+} from "./database/mongo/schemas/MongoDomainEvent";
+import { MongoDomainEventRepository } from "./database/mongo/repositories/MongoDomainEventRepository";
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
     MongooseModule.forFeature([
+      { name: MongoDomainEvent.name, schema: MongoDomainEventSchema },
+    ]),
+    MongooseModule.forFeature([
       { name: MongoSalesLineItem.name, schema: MongoSalesLineItemSchema },
     ]),
     MongooseModule.forFeature([
       { name: MongoSalesOrder.name, schema: MongoSalesOrderSchema },
-    ]),
-    MongooseModule.forFeatureAsync([
-      {
-        name: MongoSalesOrder.name,
-        imports: [ConfigModule],
-        useFactory: (configService: ConfigService) => {
-          const schema = MongoSalesOrderSchema;
-          schema.post("save", function () {
-            console.log(
-              `${configService.get("APP_NAME")}: Hello from pre save`
-            );
-          });
-          return schema;
-        },
-        inject: [ConfigService],
-      },
     ]),
     HttpModule,
     AzureTelemetryModule,
@@ -61,6 +53,7 @@ import {
   ],
   controllers: [OrdersController],
   providers: [
+    MongoDomainEventRepository,
     MongoOrdersRepository,
     MongoLineItemsRepository,
     SalesLineItemRepository,

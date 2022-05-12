@@ -40,6 +40,11 @@ import {
   MongoSalesLineItemSchema,
   MongoLineItemsRepository,
 } from "@sales/database/mongo";
+import { MongoDomainEventRepository } from "@sales/database/mongo/repositories/MongoDomainEventRepository";
+import {
+  MongoDomainEvent,
+  MongoDomainEventSchema,
+} from "@sales/database/mongo/schemas/MongoDomainEvent";
 /** MOCK UTILS */
 jest.mock("@shared/utils", () => {
   return {
@@ -55,6 +60,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       MongooseModule.forFeature([
         { name: MongoSalesOrder.name, schema: MongoSalesOrderSchema },
         { name: MongoSalesLineItem.name, schema: MongoSalesLineItemSchema },
+        { name: MongoDomainEvent.name, schema: MongoDomainEventSchema },
       ]),
       HttpModule,
       ConfigModule.forRoot(),
@@ -72,6 +78,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       { provide: WINSTON_MODULE_PROVIDER, useValue: {} },
       MongoOrdersRepository,
       MongoLineItemsRepository,
+      MongoDomainEventRepository,
       SalesOrderRepository,
       SalesLineItemRepository,
       CreateSalesOrder,
