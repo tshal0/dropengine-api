@@ -3,7 +3,6 @@ import { mockAddress, mockUuid1 } from "@sales/mocks";
 import { spyOnDate } from "@shared/mocks";
 import moment from "moment";
 import safeJsonStringify from "safe-json-stringify";
-import { SalesOrderCanceled } from "./SalesOrderCanceled";
 
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -18,30 +17,29 @@ import {
   CancelOrderRequesterDto,
 } from "@sales/dto/CancelOrderDto";
 import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
+import { EditCustomerDto } from "@sales/api";
+import { ShippingAddressChanged } from "./ShippingAddressChanged";
+import { UpdateShippingAddressDto } from "@sales/useCases";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
 
-describe("SalesOrderCanceled", () => {
+describe("ShippingAddressChanged", () => {
   beforeAll(async () => {});
-  describe("given a valid CreateOrderDto", () => {
-    it("should generate a valid SalesOrderPlace event", () => {
+  describe("given a valid DTO", () => {
+    it("should generate a valid ShippingAddressChanged event", () => {
       // GIVEN valid DTO
 
-      const mockDto = new CancelOrderDto();
-      mockDto.cancelledAt = now;
-      const requester = new CancelOrderRequesterDto();
-      requester.name = "TestName";
-      requester.email = "test@sample.com";
-      mockDto.requestedBy = requester;
-
+      const mockDto = new UpdateShippingAddressDto();
+      mockDto.orderId = mockOrderId;
+      mockDto.shippingAddress = mockAddress;
       // WHEN
 
-      let result = new SalesOrderCanceled(mockOrderId, mockDto);
+      let result = new ShippingAddressChanged(mockOrderId, mockDto);
 
-      const expected: SalesOrderCanceled = {
+      const expected: ShippingAddressChanged = {
         eventId: mockUuid1,
-        eventName: SalesOrderEventName.OrderCanceled,
-        eventType: "SalesOrderCanceled",
+        eventName: SalesOrderEventName.ShippingAddressChanged,
+        eventType: "ShippingAddressChanged",
         details: mockDto,
         aggregateType: "SalesOrder",
         aggregateId: mockOrderId,

@@ -3,7 +3,7 @@ import { mockAddress, mockUuid1 } from "@sales/mocks";
 import { spyOnDate } from "@shared/mocks";
 import moment from "moment";
 import safeJsonStringify from "safe-json-stringify";
-import { SalesOrderPlaced } from "./SalesOrderPlaced";
+import { SalesOrderCanceled } from "./OrderCanceled";
 
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -13,34 +13,40 @@ import {
   mockOrderId,
   now,
 } from "../../dto/CreateOrderDto.mock";
+import {
+  CancelOrderDto,
+  CancelOrderRequesterDto,
+} from "@sales/dto/CancelOrderDto";
 import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
 
-describe("SalesOrderPlaced", () => {
+describe("SalesOrderCanceled", () => {
   beforeAll(async () => {});
-  describe("given a valid CreateOrderDto", () => {
-    it("should generate a valid SalesOrderPlace event", () => {
+  describe("given a valid DTO", () => {
+    it("should generate a valid SalesOrderCanceled event", () => {
       // GIVEN valid DTO
 
-      const createOrderDto: CreateOrderDto = new CreateOrderDto(
-        mockCreateOrderDto
-      );
-      createOrderDto.applyLineItems(mockCreateOrderDtoLineItems);
+      const mockDto = new CancelOrderDto();
+      mockDto.cancelledAt = now;
+      const requester = new CancelOrderRequesterDto();
+      requester.name = "TestName";
+      requester.email = "test@sample.com";
+      mockDto.requestedBy = requester;
 
       // WHEN
 
-      let result = new SalesOrderPlaced(mockOrderId, createOrderDto);
+      let result = new SalesOrderCanceled(mockOrderId, mockDto);
 
-      const expected: SalesOrderPlaced = {
+      const expected: SalesOrderCanceled = {
         eventId: mockUuid1,
-        eventName: SalesOrderEventName.OrderPlaced,
-        eventType: "SalesOrderPlaced",
-        details: expectedCreateOrderDto,
+        eventName: SalesOrderEventName.OrderCanceled,
+        eventType: "SalesOrderCanceled",
+        details: mockDto,
         aggregateType: "SalesOrder",
         aggregateId: mockOrderId,
         timestamp: now,
-        eventVersion: EventSchemaVersion.v1
+        eventVersion: EventSchemaVersion.v1,
       };
       // THEN
 

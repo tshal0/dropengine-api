@@ -9,10 +9,10 @@ import { UpdatePersonalizationDto } from "@sales/dto/UpdatePersonalizationDto";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
 
-describe("SalesOrderPersonalizationChanged", () => {
+describe("PersonalizationChanged", () => {
   beforeAll(async () => {});
-  describe("given a valid CreateOrderDto", () => {
-    it("should generate a valid SalesOrderPlace event", () => {
+  describe("given a valid DTO", () => {
+    it("should generate a valid PersonalizationChanged event", () => {
       // GIVEN valid DTO
       const mockDto = new UpdatePersonalizationDto();
       mockDto.lineItemId = mockUuid1;

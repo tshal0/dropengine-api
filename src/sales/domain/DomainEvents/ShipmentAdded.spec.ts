@@ -8,10 +8,10 @@ import { AddShipmentDto, IAddShipmentDto } from "@sales/dto/AddShipmentDto";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
 
-describe("SalesOrderShipmentAdded", () => {
+describe("ShipmentAdded", () => {
   beforeAll(async () => {});
-  describe("given a valid CreateOrderDto", () => {
-    it("should generate a valid SalesOrderPlace event", () => {
+  describe("given a valid DTO", () => {
+    it("should generate a valid ShipmentAdded event", () => {
       const dto: IAddShipmentDto = {
         orderId: mockOrderId,
         orderName: "MOCK",

@@ -10,6 +10,8 @@ export enum SalesOrderEventName {
   OrderCanceled = "Sales.OrderCanceled",
   ShipmentAdded = "Sales.ShipmentAdded",
   PersonalizationChanged = "Sales.PersonalizationChanged",
+  ShippingAddressChanged = "Sales.ShippingAddressChanged",
+  CustomerInfoChanged = "Sales.CustomerInfoChanged",
 }
 export class SalesOrderEvent<T> extends DomainEvent<T> {
   constructor(
@@ -29,4 +31,3 @@ export class SalesOrderEvent<T> extends DomainEvent<T> {
     );
   }
 }
-
