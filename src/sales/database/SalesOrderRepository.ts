@@ -11,9 +11,12 @@ import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.excep
 
 import { MongoOrdersRepository } from "./mongo/repositories/MongoOrdersRepository";
 
-import { ISalesOrderProps, SalesOrder } from "../domain";
+import { ISalesOrderProps, SalesOrder, SalesOrderEvent } from "../domain";
 import { MongoSalesOrder, MongoLineItemsRepository } from "./mongo";
 import { compact } from "lodash";
+import { MongoDomainEventRepository } from "./mongo/repositories/MongoDomainEventRepository";
+import { MongoDomainEvent } from "./mongo/schemas/MongoDomainEvent";
+import { EventEmitter2 } from "@nestjs/event-emitter";
 
 export class SalesOrderNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -76,6 +79,11 @@ export class FailedToConvertSalesOrderToDb implements ResultError {
   }
 }
 
+const convertToDoc = (
+  e: SalesOrderEvent<any>
+): MongoDomainEvent & SalesOrderEvent<any> =>
+  Object.assign(new MongoDomainEvent(), e);
+
 @Injectable()
 export class SalesOrderRepository {
   private readonly logger: Logger = new Logger(SalesOrderRepository.name);
@@ -89,7 +97,9 @@ export class SalesOrderRepository {
   }
   constructor(
     private readonly _orders: MongoOrdersRepository,
-    private readonly _lineItems: MongoLineItemsRepository
+    private readonly _lineItems: MongoLineItemsRepository,
+    private readonly _events: MongoDomainEventRepository,
+    private _bus: EventEmitter2
   ) {}
 
   public async load(id: string): Promise<SalesOrder> {
@@ -98,22 +108,8 @@ export class SalesOrderRepository {
     else throw new SalesOrderNotFoundException(id);
   }
   public async save(agg: SalesOrder): Promise<SalesOrder> {
-    let result: SalesOrder = null;
-    const props = agg.entity();
-
-    if (props.id?.length) {
-      result = await this.upsertById(agg);
-    } else {
-      result = await this.create(agg);
-    }
-    return result;
-  }
-  public async delete(id: string): Promise<void> {
-    await this._orders.delete(id);
-  }
-
-  private async upsertById(agg: SalesOrder): Promise<SalesOrder> {
     let dbe = agg.entity();
+
     const lineItems = await Promise.all(
       dbe.lineItems.map(async (li) => this._lineItems.create(li))
     );
@@ -134,27 +130,23 @@ export class SalesOrderRepository {
     };
     let updated = await this._orders.findByIdAndUpdateOrCreate(payload);
     dbe = await this._orders.findById(updated.id);
+
+    let events = agg.events;
+    if (events.length) {
+      const mongoEvents = events.map(convertToDoc);
+      await this._events.insert(mongoEvents);
+      events.forEach(($e) => {
+        this.logger.debug(
+          `${$e.eventName} for ${$e.aggregateType} ${$e.aggregateId}`
+        );
+        this._bus.emit($e.eventName, $e);
+      });
+    }
+
     return SalesOrder.load(dbe);
   }
-
-  private async create(agg: SalesOrder): Promise<SalesOrder> {
-    let dbe = agg.entity();
-
-    const lineItems = await Promise.all(
-      dbe.lineItems.map(async (li) => this._lineItems.create(li))
-    );
-    const identifiers = compact(
-      lineItems.map((li) => li.id || li._id.toHexString())
-    );
-    if (!identifiers.length) {
-      this.logger.warn(`CreateSalesOrder:LineItemsNotFound`);
-    }
-    let updated = await this._orders.findByIdAndUpdateOrCreate({
-      ...dbe,
-      lineItems: identifiers as any, // Hack
-    });
-    dbe = await this._orders.findById(updated.id);
-    return await SalesOrder.load(dbe);
+  public async delete(id: string): Promise<void> {
+    await this._orders.delete(id);
   }
 
   private async persist(
