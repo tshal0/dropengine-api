@@ -49,6 +49,7 @@ import { UpdateShippingAddress } from "@sales/useCases";
 import { FailedToPlaceSalesOrderException } from "@sales/useCases/CreateSalesOrder/FailedToPlaceSalesOrderException";
 import { CreateSalesOrderError } from "@sales/useCases/CreateSalesOrder/CreateSalesOrderError";
 import { LoadEvents } from "@sales/useCases/LoadEvents";
+import { UpdateCustomerInfo } from "@sales/useCases/UpdateCustomerInfo";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
@@ -62,6 +63,7 @@ export class OrdersController {
     private readonly load: GetSalesOrder,
     private readonly query: QuerySalesOrders,
     private readonly remove: DeleteSalesOrder,
+    private readonly updateCustomer: UpdateCustomerInfo,
     private readonly updateShipping: UpdateShippingAddress,
     private readonly updatePersonalization: UpdatePersonalization,
     private readonly loadEvents: LoadEvents
@@ -97,8 +99,15 @@ export class OrdersController {
     return order.props();
   }
   @Patch(":id/customer")
-  async patchCustomer(@Param("id") id: string, @Body() dto: EditCustomerDto) {
-    throw new NotImplementedException({ dto, id });
+  async patchCustomer(
+    @Param("id") id: string,
+    @Body() dto: { customer: EditCustomerDto }
+  ) {
+    let order = await this.updateCustomer.execute({
+      orderId: id,
+      customer: dto.customer,
+    });
+    return order.props();
   }
   @Patch(":id/shippingAddress")
   async patchShippingAddress(
