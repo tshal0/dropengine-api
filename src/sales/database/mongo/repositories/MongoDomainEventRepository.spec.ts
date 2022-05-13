@@ -1,18 +1,9 @@
 import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
 import { getModelToken } from "@nestjs/mongoose";
 import { TestingModule } from "@nestjs/testing";
-import {
-  mockAddress,
-  mockCustomer,
-  mockOrderName1,
-  mockOrderNumber1,
-  mockSalesModule,
-  mockUuid1,
-} from "@sales/mocks";
-import { now, nowStr } from "@shared/mocks";
-import { NoErrorThrownError } from "@shared/utils";
-import mongoose, { Model } from "mongoose";
-import safeJsonStringify from "safe-json-stringify";
+import { mockSalesModule, mockUuid1 } from "@sales/mocks";
+import { now } from "@shared/mocks";
+import { Model } from "mongoose";
 import {
   MongoDomainEvent,
   MongoDomainEventDocument,
@@ -25,8 +16,6 @@ describe("MongoDomainEventRepository", () => {
   const modelToken = getModelToken(MongoDomainEvent.name);
   let repo: MongoDomainEventRepository;
   const ev: MongoDomainEvent = {
-    createdAt: now,
-    updatedAt: now,
     eventId: mockUuid1,
     eventName: "Mock.EventName",
     eventType: "MockEventName",
@@ -80,8 +69,6 @@ describe("MongoDomainEventRepository", () => {
         aggregateType: "Mock",
         aggregateId: mockUuid1,
         timestamp: now,
-        createdAt: now,
-        updatedAt: now,
       };
       // THEN
       expect(result).toEqual(expected);
@@ -106,8 +93,6 @@ describe("MongoDomainEventRepository", () => {
             aggregateType: "Mock",
             aggregateId: mockUuid1,
             timestamp: now,
-            createdAt: now,
-            updatedAt: now,
           },
         ];
         // THEN

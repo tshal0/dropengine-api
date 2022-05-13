@@ -148,12 +148,4 @@ export class SalesOrderRepository {
   public async delete(id: string): Promise<void> {
     await this._orders.delete(id);
   }
-
-  private async persist(
-    repo: any,
-    dbe: MongoSalesOrder
-  ): Promise<Result<SalesOrder>> {
-    throw new NotImplementedException();
-    // await repo.persistAndFlush(dbe);
-  }
 }

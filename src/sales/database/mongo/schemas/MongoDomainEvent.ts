@@ -1,9 +1,11 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { IMongoEntity } from "../IMongoEntity";
 
 @Schema({ collection: "events" })
-export class MongoDomainEvent extends IMongoEntity {
+export class MongoDomainEvent {
+  _id?: Types.ObjectId | undefined;
+  id?: string | undefined;
   @Prop()
   public eventId: string;
   @Prop()
