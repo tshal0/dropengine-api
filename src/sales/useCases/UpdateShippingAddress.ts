@@ -1,10 +1,10 @@
 import { CatalogService } from "@catalog/services";
 import { Injectable, Scope, Logger } from "@nestjs/common";
 import { SalesOrderRepository } from "../database/SalesOrderRepository";
-import { SalesOrder } from "@sales/domain";
 import { AddressDto, LineItemPropertyDto } from "@sales/dto";
 import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
+import { SalesOrder } from "@sales/domain/SalesOrder";
 
 export class UpdateShippingAddressDto {
   orderId: string;

@@ -1,4 +1,4 @@
-export interface IMESProductVariant {
+export interface MyEasySuiteProductVariant {
   sku: string;
   part_file_name: string;
   material: string;
@@ -30,17 +30,17 @@ export interface IMESProductVariant {
   compared_at_price: number;
   manufacturing_time: number;
   updated_at: Date;
-  svgs: IMESProductSvg[];
-  customize_text: IMESProductCustomizeText[];
+  svgs: IMyEasySuiteProductSvg[];
+  customize_text: IMyEasySuiteProductCustomizeText[];
   is_visible: string;
   is_deleted: string;
 }
-export interface IMESProductSvg {
+export interface IMyEasySuiteProductSvg {
   url: string;
   name: string;
   created_at: Date;
 }
-export interface IMESProductCustomizeText {
+export interface IMyEasySuiteProductCustomizeText {
   label: string;
   field_type: string;
   is_required: boolean;

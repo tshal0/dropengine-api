@@ -1,5 +1,5 @@
 import { CreateOrderDto } from "@sales/dto";
-import { SalesOrder } from "@sales/domain";
+import { SalesOrder } from "@sales/domain/SalesOrder";
 import {
   mockCatalogVariant1,
   mockUuid1,

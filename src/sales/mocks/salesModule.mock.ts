@@ -8,7 +8,7 @@ import { CatalogService } from "@catalog/services";
 import { HttpModule, HttpService } from "@nestjs/axios";
 import { CacheModule, HttpStatus } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { EventEmitter2 } from "@nestjs/event-emitter";
+import { EventEmitter2, EventEmitterModule } from "@nestjs/event-emitter";
 import { MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
 import { TestingModule, Test } from "@nestjs/testing";
@@ -43,12 +43,19 @@ import {
   MongoDomainEvent,
   MongoDomainEventSchema,
 } from "@sales/database/mongo/schemas/MongoDomainEvent";
+import { AuthModule } from "@auth/auth.module";
+import { HandleMyEasySuiteOrderPlaced } from "@sales/useCases/HandleMyEasySuiteOrderPlaced";
+import { AccountsRepository } from "@auth/database/AccountsRepository";
+import { StoresRepository } from "@auth/database/StoresRepository";
+import { UpdateCustomerInfo } from "@sales/useCases/UpdateCustomerInfo";
+import { LoadEvents } from "@sales/useCases/LoadEvents";
 /** MOCK UTILS */
 jest.mock("@shared/utils", () => {
   return {
     loadAccessToken: jest.fn().mockResolvedValue("MOCK_ACCESS_TOKEN"),
   };
 });
+
 /** MOCK SALES MODULE */
 export const mockSalesModule = async (): Promise<TestingModule> => {
   return await Test.createTestingModule({
@@ -60,11 +67,13 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
         { name: MongoSalesLineItem.name, schema: MongoSalesLineItemSchema },
         { name: MongoDomainEvent.name, schema: MongoDomainEventSchema },
       ]),
+      EventEmitterModule.forRoot(),
       HttpModule,
       ConfigModule.forRoot(),
       AzureTelemetryModule,
       CacheModule.register(),
       CatalogModule,
+      AuthModule,
     ],
     controllers: [OrdersController],
     exports: [],
@@ -82,12 +91,23 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
         provide: ProductTypesRepository,
         useValue: {},
       },
+      {
+        provide: StoresRepository,
+        useValue: {},
+      },
+      {
+        provide: AccountsRepository,
+        useValue: {},
+      },
       { provide: SalesOrderQuery, useValue: {} },
       { provide: GetSalesOrder, useValue: {} },
       { provide: QuerySalesOrders, useValue: {} },
       { provide: DeleteSalesOrder, useValue: {} },
       UpdatePersonalization,
       UpdateShippingAddress,
+      UpdateCustomerInfo,
+      LoadEvents,
+      HandleMyEasySuiteOrderPlaced,
     ],
   })
     .overrideProvider(AzureTelemetryService)
@@ -98,6 +118,10 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       loadVariantBySku: jest.fn(),
       loadVariantById: jest.fn(),
     })
+    .overrideProvider(StoresRepository)
+    .useValue({})
+    .overrideProvider(AccountsRepository)
+    .useValue({})
     .overrideProvider(ProductTypesRepository)
     .useValue({})
     .overrideProvider(ProductsRepository)

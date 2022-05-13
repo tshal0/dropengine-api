@@ -17,20 +17,18 @@ import {
 import { InvalidSalesOrder } from "./InvalidSalesOrder";
 import { SalesOrderError } from "./SalesOrderError";
 import { InvalidShippingAddressException } from "./InvalidShippingAddressException";
-import { Types } from "mongoose";
-import {
-  CustomerInfoChanged,
-  PersonalizationChanged,
-  SalesOrderCanceled,
-  SalesOrderEvent,
-  ShipmentAdded,
-  ShippingAddressChanged,
-} from "../DomainEvents";
+
 import { cloneDeep } from "lodash";
 import { MongoSalesOrder } from "@sales/database/mongo";
 import { UpdatePersonalizationDto } from "@sales/dto/UpdatePersonalizationDto";
 import { AddShipmentDto } from "@sales/dto/AddShipmentDto";
 import { CancelOrderDto } from "@sales/dto/CancelOrderDto";
+import { CustomerInfoChanged } from "../DomainEvents/CustomerInfoChanged";
+import { SalesOrderCanceled } from "../DomainEvents/OrderCanceled";
+import { PersonalizationChanged } from "../DomainEvents/PersonalizationChanged";
+import { SalesOrderEvent } from "../DomainEvents/SalesOrderEvent";
+import { ShipmentAdded } from "../DomainEvents/ShipmentAdded";
+import { ShippingAddressChanged } from "../DomainEvents/ShippingAddressChanged";
 
 export class SalesOrder extends IAggregate<
   ISalesOrderProps,

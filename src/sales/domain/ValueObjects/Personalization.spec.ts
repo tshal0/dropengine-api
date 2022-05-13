@@ -5,13 +5,10 @@ import {
   mockInitial,
   mockMiddleText,
 } from "@sales/mocks";
-import {
-  ISalesLineItemProps,
-  ISalesVariant,
-  ISalesVariantProps,
-  Personalization,
-  SalesPersonalizationRule,
-} from "..";
+import { ISalesLineItemProps } from "../SalesLineItem";
+import { ISalesVariantProps, SalesPersonalizationRule } from "../SalesVariant";
+import { Personalization } from "./Personalization";
+
 const mockOrderId = "000000000000000000000002";
 
 describe("Personalization", () => {
@@ -45,8 +42,6 @@ describe("Personalization", () => {
             { name: mockInitial, value: "M" },
           ],
           flags: [],
-          createdAt: undefined,
-          updatedAt: undefined,
         };
         const flags = Personalization.validate(mockProps);
         const expected = [
@@ -116,8 +111,6 @@ describe("Personalization", () => {
             { name: mockInitial, value: "M" },
           ],
           flags: [],
-          createdAt: undefined,
-          updatedAt: undefined,
         };
         const flags = Personalization.validate(mockProps);
         const expected = [];

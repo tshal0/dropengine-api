@@ -27,6 +27,8 @@ import {
 import { MongoDomainEventRepository } from "./database/mongo/repositories/MongoDomainEventRepository";
 import { LoadEvents } from "./useCases/LoadEvents";
 import { UpdateCustomerInfo } from "./useCases/UpdateCustomerInfo";
+import { HandleMyEasySuiteOrderPlaced } from "./useCases/HandleMyEasySuiteOrderPlaced";
+import { AuthModule } from "@auth/auth.module";
 
 @Module({
   imports: [
@@ -42,6 +44,7 @@ import { UpdateCustomerInfo } from "./useCases/UpdateCustomerInfo";
     ConfigModule,
     CacheModule.register(),
     CatalogModule,
+    AuthModule
   ],
   controllers: [OrdersController],
   providers: [
@@ -57,6 +60,7 @@ import { UpdateCustomerInfo } from "./useCases/UpdateCustomerInfo";
     UpdateShippingAddress,
     LoadEvents,
     UpdateCustomerInfo,
+    HandleMyEasySuiteOrderPlaced,
   ],
 })
 export class SalesModule {}

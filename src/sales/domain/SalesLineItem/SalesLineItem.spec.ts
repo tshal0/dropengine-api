@@ -10,9 +10,8 @@ import {
 import { cloneDeep } from "lodash";
 import moment from "moment";
 import { Types } from "mongoose";
-
-import { SalesLineItem } from ".";
-import { SalesPersonalizationRule } from "..";
+import { SalesPersonalizationRule } from "../SalesVariant";
+import { SalesLineItem } from "./SalesLineItem";
 
 const nowStr = "2021-01-01T00:00:00.000Z";
 jest

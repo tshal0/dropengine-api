@@ -4,7 +4,7 @@ import { MongoQueryParams } from "@shared/mongo";
 import moment from "moment";
 import { MongoOrdersRepository } from "./mongo/repositories/MongoOrdersRepository";
 import { QueryOrdersDto } from "../api/model";
-import { SalesOrder } from "../domain";
+import { SalesOrder } from "@sales/domain/SalesOrder";
 
 export enum SalesOrderQueryError {
   FailedToLoadSalesOrdersFromDb = "FailedToLoadSalesOrderFromDb",

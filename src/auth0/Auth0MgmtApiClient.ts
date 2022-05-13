@@ -34,6 +34,11 @@ export class Auth0MgmtApiClient implements IAuth0MgmtApiClient {
   private readonly logger: Logger = new Logger(Auth0MgmtApiClient.name);
 
   constructor(private http: HttpService) {}
+  async getAdminByEmail(): Promise<Auth0User> {
+    let users = await this.getUsersByEmail(`thomas@drop-engine.com`);
+    let user = users[0];
+    return user;
+  }
   async getUsersByEmail(email: string): Promise<Auth0User[]> {
     const resp$ = await this.http
       .get(`/api/v2/users-by-email?email=${email}`)

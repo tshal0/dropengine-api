@@ -1,7 +1,7 @@
 import { IProductTypeProps } from "@catalog/domain/interfaces";
 import { Type } from "class-transformer";
 import { IsNotEmpty, IsNotEmptyObject, IsOptional } from "class-validator";
-import { IMESProductVariant } from "@myeasysuite/dto/MESProductVariant";
+import { MyEasySuiteProductVariant } from "@myeasysuite/dto/MESProductVariant";
 
 export type VariantDimensionUnits = "in" | "mm";
 
@@ -67,7 +67,7 @@ export class CreateProductVariantDto {
   productType?: IProductTypeProps;
 
   public static fromMyEasySuite(
-    v: IMESProductVariant
+    v: MyEasySuiteProductVariant
   ): CreateProductVariantDto {
     const option1 = {
       enabled: v.option_1?.length ? true : false,

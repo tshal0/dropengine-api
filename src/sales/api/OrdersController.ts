@@ -166,9 +166,4 @@ export class OrdersController {
     let order = await this.create.execute(useCaseDto);
     return res.status(HttpStatus.CREATED).json(order.props());
   }
-
-  public validateUserAuthorization(
-    user: AuthenticatedUser,
-    accountId: string
-  ) {}
 }

@@ -1,6 +1,4 @@
 import { now } from "@shared/mocks";
-import { CreateOrderDto } from "@sales/dto";
-import { SalesOrder } from "@sales/domain";
 import {
   mockCatalogVariant1,
   mockCustomer,
@@ -15,7 +13,6 @@ import {
   mockLineItem,
 } from "@sales/mocks";
 import { cloneDeep } from "lodash";
-import { AuthenticatedUser } from "@shared/decorators";
 import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
 
 export function newMockCreateSalesOrderDto() {

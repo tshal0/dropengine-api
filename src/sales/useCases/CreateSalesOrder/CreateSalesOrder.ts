@@ -1,7 +1,7 @@
 import { Injectable, Logger, Scope } from "@nestjs/common";
 import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
-import { SalesOrder, SalesOrderPlaced } from "@sales/domain";
+import { SalesOrder } from "@sales/domain/SalesOrder";
 import { CreateOrderLineItemApiDto } from "@sales/api";
 import { CatalogService, CatalogVariant } from "@catalog/services";
 
@@ -20,6 +20,7 @@ import { CreateSalesOrderError } from "./CreateSalesOrderError";
 import { CreateSalesOrderException } from "./CreateSalesOrderException";
 import { FailedToPlaceSalesOrderException } from "./FailedToPlaceSalesOrderException";
 import { generateValidationError } from "./generateValidationError";
+import { SalesOrderPlaced } from "@sales/domain/DomainEvents/OrderPlaced";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateSalesOrder

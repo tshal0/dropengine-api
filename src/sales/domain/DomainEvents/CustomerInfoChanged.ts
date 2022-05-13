@@ -1,4 +1,4 @@
-import { EditCustomerDto } from "@sales/api";
+import { EditCustomerDto } from "@sales/api/model/EditCustomerDto";
 import { SalesOrderEvent, SalesOrderEventName } from "./SalesOrderEvent";
 
 

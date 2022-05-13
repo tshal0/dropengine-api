@@ -1,4 +1,4 @@
-import { SalesOrder } from "@sales/domain";
+import { SalesOrder } from "@sales/domain/SalesOrder";
 import { AddressDto } from "@sales/dto";
 
 export class OrderResponseDto {

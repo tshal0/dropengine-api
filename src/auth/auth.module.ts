@@ -24,6 +24,7 @@ import { RemoveMembersUseCase } from "./useCases/Account/RemoveMember";
 import { RemoveAllUserAccountsUseCase } from "./useCases/User/RemoveAllUserAccounts";
 import { RemoveStoreUseCase } from "./useCases/Account/RemoveStore";
 import { StoresController } from "./api/StoresController";
+import { AuthService } from "./auth.service";
 
 @Module({
   controllers: [UsersController, AccountsController, StoresController],
@@ -33,7 +34,6 @@ import { StoresController } from "./api/StoresController";
     AzureTelemetryModule,
     ConfigModule,
     CacheModule.register(),
-    AzureStorageModule,
     Auth0Module,
   ],
   providers: [
@@ -52,6 +52,8 @@ import { StoresController } from "./api/StoresController";
     RemoveMembersUseCase,
     AddStoreUseCase,
     RemoveStoreUseCase,
+    AuthService,
   ],
+  exports: [AuthService],
 })
 export class AuthModule {}

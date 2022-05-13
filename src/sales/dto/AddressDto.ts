@@ -1,4 +1,4 @@
-import { ISalesOrderAddress } from "@sales/domain";
+import { ISalesOrderAddress } from "@sales/domain/ValueObjects";
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class AddressDto {

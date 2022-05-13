@@ -20,6 +20,8 @@ import {
   loadAccessToken,
 } from "@shared/utils";
 import safeJsonStringify from "safe-json-stringify";
+import { AuthModule } from "@auth/auth.module";
+import { HandleOrderPlaced } from "./useCases/HandleOrderPlaced";
 
 export abstract class MES {
   static readonly MES_API_URL: string = `MES_API_URL`;
@@ -41,7 +43,7 @@ export abstract class MES {
 }
 
 @Module({
-  providers: [MyEasySuiteClient],
+  providers: [MyEasySuiteClient, HandleOrderPlaced],
   exports: [MyEasySuiteClient],
   controllers: [MyEasySuiteController],
   imports: [
@@ -115,6 +117,7 @@ export abstract class MES {
     }),
     ConfigModule,
     CacheModule.register(),
+    AuthModule,
   ],
 })
 export class MyEasySuiteModule implements OnModuleInit {

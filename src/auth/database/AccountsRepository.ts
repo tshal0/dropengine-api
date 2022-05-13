@@ -165,7 +165,7 @@ export class AccountsRepository {
     dbe: DbAccount
   ): Promise<Result<Account>> {
     await repo.persistAndFlush(dbe);
-    let result = Account.db(dbe);
+    let result = Account.load(dbe);
     return result;
   }
   private async create(props: IAccountProps): Promise<Result<Account>> {
@@ -213,7 +213,7 @@ export class AccountsRepository {
 
       let entities = await repo.find(query);
 
-      let props = entities.map((e) => Account.db(e).value());
+      let props = entities.map((e) => Account.load(e).value());
       return Result.ok(props);
     } catch (error) {
       //TODO: FailedToFindAllAccounts
@@ -241,7 +241,7 @@ export class AccountsRepository {
       if (!dbe.stores.isInitialized()) {
         await dbe.stores.init();
       }
-      return Account.db(dbe);
+      return Account.load(dbe);
     }
 
     throw new EntityNotFoundException(`AccountNotFound`, `${id}`);
@@ -254,9 +254,13 @@ export class AccountsRepository {
     );
 
     if (dbe) {
-      return Account.db(dbe);
+      return Account.load(dbe);
     }
 
-    throw new EntityNotFoundException(`AccountNotFound`, companyCode.value());
+    const code = companyCode.value();
+    return Result.fail<Account>(
+      new ResultError(new Error(`AccountNotFound '${code}'`)),
+      code
+    );
   }
 }

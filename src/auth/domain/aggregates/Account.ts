@@ -175,7 +175,7 @@ export class Account extends IAggregate<IAccountProps, IAccount, DbAccount> {
 
     return Result.ok(account);
   }
-  public static db(dbe: DbAccount): Result<Account> {
+  public static load(dbe: DbAccount): Result<Account> {
     // Validate DTO
     let results = {
       id: AccountId.from(dbe.id),

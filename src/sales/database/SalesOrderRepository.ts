@@ -11,12 +11,13 @@ import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.excep
 
 import { MongoOrdersRepository } from "./mongo/repositories/MongoOrdersRepository";
 
-import { ISalesOrderProps, SalesOrder, SalesOrderEvent } from "../domain";
 import { MongoSalesOrder } from "./mongo";
 import { compact } from "lodash";
 import { MongoDomainEventRepository } from "./mongo/repositories/MongoDomainEventRepository";
 import { MongoDomainEvent } from "./mongo/schemas/MongoDomainEvent";
 import { EventEmitter2 } from "@nestjs/event-emitter";
+import { SalesOrderEvent } from "@sales/domain/DomainEvents/SalesOrderEvent";
+import { ISalesOrderProps, SalesOrder } from "@sales/domain/SalesOrder";
 
 export class SalesOrderNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -101,6 +102,12 @@ export class SalesOrderRepository {
     private _bus: EventEmitter2
   ) {}
 
+  public async exists(id: string): Promise<boolean> {
+    return await this._orders.exists({ id });
+  }
+  public async existsWithName(name: string): Promise<boolean> {
+    return await this._orders.exists({ orderName: name });
+  }
   public async load(id: string): Promise<SalesOrder> {
     let doc = await this._orders.findById(id);
     if (doc) return SalesOrder.load(doc);

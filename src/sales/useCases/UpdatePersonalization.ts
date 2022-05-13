@@ -1,7 +1,7 @@
 import { CatalogService } from "@catalog/services";
 import { Injectable, Scope, Logger } from "@nestjs/common";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
-import { SalesLineItem, SalesOrder } from "@sales/domain";
+import { SalesOrder } from "@sales/domain/SalesOrder";
 import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
 import { UpdatePersonalizationDto } from "../dto/UpdatePersonalizationDto";
