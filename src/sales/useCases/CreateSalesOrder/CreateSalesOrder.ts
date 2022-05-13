@@ -74,7 +74,8 @@ export class CreateSalesOrder
 
       return await this._repo.save(order);
     } catch (error) {
-      this.logger.error(safeJsonStringify(error, null, 2));
+      if (process.env.DEBUG)
+        this.logger.error(safeJsonStringify(error, null, 2));
       if (weRecognize(error)) throw error;
       else {
         throw new FailedToPlaceSalesOrderException(
@@ -111,7 +112,7 @@ export class CreateSalesOrder
     if (validationErrors.length) {
       const reason = `Validation errors found.`;
       const valErrors = generateValidationError(validationErrors);
-      console.log(safeJsonStringify(valErrors, null, 2));
+      if (process.env.DEBUG) console.log(safeJsonStringify(valErrors, null, 2));
       throw new FailedToPlaceSalesOrderException(
         createOrderDto,
         reason,

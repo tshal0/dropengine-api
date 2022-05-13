@@ -1,5 +1,3 @@
-import { AuthService } from "@auth/auth.service";
-
 import {
   Injectable,
   Scope,
@@ -7,13 +5,16 @@ import {
   InternalServerErrorException,
 } from "@nestjs/common";
 import { EventEmitter2, OnEvent } from "@nestjs/event-emitter";
+import { cloneDeep } from "lodash";
+
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 import { CustomerDto } from "@sales/dto";
 import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
 import { CreateSalesOrderLineItemDto } from "@sales/dto/CreateSalesOrderLineItemDto";
 import { UseCase } from "@shared/domain";
-import { cloneDeep } from "lodash";
 import { SalesOrder } from "@sales/domain/SalesOrder";
+import { AuthService } from "@auth/auth.service";
+
 import { CreateSalesOrder } from "./CreateSalesOrder";
 import {
   MyEasySuiteOrderPlaced,
@@ -65,19 +66,19 @@ export class HandleMyEasySuiteOrderPlaced
       address3: "",
       phone: "",
     };
-    const billingAddress = {
-      ...order.billing_address,
-      countryCode: order.billing_address.country_code,
-      provinceCode: order.billing_address.province_code,
-      firstName: order.billing_address.first_name,
-      lastName: order.billing_address.last_name,
-      address3: "",
-      phone: "",
-    };
-    sdto.shippingAddress = shippingAddress;
-    sdto.billingAddress = order.billing_address
-      ? billingAddress
+    const billingAddress = order.billing_address
+      ? {
+          ...order.billing_address,
+          countryCode: order.billing_address.country_code,
+          provinceCode: order.billing_address.province_code,
+          firstName: order.billing_address.first_name,
+          lastName: order.billing_address.last_name,
+          address3: "",
+          phone: "",
+        }
       : cloneDeep(shippingAddress);
+    sdto.shippingAddress = shippingAddress;
+    sdto.billingAddress = billingAddress;
     let lineItems: CreateSalesOrderLineItemDto[] = [];
     for (let i = 0; i < order.line_items.length; i++) {
       const li = order.line_items[i];

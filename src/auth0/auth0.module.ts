@@ -67,9 +67,10 @@ export abstract class AUTH0 {
 
           try {
             accessToken = await loadAccessToken(tokenOptions);
-            console.log(
-              `New Auth0ManagementAPI Token Received: ${accessToken?.length}`
-            );
+            if (process.env.DEBUG)
+              console.log(
+                `New Auth0ManagementAPI Token Received: ${accessToken?.length}`
+              );
             cache.set(AUTH0.AUTH0_MGMT_ACCESS_TOKEN, accessToken, {
               ttl: 3600,
             });
@@ -78,11 +79,13 @@ export abstract class AUTH0 {
             cache.set(AUTH0.AUTH0_MGMT_ACCESS_TOKEN, accessToken, {
               ttl: 3600,
             });
-            console.error(
-              `New Auth0ManagementAPI Access Token Failed To Load.`,
-              error
-            );
-            console.debug(safeJsonStringify(tokenOptions, null, 2));
+            if (process.env.DEBUG)
+              console.error(
+                `New Auth0ManagementAPI Access Token Failed To Load.`,
+                error
+              );
+            if (process.env.DEBUG)
+              console.debug(safeJsonStringify(tokenOptions, null, 2));
           }
         }
         const auth0MgmtHeaders = {
@@ -120,7 +123,8 @@ export class Auth0Module implements OnModuleInit {
     const axios = this.http.axiosRef;
     const logger = this.logger;
     axios.interceptors.request.use(function (config) {
-      logger.log(`AUTH0 REQUEST: ${config.baseURL}${config.url}`);
+      if (process.env.DEBUG)
+        logger.log(`AUTH0 REQUEST: ${config.baseURL}${config.url}`);
 
       // Please don't tell my Typescript compiler...
       config["metadata"] = { ...config["metadata"], startDate: new Date() };
