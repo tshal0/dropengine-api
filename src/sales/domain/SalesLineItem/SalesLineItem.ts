@@ -80,7 +80,6 @@ export class SalesLineItem extends IAggregate<
     this._value.personalization = personalization;
     let flags = this.validatePersonalization();
     if (flags.length) {
-      console.error(flags);
       throw new InvalidPersonalizationException(
         { lineNumber: this.lineNumber, personalization, flags },
         `Flagged for validation errors.`,

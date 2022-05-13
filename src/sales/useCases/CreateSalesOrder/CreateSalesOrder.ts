@@ -73,7 +73,6 @@ export class CreateSalesOrder
 
       return await this._repo.save(order);
     } catch (error) {
-      console.error(error);
       this.logger.error(safeJsonStringify(error, null, 2));
       if (weRecognize(error)) throw error;
       else {

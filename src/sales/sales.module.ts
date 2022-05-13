@@ -25,6 +25,7 @@ import {
   MongoDomainEventSchema,
 } from "./database/mongo/schemas/MongoDomainEvent";
 import { MongoDomainEventRepository } from "./database/mongo/repositories/MongoDomainEventRepository";
+import { LoadEvents } from "./useCases/LoadEvents";
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { MongoDomainEventRepository } from "./database/mongo/repositories/MongoD
     DeleteSalesOrder,
     UpdatePersonalization,
     UpdateShippingAddress,
+    LoadEvents,
   ],
 })
 export class SalesModule {}

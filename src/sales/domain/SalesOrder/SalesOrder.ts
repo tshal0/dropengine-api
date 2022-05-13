@@ -3,7 +3,7 @@ import { ResultError, IAggregate, Result } from "@shared/domain";
 import { ISalesOrder, ISalesOrderProps } from "./ISalesOrder";
 import { CreateOrderDto } from "@sales/dto";
 import { AccountId } from "@auth/domain/valueObjects/AccountId";
-import { EditShippingAddressDto } from "@sales/api";
+import { EditCustomerDto, EditShippingAddressDto } from "@sales/api";
 import { SalesLineItem } from "../SalesLineItem";
 import {
   SalesOrderAddress,
@@ -18,10 +18,19 @@ import { InvalidSalesOrder } from "./InvalidSalesOrder";
 import { SalesOrderError } from "./SalesOrderError";
 import { InvalidShippingAddressException } from "./InvalidShippingAddressException";
 import { Types } from "mongoose";
-import { PersonalizationChanged, SalesOrderEvent } from "../DomainEvents";
+import {
+  CustomerInfoChanged,
+  PersonalizationChanged,
+  SalesOrderCanceled,
+  SalesOrderEvent,
+  ShipmentAdded,
+  ShippingAddressChanged,
+} from "../DomainEvents";
 import { cloneDeep } from "lodash";
 import { MongoSalesOrder } from "@sales/database/mongo";
 import { UpdatePersonalizationDto } from "@sales/dto/UpdatePersonalizationDto";
+import { AddShipmentDto } from "@sales/dto/AddShipmentDto";
+import { CancelOrderDto } from "@sales/dto/CancelOrderDto";
 
 export class SalesOrder extends IAggregate<
   ISalesOrderProps,
@@ -104,8 +113,14 @@ export class SalesOrder extends IAggregate<
     }
     this._entity.shippingAddress = dto.shippingAddress;
     this._value.shippingAddress = result.value();
+
+    const $e = new ShippingAddressChanged(this.id, {
+      shippingAddress: dto.shippingAddress,
+    });
+    this.raise($e);
     return this;
   }
+
   public async updatePersonalization(
     dto: UpdatePersonalizationDto
   ): Promise<SalesOrder> {
@@ -116,8 +131,32 @@ export class SalesOrder extends IAggregate<
     let eli = this._entity.lineItems.find(
       (li) => li.lineNumber == dto.lineNumber
     );
-    eli.personalization = dto.personalization;
+    eli.personalization = lineItem.entity().personalization;
+
     let $e = new PersonalizationChanged(this.id, dto);
+    this.raise($e);
+    return this;
+  }
+
+  public async updateCustomerInfo(dto: EditCustomerDto): Promise<SalesOrder> {
+    this._entity.customer.email = dto.email;
+    this._entity.customer.name = dto.name;
+
+    let $e = new CustomerInfoChanged(this.id, dto);
+    this.raise($e);
+    return this;
+  }
+
+  public async addShipment(dto: AddShipmentDto): Promise<SalesOrder> {
+    //TODO: AddShipment
+    let $e = new ShipmentAdded(this.id, dto);
+    this.raise($e);
+    return this;
+  }
+
+  public async cancelOrder(dto: CancelOrderDto): Promise<SalesOrder> {
+    this._entity.orderStatus = OrderStatus.CANCELED;
+    let $e = new SalesOrderCanceled(this.id, dto);
     this.raise($e);
     return this;
   }
@@ -157,13 +196,12 @@ export class SalesOrder extends IAggregate<
     }
     // Timestamp
     const now = moment().toDate();
-    const orderNumber = results.number.value();
     const salesOrderId = SalesOrderID.from(null).value();
     const value: ISalesOrder = {
       id: salesOrderId,
       accountId: results.accountId.value(),
       orderName: dto.orderName,
-      orderNumber: orderNumber,
+      orderNumber: results.number.value(),
       orderStatus: results.status.value(),
       customer: results.customer.value(),
       shippingAddress: results.shippingAddress.value(),
@@ -203,11 +241,9 @@ export class SalesOrder extends IAggregate<
     results.shippingAddress = await SalesOrderAddress.from(doc.shippingAddress);
     results.billingAddress = await SalesOrderAddress.from(doc.billingAddress);
     // Errors
-    const lineItems = doc.lineItems
-      .filter((li) => !(li instanceof Types.ObjectId))
-      .map((li) => {
-        return SalesLineItem.load(li);
-      });
+    const lineItems = doc.lineItems.map((li) => {
+      return SalesLineItem.load(li);
+    });
 
     let errors = Object.values(results)
       .filter((r) => r.isFailure)
@@ -217,11 +253,10 @@ export class SalesOrder extends IAggregate<
       throw SalesOrder.failedToLoadSalesOrder(errors, doc);
     }
 
-    const orderNumber = results.number.value();
     const props: ISalesOrder = {
       id: SalesOrderID.from(doc._id).value(),
       accountId: results.accountId.value(),
-      orderNumber: orderNumber,
+      orderNumber: results.number.value(),
       orderName: doc.orderName,
       orderStatus: results.status.value(),
       customer: results.customer.value(),

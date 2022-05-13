@@ -5,6 +5,7 @@ import { mockOrderId, now } from "../../dto/CreateOrderDto.mock";
 import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
 import { ShippingAddressChanged } from "./ShippingAddressChanged";
 import { UpdateShippingAddressDto } from "@sales/useCases";
+import { EditShippingAddressDto } from "@sales/api";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
 
@@ -14,8 +15,7 @@ describe("ShippingAddressChanged", () => {
     it("should generate a valid ShippingAddressChanged event", () => {
       // GIVEN valid DTO
 
-      const mockDto = new UpdateShippingAddressDto();
-      mockDto.orderId = mockOrderId;
+      const mockDto = new EditShippingAddressDto();
       mockDto.shippingAddress = mockAddress;
       // WHEN
 

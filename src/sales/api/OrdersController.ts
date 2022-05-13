@@ -48,6 +48,7 @@ import { UpdatePersonalization } from "@sales/useCases/UpdatePersonalization";
 import { UpdateShippingAddress } from "@sales/useCases";
 import { FailedToPlaceSalesOrderException } from "@sales/useCases/CreateSalesOrder/FailedToPlaceSalesOrderException";
 import { CreateSalesOrderError } from "@sales/useCases/CreateSalesOrder/CreateSalesOrderError";
+import { LoadEvents } from "@sales/useCases/LoadEvents";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
@@ -62,7 +63,8 @@ export class OrdersController {
     private readonly query: QuerySalesOrders,
     private readonly remove: DeleteSalesOrder,
     private readonly updateShipping: UpdateShippingAddress,
-    private readonly updatePersonalization: UpdatePersonalization
+    private readonly updatePersonalization: UpdatePersonalization,
+    private readonly loadEvents: LoadEvents
   ) {}
 
   @Get(":id")
@@ -70,6 +72,11 @@ export class OrdersController {
     let result = await this.load.execute(id);
     const aggregate = result;
     return aggregate.props();
+  }
+  @Get(":id/events")
+  async getEvents(@Param("id") id: string) {
+    let result = await this.loadEvents.execute(id);
+    return result;
   }
   @Get()
   async get(@Query() query: QueryOrdersDto) {
