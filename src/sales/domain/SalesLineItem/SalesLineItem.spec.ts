@@ -526,8 +526,6 @@ describe("LineItem", () => {
             },
           ],
           flags: [],
-          createdAt: now,
-          updatedAt: now,
         };
         expect(props).toEqual(expected);
       });

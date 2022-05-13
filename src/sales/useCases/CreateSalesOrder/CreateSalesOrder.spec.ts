@@ -614,8 +614,6 @@ describe("CreateSalesOrder", () => {
               },
             ],
             flags: [],
-            createdAt: now,
-            updatedAt: now,
           },
         ],
         customer: dto.customer,
