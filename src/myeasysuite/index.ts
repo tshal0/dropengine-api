@@ -1,2 +1,2 @@
-export * from './MyEasySuiteClient';
-export * from './MyEasySuiteModule';
+export * from './myeasysuite.client';
+export * from './myeasysuite.module';

@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
 import https from "https";
 import { Cache } from "cache-manager";
-import { MyEasySuiteClient } from "./MyEasySuiteClient";
+import { MyEasySuiteClient } from "./myeasysuite.client";
 import { MyEasySuiteController } from "./api/MyEasySuiteController";
 import {
   AuthPayloadParams,
@@ -117,7 +117,6 @@ export abstract class MES {
     }),
     ConfigModule,
     CacheModule.register(),
-    AuthModule,
   ],
 })
 export class MyEasySuiteModule implements OnModuleInit {

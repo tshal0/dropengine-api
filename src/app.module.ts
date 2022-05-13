@@ -21,7 +21,7 @@ import { MikroOrmModule, MikroOrmModuleOptions } from "@mikro-orm/nestjs";
 import { CatalogModule } from "./catalog/catalog.module";
 import { Auth0Module } from "@auth0/auth0.module";
 import { SalesModule } from "./sales/sales.module";
-import { MyEasySuiteModule } from "./myeasysuite/MyEasySuiteModule";
+import { MyEasySuiteModule } from "./myeasysuite/myeasysuite.module";
 import { APP_FILTER } from "@nestjs/core";
 import { AllExceptionsFilter } from "@shared/filters";
 import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";

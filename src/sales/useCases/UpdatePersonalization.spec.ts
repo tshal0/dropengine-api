@@ -24,17 +24,6 @@ import { Model } from "mongoose";
 import safeJsonStringify from "safe-json-stringify";
 import { UpdatePersonalization } from "./UpdatePersonalization";
 spyOnDate();
-class NoErrorThrownError extends Error {}
-
-const getAsyncError = async <TError>(call: () => unknown): Promise<TError> => {
-  try {
-    await call();
-
-    throw new NoErrorThrownError();
-  } catch (error: unknown) {
-    return error as TError;
-  }
-};
 
 describe("UpdatePersonalization", () => {
   let module: TestingModule;

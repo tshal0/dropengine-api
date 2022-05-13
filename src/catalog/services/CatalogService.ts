@@ -13,7 +13,7 @@ import {
 } from "@catalog/database";
 import { SyncVariant } from "@catalog/useCases/SyncVariant";
 import { AzureTelemetryService } from "@shared/modules";
-import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
+import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import { ProductVariant, VariantSKU } from "@catalog/domain";
 import { SyncVariantDto } from "@catalog/dto";
 import { Result, ResultError } from "@shared/domain";

@@ -3,7 +3,7 @@ import { MyEasySuiteOrderPlaced } from "@myeasysuite/domain/events";
 import { Injectable, Scope, Logger } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { UseCase } from "@shared/domain";
-import { MyEasySuiteClient } from "../MyEasySuiteClient";
+import { MyEasySuiteClient } from "../myeasysuite.client";
 
 export class HandleOrderPlacedDto {
   orderId: string;
@@ -14,7 +14,6 @@ export class HandleOrderPlaced implements UseCase<HandleOrderPlacedDto, void> {
   private readonly logger: Logger = new Logger(HandleOrderPlaced.name);
   constructor(
     private readonly _client: MyEasySuiteClient,
-    private readonly _auth: AuthService,
     private _bus: EventEmitter2
   ) {}
 

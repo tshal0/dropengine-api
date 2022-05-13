@@ -84,13 +84,14 @@ export interface IMyEasySuiteProductVariant {
 }
 
 export interface IMyEasySuiteCustomizeText {
-  field_length: string;
+  field_length?: string;
   field_pattern: string;
   field_type: string;
   is_required: boolean;
   label: string;
-  pattern_message: string;
+  pattern_message?: string;
   placeholder: string;
+  option_list?: string
 }
 
 export interface IMyEasySuiteSVG {

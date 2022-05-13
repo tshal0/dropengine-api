@@ -13,7 +13,7 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { Versions } from "@shared/Constants";
-import { MyEasySuiteClient } from "../MyEasySuiteClient";
+import { MyEasySuiteClient } from "../myeasysuite.client";
 
 @Controller({ path: "myeasysuite", version: Versions.v1 })
 export class MyEasySuiteController {

@@ -3,7 +3,7 @@ import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
 import { AzureTelemetryModule } from "@shared/modules";
-import { MyEasySuiteModule } from "@myeasysuite/MyEasySuiteModule";
+import { MyEasySuiteModule } from "@myeasysuite/myeasysuite.module";
 import { ProductsController } from "./api/ProductsController";
 import { ProductTypesController } from "./api/ProductTypesController";
 import { ProductVariantsController } from "./api/ProductVariantsController";

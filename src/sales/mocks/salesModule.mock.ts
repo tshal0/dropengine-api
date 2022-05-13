@@ -27,7 +27,7 @@ import { rootMongooseTestModule } from "@jestconfig/mongodb-memory-server";
 import { TraceTelemetry } from "applicationinsights/out/Declarations/Contracts";
 
 import safeJsonStringify from "safe-json-stringify";
-import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
+import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import { UpdatePersonalization } from "../useCases/UpdatePersonalization";
 import { MongoOrdersRepository } from "@sales/database/mongo/repositories/MongoOrdersRepository";
 import { SalesOrderQuery } from "@sales/database/SalesOrderQueries";

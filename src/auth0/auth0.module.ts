@@ -15,7 +15,7 @@ import { Auth0MgmtApiClient } from "./Auth0MgmtApiClient";
 import { Cache } from "cache-manager";
 import { WinstonModule, WINSTON_MODULE_PROVIDER } from "nest-winston";
 import safeJsonStringify from "safe-json-stringify";
-import { MES } from "@myeasysuite/MyEasySuiteModule";
+import { MES } from "@myeasysuite/myeasysuite.module";
 export abstract class AUTH0 {
   static readonly AUTH0_MGMT_API_URL: string = `AUTH0_MGMT_API_URL`;
 
