@@ -30,9 +30,7 @@ export class MongoOrdersRepository extends BaseMongoRepository<MongoSalesOrder> 
   }
   async findById(id: string): Promise<MongoSalesOrder> {
     return await this.handle<QueryWithHelpers<any, any>>(() =>
-      this._model
-        .findById(id)
-        .populate("lineItems", null, MongoSalesLineItem.name)
+      this._model.findById(id)
     );
   }
 

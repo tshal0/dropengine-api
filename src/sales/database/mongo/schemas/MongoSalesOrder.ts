@@ -5,7 +5,10 @@ import { IMongoEntity } from "../IMongoEntity";
 
 import { MongoAddress, MongoAddressSchema } from "./MongoAddress";
 import { MongoCustomer, MongoCustomerSchema } from "./MongoCustomer";
-import { MongoSalesLineItem } from "./MongoSalesLineItem";
+import {
+  MongoSalesLineItem,
+  MongoSalesLineItemSchema,
+} from "./MongoSalesLineItem";
 
 @Schema({ collection: "orders", id: true, toObject: { virtuals: true } })
 export class MongoSalesOrder extends IMongoEntity {
@@ -23,7 +26,7 @@ export class MongoSalesOrder extends IMongoEntity {
   orderName?: string;
 
   @Prop({
-    type: [mongoose.Schema.Types.ObjectId],
+    type: [MongoSalesLineItemSchema],
     required: true,
     ref: MongoSalesLineItem.name,
   })

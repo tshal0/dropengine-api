@@ -11,8 +11,8 @@ import {
   MongoSalesVariantSchema,
 } from "./MongoSalesVariant";
 
-@Schema({ collection: "lineItems", toObject: { virtuals: true } })
-export class MongoSalesLineItem extends IMongoEntity {
+@Schema({ toObject: { virtuals: true } })
+export class MongoSalesLineItem {
   @Prop()
   lineNumber: number;
   @Prop()

@@ -4,11 +4,10 @@ import { HttpStatus, InternalServerErrorException } from "@nestjs/common";
 import { OrderFlag } from "../ValueObjects";
 import { SalesLineItemError } from "./SalesLineItem";
 
-
 export class InvalidPersonalizationException extends InternalServerErrorException {
   constructor(
     dto: {
-      lineItemId: string;
+      lineNumber: number;
       personalization: ILineItemProperty[];
       flags: OrderFlag[];
     },
@@ -19,21 +18,22 @@ export class InvalidPersonalizationException extends InternalServerErrorExceptio
     super(
       {
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: `Failed to update personalization for line item ` +
-          `'${dto.lineItemId}': ` +
+        message:
+          `Failed to update personalization for line item ` +
+          `'${dto.lineNumber}': ` +
           `${reason}`,
         timestamp: moment().toDate(),
         error: type,
         details: {
-          lineItemId: dto.lineItemId,
+          lineNumber: dto.lineNumber,
           personalization: dto.personalization,
           reason,
           inner,
         },
       },
       `Failed to update personalization for line item ` +
-      `'${dto.lineItemId}': ` +
-      `${reason}`
+        `'${dto.lineNumber}': ` +
+        `${reason}`
     );
   }
 }

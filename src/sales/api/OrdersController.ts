@@ -76,15 +76,15 @@ export class OrdersController {
     let result = await this.query.execute(query);
     return new QueryOrdersResponseDto(query, result);
   }
-  @Patch(":id/lineItems/:lid/personalization")
+  @Patch(":id/lineItems/:lineNumber/personalization")
   async patchPersonalization(
     @Param("id") id: string,
-    @Param("lid") lid: string,
+    @Param("lineNumber") lineNumber: number,
     @Body() dto: EditPersonalizationDto
   ) {
     let order = await this.updatePersonalization.execute({
       orderId: id,
-      lineItemId: lid,
+      lineNumber,
       personalization: dto.personalization,
     });
     return order.props();

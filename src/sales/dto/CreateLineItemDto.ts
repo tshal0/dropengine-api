@@ -1,12 +1,5 @@
 import { CatalogVariant } from "@catalog/services";
-import { Type } from "class-transformer";
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNotEmptyObject,
-  IsNumber,
-  ValidateNested,
-} from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber } from "class-validator";
 import { LineItemPropertyDto } from "./LineItemPropertyDto";
 
 export class CreateLineItemDto {

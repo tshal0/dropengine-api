@@ -10,7 +10,6 @@ import {
 import { cloneDeep } from "lodash";
 import moment from "moment";
 import { Types } from "mongoose";
-import safeJsonStringify from "safe-json-stringify";
 
 import { SalesLineItem } from ".";
 import { SalesPersonalizationRule } from "..";
@@ -51,7 +50,6 @@ describe("LineItem", () => {
   };
   const mockOrderId = "000000000000000000000002";
   const mockLineItem1: MongoSalesLineItem = {
-    _id: new Types.ObjectId("000000000000000000000001"),
     lineNumber: 1,
     quantity: 1,
     variant: mockVariant,
@@ -62,8 +60,6 @@ describe("LineItem", () => {
       { name: mockInitial, value: "M" },
     ],
     flags: [],
-    updatedAt: now,
-    createdAt: now,
   };
   describe("updatePersonalization", () => {
     it("given valid personalization, should update both value and entity personalization", async () => {
@@ -78,7 +74,6 @@ describe("LineItem", () => {
 
       let props = lineItem.props();
       let expected = {
-        id: "000000000000000000000001",
         lineNumber: 1,
         quantity: 1,
         variant: {
@@ -167,8 +162,6 @@ describe("LineItem", () => {
           { name: mockInitial, value: "M" },
         ],
         flags: [],
-        createdAt: now,
-        updatedAt: now,
       };
       expect(props).toEqual(expected);
     });
@@ -179,11 +172,11 @@ describe("LineItem", () => {
         response: {
           statusCode: 500,
           message:
-            "Failed to update personalization for line item '000000000000000000000001': Flagged for validation errors.",
+            "Failed to update personalization for line item '1': Flagged for validation errors.",
           timestamp: now,
           error: "InvalidPersonalization",
           details: {
-            lineItemId: "000000000000000000000001",
+            lineNumber: 1,
             personalization: [],
             reason: "Flagged for validation errors.",
             inner: [
@@ -228,7 +221,7 @@ describe("LineItem", () => {
         },
         status: 500,
         message:
-          "Failed to update personalization for line item '000000000000000000000001': Flagged for validation errors.",
+          "Failed to update personalization for line item '1': Flagged for validation errors.",
         name: "InvalidPersonalizationException",
       };
 
@@ -259,7 +252,6 @@ describe("LineItem", () => {
         let lineItem = SalesLineItem.create(mockLineItem1);
         const props = lineItem.props();
         const expected = {
-          id: null,
           lineNumber: 1,
           quantity: 1,
           variant: {
@@ -360,8 +352,6 @@ describe("LineItem", () => {
             },
           ],
           flags: [],
-          createdAt: now,
-          updatedAt: now,
         };
         expect(props).toEqual(expected);
       });
@@ -420,7 +410,7 @@ describe("LineItem", () => {
           reason: "Failed to create LineItem. See inner error for details.",
           name: "InvalidLineItem",
           message:
-            "InvalidLineItem 'undefined' '1': Failed to create LineItem. See inner error for details.",
+            "InvalidLineItem '1': Failed to create LineItem. See inner error for details.",
         };
         const error: any = await getAsyncError(
           async () => await SalesLineItem.create(mockLineItem1)
@@ -436,7 +426,6 @@ describe("LineItem", () => {
         let lineItem = SalesLineItem.load(cloneDeep(mockLineItem1));
         const props = lineItem.props();
         const expected = {
-          id: "000000000000000000000001",
           lineNumber: 1,
           quantity: 1,
           variant: {
@@ -545,11 +534,7 @@ describe("LineItem", () => {
     });
     describe("given invalid MongoLineItem", () => {
       it("should fail", async () => {
-        const mockId = "00000000515bd494ed80cfbd";
-        const mockObjectId = new Types.ObjectId(mockId);
         const mockLineItem1: MongoSalesLineItem = {
-          _id: mockObjectId,
-          id: mockId,
           lineNumber: 1,
           quantity: 1,
           variant: null,
@@ -560,8 +545,6 @@ describe("LineItem", () => {
             { name: mockInitial, value: "M" },
           ],
           flags: [],
-          updatedAt: now,
-          createdAt: now,
         };
 
         const expected = {
@@ -577,8 +560,6 @@ describe("LineItem", () => {
             },
           ],
           value: {
-            _id: mockObjectId,
-            id: mockId,
             lineNumber: 1,
             quantity: 1,
             variant: null,
@@ -601,12 +582,10 @@ describe("LineItem", () => {
               },
             ],
             flags: [],
-            updatedAt: now,
-            createdAt: now,
           },
           reason: "Failed to load LineItem. See inner error for details.",
           name: "InvalidLineItem",
-          message: `InvalidLineItem '${mockId}' '1': Failed to load LineItem. See inner error for details.`,
+          message: `InvalidLineItem '1': Failed to load LineItem. See inner error for details.`,
         };
         const error: any = await getAsyncError(
           async () => await SalesLineItem.load(mockLineItem1)

@@ -14,7 +14,7 @@ describe("PersonalizationChanged", () => {
     it("should generate a valid PersonalizationChanged event", () => {
       // GIVEN valid DTO
       const mockDto = new UpdatePersonalizationDto();
-      mockDto.lineItemId = mockUuid1;
+      mockDto.lineNumber = 1;
       mockDto.orderId = mockUuid1;
       mockDto.personalization = [{ name: mockTopText, value: "ValidText" }];
 

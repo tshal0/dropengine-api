@@ -18,9 +18,10 @@ import { InvalidSalesOrder } from "./InvalidSalesOrder";
 import { SalesOrderError } from "./SalesOrderError";
 import { InvalidShippingAddressException } from "./InvalidShippingAddressException";
 import { Types } from "mongoose";
-import { SalesOrderEvent } from "../DomainEvents";
+import { PersonalizationChanged, SalesOrderEvent } from "../DomainEvents";
 import { cloneDeep } from "lodash";
 import { MongoSalesOrder } from "@sales/database/mongo";
+import { UpdatePersonalizationDto } from "@sales/dto/UpdatePersonalizationDto";
 
 export class SalesOrder extends IAggregate<
   ISalesOrderProps,
@@ -53,9 +54,7 @@ export class SalesOrder extends IAggregate<
    */
   public props(maxDepth?: number | undefined): ISalesOrderProps {
     const lineItems = this._value.lineItems.map((li) => li.props());
-    const identifiers: any = this._entity.lineItems.map((li) =>
-      li instanceof Types.ObjectId ? li : li.id
-    );
+
     const props: ISalesOrderProps = {
       id: this._value.id.value() || this._entity.id,
       accountId: this._value.accountId.value(),
@@ -63,7 +62,7 @@ export class SalesOrder extends IAggregate<
       orderNumber: this._value.orderNumber.value(),
       orderDate: this._value.orderDate.value(),
       orderStatus: this._value.orderStatus.value(),
-      lineItems: lineItems.length ? lineItems : identifiers,
+      lineItems: lineItems,
       customer: this._value.customer.value(),
       shippingAddress: this._value.shippingAddress.value(),
       billingAddress: this._value.billingAddress.value(),
@@ -105,6 +104,21 @@ export class SalesOrder extends IAggregate<
     }
     this._entity.shippingAddress = dto.shippingAddress;
     this._value.shippingAddress = result.value();
+    return this;
+  }
+  public async updatePersonalization(
+    dto: UpdatePersonalizationDto
+  ): Promise<SalesOrder> {
+    let lineItem = this._value.lineItems.find(
+      (li) => li.lineNumber == dto.lineNumber
+    );
+    await lineItem.updatePersonalization(dto.personalization);
+    let eli = this._entity.lineItems.find(
+      (li) => li.lineNumber == dto.lineNumber
+    );
+    eli.personalization = dto.personalization;
+    let $e = new PersonalizationChanged(this.id, dto);
+    this.raise($e);
     return this;
   }
 

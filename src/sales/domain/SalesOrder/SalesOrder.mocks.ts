@@ -21,8 +21,6 @@ const lineItemId = "000000000000000000000002";
 const lid = new Types.ObjectId(lineItemId);
 export const mockMongoSalesLineItem: MongoSalesLineItem =
   new MongoSalesLineItem();
-mockMongoSalesLineItem._id = lid;
-mockMongoSalesLineItem.id = lineItemId;
 mockMongoSalesLineItem.lineNumber = 1;
 mockMongoSalesLineItem.quantity = mockLineItem.quantity;
 mockMongoSalesLineItem.variant = mockCreateLineItemDtoVariant1;
@@ -33,8 +31,6 @@ mockMongoSalesLineItem.personalization = [
   { name: mockInitial, value: "M" },
 ];
 mockMongoSalesLineItem.flags = [];
-mockMongoSalesLineItem.updatedAt = now;
-mockMongoSalesLineItem.createdAt = now;
 
 const cdto: CreateOrderDto = new CreateOrderDto();
 cdto.accountId = mockCreateOrderDto.accountId;

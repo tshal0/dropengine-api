@@ -9,7 +9,6 @@ export const validDto = (now) => ({
   orderStatus: "OPEN",
   lineItems: [
     {
-      id: null,
       lineNumber: 1,
       quantity: 1,
       variant: {
@@ -110,8 +109,6 @@ export const validDto = (now) => ({
         },
       ],
       flags: [],
-      createdAt: now,
-      updatedAt: now,
     },
   ],
   customer: {

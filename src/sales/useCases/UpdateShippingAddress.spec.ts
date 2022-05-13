@@ -6,7 +6,6 @@ import {
   MongoSalesOrderDocument,
   MongoSalesOrder,
   MongoOrdersRepository,
-  MongoLineItemsRepository,
   MongoSalesLineItem,
 } from "@sales/database/mongo";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
@@ -44,7 +43,6 @@ describe("UpdateShippingAddress", () => {
   const modelToken = getModelToken(MongoSalesOrder.name);
   let catalogService: CatalogService;
   let ordersRepo: MongoOrdersRepository;
-  let lineItemsRepo: MongoLineItemsRepository;
   let salesRepo: SalesOrderRepository;
   beforeAll(() => {});
 
@@ -62,9 +60,7 @@ describe("UpdateShippingAddress", () => {
     catalogService = await module.resolve<CatalogService>(CatalogService);
 
     // Set up Repo
-    lineItemsRepo = await module.resolve<MongoLineItemsRepository>(
-      MongoLineItemsRepository
-    );
+
     ordersRepo = await module.resolve<MongoOrdersRepository>(
       MongoOrdersRepository
     );
@@ -89,8 +85,6 @@ describe("UpdateShippingAddress", () => {
         { name: mockBottomText, value: "ValidText" },
       ],
       flags: [],
-      updatedAt: now,
-      createdAt: now,
     };
     let mockOrder: MongoSalesOrder = {
       accountId: mockUid,
@@ -108,10 +102,7 @@ describe("UpdateShippingAddress", () => {
     let realOrder: MongoSalesOrder;
     let realLineItem: MongoSalesLineItem;
     beforeEach(async () => {
-      realLineItem = await lineItemsRepo.create(cloneDeep(mockLineItem));
-      mockOrder.lineItems = [realLineItem.id] as any;
       realOrder = await ordersRepo.create(mockOrder);
-      mockLineItem.id = realLineItem.id;
     });
     it("should update the shippingAddress and save the SalesOrder", async () => {
       // GIVEN
@@ -127,31 +118,13 @@ describe("UpdateShippingAddress", () => {
 
       const result = await service.execute(mockDto);
       const expected = {
-        id: realOrder.id,
-        accountId: "000000000000000000000001",
-        orderNumber: 1001,
-        orderDate: now,
-        orderName: "SLI-1001",
-        orderStatus: "OPEN",
-        lineItems: [
-          {
-            ...mockLineItem,
-          },
-        ],
-        customer: {
-          email: "mock.customer@email.com",
-          name: "Mock Customer",
-        },
         shippingAddress: { ...mockAddressDto },
-        billingAddress: mockAddress,
-        createdAt: now,
-        updatedAt: now,
       };
 
       // THEN
       const props = result.props();
 
-      expect(props).toStrictEqual(expected);
+      expect(props).toMatchObject(expected);
     });
   });
   // GIVEN

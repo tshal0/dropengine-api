@@ -31,7 +31,7 @@ export class InvalidLineItem implements ResultError {
     public value: any,
     public reason: string
   ) {
-    this.message = `${this.name} '${this.value?.id}' '${this.value?.lineNumber}': ${reason}`;
+    this.message = `${this.name} '${this.value?.lineNumber}': ${reason}`;
   }
 }
 
@@ -44,13 +44,12 @@ export class SalesLineItem extends IAggregate<
     super(val, doc);
   }
 
-  public get id(): string {
-    return this._value.id.value();
+  public get lineNumber(): number {
+    return this._value.lineNumber.value();
   }
 
   public props(): ISalesLineItemProps {
     let props: ISalesLineItemProps = {
-      id: this._value.id.value(),
       lineNumber: this._value.lineNumber.value(),
       quantity: this._value.quantity.value(),
       variant: this._value.variant.props(),
@@ -59,8 +58,6 @@ export class SalesLineItem extends IAggregate<
         value: p.value,
       })),
       flags: this._value.flags,
-      createdAt: this._value.createdAt,
-      updatedAt: this._value.updatedAt,
     };
     return props;
   }
@@ -83,8 +80,9 @@ export class SalesLineItem extends IAggregate<
     this._value.personalization = personalization;
     let flags = this.validatePersonalization();
     if (flags.length) {
+      console.error(flags);
       throw new InvalidPersonalizationException(
-        { lineItemId: this.id, personalization, flags },
+        { lineNumber: this.lineNumber, personalization, flags },
         `Flagged for validation errors.`,
         SalesLineItemError.InvalidPersonalization,
         flags
@@ -100,7 +98,6 @@ export class SalesLineItem extends IAggregate<
     const variantResult = SalesVariant.create(dto.variant);
 
     let results: { [key: string]: Result<any> } = {};
-    results.id = LineItemID.from(null);
     results.lineNumber = LineNumber.from(dto.lineNumber);
     results.quantity = Quantity.from(dto.quantity);
     results.variant = variantResult;
@@ -118,7 +115,6 @@ export class SalesLineItem extends IAggregate<
     const variant = results.variant.value();
 
     const value: ISalesLineItem = {
-      id: results.id.value(),
       lineNumber: results.lineNumber.value(),
       quantity: results.quantity.value(),
       variant: variant,
@@ -126,8 +122,6 @@ export class SalesLineItem extends IAggregate<
         name: p.name,
         value: p.value,
       })),
-      createdAt: now,
-      updatedAt: now,
       flags: [],
     };
 
@@ -136,8 +130,6 @@ export class SalesLineItem extends IAggregate<
     doc.quantity = value.quantity.value();
     doc.variant = value.variant.entity();
     doc.personalization = value.personalization;
-    doc.createdAt = now;
-    doc.updatedAt = now;
     const lineItem = new SalesLineItem(value, doc);
     value.flags = lineItem.validatePersonalization();
     doc.flags = value.flags;
@@ -150,7 +142,6 @@ export class SalesLineItem extends IAggregate<
 
     let results: { [key: string]: Result<any> } = {};
 
-    results.id = LineItemID.from(doc._id);
     results.lineNumber = LineNumber.from(doc.lineNumber);
     results.quantity = Quantity.from(doc.quantity);
     results.variant = variantResult;
@@ -168,7 +159,6 @@ export class SalesLineItem extends IAggregate<
     const variant = results.variant.value();
 
     const value: ISalesLineItem = {
-      id: results.id.value(),
       lineNumber: results.lineNumber.value(),
       quantity: results.quantity.value(),
       variant: variant,
@@ -176,8 +166,6 @@ export class SalesLineItem extends IAggregate<
         name: p.name,
         value: p.value,
       })),
-      createdAt: now,
-      updatedAt: now,
       flags: [],
     };
 

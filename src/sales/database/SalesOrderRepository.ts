@@ -12,7 +12,7 @@ import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.excep
 import { MongoOrdersRepository } from "./mongo/repositories/MongoOrdersRepository";
 
 import { ISalesOrderProps, SalesOrder, SalesOrderEvent } from "../domain";
-import { MongoSalesOrder, MongoLineItemsRepository } from "./mongo";
+import { MongoSalesOrder } from "./mongo";
 import { compact } from "lodash";
 import { MongoDomainEventRepository } from "./mongo/repositories/MongoDomainEventRepository";
 import { MongoDomainEvent } from "./mongo/schemas/MongoDomainEvent";
@@ -97,7 +97,6 @@ export class SalesOrderRepository {
   }
   constructor(
     private readonly _orders: MongoOrdersRepository,
-    private readonly _lineItems: MongoLineItemsRepository,
     private readonly _events: MongoDomainEventRepository,
     private _bus: EventEmitter2
   ) {}
@@ -110,10 +109,6 @@ export class SalesOrderRepository {
   public async save(agg: SalesOrder): Promise<SalesOrder> {
     let dbe = agg.entity();
 
-    const lineItems = await Promise.all(
-      dbe.lineItems.map(async (li) => this._lineItems.create(li))
-    );
-    const identifiers = lineItems.map((li) => li.id);
     const payload: MongoSalesOrder = {
       accountId: dbe.accountId,
       orderName: dbe.orderName,
@@ -126,11 +121,20 @@ export class SalesOrderRepository {
       updatedAt: dbe.updatedAt,
       createdAt: dbe.createdAt,
       id: dbe.id,
-      lineItems: identifiers as any, // Hack
+      lineItems: dbe.lineItems,
     };
-    let updated = await this._orders.findByIdAndUpdateOrCreate(payload);
-    dbe = await this._orders.findById(updated.id);
+    let doc = await this._orders.findByIdAndUpdateOrCreate(payload);
 
+    await this.handleDomainEvents(agg);
+
+    return SalesOrder.load(doc);
+  }
+
+  public async delete(id: string): Promise<void> {
+    await this._orders.delete(id);
+  }
+
+  private async handleDomainEvents(agg: SalesOrder) {
     let events = agg.events;
     if (events.length) {
       const mongoEvents = events.map(convertToDoc);
@@ -142,10 +146,5 @@ export class SalesOrderRepository {
         this._bus.emit($e.eventName, $e);
       });
     }
-
-    return SalesOrder.load(dbe);
-  }
-  public async delete(id: string): Promise<void> {
-    await this._orders.delete(id);
   }
 }

@@ -8,7 +8,6 @@ export const invalidPersonalization = (now) => ({
   orderStatus: "OPEN",
   lineItems: [
     {
-      id: null,
       lineNumber: 1,
       quantity: 1,
       variant: {
@@ -137,8 +136,6 @@ export const invalidPersonalization = (now) => ({
             "Line Item #1 has a bad character in property 'Bottom Text': 'Bad-Character'. Reason: BAD_CHARACTER",
         },
       ],
-      createdAt: now,
-      updatedAt: now,
     },
   ],
   customer: {

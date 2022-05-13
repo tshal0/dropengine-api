@@ -5,7 +5,6 @@ import { TestingModule } from "@nestjs/testing";
 import {
   MongoSalesOrderDocument,
   MongoSalesOrder,
-  MongoLineItemsRepository,
   MongoSalesLineItem,
 } from "@sales/database/mongo";
 import { MongoOrdersRepository } from "@sales/database/mongo/repositories/MongoOrdersRepository";
@@ -44,7 +43,6 @@ describe("UpdatePersonalization", () => {
   const modelToken = getModelToken(MongoSalesOrder.name);
   let catalogService: CatalogService;
   let ordersRepo: MongoOrdersRepository;
-  let lineItemsRepo: MongoLineItemsRepository;
 
   let salesRepo: SalesOrderRepository;
   beforeAll(() => {});
@@ -63,9 +61,7 @@ describe("UpdatePersonalization", () => {
     catalogService = await module.resolve<CatalogService>(CatalogService);
 
     // Set up Repo
-    lineItemsRepo = await module.resolve<MongoLineItemsRepository>(
-      MongoLineItemsRepository
-    );
+
     ordersRepo = await module.resolve<MongoOrdersRepository>(
       MongoOrdersRepository
     );
@@ -87,8 +83,6 @@ describe("UpdatePersonalization", () => {
       variant: cloneDeep(mockVariant),
       personalization: [],
       flags: [],
-      updatedAt: now,
-      createdAt: now,
     };
     let mockOrder: MongoSalesOrder = {
       accountId: mockUid,
@@ -104,15 +98,13 @@ describe("UpdatePersonalization", () => {
       createdAt: now,
     };
     beforeEach(async () => {
-      mockLineItem = await lineItemsRepo.create(mockLineItem);
-      mockOrder.lineItems = [mockLineItem.id] as any;
       mockOrder = await ordersRepo.create(mockOrder);
     });
     it("should update the personalization and save the SalesOrder", async () => {
       // GIVEN
       const mockDto = {
-        lineItemId: mockLineItem.id,
         orderId: mockOrder.id,
+        lineNumber: 1,
         personalization: [
           { name: mockTopText, value: "ValidText" },
           { name: mockBottomText, value: "ValidText" },
@@ -123,20 +115,21 @@ describe("UpdatePersonalization", () => {
 
       const result = await service.execute(mockDto);
       const expected = {
-        id: mockLineItem.id,
-        lineNumber: 1,
-        quantity: 1,
-        variant: mockVariant,
-        personalization: mockDto.personalization,
-        flags: [],
-        createdAt: now,
-        updatedAt: now,
+        lineItems: [
+          {
+            lineNumber: 1,
+            quantity: 1,
+            variant: mockVariant,
+            personalization: mockDto.personalization,
+            flags: [],
+          },
+        ],
       };
 
       // THEN
       const props = result.props();
 
-      expect(props).toEqual(expected);
+      expect(props).toMatchObject(expected);
     });
   });
   // GIVEN

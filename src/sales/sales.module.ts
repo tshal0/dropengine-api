@@ -19,14 +19,7 @@ import { CatalogModule } from "@catalog/catalog.module";
 import { MongoOrdersRepository } from "./database/mongo/repositories/MongoOrdersRepository";
 import { SalesOrderQuery } from "./database/SalesOrderQueries";
 import { SalesOrderRepository } from "./database/SalesOrderRepository";
-import { SalesLineItemRepository } from "./database/SalesLineItemRepository";
-import {
-  MongoSalesLineItem,
-  MongoSalesLineItemSchema,
-  MongoSalesOrder,
-  MongoSalesOrderSchema,
-  MongoLineItemsRepository,
-} from "./database/mongo";
+import { MongoSalesOrder, MongoSalesOrderSchema } from "./database/mongo";
 import {
   MongoDomainEvent,
   MongoDomainEventSchema,
@@ -38,9 +31,6 @@ import { MongoDomainEventRepository } from "./database/mongo/repositories/MongoD
     PassportModule.register({ defaultStrategy: "jwt" }),
     MongooseModule.forFeature([
       { name: MongoDomainEvent.name, schema: MongoDomainEventSchema },
-    ]),
-    MongooseModule.forFeature([
-      { name: MongoSalesLineItem.name, schema: MongoSalesLineItemSchema },
     ]),
     MongooseModule.forFeature([
       { name: MongoSalesOrder.name, schema: MongoSalesOrderSchema },
@@ -55,8 +45,6 @@ import { MongoDomainEventRepository } from "./database/mongo/repositories/MongoD
   providers: [
     MongoDomainEventRepository,
     MongoOrdersRepository,
-    MongoLineItemsRepository,
-    SalesLineItemRepository,
     SalesOrderRepository,
     SalesOrderQuery,
     CreateSalesOrder,

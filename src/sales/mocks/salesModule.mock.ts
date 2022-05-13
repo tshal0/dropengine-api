@@ -29,7 +29,6 @@ import { TraceTelemetry } from "applicationinsights/out/Declarations/Contracts";
 import safeJsonStringify from "safe-json-stringify";
 import { MyEasySuiteClient } from "@myeasysuite/MyEasySuiteClient";
 import { UpdatePersonalization } from "../useCases/UpdatePersonalization";
-import { SalesLineItemRepository } from "@sales/database/SalesLineItemRepository";
 import { MongoOrdersRepository } from "@sales/database/mongo/repositories/MongoOrdersRepository";
 import { SalesOrderQuery } from "@sales/database/SalesOrderQueries";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
@@ -38,7 +37,6 @@ import {
   MongoSalesOrderSchema,
   MongoSalesLineItem,
   MongoSalesLineItemSchema,
-  MongoLineItemsRepository,
 } from "@sales/database/mongo";
 import { MongoDomainEventRepository } from "@sales/database/mongo/repositories/MongoDomainEventRepository";
 import {
@@ -77,10 +75,8 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       { provide: HttpService, useValue: httpMock },
       { provide: WINSTON_MODULE_PROVIDER, useValue: {} },
       MongoOrdersRepository,
-      MongoLineItemsRepository,
       MongoDomainEventRepository,
       SalesOrderRepository,
-      SalesLineItemRepository,
       CreateSalesOrder,
       {
         provide: ProductTypesRepository,
