@@ -1,5 +1,5 @@
 import { ISalesOrderAddress } from "@sales/domain/ValueObjects";
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class AddressDto {
   constructor(props: ISalesOrderAddress) {
@@ -30,22 +30,26 @@ export class AddressDto {
   @IsNotEmpty()
   name: string;
   @IsString()
+  @IsOptional()
   phone: string;
   @IsString()
+  @IsOptional()
   company: string;
-  @IsString()
-  @IsNotEmpty()
   country: string;
   @IsString()
   @IsNotEmpty()
   address1: string;
   @IsString()
+  @IsOptional()
   address2: string;
   @IsString()
+  @IsOptional()
   address3: string;
   @IsNumber()
+  @IsOptional()
   latitude: number;
   @IsNumber()
+  @IsOptional()
   longitude: number;
   @IsString()
   @IsNotEmpty()
