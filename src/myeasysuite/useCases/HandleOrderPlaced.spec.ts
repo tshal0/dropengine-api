@@ -1,4 +1,4 @@
-import { mockMyEasySuiteModule } from "@myeasysuite/mocks/myEasySuite.module.mock";
+import { mockMyEasySuiteModule } from "@myeasysuite/mocks/myeasysuite.module.mock";
 import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import { TestingModule } from "@nestjs/testing";
 import { HandleOrderPlaced } from "./HandleOrderPlaced";
