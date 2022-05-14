@@ -696,48 +696,11 @@ describe("CreateSalesOrder", () => {
                   message: "name should not be empty; name must be a string",
                   type: "SalesOrderValidationError",
                 },
-                {
-                  property: "shippingAddress.phone",
-                  message: "phone must be a string",
-                  type: "SalesOrderValidationError",
-                },
-                {
-                  property: "shippingAddress.company",
-                  message: "company must be a string",
-                  type: "SalesOrderValidationError",
-                },
-                {
-                  property: "shippingAddress.country",
-                  message:
-                    "country should not be empty; country must be a string",
-                  type: "SalesOrderValidationError",
-                },
+
                 {
                   property: "shippingAddress.address1",
                   message:
                     "address1 should not be empty; address1 must be a string",
-                  type: "SalesOrderValidationError",
-                },
-                {
-                  property: "shippingAddress.address2",
-                  message: "address2 must be a string",
-                  type: "SalesOrderValidationError",
-                },
-                {
-                  property: "shippingAddress.address3",
-                  message: "address3 must be a string",
-                  type: "SalesOrderValidationError",
-                },
-                {
-                  property: "shippingAddress.latitude",
-                  message:
-                    "latitude must be a number conforming to the specified constraints",
-                  type: "SalesOrderValidationError",
-                },
-                {
-                  property: "shippingAddress.longitude",
-                  message:
-                    "longitude must be a number conforming to the specified constraints",
                   type: "SalesOrderValidationError",
                 },
                 {

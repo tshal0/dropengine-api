@@ -100,20 +100,6 @@ describe("SalesOrderAddress", () => {
           {
             value: {
               value: "",
-              property: "country",
-              children: [],
-              constraints: {
-                isNotEmpty: "country should not be empty",
-              },
-            },
-            reason: "'country' is invalid.",
-            name: "AddressValidationError",
-            message:
-              "AddressValidationError 'An instance of an object has failed the validation:\n - property country has failed the following constraints: isNotEmpty \n': 'country' is invalid.",
-          },
-          {
-            value: {
-              value: "",
               property: "address1",
               children: [],
               constraints: {
