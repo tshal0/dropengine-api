@@ -61,6 +61,32 @@ export class ProductsController {
     const props = product.props();
     return props;
   }
+  @Get()
+  @UseGuards(AuthGuard())
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    })
+  )
+  async getAll(
+    @Query() query: ProductsQueryDto
+  ): Promise<QueryProductResponseDto> {
+    this.logger.debug(`[ProductsController]`, { query });
+    let result = await this.find.execute(query);
+    if (result.isSuccess) {
+      let props = result.value();
+      let data = props.map((prop) => ProductResponseDto.from(prop));
+      let resp = new QueryProductResponseDto();
+      resp.data = data;
+      resp.page = 0;
+      resp.pages = 1;
+      resp.query = "";
+      resp.size = data.length;
+      resp.total = data.length;
+      return resp;
+    }
+  }
   @Delete(":id")
   @UseGuards(AuthGuard())
   async delete(@Param("id") id: string) {
@@ -92,31 +118,5 @@ export class ProductsController {
     const product = result.value();
     const entity = product.props();
     return entity;
-  }
-  @Get()
-  @UseGuards(AuthGuard())
-  @UsePipes(
-    new ValidationPipe({
-      transform: true,
-      transformOptions: { enableImplicitConversion: true },
-    })
-  )
-  async getAll(
-    @Query() query: ProductsQueryDto
-  ): Promise<QueryProductResponseDto> {
-    this.logger.debug(`[ProductsController]`, { query });
-    let result = await this.find.execute(query);
-    if (result.isSuccess) {
-      let props = result.value();
-      let data = props.map((prop) => ProductResponseDto.from(prop));
-      let resp = new QueryProductResponseDto();
-      resp.data = data;
-      resp.page = 0;
-      resp.pages = 1;
-      resp.query = "";
-      resp.size = data.length;
-      resp.total = data.length;
-      return resp;
-    }
   }
 }

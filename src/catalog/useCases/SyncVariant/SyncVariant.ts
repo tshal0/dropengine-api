@@ -1,4 +1,4 @@
-import { Injectable, Scope } from "@nestjs/common";
+import { Injectable, Logger, Scope } from "@nestjs/common";
 import { UseCase } from "@shared/domain/UseCase";
 import moment from "moment";
 import { Result, ResultError } from "@shared/domain/Result";
@@ -44,15 +44,14 @@ export class FailedToSyncVariantError implements ResultError {
 
 @Injectable({ scope: Scope.DEFAULT })
 export class SyncVariant implements UseCase<SyncVariantDto, ProductVariant> {
+  private readonly logger: Logger = new Logger(SyncVariant.name);
+
   constructor(
     private _types: ProductTypesRepository,
     private _products: ProductsRepository,
     private _repo: ProductVariantsRepository,
     private _myEasySuite: MyEasySuiteClient
   ) {}
-  get llog() {
-    return `[${moment()}][${SyncVariant.name}]`;
-  }
 
   async execute(dto: SyncVariantDto): Promise<Result<ProductVariant>> {
     let result: Result<any> = null;
@@ -82,7 +81,7 @@ export class SyncVariant implements UseCase<SyncVariantDto, ProductVariant> {
       if (loadProductResult.isFailure) {
         // Create Product from MES Variant
         let cpdto = new CreateProductDto();
-        cpdto.type = "2DMetalArt";
+        cpdto.type = type.props().name;
         cpdto.sku = partName;
         cpdto.pricingTier = "2";
         cpdto.tags = mesVariant.tags || "";

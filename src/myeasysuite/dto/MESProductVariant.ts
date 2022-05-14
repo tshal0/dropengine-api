@@ -4,8 +4,8 @@ export interface MyEasySuiteProductVariant {
   material: string;
   thickness: string;
   route_template_id: string;
-  product_variant_id: string;
-  stock: string;
+  product_variant_id: number;
+  stock: number;
   title: string;
   vendor: string;
   categories: string;

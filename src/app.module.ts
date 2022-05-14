@@ -29,6 +29,8 @@ import { MikroORM } from "@mikro-orm/core";
 import { mikroOrmOptions } from "./mikroOrmOptions";
 import { AuthModule } from "./auth/auth.module";
 import { AuthenticationModule } from "./shared";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
   imports: [
@@ -42,6 +44,7 @@ import { AuthenticationModule } from "./shared";
       }),
       inject: [],
     }),
+
     CacheModule.register(),
     HttpModule,
     PassportModule.register({ defaultStrategy: "jwt" }),

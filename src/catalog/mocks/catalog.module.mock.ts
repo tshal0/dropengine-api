@@ -8,7 +8,7 @@ import { CacheModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { PassportModule } from "@nestjs/passport";
-import { Test, TestingModule } from "@nestjs/testing";
+import { Test, TestingModule, TestingModuleBuilder } from "@nestjs/testing";
 import { CatalogService } from "@catalog/services";
 import {
   ProductsRepository,
@@ -41,8 +41,8 @@ jest.mock("@shared/utils", () => {
     loadAccessToken: jest.fn().mockResolvedValue("MOCK_ACCESS_TOKEN"),
   };
 });
-export const mockCatalogModule = async (): Promise<TestingModule> => {
-  return await Test.createTestingModule({
+export const mockCatalogModule = (): TestingModuleBuilder => {
+  return Test.createTestingModule({
     imports: [
       PassportModule.register({ defaultStrategy: "jwt" }),
       EventEmitterModule.forRoot(),
@@ -81,12 +81,5 @@ export const mockCatalogModule = async (): Promise<TestingModule> => {
       ProductsController,
       ProductVariantsController,
     ],
-  })
-    .overrideProvider(ProductTypesRepository)
-    .useValue({})
-    .overrideProvider(ProductsRepository)
-    .useValue({})
-    .overrideProvider(ProductVariantsRepository)
-    .useValue({})
-    .compile();
+  });
 };
