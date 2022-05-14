@@ -42,15 +42,10 @@ export class VariantSKU extends ValueObject<string> {
         )
       );
     }
-    let skuArray = value?.split("-");
+    let skuArray = value.split("-");
     const expectedSkuElements = 5;
-    if (!skuArray?.length || skuArray?.length < expectedSkuElements) {
-      return Result.fail(
-        new InvalidVariantSKU(
-          value,
-          `Expected at least ${expectedSkuElements} SKU elements, received ${skuArray?.length}.`
-        )
-      );
+    if (skuArray.length > expectedSkuElements) {
+      value = skuArray.slice(0, 5).join("-");
     }
     let val = new VariantSKU({ value });
     return Result.ok(val);

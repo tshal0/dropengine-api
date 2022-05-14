@@ -99,7 +99,7 @@ export class SyncVariant implements UseCase<SyncVariantDto, ProductVariant> {
             placeholder: c.placeholder,
             required: c.is_required,
             type: c.field_type,
-            maxLength: c.field_length ? null : +c.field_length,
+            maxLength: c.field_length ? +c.field_length : null,
             options: c.option_list,
             pattern: c.field_pattern,
           };

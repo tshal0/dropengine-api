@@ -49,10 +49,12 @@ export class CatalogService {
   ): Promise<CatalogVariant> {
     let variantSkuResult: Result<any> = null;
 
-    variantSkuResult = VariantSKU.from(dto.sku);
+    let sku = dto.sku;
+
+    variantSkuResult = VariantSKU.from(sku);
     if (variantSkuResult.isFailure)
       throw new FailedToLoadVariantBySkuException(
-        dto.sku,
+        sku,
         variantSkuResult.error.message
       );
     let vsku: VariantSKU = variantSkuResult.value();
