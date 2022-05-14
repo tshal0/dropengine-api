@@ -6,7 +6,6 @@ describe("VariantSKU", () => {
       let skuString = "MEM-001-01-12-Black";
       let skuResult = VariantSKU.from(skuString);
 
-    
       expect(skuResult.isFailure).toBe(false);
       let sku = skuResult.value().value();
       expect(sku).toEqual(skuString);
@@ -18,7 +17,6 @@ describe("VariantSKU", () => {
         let skuString = null;
         let skuResult = VariantSKU.from(skuString);
 
-       
         expect(skuResult.isFailure).toBe(true);
         let error = skuResult.error;
         expect(error).toEqual({
@@ -34,7 +32,6 @@ describe("VariantSKU", () => {
         let skuString = undefined;
         let skuResult = VariantSKU.from(skuString);
 
-        
         expect(skuResult.isFailure).toBe(true);
         let error = skuResult.error;
         expect(error).toEqual({
@@ -50,7 +47,6 @@ describe("VariantSKU", () => {
         let skuString = "";
         let skuResult = VariantSKU.from(skuString);
 
-       
         expect(skuResult.isFailure).toBe(true);
         let error = skuResult.error;
         expect(error).toEqual({
@@ -61,20 +57,14 @@ describe("VariantSKU", () => {
         });
       });
     });
-    describe("< 5 elements", () => {
-      it(`should return InvalidVariantSKU`, () => {
-        let skuString = "MEM-000-01";
+    describe("> 5 elements", () => {
+      it(`should return properly sized SKU`, () => {
+        let skuString = "MEM-000-01-18-Black-0.06-1";
         let skuResult = VariantSKU.from(skuString);
 
-       
-        expect(skuResult.isFailure).toBe(true);
-        let error = skuResult.error;
-        expect(error).toEqual({
-          message: `InvalidVariantSKU 'MEM-000-01': Expected at least 5 SKU elements, received 3.`,
-          name: `InvalidVariantSKU`,
-          reason: `Expected at least 5 SKU elements, received 3.`,
-          value: "MEM-000-01",
-        });
+        expect(skuResult.isFailure).toBe(false);
+        let val = skuResult.value().value();
+        expect(val).toEqual(`MEM-000-01-18-Black`);
       });
     });
   });
