@@ -20,7 +20,7 @@ export class DbProduct {
   id!: string;
   @Property()
   type: string;
-  @Property()
+  @Property({unique: true})
   sku: string;
   @Property()
   pricingTier: string;

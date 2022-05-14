@@ -22,7 +22,7 @@ export class MongoSalesOrder extends IMongoEntity {
   @Prop({ required: true })
   orderNumber: number;
 
-  @Prop({ required: false })
+  @Prop({ required: false, unique: true })
   orderName?: string;
 
   @Prop({
