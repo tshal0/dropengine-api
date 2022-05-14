@@ -29,11 +29,7 @@ export class AddressDto {
   @IsString()
   @IsNotEmpty()
   name: string;
-  @IsString()
-  @IsOptional()
   phone: string;
-  @IsString()
-  @IsOptional()
   company: string;
   country: string;
   @IsString()
@@ -42,14 +38,8 @@ export class AddressDto {
   @IsString()
   @IsOptional()
   address2: string;
-  @IsString()
-  @IsOptional()
   address3: string;
-  @IsNumber()
-  @IsOptional()
   latitude: number;
-  @IsNumber()
-  @IsOptional()
   longitude: number;
   @IsString()
   @IsNotEmpty()

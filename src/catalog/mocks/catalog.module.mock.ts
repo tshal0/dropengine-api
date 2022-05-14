@@ -1,11 +1,8 @@
 import { ProductsController } from "@catalog/api/ProductsController";
 import { ProductTypesController } from "@catalog/api/ProductTypesController";
 import { ProductVariantsController } from "@catalog/api/ProductVariantsController";
-import { CatalogModule } from "@catalog/catalog.module";
 
 import { SyncVariant } from "@catalog/useCases/SyncVariant";
-import { MyEasySuiteController } from "@myeasysuite/api/MyEasySuiteController";
-import { HandleOrderPlaced } from "@myeasysuite/useCases/HandleOrderPlaced";
 import { HttpModule } from "@nestjs/axios";
 import { CacheModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
