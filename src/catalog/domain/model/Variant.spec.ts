@@ -20,6 +20,9 @@ describe("Variant", () => {
       weight: new Weight().raw(),
       manufacturingCost: new Money().raw(),
       shippingCost: new Money().raw(),
+      type: "",
+      productId: "",
+      productTypeId: ""
     };
     expect(val.raw()).toEqual(expected);
     expect(val.id).toEqual(expected.id);
@@ -55,6 +58,9 @@ describe("Variant", () => {
       weight: { dimension: 100, units: "g" },
       manufacturingCost: { total: 100, currency: "USD" },
       shippingCost: { total: 100, currency: "USD" },
+      type: "",
+      productId: "",
+      productTypeId: ""
     };
     const val = new Variant(props);
 

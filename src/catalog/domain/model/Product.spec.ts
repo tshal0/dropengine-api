@@ -13,6 +13,7 @@ describe("Product", () => {
       image: "",
       sku: "",
       type: "",
+      productTypeId: "",
       pricingTier: "",
       tags: [],
       svg: "",
@@ -58,6 +59,9 @@ describe("Product", () => {
       variants: [
         {
           id: "test",
+          productId: "",
+          productTypeId: "",
+          type: "",
           image: "test",
           sku: "test",
           option1: {
@@ -80,6 +84,7 @@ describe("Product", () => {
       ],
       createdAt: now,
       updatedAt: now,
+      productTypeId: "",
     };
     const val = new Product(props);
 
@@ -159,6 +164,9 @@ describe("Product", () => {
     const val = new Product();
     const variantProps: IVariantProps = {
       id: "test",
+      type: "",
+      productId: "",
+      productTypeId: "",
       image: "test",
       sku: "test",
       option1: {

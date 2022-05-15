@@ -87,6 +87,7 @@ describe("ProductType", () => {
       products: [
         {
           id: "test",
+          productTypeId: "test",
           image: "test",
           sku: "test",
           type: "test",
@@ -108,6 +109,9 @@ describe("ProductType", () => {
           variants: [
             {
               id: "test",
+              type: "",
+              productId: "",
+              productTypeId: "",
               image: "test",
               sku: "test",
               option1: {
@@ -169,6 +173,7 @@ describe("ProductType", () => {
       products: [
         {
           id: "test",
+          productTypeId: "test",
           image: "test",
           sku: "test",
           type: "test",
@@ -190,6 +195,9 @@ describe("ProductType", () => {
           variants: [
             {
               id: "test",
+              type: "",
+              productId: "",
+              productTypeId: "",
               image: "test",
               sku: "test",
               option1: {
