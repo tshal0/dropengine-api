@@ -21,7 +21,8 @@ export class ProductTypesController {
   @Get(":id")
   @UseGuards(AuthGuard())
   async get(@Param("id") id: string) {
-    return await this.service.findById(id);
+    const result = await this.service.findById(id);
+    return result.raw();
   }
   @Delete(":id")
   @UseGuards(AuthGuard())
@@ -46,7 +47,8 @@ export class ProductTypesController {
   // }
   @Post()
   async post(@Body() dto: CreateProductTypeDto): Promise<IProductTypeProps> {
-    return await this.service.create(dto);
+    const result = await this.service.create(dto);
+    return result.raw();
   }
   @Get()
   @UseGuards(AuthGuard())

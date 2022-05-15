@@ -54,7 +54,7 @@ export class ProductsController {
     this.logger.debug(`[ProductsController]`, { query });
     let products = await this.service.query();
     if (products) {
-      let data = products.map((prop) => ProductResponseDto.from(prop));
+      let data = products.map((prop) => ProductResponseDto.from(prop.raw()));
       let resp = new QueryProductResponseDto();
       resp.data = data;
       resp.page = 0;
