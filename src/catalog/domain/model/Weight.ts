@@ -10,12 +10,6 @@ export class Weight implements IWeight {
   raw(): IWeight {
     return { dimension: this._dimension, units: this._units };
   }
-  public set dimension(val: any) {
-    this._dimension = val;
-  }
-  public set units(val: any) {
-    this._units = val;
-  }
 
   public get dimension() {
     return this._dimension;

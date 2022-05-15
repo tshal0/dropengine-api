@@ -31,6 +31,7 @@ describe("PersonalizationRule", () => {
       maxLength: 0,
       placeholder: "",
     };
+    expect(val.name).toEqual("test");
     expect(val.raw()).toEqual(expected);
   });
   it("type should be editable", () => {
@@ -46,6 +47,7 @@ describe("PersonalizationRule", () => {
       maxLength: 0,
       placeholder: "",
     };
+    expect(val.type).toEqual("test");
     expect(val.raw()).toEqual(expected);
   });
   it("label should be editable", () => {
@@ -61,6 +63,7 @@ describe("PersonalizationRule", () => {
       maxLength: 0,
       placeholder: "",
     };
+    expect(val.label).toEqual("test");
     expect(val.raw()).toEqual(expected);
   });
   it("options should be editable", () => {
@@ -76,6 +79,7 @@ describe("PersonalizationRule", () => {
       maxLength: 0,
       placeholder: "",
     };
+    expect(val.options).toEqual("A,B");
     expect(val.raw()).toEqual(expected);
   });
   it("pattern should be editable", () => {
@@ -91,6 +95,7 @@ describe("PersonalizationRule", () => {
       maxLength: 0,
       placeholder: "",
     };
+    expect(val.pattern).toEqual("^[a-zA-Z0-9\\s.,'/&]*");
     expect(val.raw()).toEqual(expected);
   });
   it("required should be editable", () => {
@@ -106,6 +111,7 @@ describe("PersonalizationRule", () => {
       maxLength: 0,
       placeholder: "",
     };
+    expect(val.required).toEqual(true);
     expect(val.raw()).toEqual(expected);
   });
   it("maxLength should be editable", () => {
@@ -121,6 +127,7 @@ describe("PersonalizationRule", () => {
       maxLength: 22,
       placeholder: "",
     };
+    expect(val.maxLength).toEqual(22);
     expect(val.raw()).toEqual(expected);
   });
   it("placeholder should be editable", () => {
@@ -136,6 +143,7 @@ describe("PersonalizationRule", () => {
       maxLength: 0,
       placeholder: "Enter Up to 16 Characters",
     };
+    expect(val.placeholder).toEqual("Enter Up to 16 Characters");
     expect(val.raw()).toEqual(expected);
   });
 });

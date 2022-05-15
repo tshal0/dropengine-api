@@ -17,13 +17,6 @@ export class Money implements IMoney {
     return { currency: this._currency, total: this._total };
   }
 
-  public set total(val: any) {
-    this._total = val;
-  }
-  public set currency(val: any) {
-    this._currency = val;
-  }
-
   public get total() {
     return this._total;
   }

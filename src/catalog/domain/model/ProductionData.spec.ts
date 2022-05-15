@@ -10,6 +10,9 @@ describe("ProductionData", () => {
       thickness: "0.06",
     };
     expect(val.raw()).toEqual(expected);
+    expect(val.route).toEqual("1");
+    expect(val.material).toEqual("Mild Steel");
+    expect(val.thickness).toEqual("0.06");
   });
   it("should take props", () => {
     const props = {

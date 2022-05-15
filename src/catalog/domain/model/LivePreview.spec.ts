@@ -21,6 +21,7 @@ describe("LivePreview", () => {
       version: "",
     };
     expect(val.raw()).toEqual(expected);
+    expect(val.link).toEqual("test");
   });
   it("name should be editable", () => {
     const val = new LivePreview();
@@ -31,6 +32,7 @@ describe("LivePreview", () => {
       enabled: false,
       version: "",
     };
+    expect(val.name).toEqual("test");
     expect(val.raw()).toEqual(expected);
   });
   it("enabled should be editable", () => {
@@ -42,6 +44,7 @@ describe("LivePreview", () => {
       enabled: true,
       version: "",
     };
+    expect(val.enabled).toEqual(true);
     expect(val.raw()).toEqual(expected);
   });
   it("version should be editable", () => {
@@ -53,6 +56,7 @@ describe("LivePreview", () => {
       enabled: false,
       version: "test",
     };
+    expect(val.version).toEqual("test");
     expect(val.raw()).toEqual(expected);
   });
 });

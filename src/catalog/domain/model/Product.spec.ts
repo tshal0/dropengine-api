@@ -1,3 +1,4 @@
+import { now } from "@shared/mocks";
 import { PersonalizationRule } from "./PersonalizationRule";
 import { IProductProps, Product } from "./Product";
 import { IVariantProps, Variant } from "./Variant";
@@ -17,8 +18,21 @@ describe("Product", () => {
       svg: "",
       personalizationRules: [],
       variants: [],
+      createdAt: now,
+      updatedAt: now,
     };
     expect(val.raw()).toEqual(expected);
+    expect(val.id).toEqual(expected.id);
+    expect(val.image).toEqual(expected.image);
+    expect(val.sku).toEqual(expected.sku);
+    expect(val.type).toEqual(expected.type);
+    expect(val.pricingTier).toEqual(expected.pricingTier);
+    expect(val.tags).toEqual(expected.tags);
+    expect(val.svg).toEqual(expected.svg);
+    expect(val.personalizationRules).toEqual(expected.personalizationRules);
+    expect(val.variants).toEqual(expected.variants);
+    expect(val.createdAt).toEqual(expected.createdAt);
+    expect(val.updatedAt).toEqual(expected.updatedAt);
   });
   it("should take props", () => {
     const props: IProductProps = {
@@ -64,6 +78,8 @@ describe("Product", () => {
           shippingCost: { total: 100, currency: "USD" },
         },
       ],
+      createdAt: now,
+      updatedAt: now,
     };
     const val = new Product(props);
 
@@ -109,6 +125,18 @@ describe("Product", () => {
     const val = new Product();
     val.svg = "test";
     const expected = { svg: "test" };
+    expect(val.raw()).toMatchObject(expected);
+  });
+  it("updatedAt is editable", () => {
+    const val = new Product();
+    val.updatedAt = now;
+    const expected = { updatedAt: now };
+    expect(val.raw()).toMatchObject(expected);
+  });
+  it("createdAt is editable", () => {
+    const val = new Product();
+    val.createdAt = now;
+    const expected = { createdAt: now };
     expect(val.raw()).toMatchObject(expected);
   });
   it("personalizationRules is editable", () => {

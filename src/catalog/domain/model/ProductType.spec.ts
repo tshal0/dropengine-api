@@ -1,3 +1,4 @@
+import { now } from "@shared/mocks";
 import { IProductTypeProps, ProductType } from "./ProductType";
 import { VariantOption } from "./VariantOption";
 
@@ -40,6 +41,17 @@ describe("ProductType", () => {
       createdAt: new Date("2021-01-01T00:00:00.000Z"),
     };
     expect(val.raw()).toEqual(expected);
+    expect(val.id).toEqual(expected.id);
+    expect(val.name).toEqual(expected.name);
+    expect(val.image).toEqual(expected.image);
+    expect(val.productionData.raw()).toEqual(expected.productionData);
+    expect(val.option1.raw()).toEqual(expected.option1);
+    expect(val.option2.raw()).toEqual(expected.option2);
+    expect(val.option3.raw()).toEqual(expected.option3);
+    expect(val.livePreview.raw()).toEqual(expected.livePreview);
+    expect(val.products.map((p) => p.raw())).toEqual(expected.products);
+    expect(val.updatedAt).toEqual(expected.updatedAt);
+    expect(val.createdAt).toEqual(expected.createdAt);
   });
   it("should take props", () => {
     const props: IProductTypeProps = {
@@ -116,6 +128,8 @@ describe("ProductType", () => {
               shippingCost: { total: 100, currency: "USD" },
             },
           ],
+          createdAt: now,
+          updatedAt: now,
         },
       ],
       updatedAt: new Date("2021-01-01T00:00:00.000Z"),
@@ -196,6 +210,8 @@ describe("ProductType", () => {
               shippingCost: { total: 100, currency: "USD" },
             },
           ],
+          createdAt: now,
+          updatedAt: now,
         },
       ],
       updatedAt: new Date("2021-01-01T00:00:00.000Z"),

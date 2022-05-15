@@ -22,6 +22,17 @@ describe("Variant", () => {
       shippingCost: new Money().raw(),
     };
     expect(val.raw()).toEqual(expected);
+    expect(val.id).toEqual(expected.id);
+    expect(val.image).toEqual(expected.image);
+    expect(val.sku).toEqual(expected.sku);
+    expect(val.option1.raw()).toEqual(expected.option1);
+    expect(val.option2.raw()).toEqual(expected.option2);
+    expect(val.option3.raw()).toEqual(expected.option3);
+    expect(val.height.raw()).toEqual(expected.height);
+    expect(val.width.raw()).toEqual(expected.width);
+    expect(val.weight.raw()).toEqual(expected.weight);
+    expect(val.manufacturingCost.raw()).toEqual(expected.manufacturingCost);
+    expect(val.shippingCost.raw()).toEqual(expected.shippingCost);
   });
   it("should take props", () => {
     const props: IVariantProps = {

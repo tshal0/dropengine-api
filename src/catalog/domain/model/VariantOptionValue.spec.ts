@@ -9,6 +9,8 @@ describe("VariantOptionValue", () => {
       enabled: false,
     };
     expect(val.raw()).toEqual(expected);
+    expect(val.value).toEqual("");
+    expect(val.enabled).toEqual(false);
   });
   it("enabled is editable", () => {
     const val = new VariantOptionValue();

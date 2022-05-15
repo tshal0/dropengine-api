@@ -1,3 +1,4 @@
+import e from "express";
 import {
   IVariantOptions,
   IVariantOptionsProps,
@@ -15,6 +16,9 @@ describe("VariantOptions", () => {
       values: [],
     };
     expect(val.raw()).toEqual(expected);
+    expect(val.name).toEqual("");
+    expect(val.enabled).toEqual(false);
+    expect(val.values).toEqual([]);
   });
   it("should take props", () => {
     const props = {
