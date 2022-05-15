@@ -3,7 +3,7 @@ import safeJsonStringify from "safe-json-stringify";
 
 export interface ISalesVariantOption {
   name: string;
-  option: string;
+  value: string;
   enabled: boolean;
 }
 export enum SalesVariantOptionError {
@@ -27,7 +27,7 @@ export class SalesVariantOption extends ValueObject<ISalesVariantOption> {
     } else if (SalesVariantOption.validate(val)) {
       let value: ISalesVariantOption = {
         name: val.name,
-        option: val.option,
+        value: val.option,
         enabled: val.enabled,
       };
       let sid = new SalesVariantOption(value);

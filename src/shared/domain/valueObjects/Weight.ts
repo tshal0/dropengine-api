@@ -36,4 +36,7 @@ export class Weight extends ValueObject<IWeight> {
     let value = new Weight({ units: dto?.units, dimension: dto?.dimension });
     return Result.ok(value);
   }
+  public static default(): Weight {
+    return new Weight({ units: "g", dimension: 0 });
+  }
 }

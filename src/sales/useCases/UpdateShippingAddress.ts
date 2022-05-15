@@ -1,4 +1,3 @@
-import { CatalogService } from "@catalog/services";
 import { Injectable, Scope, Logger } from "@nestjs/common";
 import { SalesOrderRepository } from "../database/SalesOrderRepository";
 import { AddressDto, LineItemPropertyDto } from "@sales/dto";
@@ -18,7 +17,6 @@ export class UpdateShippingAddress
   constructor(
     public _log: AzureTelemetryService,
     public _repo: SalesOrderRepository,
-    public _catalog: CatalogService
   ) {}
 
   async execute(dto: UpdateShippingAddressDto): Promise<SalesOrder> {

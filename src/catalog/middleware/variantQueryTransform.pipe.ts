@@ -1,4 +1,4 @@
-import { VariantQueryDto } from "@catalog/dto/ProductVariant/VariantQueryDto";
+import { VariantQueryDto } from "@catalog/dto/Variant/VariantQueryDto";
 import {
   Injectable,
   PipeTransform,
@@ -18,7 +18,6 @@ import {
   VariantQueryValidationError,
   CreateVariantQueryErrorCode,
 } from "@catalog/exceptions";
-import { ProductTypeName, ProductTypeUUID } from "@catalog/domain";
 
 @Injectable()
 export class VariantQueryTransformPipe

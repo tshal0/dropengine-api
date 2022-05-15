@@ -1,9 +1,14 @@
-import { Injectable, Logger, Scope } from "@nestjs/common";
+import {
+  Injectable,
+  Logger,
+  NotImplementedException,
+  Scope,
+} from "@nestjs/common";
 import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
 import { SalesOrder } from "@sales/domain/SalesOrder";
 import { CreateOrderLineItemApiDto } from "@sales/api";
-import { CatalogService, CatalogVariant } from "@catalog/services";
+import { CatalogVariant } from "@catalog/services";
 
 import {
   CreateOrderDto,
@@ -29,8 +34,7 @@ export class CreateSalesOrder
   private readonly logger: Logger = new Logger(CreateSalesOrder.name);
   constructor(
     public _log: AzureTelemetryService,
-    public _repo: SalesOrderRepository,
-    public _catalog: CatalogService
+    public _repo: SalesOrderRepository
   ) {}
 
   async execute(dto: CreateSalesOrderDto): Promise<SalesOrder> {
@@ -136,10 +140,12 @@ export class CreateSalesOrder
     }
   }
   public async loadVariantBySku(sku: string): Promise<CatalogVariant> {
-    return await this._catalog.loadVariantBySku({ sku });
+    //return await this._catalog.loadVariantBySku({ sku });
+    throw new NotImplementedException();
   }
 
   public async loadVariantById(id: string): Promise<CatalogVariant> {
-    return await this._catalog.loadVariantById({ id });
+    // return await this._catalog.loadVariantById({ id });
+    throw new NotImplementedException();
   }
 }

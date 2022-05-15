@@ -1,8 +1,8 @@
+import { IPersonalizationRule } from "@catalog/domain/model";
 import { CatalogVariant } from "@catalog/services";
-import { ICustomOptionProps } from "@catalog/domain";
 
 export function mockCatalogVariant(): CatalogVariant {
-  const customOptionTop: ICustomOptionProps = {
+  const customOptionTop: IPersonalizationRule = {
     maxLength: 12,
     pattern: "^[a-zA-Z0-9\\s.,()&$#@/]*$",
     type: "input",
@@ -10,9 +10,9 @@ export function mockCatalogVariant(): CatalogVariant {
     label: "Top Text",
     placeholder: "Enter up to 12 characters",
     name: "top_text",
-    options: undefined
+    options: undefined,
   };
-  const customOptionBottom: ICustomOptionProps = {
+  const customOptionBottom: IPersonalizationRule = {
     maxLength: 12,
     pattern: "^[a-zA-Z0-9\\s.,()&$#@/]*$",
     type: "input",
@@ -20,7 +20,7 @@ export function mockCatalogVariant(): CatalogVariant {
     label: "Bottom Text",
     placeholder: "Enter up to 12 characters",
     name: "bottom_text",
-    options: undefined
+    options: undefined,
   };
   return {
     id: "MOCK_ID",
@@ -28,8 +28,8 @@ export function mockCatalogVariant(): CatalogVariant {
     image: "MOCK_IMAGE",
     svg: "MOCK_SVG",
     type: "MOCK_TYPE",
-    option1: { enabled: true, name: "Size", option: "12" },
-    option2: { enabled: true, name: "Color", option: "Black" },
+    option1: { enabled: true, name: "Size", value: "12" },
+    option2: { enabled: true, name: "Color", value: "Black" },
     option3: null,
     productionData: null,
     personalizationRules: [customOptionTop, customOptionBottom],

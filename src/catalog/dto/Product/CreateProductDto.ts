@@ -1,5 +1,5 @@
 import { toLower } from "lodash";
-import { CreateProductVariantDto } from "../ProductVariant/CreateProductVariantDto";
+import { CreateVariantDto } from "../Variant/CreateVariantDto";
 
 export class CreateProductDto {
   id?:          string | undefined;
@@ -11,11 +11,11 @@ export class CreateProductDto {
   // categories:    string;
   image:         string;
   svg:           string;
-  customOptions: CustomOptionDto[];
+  personalizationRules: PersonalizationRuleDto[];
   // variants:      CreateProductVariantDto[];
 }
 
-export class CustomOptionDto {
+export class PersonalizationRuleDto {
   [key: string]:any
   name:        string;
   label:       string;

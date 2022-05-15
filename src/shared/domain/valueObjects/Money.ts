@@ -98,6 +98,9 @@ export class Money extends ValueObject<IMoney> {
     let result = Money.from(dto);
     return result;
   }
+  static default(): Money {
+    return new Money({ currency: "USD", total: 0 });
+  }
 }
 
 export function isFloat(n) {

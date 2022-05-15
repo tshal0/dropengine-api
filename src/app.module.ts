@@ -1,6 +1,5 @@
 import {
   CacheModule,
-  DynamicModule,
   Module,
   OnModuleDestroy,
   OnModuleInit,
@@ -17,7 +16,7 @@ import { AzureStorageModule } from "@shared/modules/azure-storage/azure-storage.
 import { HealthModule } from "./health/health.module";
 import { ShopifyModule } from "./shopify/shopify.module";
 import { PassportModule } from "@nestjs/passport";
-import { MikroOrmModule, MikroOrmModuleOptions } from "@mikro-orm/nestjs";
+import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { CatalogModule } from "./catalog/catalog.module";
 import { Auth0Module } from "@auth0/auth0.module";
 import { SalesModule } from "./sales/sales.module";
@@ -29,8 +28,6 @@ import { MikroORM } from "@mikro-orm/core";
 import { mikroOrmOptions } from "./mikroOrmOptions";
 import { AuthModule } from "./auth/auth.module";
 import { AuthenticationModule } from "./shared";
-import { ServeStaticModule } from "@nestjs/serve-static";
-import { join } from "path";
 
 @Module({
   imports: [

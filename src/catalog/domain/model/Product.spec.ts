@@ -1,0 +1,157 @@
+import { PersonalizationRule } from "./PersonalizationRule";
+import { IProductProps, Product } from "./Product";
+import { IVariantProps, Variant } from "./Variant";
+import { VariantOption } from "./VariantOption";
+
+describe("Product", () => {
+  const tested = "test";
+  it("should exist", () => {
+    const val = new Product();
+    const expected: IProductProps = {
+      id: "",
+      image: "",
+      sku: "",
+      type: "",
+      pricingTier: "",
+      tags: [],
+      svg: "",
+      personalizationRules: [],
+      variants: [],
+    };
+    expect(val.raw()).toEqual(expected);
+  });
+  it("should take props", () => {
+    const props: IProductProps = {
+      id: "test",
+      image: "test",
+      sku: "test",
+      type: "test",
+      pricingTier: "test",
+      tags: ["test"],
+      svg: "test",
+      personalizationRules: [
+        {
+          name: "test",
+          type: "test",
+          label: "test",
+          options: "test",
+          pattern: "test",
+          required: false,
+          maxLength: 0,
+          placeholder: "test",
+        },
+      ],
+      variants: [
+        {
+          id: "test",
+          image: "test",
+          sku: "test",
+          option1: {
+            enabled: true,
+            name: "Size",
+            value: '18"',
+          },
+          option2: {
+            enabled: true,
+            name: "Color",
+            value: "Black",
+          },
+          option3: new VariantOption().raw(),
+          height: { dimension: 100, units: "mm" },
+          width: { dimension: 100, units: "mm" },
+          weight: { dimension: 100, units: "g" },
+          manufacturingCost: { total: 100, currency: "USD" },
+          shippingCost: { total: 100, currency: "USD" },
+        },
+      ],
+    };
+    const val = new Product(props);
+
+    expect(val.raw()).toEqual(props);
+  });
+  it("id is editable", () => {
+    const val = new Product();
+    val.id = "test";
+    const expected = { id: "test" };
+    expect(val.raw()).toMatchObject(expected);
+  });
+  it("sku is editable", () => {
+    const val = new Product();
+    val.sku = "test";
+    const expected = { sku: "test" };
+    expect(val.raw()).toMatchObject(expected);
+  });
+  it("type is editable", () => {
+    const val = new Product();
+    val.type = "test";
+    const expected = { type: "test" };
+    expect(val.raw()).toMatchObject(expected);
+  });
+  it("pricingTier is editable", () => {
+    const val = new Product();
+    val.pricingTier = "test";
+    const expected = { pricingTier: "test" };
+    expect(val.raw()).toMatchObject(expected);
+  });
+  it("tags is editable", () => {
+    const val = new Product();
+    val.tags = ["test"];
+    const expected = { tags: ["test"] };
+    expect(val.raw()).toMatchObject(expected);
+  });
+  it("image is editable", () => {
+    const val = new Product();
+    val.image = "test";
+    const expected = { image: "test" };
+    expect(val.raw()).toMatchObject(expected);
+  });
+  it("svg is editable", () => {
+    const val = new Product();
+    val.svg = "test";
+    const expected = { svg: "test" };
+    expect(val.raw()).toMatchObject(expected);
+  });
+  it("personalizationRules is editable", () => {
+    const val = new Product();
+    const ruleProps = {
+      name: "test",
+      type: "test",
+      label: "test",
+      options: "test",
+      pattern: "test",
+      required: false,
+      maxLength: 0,
+      placeholder: "test",
+    };
+    val.personalizationRules = [new PersonalizationRule(ruleProps)];
+    const expected = { personalizationRules: [ruleProps] };
+    expect(val.raw()).toMatchObject(expected);
+  });
+  it("variants is editable", () => {
+    const val = new Product();
+    const variantProps: IVariantProps = {
+      id: "test",
+      image: "test",
+      sku: "test",
+      option1: {
+        enabled: true,
+        name: "Size",
+        value: '18"',
+      },
+      option2: {
+        enabled: true,
+        name: "Color",
+        value: "Black",
+      },
+      option3: new VariantOption().raw(),
+      height: { dimension: 100, units: "mm" },
+      width: { dimension: 100, units: "mm" },
+      weight: { dimension: 100, units: "g" },
+      manufacturingCost: { total: 100, currency: "USD" },
+      shippingCost: { total: 100, currency: "USD" },
+    };
+    val.variants = [new Variant(variantProps)];
+    const expected = { variants: [variantProps] };
+    expect(val.raw()).toMatchObject(expected);
+  });
+});

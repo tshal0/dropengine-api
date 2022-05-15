@@ -1,90 +1,18 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { ResultError, Result } from "@shared/domain/Result";
-import { NumberID, UUID } from "@shared/domain/valueObjects";
-import { EntityNotFoundException } from "@shared/exceptions/entitynotfound.exception";
-
 import moment from "moment";
-import { Product } from "../domain/aggregates/Product";
-import { AzureTelemetryService } from "@shared/modules/azure-telemetry/azure-telemetry.service";
-import {
-  Collection,
-  EntityManager,
-  EntityRepository,
-  FilterQuery,
-  wrap,
-} from "@mikro-orm/core";
-import { FailedToCreateError, FailedToSaveError } from "@shared/database";
-import {
-  DbProduct,
-  DbProductVariant,
-  IProductProps,
-  ProductSKU,
-  ProductUUID,
-} from "@catalog/domain";
-import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
-import { ProductType } from "@catalog/domain/aggregates/ProductType";
-import { ProductsQueryDto } from "@catalog/api/ProductsController";
-
-/**
- * ProductsRepository should have methods for
- * - loading the Product Aggregate into memory
- * - persisting the Product Aggregate (and its CustomOptions, Variants, etc)
- */
+import { EntityManager } from "@mikro-orm/postgresql";
+import { EntityNotFoundException } from "@shared/exceptions";
+import { Product } from "@catalog/domain/model";
+import { DbProduct } from "./entities";
 
 export class ProductNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
-    super(`Product not found with ID: ${id}`, id, `USER_NOT_FOUND`);
+    super(`Product not found with ID: ${id}`, id, `PRODUCT_NOT_FOUND`);
   }
 }
 export class ProductNotFoundWithEmailException extends EntityNotFoundException {
   constructor(id: string) {
-    super(`Product not found with Email: ${id}`, id, `USER_NOT_FOUND`);
-  }
-}
-
-export enum ProductRepositoryError {
-  FailedToLoadProductFromDb = "FailedToLoadProductFromDb",
-  FailedToConvertProductToDb = "FailedToConvertProductToDb",
-  ProductNotFound = "ProductNotFound",
-}
-export class ProductNotFoundError implements ResultError {
-  public stack: string;
-  public name = ProductRepositoryError.ProductNotFound;
-  public message: string;
-  public inner: ResultError[];
-  constructor(public value: any, reason: string) {
-    this.message = `[${this.name}]` + `[${value}]: ${reason}`;
-  }
-}
-export class FailedToLoadProductFromDb implements ResultError {
-  public stack: string;
-  public name = ProductRepositoryError.FailedToLoadProductFromDb;
-  public message: string;
-  constructor(
-    public inner: ResultError[],
-    public value: DbProduct,
-    public reason: string
-  ) {
-    this.message =
-      `[${ProductRepositoryError.FailedToLoadProductFromDb}]` +
-      `[${value.id}]` +
-      `[${value.sku}]: ${reason}`;
-  }
-}
-
-export class FailedToConvertProductToDb implements ResultError {
-  public stack: string;
-  public name = ProductRepositoryError.FailedToConvertProductToDb;
-  public message: string;
-  constructor(
-    public inner: ResultError[],
-    public value: IProductProps,
-    public reason: string
-  ) {
-    this.message =
-      `[${ProductRepositoryError.FailedToConvertProductToDb}]` +
-      `[${value.id}]` +
-      `[${value.sku}]: ${reason}`;
+    super(`Product not found with SKU: ${id}`, id, `PRODUCT_NOT_FOUND`);
   }
 }
 
@@ -93,235 +21,92 @@ export class ProductsRepository {
   private readonly logger: Logger = new Logger(ProductsRepository.name);
 
   constructor(private readonly em: EntityManager) {}
-  get llog() {
-    return `[${moment()}][${ProductsRepository.name}]`;
-  }
 
-  public async delete(uuid: UUID): Promise<Result<void>> {
+  public async delete(id: string): Promise<void> {
     let repo = this.em.getRepository(DbProduct);
-    let mp = await repo.findOne(uuid.value());
-    if (mp == null) {
+    let dbe = await repo.findOne(id);
+    if (!dbe) {
       //TODO: ProductNotFound
-      return Result.fail(
-        new ProductNotFoundError(uuid.value(), `Database returned null.`)
-      );
+      return null;
     }
-    try {
-      await repo.removeAndFlush(mp);
-      return Result.ok();
-    } catch (error) {
-      return Result.fail(error);
-    }
+    return await repo.removeAndFlush(dbe);
   }
 
   /**
    * Persists the Product Aggregate.
    * - If SKU/UUID/ID is defined, attempts to Upsert.
    * - If EntityNotFound or SKU/UUID/ID not defined, attempts to Create.
-   * @param agg Product Aggregate to be persisted.
-   * @returns {Result<Product>}
+   * @param product Product Aggregate to be persisted.
+   * @returns {Product>}
    */
-  public async save(agg: Product): Promise<Result<Product>> {
-    let result: Result<Product> = null;
-    const props = agg?.props();
+  public async save(product: Product): Promise<Product> {
     try {
-      if (props.id?.length) {
-        result = await this.upsertByUuid(agg);
-      } else if (props.sku?.length) {
-        result = await this.upsertBySku(props);
-      } else {
-        result = await this.create(props);
-      }
-
-      return result;
-    } catch (err) {
-      return this.failedToSave(props, err);
-    }
-  }
-
-  private async upsertByUuid(product: Product): Promise<Result<Product>> {
-    try {
+      const props = product.raw();
       let repo = this.em.getRepository(DbProduct);
-      const dbe = product.entity();
-      await repo.persistAndFlush(dbe);
-      return Result.ok(product);
-    } catch (err) {
-      return this.failedToSave(product.props(), err);
-    }
-  }
-
-  private async upsertBySku(props: IProductProps): Promise<Result<Product>> {
-    try {
-      let repo = this.em.getRepository(DbProduct);
-      let e = await repo.findOne(
-        { sku: props.sku },
-        { populate: ["variants"] }
-      );
-      if (e) {
-        DbProduct.copy(props, e);
-        return await this.persist(repo, e);
-      } else {
-        return await this.create(props);
-      }
-    } catch (err) {
-      return this.failedToSave(props, err);
-    }
-  }
-
-  private async persist(
-    repo: EntityRepository<DbProduct>,
-    dbe: DbProduct
-  ): Promise<Result<Product>> {
-    await repo.persistAndFlush(dbe);
-    let result = Product.db(dbe);
-    return result;
-  }
-  private async create(props: IProductProps): Promise<Result<Product>> {
-    try {
-      let repo = this.em.getRepository(DbProduct);
+      let weMustCreate = true;
       let dbe: DbProduct = null;
-      dbe = await repo.create(props);
-      return await this.persist(repo, dbe);
-    } catch (err) {
-      return this.failedToCreate(props, err);
+      if (product.sku.length) {
+        dbe = await repo.findOne({ sku: product.sku });
+        if (dbe) weMustCreate = false;
+      }
+      if (product.id) {
+        dbe = await repo.findOne({ id: product.id });
+        if (dbe) weMustCreate = false;
+      }
+      if (!dbe) {
+        dbe = new DbProduct();
+      }
+      dbe.sku = props.sku;
+      dbe.image = props.image;
+      dbe.type = props.type;
+      dbe.pricingTier = props.pricingTier;
+      dbe.tags = props.tags;
+      dbe.image = props.image;
+      dbe.svg = props.svg;
+      dbe.personalizationRules = props.personalizationRules;
+
+      if (weMustCreate) {
+        await repo.create(dbe);
+      }
+
+      await repo.persistAndFlush(dbe);
+
+      return await dbe.toProduct();
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
     }
   }
 
-  private failedToSave(props: IProductProps, err: any) {
-    this.logger.error(err);
-    return Result.fail<Product>(
-      new FailedToSaveError(
-        {
-          id: props.id,
-          type: Product.name,
-          name: props.sku,
-        },
-        err.message
-      )
-    );
-  }
-  private failedToCreate(props: IProductProps, err: any) {
-    this.logger.error(err);
-    return Result.fail<Product>(
-      new FailedToCreateError(
-        {
-          id: props.id,
-          type: Product.name,
-          name: props.sku,
-        },
-        err.message
-      )
-    );
-  }
-
-  public async findAll(
-    dto: ProductsQueryDto
-  ): Promise<Result<IProductProps[]>> {
+  public async query(): Promise<Product[]> {
     try {
       let repo = this.em.getRepository(DbProduct);
-      const query: FilterQuery<DbProduct> = {};
-      if (dto.productTypeId?.length) {
-        query.productType = { id: { $eq: dto.productTypeId } };
-      }
-      let entities = await repo.find(query);
+      let dbProducts = await repo.findAll({ populate: ["variants"] });
 
-      let props = entities.map((e) => e.props());
-      return Result.ok(props);
+      let tasks = await dbProducts.map(async (pt) => pt.toProduct());
+      let productTypes = await Promise.all(tasks);
+      return productTypes;
     } catch (error) {
       //TODO: FailedToFindAllProducts
-      return Result.fail(error);
+      this.logger.error(error);
+      throw error;
     }
   }
 
-  public async load(
-    dto: CreateProductDto | ProductUUID | ProductSKU,
-    type: ProductType
-  ): Promise<Result<Product>> {
-    try {
-      if (dto instanceof CreateProductDto) {
-        return await this.loadByDto(dto);
-      } else if (dto instanceof ProductUUID) {
-        return await this.loadByUuid(dto);
-      } else if (dto instanceof ProductSKU) {
-        return await this.loadBySku(dto);
-      }
-    } catch (error) {
-      //TODO: ProductNotFound
-      return Result.fail(error);
-    }
-  }
-  public async loadByDto(dto: CreateProductDto) {
+  public async findById(id: string): Promise<Product> {
     let repo = this.em.getRepository(DbProduct);
-    let dbe: DbProduct = null;
-    if (dto.id?.length) {
-      dbe = await repo.findOne({ id: dto.id }, { populate: ["productType"] });
-    } else if (dto.sku?.length) {
-      dbe = await repo.findOne({ sku: dto.sku }, { populate: ["productType"] });
-    } else {
-      //TODO: InvalidProduct: MissingIdentifier
-    }
+    let dbe = await repo.findOne({ id }, { populate: ["variants"] });
     if (dbe) {
-      if (!dbe.variants.isInitialized()) {
-        await dbe.variants.init();
-      }
-      return Product.db(dbe);
+      return await dbe.toProduct();
     }
-    return Product.create(dto);
+    return null;
   }
-  public async loadByUuid(uuid: ProductUUID) {
+  public async findBySku(sku: string): Promise<Product> {
     let repo = this.em.getRepository(DbProduct);
-    let dbe = await repo.findOne(
-      { id: uuid.value() },
-      { populate: ["productType"] }
-    );
-
+    let dbe = await repo.findOne({ sku }, { populate: ["variants"] });
     if (dbe) {
-      if (!dbe.variants.isInitialized()) {
-        await dbe.variants.init();
-      }
-      return Product.db(dbe);
+      return await dbe.toProduct();
     }
-
-    throw new EntityNotFoundException(`ProductNotFound`, uuid.value());
-  }
-  public async loadBySku(sku: ProductSKU) {
-    let repo = this.em.getRepository(DbProduct);
-    let dbe = await repo.findOne(
-      { sku: sku.value() },
-      { populate: ["productType"] }
-    );
-
-    if (dbe) {
-      if (!dbe.variants.isInitialized()) {
-        await dbe.variants.init();
-      }
-      return Product.db(dbe);
-    }
-
-    throw new EntityNotFoundException(`ProductNotFound`, sku.value());
-  }
-
-  public static toDb(agg: Product): Result<DbProduct> {
-    const product = agg.value();
-    let dbe = new DbProduct();
-
-    dbe.id = product.id.value();
-    dbe.sku = product.sku.value();
-    dbe.pricingTier = product.pricingTier.value();
-    dbe.tags = product.tags.value();
-    dbe.type = product.type.value();
-    // dbe.categories = product.categories.value();
-    dbe.image = product.image.value();
-    dbe.svg = product.svg.value();
-    dbe.customOptions = product.customOptions.map((c) => c.props());
-    dbe.createdAt = product.createdAt;
-    dbe.updatedAt = product.updatedAt;
-    dbe.variants = new Collection<DbProductVariant>(this);
-    return Result.ok(dbe);
-  }
-
-  public static fromDb(entity: DbProduct): Result<Product> {
-    const product = Product.db(entity).value();
-    return Result.ok(product);
+    return null;
   }
 }

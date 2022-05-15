@@ -1,0 +1,206 @@
+import { IProductTypeProps, ProductType } from "./ProductType";
+import { VariantOption } from "./VariantOption";
+
+describe("ProductType", () => {
+  const tested = "test";
+  it("should exist", () => {
+    const val = new ProductType();
+    const expected: IProductTypeProps = {
+      id: "",
+      name: "",
+      image: "",
+      productionData: {
+        route: "1",
+        material: "Mild Steel",
+        thickness: "0.06",
+      },
+      option1: {
+        enabled: false,
+        name: "",
+        values: [],
+      },
+      option2: {
+        enabled: false,
+        name: "",
+        values: [],
+      },
+      option3: {
+        enabled: false,
+        name: "",
+        values: [],
+      },
+      livePreview: {
+        enabled: false,
+        link: "",
+        name: "",
+        version: "",
+      },
+      products: [],
+      updatedAt: new Date("2021-01-01T00:00:00.000Z"),
+      createdAt: new Date("2021-01-01T00:00:00.000Z"),
+    };
+    expect(val.raw()).toEqual(expected);
+  });
+  it("should take props", () => {
+    const props: IProductTypeProps = {
+      id: "test",
+      name: "test",
+      image: "test",
+      productionData: {
+        route: "2",
+        material: "Galv Steel",
+        thickness: "0.12",
+      },
+      option1: {
+        enabled: true,
+        name: "Size",
+        values: [{ enabled: true, value: '18"' }],
+      },
+      option2: {
+        enabled: true,
+        name: "Color",
+        values: [{ enabled: true, value: "Black" }],
+      },
+      option3: {
+        enabled: false,
+        name: "",
+        values: [],
+      },
+      livePreview: {
+        enabled: false,
+        link: "",
+        name: "",
+        version: "",
+      },
+      products: [
+        {
+          id: "test",
+          image: "test",
+          sku: "test",
+          type: "test",
+          pricingTier: "test",
+          tags: ["test"],
+          svg: "test",
+          personalizationRules: [
+            {
+              name: "test",
+              type: "test",
+              label: "test",
+              options: "test",
+              pattern: "test",
+              required: false,
+              maxLength: 0,
+              placeholder: "test",
+            },
+          ],
+          variants: [
+            {
+              id: "test",
+              image: "test",
+              sku: "test",
+              option1: {
+                enabled: true,
+                name: "Size",
+                value: '18"',
+              },
+              option2: {
+                enabled: true,
+                name: "Color",
+                value: "Black",
+              },
+              option3: new VariantOption().raw(),
+              height: { dimension: 100, units: "mm" },
+              width: { dimension: 100, units: "mm" },
+              weight: { dimension: 100, units: "g" },
+              manufacturingCost: { total: 100, currency: "USD" },
+              shippingCost: { total: 100, currency: "USD" },
+            },
+          ],
+        },
+      ],
+      updatedAt: new Date("2021-01-01T00:00:00.000Z"),
+      createdAt: new Date("2021-01-01T00:00:00.000Z"),
+    };
+    const val = new ProductType(props);
+    const expected: IProductTypeProps = {
+      id: "test",
+      name: "test",
+      image: "test",
+      productionData: {
+        route: "2",
+        material: "Galv Steel",
+        thickness: "0.12",
+      },
+      option1: {
+        enabled: true,
+        name: "Size",
+        values: [{ enabled: true, value: '18"' }],
+      },
+      option2: {
+        enabled: true,
+        name: "Color",
+        values: [{ enabled: true, value: "Black" }],
+      },
+      option3: {
+        enabled: false,
+        name: "",
+        values: [],
+      },
+      livePreview: {
+        enabled: false,
+        link: "",
+        name: "",
+        version: "",
+      },
+      products: [
+        {
+          id: "test",
+          image: "test",
+          sku: "test",
+          type: "test",
+          pricingTier: "test",
+          tags: ["test"],
+          svg: "test",
+          personalizationRules: [
+            {
+              name: "test",
+              type: "test",
+              label: "test",
+              options: "test",
+              pattern: "test",
+              required: false,
+              maxLength: 0,
+              placeholder: "test",
+            },
+          ],
+          variants: [
+            {
+              id: "test",
+              image: "test",
+              sku: "test",
+              option1: {
+                enabled: true,
+                name: "Size",
+                value: '18"',
+              },
+              option2: {
+                enabled: true,
+                name: "Color",
+                value: "Black",
+              },
+              option3: new VariantOption().raw(),
+              height: { dimension: 100, units: "mm" },
+              width: { dimension: 100, units: "mm" },
+              weight: { dimension: 100, units: "g" },
+              manufacturingCost: { total: 100, currency: "USD" },
+              shippingCost: { total: 100, currency: "USD" },
+            },
+          ],
+        },
+      ],
+      updatedAt: new Date("2021-01-01T00:00:00.000Z"),
+      createdAt: new Date("2021-01-01T00:00:00.000Z"),
+    };
+    expect(val.raw()).toEqual(expected);
+  });
+});

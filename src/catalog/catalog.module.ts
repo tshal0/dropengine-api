@@ -9,29 +9,10 @@ import { ProductTypesController } from "./api/ProductTypesController";
 import { ProductVariantsController } from "./api/ProductVariantsController";
 import { ProductsRepository } from "./database/ProductsRepository";
 import { ProductTypesRepository } from "./database/ProductTypesRepository";
-import { ProductVariantsRepository } from "./database/ProductVariantsRepository";
-import { CatalogService } from "./services";
-import {
-  GetProductType,
-  GetAllProductTypes,
-  DeleteProductType,
-  CreateProductType,
-  GetProduct,
-  GetAllProducts,
-  CreateProduct,
-  DeleteProduct,
-  ImportProductCsv,
-} from "./useCases";
-import { RenameProductType } from "./useCases/ProductType/RenameProductType";
-import {
-  CreateProductVariant,
-  GetProductVariantById,
-  GetProductVariantBySku,
-  DeleteProductVariant,
-  ImportProductVariantCsv,
-  QueryProductVariants,
-} from "./useCases/ProductVariant";
-import { SyncVariant } from "./useCases/SyncVariant";
+import { VariantsRepository } from "./database";
+import { ProductTypeService } from "./services/ProductTypeService";
+import { ProductService } from "./services/ProductService";
+import { VariantService } from "./services/VariantService";
 
 @Module({
   imports: [
@@ -45,27 +26,12 @@ import { SyncVariant } from "./useCases/SyncVariant";
   providers: [
     ProductTypesRepository,
     ProductsRepository,
-    ProductVariantsRepository,
-    CatalogService,
-    GetProductType,
-    GetAllProductTypes,
-    CreateProductType,
-    DeleteProductType,
-    RenameProductType,
-    GetProduct,
-    GetAllProducts,
-    CreateProduct,
-    DeleteProduct,
-    CreateProductVariant,
-    GetProductVariantById,
-    GetProductVariantBySku,
-    DeleteProductVariant,
-    ImportProductCsv,
-    ImportProductVariantCsv,
-    QueryProductVariants,
-    SyncVariant,
+    VariantsRepository,
+    ProductTypeService,
+    ProductService,
+    VariantService,
   ],
-  exports: [CatalogService],
+  exports: [],
   controllers: [
     ProductTypesController,
     ProductsController,

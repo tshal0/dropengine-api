@@ -39,4 +39,11 @@ export class Dimension extends ValueObject<IDimension> {
     let value = new Dimension({ units: dto?.units, dimension: dto?.dimension });
     return Result.ok(value);
   }
+
+  static default(): Dimension {
+    return new Dimension({
+      units: "mm",
+      dimension: 0,
+    });
+  }
 }

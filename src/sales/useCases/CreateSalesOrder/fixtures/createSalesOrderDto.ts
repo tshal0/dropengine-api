@@ -21,16 +21,16 @@ createSalesOrderDto.lineItems = [
       type: "2DMetalArt",
       option1: {
         name: "Size",
-        option: '18"',
+        value: '18"',
         enabled: true,
       },
       option2: {
         name: "Color",
-        option: "Black",
+        value: "Black",
         enabled: true,
       },
       option3: {
-        option: null,
+        value: null,
         name: undefined,
         enabled: false,
       },
@@ -78,6 +78,7 @@ createSalesOrderDto.lineItems = [
           required: true,
           maxLength: null,
           placeholder: "Select Initial",
+          pattern: null
         },
       ],
       weight: {

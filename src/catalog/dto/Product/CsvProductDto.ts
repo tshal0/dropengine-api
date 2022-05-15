@@ -1,8 +1,5 @@
-import { Product } from "@catalog/domain";
-import { IProductProps } from "@catalog/domain/interfaces";
-import { Result } from "@shared/domain";
 import { compact } from "lodash";
-import { CreateProductDto, CustomOptionDto } from "./CreateProductDto";
+import { CreateProductDto, PersonalizationRuleDto } from "./CreateProductDto";
 
 export interface ICsvProductDto {
   Id: string;
@@ -35,7 +32,7 @@ export class CsvProductDto {
     return new CsvProductDto(dto);
   }
 
-  public toDto(): Result<CreateProductDto> {
+  public toDto(): CreateProductDto {
     try {
       const options = compact([
         this._props.CustomOption1,
@@ -45,7 +42,7 @@ export class CsvProductDto {
         this._props.CustomOption5,
         this._props.CustomOption6,
       ]);
-      const customOptions: CustomOptionDto[] = options.map((o) =>
+      const customOptions: PersonalizationRuleDto[] = options.map((o) =>
         JSON.parse(o)
       );
 
@@ -56,13 +53,14 @@ export class CsvProductDto {
         image: this._props.Image,
         svg: this._props.Svg,
         tags: this._props.Tags,
-        customOptions: [...customOptions], //TODO: CustomOptions
+        personalizationRules: [...customOptions], //TODO: CustomOptions
         pricingTier: this._props.PriceTier,
         type: this._props.Type,
       };
-      return Result.ok(props);
+      return props;
     } catch (error) {
-      return Result.fail(error);
+      console.error(error);
+      throw error;
     }
   }
 }

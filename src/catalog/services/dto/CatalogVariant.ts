@@ -1,9 +1,10 @@
 import {
-  IProductTypeProductionData,
-  ICustomOptionProps,
+  IMoney,
+  IPersonalizationRule,
+  IProductionData,
   IVariantOption,
-} from "@catalog/domain";
-import { IMoney, IWeight } from "@shared/domain";
+  IWeight,
+} from "@catalog/domain/model";
 
 export interface ICatalogVariant {
   id: string;
@@ -14,8 +15,8 @@ export interface ICatalogVariant {
   option1: IVariantOption;
   option2: IVariantOption;
   option3: IVariantOption;
-  productionData: IProductTypeProductionData;
-  personalizationRules: ICustomOptionProps[];
+  productionData: IProductionData;
+  personalizationRules: IPersonalizationRule[];
   manufacturingCost: IMoney;
   shippingCost: IMoney;
   weight: IWeight;
@@ -44,8 +45,8 @@ export class CatalogVariant implements ICatalogVariant {
   option1: IVariantOption;
   option2: IVariantOption;
   option3: IVariantOption;
-  productionData: IProductTypeProductionData;
-  personalizationRules: ICustomOptionProps[];
+  productionData: IProductionData;
+  personalizationRules: IPersonalizationRule[];
   manufacturingCost: IMoney;
   shippingCost: IMoney;
   weight: IWeight;

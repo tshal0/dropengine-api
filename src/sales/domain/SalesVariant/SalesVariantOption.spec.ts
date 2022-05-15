@@ -6,7 +6,7 @@ describe("SalesVariantOption", () => {
       it("should return success with a valid SalesVariantOption", () => {
         const opt: ISalesVariantOption = {
           name: "Size",
-          option: '18"',
+          value: '18"',
           enabled: true,
         };
         const result = SalesVariantOption.from(opt);
@@ -27,7 +27,7 @@ describe("SalesVariantOption", () => {
         const opt: ISalesVariantOption = {
           enabled: false,
           name: undefined,
-          option: null,
+          value: null,
         };
         const result = SalesVariantOption.from(opt);
         expect(result.isFailure).toBe(false);
@@ -45,7 +45,7 @@ describe("SalesVariantOption", () => {
         const opt: ISalesVariantOption = {
           enabled: true,
           name: undefined,
-          option: '18"',
+          value: '18"',
         };
         const result = SalesVariantOption.from(opt);
         expect(result.isFailure).toBe(true);
@@ -66,7 +66,7 @@ describe("SalesVariantOption", () => {
         const opt: ISalesVariantOption = {
           enabled: true,
           name: "Size",
-          option: undefined,
+          value: undefined,
         };
         const result = SalesVariantOption.from(opt);
         expect(result.isFailure).toBe(true);
@@ -87,7 +87,7 @@ describe("SalesVariantOption", () => {
         const opt: ISalesVariantOption = {
           enabled: undefined,
           name: "Size",
-          option: '18"',
+          value: '18"',
         };
         const result = SalesVariantOption.from(opt);
         expect(result.isFailure).toBe(true);

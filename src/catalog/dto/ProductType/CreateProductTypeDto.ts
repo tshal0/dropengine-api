@@ -17,13 +17,13 @@ export class LivePreviewDto {
 }
 
 export class MetalArtManufacturingDetailsDto {
-  [key: string]: any;
   material: string;
   thickness: string;
   route: string;
 }
 
 export class ProductTypeOptionDto {
+  enabled: boolean;
   name: string;
   values: ProductTypeVariantOptionDto[];
 }

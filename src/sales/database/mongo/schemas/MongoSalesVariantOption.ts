@@ -5,7 +5,7 @@ export class MongoSalesVariantOption {
   @Prop()
   name: string;
   @Prop()
-  option: string;
+  value: string;
   @Prop()
   enabled: boolean;
 }

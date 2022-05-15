@@ -7,9 +7,9 @@ export const mockCatalogVariant2: CatalogVariant = {
   image: "mock_image",
   svg: "mock_svg",
   type: "2DMetalArt",
-  option1: { name: "Size", option: '24"', enabled: true },
-  option2: { name: "Color", option: "Black", enabled: true },
-  option3: { name: undefined, option: null, enabled: false },
+  option1: { name: "Size", value: '24"', enabled: true },
+  option2: { name: "Color", value: "Black", enabled: true },
+  option3: { name: undefined, value: null, enabled: false },
   productionData: { material: "Mild Steel", route: "1", thickness: "0.06" },
   personalizationRules: [
     {
@@ -50,6 +50,7 @@ export const mockCatalogVariant2: CatalogVariant = {
       required: true,
       maxLength: null,
       placeholder: "Select Initial",
+      pattern: null,
     },
   ],
   weight: {

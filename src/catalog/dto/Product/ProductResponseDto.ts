@@ -1,5 +1,9 @@
-import { IProductProps } from "@catalog/domain";
-import { IDimension, IWeight, IMoney } from "@shared/domain";
+import {
+  IDimension,
+  IMoney,
+  IProductProps,
+  IWeight,
+} from "@catalog/domain/model";
 
 export class ProductTypeVariantOption {
   name: string;
@@ -7,7 +11,7 @@ export class ProductTypeVariantOption {
   enabled: boolean;
 }
 
-export class ProductResponseCustomOption {
+export class ProductResponsePersonalizationRule {
   [prop: string]: any;
   name: string;
   label: string;
@@ -74,7 +78,7 @@ export class ProductResponseDto {
   tags: string[];
   image?: string;
   svg?: string;
-  customOptions: ProductResponseCustomOption[];
+  personalizationRules: ProductResponsePersonalizationRule[];
   variants?: ProductResponseProductVariant[];
   productType?: ProductResponseProductType;
   createdAt: Date;
@@ -94,8 +98,8 @@ export class ProductResponseDto {
     dto.updatedAt = props.updatedAt;
 
     // TODO: HandleCustomOptions
-    dto.customOptions = props.customOptions?.map((co) => {
-      let target = new ProductResponseCustomOption();
+    dto.personalizationRules = props.personalizationRules?.map((co) => {
+      let target = new ProductResponsePersonalizationRule();
       Object.assign(target, co);
       return target;
     });

@@ -1,40 +1,15 @@
+import { MyEasySuiteModule } from "@myeasysuite/myeasysuite.module";
+import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import { ProductsController } from "@catalog/api/ProductsController";
 import { ProductTypesController } from "@catalog/api/ProductTypesController";
 import { ProductVariantsController } from "@catalog/api/ProductVariantsController";
-
-import { SyncVariant } from "@catalog/useCases/SyncVariant";
-import { HttpModule } from "@nestjs/axios";
 import { CacheModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { PassportModule } from "@nestjs/passport";
-import { Test, TestingModule, TestingModuleBuilder } from "@nestjs/testing";
-import { CatalogService } from "@catalog/services";
-import {
-  ProductsRepository,
-  ProductTypesRepository,
-  ProductVariantsRepository,
-} from "@catalog/database";
-import {
-  GetProductType,
-  GetAllProductTypes,
-  CreateProductType,
-  DeleteProductType,
-  RenameProductType,
-  GetProduct,
-  GetAllProducts,
-  CreateProduct,
-  DeleteProduct,
-  CreateProductVariant,
-  GetProductVariantById,
-  GetProductVariantBySku,
-  DeleteProductVariant,
-  ImportProductCsv,
-  ImportProductVariantCsv,
-  QueryProductVariants,
-} from "@catalog/useCases";
-import { MyEasySuiteModule } from "@myeasysuite/myeasysuite.module";
-import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
+import { TestingModuleBuilder, Test } from "@nestjs/testing";
+import { ProductTypesRepository, ProductsRepository } from "..";
+import { HttpModule } from "@nestjs/axios";
 
 jest.mock("@shared/utils", () => {
   return {
@@ -54,28 +29,10 @@ export const mockCatalogModule = (): TestingModuleBuilder => {
     providers: [
       { provide: ProductTypesRepository, useValue: {} },
       { provide: ProductsRepository, useValue: {} },
-      { provide: ProductVariantsRepository, useValue: {} },
-      { provide: CatalogService, useValue: {} },
-      { provide: GetProductType, useValue: {} },
-      { provide: GetAllProductTypes, useValue: {} },
-      { provide: CreateProductType, useValue: {} },
-      { provide: DeleteProductType, useValue: {} },
-      { provide: RenameProductType, useValue: {} },
-      { provide: GetProduct, useValue: {} },
-      { provide: GetAllProducts, useValue: {} },
-      { provide: CreateProduct, useValue: {} },
-      { provide: DeleteProduct, useValue: {} },
-      { provide: CreateProductVariant, useValue: {} },
-      { provide: GetProductVariantById, useValue: {} },
-      { provide: GetProductVariantBySku, useValue: {} },
-      { provide: DeleteProductVariant, useValue: {} },
-      { provide: ImportProductCsv, useValue: {} },
-      { provide: ImportProductVariantCsv, useValue: {} },
-      { provide: QueryProductVariants, useValue: {} },
+
       { provide: MyEasySuiteClient, useValue: {} },
-      SyncVariant,
     ],
-    exports: [CatalogService],
+    exports: [],
     controllers: [
       ProductTypesController,
       ProductsController,

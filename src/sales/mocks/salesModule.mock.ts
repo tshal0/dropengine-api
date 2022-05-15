@@ -1,10 +1,5 @@
 import { CatalogModule } from "@catalog/catalog.module";
-import {
-  ProductsRepository,
-  ProductTypesRepository,
-  ProductVariantsRepository,
-} from "@catalog/database";
-import { CatalogService } from "@catalog/services";
+
 import { HttpModule, HttpService } from "@nestjs/axios";
 import { CacheModule, HttpStatus } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
@@ -87,10 +82,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       MongoDomainEventRepository,
       SalesOrderRepository,
       CreateSalesOrder,
-      {
-        provide: ProductTypesRepository,
-        useValue: {},
-      },
+
       {
         provide: StoresRepository,
         useValue: {},
@@ -112,22 +104,22 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
   })
     .overrideProvider(AzureTelemetryService)
     .useValue(mockLogger)
-    .overrideProvider(CatalogService)
-    .useValue({
-      syncVariant: jest.fn(),
-      loadVariantBySku: jest.fn(),
-      loadVariantById: jest.fn(),
-    })
+    // .overrideProvider(CatalogService)
+    // .useValue({
+    //   syncVariant: jest.fn(),
+    //   loadVariantBySku: jest.fn(),
+    //   loadVariantById: jest.fn(),
+    // })
     .overrideProvider(StoresRepository)
     .useValue({})
     .overrideProvider(AccountsRepository)
     .useValue({})
-    .overrideProvider(ProductTypesRepository)
-    .useValue({})
-    .overrideProvider(ProductsRepository)
-    .useValue({})
-    .overrideProvider(ProductVariantsRepository)
-    .useValue({})
+    // .overrideProvider(ProductTypesRepository)
+    // .useValue({})
+    // .overrideProvider(ProductsRepository)
+    // .useValue({})
+    // .overrideProvider(ProductVariantsRepository)
+    // .useValue({})
     .overrideProvider(MyEasySuiteClient)
     .useValue({})
     .compile();
