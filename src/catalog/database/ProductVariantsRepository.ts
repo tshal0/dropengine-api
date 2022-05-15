@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { EntityNotFoundException } from "@shared/exceptions";
 import { Variant } from "@catalog/domain/model";
-import { DbProduct, DbProductVariant } from "./entities";
+import { DbProduct, DbProductType, DbProductVariant } from "./entities";
 import { ProductNotFoundException } from "./ProductsRepository";
 
 export class VariantNotFoundException extends EntityNotFoundException {
@@ -44,19 +44,10 @@ export class VariantsRepository {
       const props = variant.raw();
       let repo = this.em.getRepository(DbProductVariant);
       let products = this.em.getRepository(DbProduct);
+      let types = this.em.getRepository(DbProductType);
       let weMustCreate = true;
       let dbe: DbProductVariant = null;
-      let productId = props.productId;
-      let productSku = props.sku?.split("-").slice(0, 3).join("-");
-      let product = await products.findOne({
-        sku: productSku,
-      });
-      if (!product)
-        product = await products.findOne({
-          id: productId,
-        });
-      if (!product)
-        throw new ProductNotFoundException(`${productId}|${productSku}`);
+
       if (variant.sku.length) {
         dbe = await repo.findOne({ sku: variant.sku });
         if (dbe) weMustCreate = false;
@@ -65,10 +56,10 @@ export class VariantsRepository {
         dbe = await repo.findOne({ id: variant.id });
         if (dbe) weMustCreate = false;
       }
+
       if (!dbe) {
         dbe = new DbProductVariant();
       }
-      dbe.productId = product.id;
       dbe.sku = props.sku;
       dbe.image = props.image;
       dbe.option1 = props.option1;
@@ -81,7 +72,28 @@ export class VariantsRepository {
       dbe.shippingCost = props.shippingCost;
 
       if (weMustCreate) {
+        let productId = props.productId;
+        let productSku = props.sku?.split("-").slice(0, 3).join("-");
+        let product = await products.findOne(
+          {
+            sku: productSku,
+          },
+          { populate: ["productType"] }
+        );
+        if (!product)
+          product = await products.findOne(
+            {
+              id: productId,
+            },
+            { populate: ["productType"] }
+          );
+        if (!product)
+          throw new ProductNotFoundException(`${productId}|${productSku}`);
+
         product.variants.add(dbe);
+        let type = product.productType;
+        type.variants.add(dbe);
+        dbe.type = product.type;
       }
 
       await repo.persistAndFlush(dbe);
@@ -110,7 +122,10 @@ export class VariantsRepository {
 
   public async findById(id: string): Promise<Variant> {
     let repo = this.em.getRepository(DbProductVariant);
-    let dbe = await repo.findOne({ id });
+    let dbe = await repo.findOne(
+      { id },
+      { populate: ["product", "productType"] }
+    );
     if (dbe) {
       return await dbe.props();
     }
@@ -118,7 +133,10 @@ export class VariantsRepository {
   }
   public async findBySku(sku: string): Promise<Variant> {
     let repo = this.em.getRepository(DbProductVariant);
-    let dbe = await repo.findOne({ sku });
+    let dbe = await repo.findOne(
+      { sku },
+      { populate: ["product", "productType"] }
+    );
     if (dbe) {
       return await dbe.props();
     }

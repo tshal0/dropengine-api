@@ -63,6 +63,7 @@ export class DbProduct {
       id: this.id,
       sku: this.sku,
       type: this.type,
+      productTypeId: this.productType.id,
       pricingTier: this.pricingTier,
       tags: this.tags,
       image: this.image,

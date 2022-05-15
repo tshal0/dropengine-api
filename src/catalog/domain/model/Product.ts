@@ -8,6 +8,8 @@ export interface IProductProps {
   id: string;
   sku: string;
   type: string;
+  productTypeId: string;
+
   pricingTier: string;
   tags: string[];
   image: string;
@@ -21,6 +23,8 @@ export interface IProduct {
   id: string;
   sku: string;
   type: string;
+  productTypeId: string;
+
   pricingTier: string;
   tags: string[];
   image: string;
@@ -35,6 +39,7 @@ export class Product implements IProduct {
   private _id: string = "";
   private _sku: string = "";
   private _type: string = "";
+  private _productTypeId: string = ""
   private _pricingTier: string = "";
   private _image: string = "";
   private _svg: string = "";
@@ -48,6 +53,8 @@ export class Product implements IProduct {
       this._id = props.id;
       this._sku = props.sku;
       this._type = props.type;
+      this._productTypeId = props.productTypeId;
+
       this._pricingTier = props.pricingTier;
       this._tags = props.tags;
       this._image = props.image;
@@ -66,6 +73,8 @@ export class Product implements IProduct {
       id: this._id,
       sku: this._sku,
       type: this._type,
+      productTypeId: this._productTypeId,
+
       pricingTier: this._pricingTier,
       image: this._image,
       svg: this._svg,
@@ -93,6 +102,9 @@ export class Product implements IProduct {
   }
   public set type(val: string) {
     this._type = val;
+  }
+  public set productTypeId(val: string) {
+    this._productTypeId = val;
   }
   public set pricingTier(val: string) {
     this._pricingTier = val;
@@ -127,6 +139,9 @@ export class Product implements IProduct {
   }
   public get type() {
     return this._type;
+  }
+  public get productTypeId() {
+    return this._productTypeId;
   }
   public get pricingTier() {
     return this._pricingTier;

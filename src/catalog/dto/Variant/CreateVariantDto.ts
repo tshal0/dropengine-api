@@ -41,6 +41,8 @@ export class CreateVariantDto {
 
   @IsNotEmpty()
   sku: string;
+
+  type: string;
   image: string;
 
   @Type(() => CreateVariantDtoDimension)
@@ -88,6 +90,7 @@ export class CreateVariantDto {
     let dto: CreateVariantDto = {
       productId: "",
       sku: modifiedSku,
+      type: "2DMetalArt",
       image: v.image,
       height: {
         units: v.height_unit as VariantDimensionUnits,

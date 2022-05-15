@@ -7,7 +7,9 @@ export interface IVariantProps {
   id: string;
   image: string;
   sku: string;
+  type: string;
   productId: string;
+  productTypeId: string;
   option1: IVariantOption;
   option2: IVariantOption;
   option3: IVariantOption;
@@ -22,7 +24,9 @@ export interface IVariant {
   id: string;
   image: string;
   sku: string;
+  type: string;
   productId: string;
+  productTypeId: string;
   option1: VariantOption;
   option2: VariantOption;
   option3: VariantOption;
@@ -37,7 +41,9 @@ export class Variant implements IVariant {
   private _id: string = "";
   private _image: string = "";
   private _sku: string = "";
+  private _type: string = "";
   private _productId: string = "";
+  private _productTypeId: string = "";
   private _option1: VariantOption = new VariantOption();
   private _option2: VariantOption = new VariantOption();
   private _option3: VariantOption = new VariantOption();
@@ -51,7 +57,9 @@ export class Variant implements IVariant {
       this._id = props.id;
       this._image = props.image;
       this._sku = props.sku;
-
+      this._type = props.type;
+      this._productId = props.productId;
+      this._productTypeId = props.productTypeId;
       this._option1 = new VariantOption(props.option1);
       this._option2 = new VariantOption(props.option2);
       this._option3 = new VariantOption(props.option3);
@@ -67,7 +75,9 @@ export class Variant implements IVariant {
       id: this._id,
       image: this._image,
       sku: this._sku,
+      type: this._type,
       productId: this._productId,
+      productTypeId: this._productTypeId,
       option1: this._option1.raw(),
       option2: this._option2.raw(),
       option3: this._option3.raw(),
@@ -94,8 +104,14 @@ export class Variant implements IVariant {
   public set sku(val: string) {
     this._sku = val;
   }
+  public set type(val: string) {
+    this._type = val;
+  }
   public set productId(val: string) {
     this._productId = val;
+  }
+  public set productTypeId(val: string) {
+    this._productTypeId = val;
   }
   public set option1(val: VariantOption) {
     this._option1 = new VariantOption(val);
@@ -131,8 +147,14 @@ export class Variant implements IVariant {
   public get sku() {
     return this._sku;
   }
+  public get type() {
+    return this._type;
+  }
   public get productId() {
     return this._productId;
+  }
+  public get productTypeId() {
+    return this._productTypeId;
   }
   public get option1() {
     return this._option1;

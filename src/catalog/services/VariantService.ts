@@ -1,4 +1,9 @@
-import { VariantsRepository } from "@catalog/database";
+import {
+  ProductNotFoundException,
+  ProductsRepository,
+  ProductTypesRepository,
+  VariantsRepository,
+} from "@catalog/database";
 import {
   IVariantProps,
   PersonalizationRule,
@@ -10,6 +15,7 @@ import moment from "moment";
 import { Readable } from "stream";
 import csv from "csvtojson";
 import { CsvProductVariantDto } from "..";
+import { compact, toLower } from "lodash";
 
 /**
  * Simple service for CRUD actions.
@@ -18,14 +24,64 @@ import { CsvProductVariantDto } from "..";
 export class VariantService {
   private readonly logger: Logger = new Logger(VariantService.name);
 
-  constructor(private _repo: VariantsRepository) {}
+  constructor(
+    private _repo: VariantsRepository,
+    private _products: ProductsRepository,
+    private _types: ProductTypesRepository
+  ) {}
 
   public async create(dto: CreateVariantDto): Promise<Variant> {
+    let product = await this._products.findBySku(dto.productSku);
+    if (!product) product = await this._products.findById(dto.productId);
+    if (!product) {
+      throw new ProductNotFoundException(`${dto.productId}|${dto.productSku}`);
+    }
+    let pt = await this._types.findById(product.productTypeId);
+
+    // TODO: Verify Variant is being created with valid Option values
+
+    const productTypeOption1 = pt.option1?.name;
+    const productTypeOption2 = pt.option2?.name;
+    const productTypeOption3 = pt.option3?.name;
+
+    if (productTypeOption1?.length && !dto.option1.name?.length)
+      dto.option1.name = productTypeOption1;
+    if (productTypeOption2?.length && !dto.option2.name?.length)
+      dto.option2.name = productTypeOption2;
+    if (productTypeOption3?.length && !dto.option3.name?.length)
+      dto.option3.name = productTypeOption3;
+
+    const dtoOptions = compact([dto.option1, dto.option2, dto.option3]).reduce(
+      (map, n) => ((map[toLower(n.name)] = n.value), map),
+      {} as { [key: string]: string }
+    );
+    const optionNames = [
+      productTypeOption1,
+      productTypeOption2,
+      productTypeOption3,
+    ];
+    const optionMap = optionNames.reduce(
+      (map, n) => ((map[toLower(n)] = n), map),
+      {} as { [key: string]: string }
+    );
+    Object.keys(optionMap).forEach((k) => {
+      optionMap[k] = dtoOptions[k];
+    });
+
+    dto.option1.name = productTypeOption1;
+    dto.option1.value = optionMap[toLower(productTypeOption1)];
+    dto.option2.name = productTypeOption2;
+    dto.option2.value = optionMap[toLower(productTypeOption2)];
+    dto.option3.name = productTypeOption3;
+    dto.option3.value = optionMap[toLower(productTypeOption3)];
+
     let props: IVariantProps = {
       id: dto.id,
       image: dto.image,
       sku: dto.sku,
+      type: dto.type,
       productId: dto.productId,
+      productTypeId: null,
       option1: dto.option1,
       option2: dto.option2,
       option3: dto.option3,
@@ -58,7 +114,9 @@ export class VariantService {
       id: dto.id,
       image: dto.image,
       sku: dto.sku,
+      type: dto.type,
       productId: dto.productId,
+      productTypeId: null,
       option1: dto.option1,
       option2: dto.option2,
       option3: dto.option3,
@@ -94,21 +152,7 @@ export class VariantService {
       // Process each batch of Products
       for (let i = 0; i < csvResults.length; i++) {
         const dto = csvResults[i];
-        const product = new Variant({
-          id: null,
-          sku: dto.sku,
-          productId: dto.productId,
-          image: dto.image,
-          option1: dto.option1,
-          option2: dto.option2,
-          option3: dto.option3,
-          height: dto.height,
-          width: dto.width,
-          weight: dto.weight,
-          shippingCost: dto.shippingCost,
-          manufacturingCost: dto.manufacturingCost,
-        });
-        let saved = await this._repo.save(product);
+        let saved = await this.create(dto);
         savedResults.push(saved);
       }
       return savedResults;

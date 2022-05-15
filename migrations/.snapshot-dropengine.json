@@ -289,6 +289,16 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "type": {
+          "name": "type",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'2DMetalArt'",
+          "mappedType": "string"
+        },
         "height": {
           "name": "height",
           "type": "jsonb",
@@ -370,6 +380,15 @@
           "nullable": false,
           "mappedType": "uuid"
         },
+        "product_type_id": {
+          "name": "product_type_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz(0)",
@@ -425,6 +444,18 @@
             "id"
           ],
           "referencedTableName": "public.products",
+          "updateRule": "cascade"
+        },
+        "product_variants_product_type_id_foreign": {
+          "constraintName": "product_variants_product_type_id_foreign",
+          "columnNames": [
+            "product_type_id"
+          ],
+          "localTableName": "public.product_variants",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.product_types",
           "updateRule": "cascade"
         }
       }

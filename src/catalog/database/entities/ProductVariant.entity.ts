@@ -7,6 +7,7 @@ import {
 } from "@catalog/domain/model";
 import { Entity, Property, PrimaryKey, ManyToOne, wrap } from "@mikro-orm/core";
 import { DbProduct } from "./Product.entity";
+import { DbProductType } from "./ProductType.entity";
 
 @Entity({ tableName: "product_variants" })
 export class DbProductVariant {
@@ -17,8 +18,9 @@ export class DbProductVariant {
   sku: string;
   @Property()
   image: string;
-  @Property({persist: false})
-  productId: string;
+  @Property({ default: "2DMetalArt" })
+  type: string;
+
   @Property({ type: "json" })
   height: IDimension;
   @Property({ type: "json" })
@@ -49,12 +51,19 @@ export class DbProductVariant {
   @ManyToOne(() => DbProduct)
   product: DbProduct;
 
+  @ManyToOne(() => DbProductType)
+  productType: DbProductType;
+
   @Property()
   createdAt: Date = new Date();
   @Property({ onUpdate: () => new Date() })
   updatedAt: Date = new Date();
 
   public props() {
-    return new Variant(this);
+    return new Variant({
+      ...this,
+      productId: this.product.id,
+      productTypeId: this.productType.id,
+    });
   }
 }

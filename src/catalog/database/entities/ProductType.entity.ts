@@ -15,6 +15,7 @@ import {
 } from "@mikro-orm/core";
 
 import { DbProduct } from "./Product.entity";
+import { DbProductVariant } from "./ProductVariant.entity";
 
 @Entity({ tableName: "product_types" })
 export class DbProductType {
@@ -46,6 +47,12 @@ export class DbProductType {
     orphanRemoval: true,
   })
   products = new Collection<DbProduct>(this);
+
+  @OneToMany(() => DbProductVariant, (v) => v.productType, {
+    cascade: [Cascade.ALL],
+    orphanRemoval: true,
+  })
+  variants = new Collection<DbProductVariant>(this);
 
   public async toProductType() {
     if (!this.products.isInitialized()) {
