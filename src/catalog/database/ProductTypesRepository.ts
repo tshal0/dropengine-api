@@ -51,7 +51,7 @@ export class ProductTypesRepository {
    * @param productType ProductType Aggregate to be persisted.
    * @returns {ProductType>}
    */
-  public async save(productType: ProductType): Promise<ProductType> {
+  public async save(productType: ProductType): Promise<DbProductType> {
     try {
       const props = productType.raw();
       let repo = this.em.getRepository(DbProductType);
@@ -81,7 +81,7 @@ export class ProductTypesRepository {
 
       await repo.persistAndFlush(dbe);
 
-      return await dbe.toProductType();
+      return dbe;
     } catch (error) {
       this.logger.error(error);
       throw error;
@@ -103,19 +103,19 @@ export class ProductTypesRepository {
     }
   }
 
-  public async findById(id: string): Promise<ProductType> {
+  public async findById(id: string): Promise<DbProductType> {
     let repo = this.em.getRepository(DbProductType);
     let dbe = await repo.findOne({ id }, { populate: ["products"] });
     if (dbe) {
-      return await dbe.toProductType();
+      return dbe;
     }
     return null;
   }
-  public async findByName(name: string): Promise<ProductType> {
+  public async findByName(name: string): Promise<DbProductType> {
     let repo = this.em.getRepository(DbProductType);
     let dbe = await repo.findOne({ name }, { populate: ["products"] });
     if (dbe) {
-      return await dbe.toProductType();
+      return dbe;
     }
     return null;
   }

@@ -20,14 +20,14 @@ export class PersonalizationRule implements IPersonalizationRule {
 
   constructor(props?: IPersonalizationRule | undefined) {
     if (props) {
-      this._name = props.name;
       this._type = props.type;
       this._label = props.label;
-      this._options = props.options;
-      this._pattern = props.pattern;
       this._required = props.required;
-      this._maxLength = props.maxLength;
       this._placeholder = props.placeholder;
+      this._maxLength = props.maxLength || 0;
+      this._pattern = props.pattern || "";
+      this._options = props.options || "";
+      this._name = props.name || props.label.toLowerCase().replace(" ", "_");
     }
   }
 

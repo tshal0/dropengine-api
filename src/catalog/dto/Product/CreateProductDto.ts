@@ -22,10 +22,10 @@ export class PersonalizationRuleDto {
   placeholder: string;
   required:    boolean;
   type:        string;
-  maxLength?:  number;
-  pattern?:    string;
-  options?:    string;
-  font?:       string;
+  maxLength:  number;
+  pattern:    string;
+  options:    string;
+  font:       string;
 }
 
 

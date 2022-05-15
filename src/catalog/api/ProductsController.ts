@@ -71,19 +71,16 @@ export class ProductsController {
     return await this.service.delete(id);
   }
 
-  // @Post("import")
-  // @UseInterceptors(FileInterceptor("file"))
-  // async uploadProductCsv(
-  //   @UploadedFile() file: Express.Multer.File
-  // ): Promise<any> {
-  //   let csvArray: any[] = [];
-  //   const stream = Readable.from(file.buffer.toString());
-  //   let result = await this.importCsv.execute(stream);
-  //   if (result.isSuccess) {
-  //     return result.value();
-  //   }
-  //   throw new UnprocessableEntityException(result.error);
-  // }
+  @Post("import")
+  @UseInterceptors(FileInterceptor("file"))
+  async uploadProductCsv(
+    @UploadedFile() file: Express.Multer.File
+  ): Promise<any> {
+    const stream = Readable.from(file.buffer.toString());
+    let result = await this.service.import(stream);
+    const imported = result.map((r) => r.raw());
+    return { imported };
+  }
   @Post()
   async post(@Body() dto: CreateProductDto): Promise<IProductProps> {
     const result = await this.service.create(dto);

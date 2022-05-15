@@ -6,10 +6,9 @@
 // import { Result, ResultError } from "@shared/domain/Result";
 // import { Readable } from "stream";
 // import csv from "csvtojson";
-// import { IProductProps, Product, ProductTypeName } from "@catalog/domain";
 // import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
-// import { ProductType } from "@catalog/domain/aggregates/ProductType";
 // import { CsvProductDto } from "@catalog/dto/Product/CsvProductDto";
+// import { IProductProps, Product, ProductType } from "@catalog/domain/model";
 
 // //TODO: Extract CsvProductDtos from stream, load into Products, save to DB
 // /**

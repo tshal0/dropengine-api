@@ -3,7 +3,8 @@ import moment from "moment";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { EntityNotFoundException } from "@shared/exceptions";
 import { Product } from "@catalog/domain/model";
-import { DbProduct } from "./entities";
+import { DbProduct, DbProductType } from "./entities";
+import { ProductTypeNotFoundException } from "./ProductTypesRepository";
 
 export class ProductNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -43,6 +44,7 @@ export class ProductsRepository {
     try {
       const props = product.raw();
       let repo = this.em.getRepository(DbProduct);
+      let types = this.em.getRepository(DbProductType);
       let weMustCreate = true;
       let dbe: DbProduct = null;
       if (product.sku.length) {
@@ -56,6 +58,12 @@ export class ProductsRepository {
       if (!dbe) {
         dbe = new DbProduct();
       }
+      let productType = await types.findOne({ name: props.type });
+      if (!productType) {
+        //TODO: ProductTypeNotFound: InvalidProductTypeName
+        throw new ProductTypeNotFoundException(props.type);
+      }
+      dbe.productType = productType;
       dbe.sku = props.sku;
       dbe.image = props.image;
       dbe.type = props.type;
@@ -64,7 +72,8 @@ export class ProductsRepository {
       dbe.image = props.image;
       dbe.svg = props.svg;
       dbe.personalizationRules = props.personalizationRules;
-
+      dbe.updatedAt = props.updatedAt;
+      dbe.createdAt = props.createdAt;
       if (weMustCreate) {
         await repo.create(dbe);
       }
