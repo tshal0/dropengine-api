@@ -9,6 +9,9 @@ export class Money implements IMoney {
   constructor(props?: IMoney | undefined) {
     if (props) {
       this._currency = props.currency;
+      if (isFloat(props.total)) {
+        props.total = Math.round(props.total * 100);
+      }
       this._total = props.total;
     }
   }
@@ -23,4 +26,7 @@ export class Money implements IMoney {
   public get currency() {
     return this._currency;
   }
+}
+export function isFloat(n) {
+  return n === +n && n !== (n | 0);
 }

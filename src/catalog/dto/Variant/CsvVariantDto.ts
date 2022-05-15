@@ -73,11 +73,11 @@ export class CsvProductVariantDto {
       };
       dto.manufacturingCost = {
         currency: this._props.Currency as any,
-        total: toNumber(this._props.ManufacturingCost),
+        total: toNumber(this._props.ManufacturingCost) * 100,
       };
       dto.shippingCost = {
         currency: this._props.Currency as any,
-        total: toNumber(this._props.ShippingCost),
+        total: toNumber(this._props.ShippingCost) * 100,
       };
       dto.option1 = {
         name: null,
