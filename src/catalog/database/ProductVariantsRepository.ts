@@ -2,7 +2,8 @@ import { Injectable, Logger } from "@nestjs/common";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { EntityNotFoundException } from "@shared/exceptions";
 import { Variant } from "@catalog/domain/model";
-import { DbProductVariant } from "./entities";
+import { DbProduct, DbProductVariant } from "./entities";
+import { ProductNotFoundException } from "./ProductsRepository";
 
 export class VariantNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -35,26 +36,39 @@ export class VariantsRepository {
    * Persists the Variant Aggregate.
    * - If SKU/UUID/ID is defined, attempts to Upsert.
    * - If EntityNotFound or SKU/UUID/ID not defined, attempts to Create.
-   * @param product Variant Aggregate to be persisted.
+   * @param variant Variant Aggregate to be persisted.
    * @returns {Variant>}
    */
-  public async save(product: Variant): Promise<Variant> {
+  public async save(variant: Variant): Promise<Variant> {
     try {
-      const props = product.raw();
+      const props = variant.raw();
       let repo = this.em.getRepository(DbProductVariant);
+      let products = this.em.getRepository(DbProduct);
       let weMustCreate = true;
       let dbe: DbProductVariant = null;
-      if (product.sku.length) {
-        dbe = await repo.findOne({ sku: product.sku });
+      let productId = props.productId;
+      let productSku = props.sku?.split("-").slice(0, 3).join("-");
+      let product = await products.findOne({
+        sku: productSku,
+      });
+      if (!product)
+        product = await products.findOne({
+          id: productId,
+        });
+      if (!product)
+        throw new ProductNotFoundException(`${productId}|${productSku}`);
+      if (variant.sku.length) {
+        dbe = await repo.findOne({ sku: variant.sku });
         if (dbe) weMustCreate = false;
       }
-      if (product.id) {
-        dbe = await repo.findOne({ id: product.id });
+      if (variant.id) {
+        dbe = await repo.findOne({ id: variant.id });
         if (dbe) weMustCreate = false;
       }
       if (!dbe) {
         dbe = new DbProductVariant();
       }
+      dbe.productId = product.id;
       dbe.sku = props.sku;
       dbe.image = props.image;
       dbe.option1 = props.option1;
@@ -67,7 +81,7 @@ export class VariantsRepository {
       dbe.shippingCost = props.shippingCost;
 
       if (weMustCreate) {
-        await repo.create(dbe);
+        product.variants.add(dbe);
       }
 
       await repo.persistAndFlush(dbe);

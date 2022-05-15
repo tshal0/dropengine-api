@@ -7,6 +7,9 @@ import {
 import { CreateVariantDto } from "@catalog/dto/Variant/CreateVariantDto";
 import { Injectable, Logger, Scope } from "@nestjs/common";
 import moment from "moment";
+import { Readable } from "stream";
+import csv from "csvtojson";
+import { CsvProductVariantDto } from "..";
 
 /**
  * Simple service for CRUD actions.
@@ -22,6 +25,7 @@ export class VariantService {
       id: dto.id,
       image: dto.image,
       sku: dto.sku,
+      productId: dto.productId,
       option1: dto.option1,
       option2: dto.option2,
       option3: dto.option3,
@@ -54,6 +58,7 @@ export class VariantService {
       id: dto.id,
       image: dto.image,
       sku: dto.sku,
+      productId: dto.productId,
       option1: dto.option1,
       option2: dto.option2,
       option3: dto.option3,
@@ -69,5 +74,47 @@ export class VariantService {
   }
   public async delete(id: string): Promise<void> {
     return await this._repo.delete(id);
+  }
+
+  public async import(stream: Readable): Promise<Variant[]> {
+    let csvResults: CreateVariantDto[] = [];
+    let savedResults: Variant[] = [];
+    const now = moment().toDate();
+    try {
+      const parser = csv();
+      await parser.fromStream(stream).subscribe((obj) => {
+        return new Promise(async (resolve, reject) => {
+          let cp = CsvProductVariantDto.create(obj);
+          let dto = cp.toDto();
+          csvResults.push(dto);
+          return resolve();
+        });
+      });
+
+      // Process each batch of Products
+      for (let i = 0; i < csvResults.length; i++) {
+        const dto = csvResults[i];
+        const product = new Variant({
+          id: null,
+          sku: dto.sku,
+          productId: dto.productId,
+          image: dto.image,
+          option1: dto.option1,
+          option2: dto.option2,
+          option3: dto.option3,
+          height: dto.height,
+          width: dto.width,
+          weight: dto.weight,
+          shippingCost: dto.shippingCost,
+          manufacturingCost: dto.manufacturingCost,
+        });
+        let saved = await this._repo.save(product);
+        savedResults.push(saved);
+      }
+      return savedResults;
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
   }
 }

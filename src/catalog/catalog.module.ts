@@ -6,7 +6,7 @@ import { AzureTelemetryModule } from "@shared/modules";
 import { MyEasySuiteModule } from "@myeasysuite/myeasysuite.module";
 import { ProductsController } from "./api/ProductsController";
 import { ProductTypesController } from "./api/ProductTypesController";
-import { ProductVariantsController } from "./api/ProductVariantsController";
+import { ProductVariantsController } from "./api/VariantsController";
 import { ProductsRepository } from "./database/ProductsRepository";
 import { ProductTypesRepository } from "./database/ProductTypesRepository";
 import { VariantsRepository } from "./database";

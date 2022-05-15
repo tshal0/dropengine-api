@@ -7,6 +7,7 @@ export interface IVariantProps {
   id: string;
   image: string;
   sku: string;
+  productId: string;
   option1: IVariantOption;
   option2: IVariantOption;
   option3: IVariantOption;
@@ -21,6 +22,7 @@ export interface IVariant {
   id: string;
   image: string;
   sku: string;
+  productId: string;
   option1: VariantOption;
   option2: VariantOption;
   option3: VariantOption;
@@ -32,11 +34,24 @@ export interface IVariant {
 }
 
 export class Variant implements IVariant {
+  private _id: string = "";
+  private _image: string = "";
+  private _sku: string = "";
+  private _productId: string = "";
+  private _option1: VariantOption = new VariantOption();
+  private _option2: VariantOption = new VariantOption();
+  private _option3: VariantOption = new VariantOption();
+  private _height: Dimension = new Dimension();
+  private _width: Dimension = new Dimension();
+  private _weight: Weight = new Weight();
+  private _manufacturingCost: Money = new Money();
+  private _shippingCost: Money = new Money();
   constructor(props?: IVariantProps | undefined) {
     if (props) {
       this._id = props.id;
       this._image = props.image;
       this._sku = props.sku;
+
       this._option1 = new VariantOption(props.option1);
       this._option2 = new VariantOption(props.option2);
       this._option3 = new VariantOption(props.option3);
@@ -52,6 +67,7 @@ export class Variant implements IVariant {
       id: this._id,
       image: this._image,
       sku: this._sku,
+      productId: this._productId,
       option1: this._option1.raw(),
       option2: this._option2.raw(),
       option3: this._option3.raw(),
@@ -62,17 +78,6 @@ export class Variant implements IVariant {
       shippingCost: this._shippingCost.raw(),
     };
   }
-  private _id: string = "";
-  private _image: string = "";
-  private _sku: string = "";
-  private _option1: VariantOption = new VariantOption();
-  private _option2: VariantOption = new VariantOption();
-  private _option3: VariantOption = new VariantOption();
-  private _height: Dimension = new Dimension();
-  private _width: Dimension = new Dimension();
-  private _weight: Weight = new Weight();
-  private _manufacturingCost: Money = new Money();
-  private _shippingCost: Money = new Money();
 
   /** DOMAIN ACTIONS */
   /**
@@ -88,6 +93,9 @@ export class Variant implements IVariant {
   }
   public set sku(val: string) {
     this._sku = val;
+  }
+  public set productId(val: string) {
+    this._productId = val;
   }
   public set option1(val: VariantOption) {
     this._option1 = new VariantOption(val);
@@ -122,6 +130,9 @@ export class Variant implements IVariant {
   }
   public get sku() {
     return this._sku;
+  }
+  public get productId() {
+    return this._productId;
   }
   public get option1() {
     return this._option1;

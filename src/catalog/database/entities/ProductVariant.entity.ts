@@ -17,6 +17,8 @@ export class DbProductVariant {
   sku: string;
   @Property()
   image: string;
+  @Property({persist: false})
+  productId: string;
   @Property({ type: "json" })
   height: IDimension;
   @Property({ type: "json" })

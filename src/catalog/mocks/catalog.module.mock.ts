@@ -2,7 +2,7 @@ import { MyEasySuiteModule } from "@myeasysuite/myeasysuite.module";
 import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import { ProductsController } from "@catalog/api/ProductsController";
 import { ProductTypesController } from "@catalog/api/ProductTypesController";
-import { ProductVariantsController } from "@catalog/api/ProductVariantsController";
+import { ProductVariantsController } from "@catalog/api/VariantsController";
 import { CacheModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { EventEmitterModule } from "@nestjs/event-emitter";

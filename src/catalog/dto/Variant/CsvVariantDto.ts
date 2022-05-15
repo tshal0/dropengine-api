@@ -39,7 +39,7 @@ export class CsvProductVariantDto {
   public static optionDisabled(o: any) {
     return [null, undefined, "", 0, false].includes(o?.length);
   }
-  public toDto(): Result<CreateVariantDto> {
+  public toDto(): CreateVariantDto {
     try {
       const o1Disabled = CsvProductVariantDto.optionDisabled(
         this._props.Option1Value
@@ -94,9 +94,10 @@ export class CsvProductVariantDto {
         enabled: !o3Disabled,
         value: this._props.Option3Value,
       };
-      return Result.ok(dto);
+      return dto;
     } catch (error) {
-      return Result.fail(error, this._props?.VariantSku);
+      console.error(error);
+      throw error;
     }
   }
 }

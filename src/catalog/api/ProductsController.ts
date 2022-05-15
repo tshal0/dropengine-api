@@ -38,7 +38,8 @@ export class ProductsController {
   @Get(":id")
   @UseGuards(AuthGuard())
   async get(@Param("id") id: string) {
-    return await this.service.findById(id);
+    const result = await this.service.findById(id);
+    return result.raw();
   }
   @Get()
   @UseGuards(AuthGuard())
