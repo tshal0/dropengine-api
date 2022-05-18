@@ -13,6 +13,13 @@ import { VariantsRepository } from "./database";
 import { ProductTypeService } from "./services/ProductTypeService";
 import { ProductService } from "./services/ProductService";
 import { VariantService } from "./services/VariantService";
+import { CatalogService } from "./services/CatalogService";
+import { MikroOrmModule } from "@mikro-orm/nestjs";
+import {
+  DbProduct,
+  DbProductType,
+  DbProductVariant,
+} from "./database/entities";
 
 @Module({
   imports: [
@@ -22,6 +29,7 @@ import { VariantService } from "./services/VariantService";
     AzureTelemetryModule,
     CacheModule.register(),
     MyEasySuiteModule,
+    MikroOrmModule.forFeature([DbProductType, DbProduct, DbProductVariant]),
   ],
   providers: [
     ProductTypesRepository,
@@ -30,8 +38,9 @@ import { VariantService } from "./services/VariantService";
     ProductTypeService,
     ProductService,
     VariantService,
+    CatalogService,
   ],
-  exports: [],
+  exports: [CatalogService],
   controllers: [
     ProductTypesController,
     ProductsController,

@@ -30,18 +30,18 @@ export class ProductTypeService {
     };
     let toBeCreated = new ProductType(props);
     let result = await this._repo.save(toBeCreated);
-    return result.toProductType();
+    return result.entity();
   }
   public async query(): Promise<ProductType[]> {
     return await this._repo.query();
   }
   public async findById(id: string): Promise<ProductType> {
     const result = await this._repo.findById(id);
-    return result.toProductType();
+    return result.entity();
   }
   public async findByName(name: string): Promise<ProductType> {
     const result = await this._repo.findByName(name);
-    return result.toProductType();
+    return result.entity();
   }
   public async update(dto: CreateProductTypeDto): Promise<ProductType> {
     const now = moment().toDate();
@@ -66,7 +66,7 @@ export class ProductTypeService {
     };
     let toBeSaved = new ProductType(props);
     let result = await this._repo.save(toBeSaved);
-    return result.toProductType();
+    return result.entity();
   }
   public async delete(id: string): Promise<void> {
     return await this._repo.delete(id);

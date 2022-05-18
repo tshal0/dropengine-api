@@ -9,9 +9,14 @@ const config: Config.InitialOptions = {
 
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*.(t|j)s"],
-  coveragePathIgnorePatterns: ["node_modules", ".mock.ts", "jest.config.ts", "src/.jest"],
+  coveragePathIgnorePatterns: [
+    "node_modules",
+    ".mock.ts",
+    "jest.config.ts",
+    "src/.jest",
+  ],
   coverageDirectory: "coverage",
-  coverageReporters: ["json", "lcov", "text", "clover", "cobertura"],
+  coverageReporters: ["cobertura"],
   reporters: [
     "default",
     // [

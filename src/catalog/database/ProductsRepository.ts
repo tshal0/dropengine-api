@@ -4,7 +4,8 @@ import { EntityManager } from "@mikro-orm/postgresql";
 import { EntityNotFoundException } from "@shared/exceptions";
 import { Product } from "@catalog/domain/model";
 import { DbProduct, DbProductType } from "./entities";
-import { ProductTypeNotFoundException } from "./ProductTypesRepository";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityRepository } from "@mikro-orm/core";
 
 export class ProductNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -21,16 +22,21 @@ export class ProductNotFoundWithEmailException extends EntityNotFoundException {
 export class ProductsRepository {
   private readonly logger: Logger = new Logger(ProductsRepository.name);
 
-  constructor(private readonly em: EntityManager) {}
+  constructor(
+    @InjectRepository(DbProduct)
+    private readonly _products: EntityRepository<DbProduct>,
+    @InjectRepository(DbProductType)
+    private readonly _types: EntityRepository<DbProductType>
+  ) {}
 
   public async delete(id: string): Promise<void> {
-    let repo = this.em.getRepository(DbProduct);
-    let dbe = await repo.findOne(id);
+    let repo = this._products;
+    let dbe = await this._products.findOne(id);
     if (!dbe) {
       //TODO: ProductNotFound
       return null;
     }
-    return await repo.removeAndFlush(dbe);
+    return await this._products.removeAndFlush(dbe);
   }
 
   /**
@@ -43,25 +49,23 @@ export class ProductsRepository {
   public async save(product: Product): Promise<Product> {
     try {
       const props = product.raw();
-      let repo = this.em.getRepository(DbProduct);
-      let types = this.em.getRepository(DbProductType);
       let weMustCreate = true;
       let dbe: DbProduct = null;
       if (product.sku.length) {
-        dbe = await repo.findOne({ sku: product.sku });
+        dbe = await this._products.findOne({ sku: product.sku });
         if (dbe) weMustCreate = false;
       }
       if (product.id) {
-        dbe = await repo.findOne({ id: product.id });
+        dbe = await this._products.findOne({ id: product.id });
         if (dbe) weMustCreate = false;
       }
       if (!dbe) {
         dbe = new DbProduct();
       }
-      let productType = await types.findOne({ name: props.type });
+      let productType = await this._types.findOne({ name: props.type });
       if (!productType) {
         //TODO: ProductTypeNotFound: InvalidProductTypeName
-        throw new ProductTypeNotFoundException(props.type);
+        
       }
       dbe.productType = productType;
       dbe.sku = props.sku;
@@ -75,10 +79,10 @@ export class ProductsRepository {
       dbe.updatedAt = props.updatedAt;
       dbe.createdAt = props.createdAt;
       if (weMustCreate) {
-        await repo.create(dbe);
+        await this._products.create(dbe);
       }
 
-      await repo.persistAndFlush(dbe);
+      await this._products.persistAndFlush(dbe);
 
       return await dbe.toProduct();
     } catch (error) {
@@ -89,8 +93,7 @@ export class ProductsRepository {
 
   public async query(): Promise<Product[]> {
     try {
-      let repo = this.em.getRepository(DbProduct);
-      let dbProducts = await repo.findAll({ populate: ["variants"] });
+      let dbProducts = await this._products.findAll({ populate: ["variants"] });
 
       let tasks = await dbProducts.map(async (pt) => pt.toProduct());
       let productTypes = await Promise.all(tasks);
@@ -103,16 +106,14 @@ export class ProductsRepository {
   }
 
   public async findById(id: string): Promise<Product> {
-    let repo = this.em.getRepository(DbProduct);
-    let dbe = await repo.findOne({ id }, { populate: ["variants"] });
+    let dbe = await this._products.findOne({ id }, { populate: ["variants"] });
     if (dbe) {
       return await dbe.toProduct();
     }
     return null;
   }
   public async findBySku(sku: string): Promise<Product> {
-    let repo = this.em.getRepository(DbProduct);
-    let dbe = await repo.findOne({ sku }, { populate: ["variants"] });
+    let dbe = await this._products.findOne({ sku }, { populate: ["variants"] });
     if (dbe) {
       return await dbe.toProduct();
     }

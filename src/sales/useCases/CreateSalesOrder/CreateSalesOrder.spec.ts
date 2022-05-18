@@ -3,13 +3,6 @@ import { Model } from "mongoose";
 import { getModelToken } from "@nestjs/mongoose";
 import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
 import { now, spyOnDate } from "@shared/mocks";
-import {
-  CatalogService,
-  CatalogServiceError,
-  CatalogVariant,
-  FailedToLoadVariantByIdException,
-  FailedToLoadVariantBySkuException,
-} from "@catalog/services";
 
 import { CreateOrderLineItemApiDto } from "@sales/api";
 import { CreateLineItemDto, CreateOrderDto, CustomerDto } from "@sales/dto";
@@ -32,6 +25,13 @@ import {
   MongoSalesOrderDocument,
   MongoSalesOrder,
 } from "@sales/database/mongo";
+import {
+  CatalogService,
+  CatalogServiceError,
+  FailedToLoadVariantByIdException,
+  FailedToLoadVariantBySkuException,
+} from "@catalog/services/CatalogService";
+import { CatalogVariant } from "@catalog/services";
 spyOnDate();
 class NoErrorThrownError extends Error {}
 

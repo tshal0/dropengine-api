@@ -8,8 +8,22 @@ import { ConfigModule } from "@nestjs/config";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { PassportModule } from "@nestjs/passport";
 import { TestingModuleBuilder, Test } from "@nestjs/testing";
-import { ProductTypesRepository, ProductsRepository } from "..";
+import {
+  ProductTypesRepository,
+  ProductsRepository,
+  VariantsRepository,
+} from "..";
 import { HttpModule } from "@nestjs/axios";
+import { CatalogService } from "@catalog/services/CatalogService";
+import { ProductService } from "@catalog/services/ProductService";
+import { ProductTypeService } from "@catalog/services/ProductTypeService";
+import { VariantService } from "@catalog/services/VariantService";
+import { getRepositoryToken } from "@mikro-orm/nestjs";
+import {
+  DbProduct,
+  DbProductType,
+  DbProductVariant,
+} from "@catalog/database/entities";
 
 jest.mock("@shared/utils", () => {
   return {
@@ -27,9 +41,25 @@ export const mockCatalogModule = (): TestingModuleBuilder => {
       MyEasySuiteModule,
     ],
     providers: [
-      { provide: ProductTypesRepository, useValue: {} },
-      { provide: ProductsRepository, useValue: {} },
-
+      {
+        provide: getRepositoryToken(DbProductType),
+        useValue: {},
+      },
+      {
+        provide: getRepositoryToken(DbProduct),
+        useValue: {},
+      },
+      {
+        provide: getRepositoryToken(DbProductVariant),
+        useValue: {},
+      },
+      ProductTypesRepository,
+      ProductsRepository,
+      VariantsRepository,
+      ProductTypeService,
+      ProductService,
+      VariantService,
+      CatalogService,
       { provide: MyEasySuiteClient, useValue: {} },
     ],
     exports: [],

@@ -29,23 +29,9 @@ export class ProductTypesController {
   async delete(@Param("id") id: string) {
     return await this.service.delete(id);
   }
-  // @Patch(":id/rename")
-  // async patch(
-  //   @Param("id") id: string,
-  //   @Body() dto: { name: string }
-  // ): Promise<IProductTypeProps> {
-  //   let uuid = UUID.from(id);
-  //   let result = await this.rename.execute({
-  //     id: uuid.value(),
-  //     name: dto.name,
-  //   });
-  //   if (result.isSuccess) {
-  //     return result.value().props();
-  //   } else {
-  //     throw new UnprocessableEntityException(result.error);
-  //   }
-  // }
+
   @Post()
+  @UseGuards(AuthGuard())
   async post(@Body() dto: CreateProductTypeDto): Promise<IProductTypeProps> {
     const result = await this.service.create(dto);
     return result.raw();
@@ -53,6 +39,7 @@ export class ProductTypesController {
   @Get()
   @UseGuards(AuthGuard())
   async getAll(): Promise<IProductTypeProps[]> {
-    return await this.service.query();
+    let types = await this.service.query();
+    return types.map((t) => t.raw());
   }
 }

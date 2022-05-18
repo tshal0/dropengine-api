@@ -16,7 +16,8 @@ export class VariantOptions implements IVariantOptions {
     if (props) {
       this._name = props.name;
       this._enabled = props.enabled;
-      this._values = props.values.map((v) => new VariantOptionValue(v));
+      if (props.values)
+        this._values = props.values.map((v) => new VariantOptionValue(v));
     }
   }
   raw(): IVariantOptionsProps {

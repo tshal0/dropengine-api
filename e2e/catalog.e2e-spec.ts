@@ -20,12 +20,12 @@ describe("Catalog (e2e)", () => {
   });
   beforeEach(async () => {});
 
-  it("/productTypes (GET)", () => {
+  it("/productTypes (POST)", () => {
     const server: INestApplication = app.getHttpServer();
     const expected = {};
 
     return request(server)
-      .get("/catalog/productTypes")
+      .post("/catalog/productTypes")
       .set("Authorization", `Bearer ${token}`)
       .expect(200)
       .expect(expected);

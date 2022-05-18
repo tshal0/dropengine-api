@@ -117,6 +117,7 @@
     "jest-html-reporters": "^3.0.6",
     "jest-junit": "^13.0.0",
     "jest-module-name-mapper": "^0.1.5",
+    "jest-when": "^3.5.1",
     "mongodb-memory-server": "^8.5.1",
     "newman": "^5.3.2",
     "newman-reporter-htmlextra": "^1.22.7",

@@ -1,21 +1,22 @@
+import { Injectable, Logger, Scope } from "@nestjs/common";
+import moment from "moment";
+import { compact, sortBy, toLower } from "lodash";
+import { Readable } from "stream";
+import csv from "csvtojson";
 import {
   ProductNotFoundException,
   ProductsRepository,
   ProductTypesRepository,
   VariantsRepository,
 } from "@catalog/database";
+import { IVariantProps, Variant } from "@catalog/domain/model";
 import {
-  IVariantProps,
-  PersonalizationRule,
-  Variant,
-} from "@catalog/domain/model";
-import { CreateVariantDto } from "@catalog/dto/Variant/CreateVariantDto";
-import { Injectable, Logger, Scope } from "@nestjs/common";
-import moment from "moment";
-import { Readable } from "stream";
-import csv from "csvtojson";
-import { CsvProductVariantDto } from "..";
-import { compact, toLower } from "lodash";
+  CsvProductVariantDto,
+  CreateVariantDto,
+  CreateProductDto,
+  PersonalizationRuleDto,
+} from "@catalog/dto";
+import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 
 /**
  * Simple service for CRUD actions.
@@ -27,7 +28,8 @@ export class VariantService {
   constructor(
     private _repo: VariantsRepository,
     private _products: ProductsRepository,
-    private _types: ProductTypesRepository
+    private _types: ProductTypesRepository,
+    private _myEasySuite: MyEasySuiteClient
   ) {}
 
   public async create(dto: CreateVariantDto): Promise<Variant> {

@@ -1,3 +1,3 @@
 export * from './ProductsRepository';
 export * from './ProductTypesRepository';
-export * from './ProductVariantsRepository';
+export * from './VariantsRepository';

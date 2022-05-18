@@ -14,6 +14,13 @@ export interface IMyEasySuiteClient {
 @Injectable()
 export class MyEasySuiteClient implements IMyEasySuiteClient {
   constructor(private http: HttpService) {}
+
+  /**
+   * Looks up Variant in MyEasySuite: Orders.
+   * @param sku VariantSKU
+   * @returns MyEasySuiteProductVariant
+   * @throws EntityNotFoundException
+   */
   async getVariantBySku(sku: string) {
     const resp$ = await this.http.get(`/api/productvariants/${sku}`).pipe(
       map((r) => r.data as MyEasySuiteProductVariant),
