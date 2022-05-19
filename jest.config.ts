@@ -16,7 +16,7 @@ const config: Config.InitialOptions = {
     "src/.jest",
   ],
   coverageDirectory: "coverage",
-  coverageReporters: ["cobertura"],
+  coverageReporters: ["json", "lcov", "text", "clover", "cobertura"],
   reporters: [
     "default",
     // [

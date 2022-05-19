@@ -108,7 +108,7 @@ export class DbProduct {
       personalizationRules: this.personalizationRules.map(
         (r) => new PersonalizationRule(r)
       ),
-      variants: dbVariants.map((v) => v.props()),
+      variants: dbVariants.map((v) => v.entity()),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     });

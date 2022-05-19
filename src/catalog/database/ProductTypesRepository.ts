@@ -69,7 +69,7 @@ export class ProductTypesRepository {
   }): Promise<DbProductType> {
     let dbe = await this._types.findOne(
       { $or: [{ id: dto.id }, { name: dto.name }] },
-      { populate: ["products"] }
+      { populate: ["products", "variants"] }
     );
     if (dbe) {
       return dbe;

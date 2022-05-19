@@ -94,16 +94,16 @@ export class VariantService {
     };
     let toBeCreated = new Variant(props);
     let result = await this._repo.save(toBeCreated);
-    return result;
+    return result.entity();
   }
   public async query(): Promise<Variant[]> {
     return await this._repo.query();
   }
   public async findById(id: string): Promise<Variant> {
-    return await this._repo.findById(id);
+    return (await this._repo.findById(id)).entity();
   }
   public async findBySku(sku: string): Promise<Variant> {
-    return await this._repo.findBySku(sku);
+    return (await this._repo.findBySku(sku)).entity();
   }
   public async update(dto: CreateVariantDto): Promise<Variant> {
     let toBeUpdated = await this._repo.findById(dto.id);
@@ -129,7 +129,7 @@ export class VariantService {
     };
     let toBeSaved = new Variant(props);
     let result = await this._repo.save(toBeSaved);
-    return result;
+    return result.entity();
   }
   public async delete(id: string): Promise<void> {
     return await this._repo.delete(id);

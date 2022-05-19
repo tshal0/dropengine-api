@@ -1,13 +1,8 @@
-import {
-  IPersonalizationRule,
-  IProductProps,
-  PersonalizationRule,
-  Product,
-} from "@catalog/domain";
+import { IPersonalizationRule, IProductProps, Product } from "@catalog/domain";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
-import { TestingModule, TestingModuleBuilder } from "@nestjs/testing";
+import { TestingModule } from "@nestjs/testing";
 import { mockUuid1 } from "@sales/mocks";
-import { cloneDeep, update } from "lodash";
+import { cloneDeep } from "lodash";
 import { DbProduct, DbProductType } from "./entities";
 import { ProductsRepository } from "./ProductsRepository";
 import { when } from "jest-when";
@@ -117,7 +112,7 @@ describe("ProductsRepository", () => {
       expected.productTypeId = mockUuid1;
       expect(result.raw(mockUuid1)).toEqual(expected);
     });
-    it("should update a DbProduct if lookupBySkuOrId returns an entity", async () => {
+    it("should update entity if entity found", async () => {
       // GIVEN
       const findOneFn = jest.fn().mockResolvedValue(updated);
       const mockProductType = new DbProductType();

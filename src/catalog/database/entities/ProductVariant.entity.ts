@@ -2,6 +2,7 @@ import {
   IDimension,
   IMoney,
   IVariantOption,
+  IVariantProps,
   IWeight,
   Variant,
 } from "@catalog/domain/model";
@@ -59,7 +60,29 @@ export class DbProductVariant {
   @Property({ onUpdate: () => new Date() })
   updatedAt: Date = new Date();
 
-  public props() {
+  public raw(
+    pid?: string | undefined,
+    ptid?: string | undefined
+  ): IVariantProps {
+    const props: IVariantProps = {
+      id: this.id,
+      image: this.image,
+      sku: this.sku,
+      type: this.type,
+      productId: pid ?? this.product.id,
+      productTypeId: ptid ?? this.productType.id,
+      option1: this.option1,
+      option2: this.option2,
+      option3: this.option3,
+      height: this.height,
+      width: this.width,
+      weight: this.weight,
+      manufacturingCost: this.manufacturingCost,
+      shippingCost: this.shippingCost,
+    };
+    return props;
+  }
+  public entity() {
     return new Variant({
       ...this,
       productId: this.product.id,

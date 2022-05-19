@@ -55,7 +55,7 @@ export class ProductsRepository {
   }): Promise<DbProduct> {
     return await this._products.findOne(
       { $or: [{ id: dto.id }, { sku: dto.sku }] },
-      { populate: ["variants"] }
+      { populate: ["variants", "productType"] }
     );
   }
 
