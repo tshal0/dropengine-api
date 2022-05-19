@@ -71,7 +71,7 @@ export class ProductVariantsController {
   async uploadProductCsv(
     @UploadedFile() file: Express.Multer.File
   ): Promise<any> {
-    const stream = Readable.from(file.buffer.toString());
+    const stream = file.buffer.toString();
     let result = await this.service.import(stream);
     const imported = result.map((r) => r.raw());
     return { imported };

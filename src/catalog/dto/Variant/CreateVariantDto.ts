@@ -22,7 +22,6 @@ export class CreateVariantDtoWeight {
 export class CreateVariantDtoOption {
   name: string;
   value: string;
-  enabled: boolean;
 }
 
 export class CreateVariantDtoMoney {
@@ -65,8 +64,6 @@ export class CreateVariantDto {
   manufacturingCost?: CreateVariantDtoMoney;
   @Type(() => CreateVariantDtoMoney)
   shippingCost?: CreateVariantDtoMoney;
-
-  productType?: IProductTypeProps;
 
   public static fromMyEasySuite(
     v: MyEasySuiteProductVariant

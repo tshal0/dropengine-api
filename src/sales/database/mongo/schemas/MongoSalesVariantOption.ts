@@ -6,8 +6,6 @@ export class MongoSalesVariantOption {
   name: string;
   @Prop()
   value: string;
-  @Prop()
-  enabled: boolean;
 }
 export const MongoSalesVariantOptionSchema = SchemaFactory.createForClass(
   MongoSalesVariantOption

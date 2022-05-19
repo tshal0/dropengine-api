@@ -1,5 +1,7 @@
 import { Dimension, IDimension } from "./Dimension";
 import { IMoney, Money } from "./Money";
+import { IProductProps, Product } from "./Product";
+import { IProductTypeProps, ProductType } from "./ProductType";
 import { IVariantOption, VariantOption } from "./VariantOption";
 import { IWeight, Weight } from "./Weight";
 
@@ -18,6 +20,8 @@ export interface IVariantProps {
   weight: IWeight;
   manufacturingCost: IMoney;
   shippingCost: IMoney;
+  product?: IProductProps | undefined;
+  productType?: IProductTypeProps | undefined;
 }
 
 export interface IVariant {
@@ -35,6 +39,9 @@ export interface IVariant {
   weight: Weight;
   manufacturingCost: Money;
   shippingCost: Money;
+
+  product?: Product | undefined;
+  productType?: ProductType | undefined;
 }
 
 export class Variant implements IVariant {
@@ -44,6 +51,8 @@ export class Variant implements IVariant {
   private _type: string = "";
   private _productId: string = "";
   private _productTypeId: string = "";
+  private _product: Product = new Product();
+  private _productType: ProductType = new ProductType();
   private _option1: VariantOption = new VariantOption();
   private _option2: VariantOption = new VariantOption();
   private _option3: VariantOption = new VariantOption();
@@ -68,6 +77,12 @@ export class Variant implements IVariant {
       this._weight = new Weight(props.weight);
       this._manufacturingCost = new Money(props.manufacturingCost);
       this._shippingCost = new Money(props.shippingCost);
+      this._product = props.product
+        ? new Product(props.product)
+        : new Product();
+      this._productType = props.productType
+        ? new ProductType(props.productType)
+        : new ProductType();
     }
   }
   public raw(): IVariantProps {
@@ -86,6 +101,8 @@ export class Variant implements IVariant {
       weight: this._weight.raw(),
       manufacturingCost: this._manufacturingCost.raw(),
       shippingCost: this._shippingCost.raw(),
+      product: this._product.raw(),
+      productType: this._productType.raw(),
     };
   }
 
@@ -137,7 +154,13 @@ export class Variant implements IVariant {
   public set shippingCost(val: Money) {
     this._shippingCost = new Money(val);
   }
-
+  public set product(val: Product) {
+    this._product = val;
+  }
+  public set productType(val: ProductType) {
+    this._productType = val;
+  }
+  /** GETTERS */
   public get id() {
     return this._id;
   }
@@ -179,5 +202,11 @@ export class Variant implements IVariant {
   }
   public get shippingCost() {
     return this._shippingCost;
+  }
+  public get product() {
+    return this._product;
+  }
+  public get productType() {
+    return this._productType;
   }
 }

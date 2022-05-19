@@ -8,10 +8,15 @@ import {
   ProductTypesRepository,
   VariantsRepository,
 } from "@catalog/database";
-import { IVariantProps, Variant } from "@catalog/domain/model";
+import {
+  IProductTypeProps,
+  IVariantProps,
+  Variant,
+} from "@catalog/domain/model";
 import { CsvProductVariantDto, CreateVariantDto } from "@catalog/dto";
 import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import { EntityNotFoundException } from "@shared/exceptions";
+import { DbProductType } from "@catalog/database/entities";
 
 /**
  * Simple service for CRUD actions.
@@ -23,38 +28,65 @@ export class VariantService {
   constructor(
     private _repo: VariantsRepository,
     private _products: ProductsRepository,
-    private _types: ProductTypesRepository,
-    private _myEasySuite: MyEasySuiteClient
+    private _types: ProductTypesRepository
   ) {}
 
   public async findAndUpdateOrCreate(dto: CreateVariantDto): Promise<Variant> {
-    let dbp = await this._products.findBySku(dto.productSku);
-    if (!dbp) dbp = await this._products.findById(dto.productId);
-    if (!dbp) {
+    let product = await this._products.lookupBySkuOrId({
+      id: dto.productId,
+      sku: dto.productSku,
+    });
+    if (!product) {
       throw new EntityNotFoundException(
         `ProductNotFound`,
         `${dto.productId}|${dto.productSku}`
       );
     }
-    let pt = await this._types.findById(dbp.productType.id);
+    let productType = await this._types.lookupByNameOrId({
+      id: product.productType.id,
+      name: dto.type,
+    });
+    dto = this.swapVariantOptions(productType.raw(), dto);
 
-    // TODO: Verify Variant is being created with valid Option values
+    let props: IVariantProps = {
+      id: dto.id,
+      image: dto.image,
+      sku: dto.sku,
+      type: productType.name,
+      productId: product.id,
+      productTypeId: productType.id,
+      option1: dto.option1,
+      option2: dto.option2,
+      option3: dto.option3,
+      height: dto.height,
+      width: dto.width,
+      weight: dto.weight,
+      manufacturingCost: dto.manufacturingCost,
+      shippingCost: dto.shippingCost,
+      product: product.raw(),
+      productType: productType.raw(),
+    };
+    let toBeCreated = new Variant(props);
+    let result = await this._repo.save(toBeCreated);
+    const vprops = result.raw();
+    return new Variant(vprops);
+  }
+  public swapVariantOptions(
+    pt: IProductTypeProps,
+    dto: CreateVariantDto
+  ): CreateVariantDto {
+    const productTypeOption1 = pt.option1.name;
+    const productTypeOption2 = pt.option2.name;
+    const productTypeOption3 = pt.option3.name;
 
-    const productTypeOption1 = pt.option1?.name;
-    const productTypeOption2 = pt.option2?.name;
-    const productTypeOption3 = pt.option3?.name;
-
-    if (productTypeOption1?.length && !dto.option1.name?.length)
-      dto.option1.name = productTypeOption1;
-    if (productTypeOption2?.length && !dto.option2.name?.length)
-      dto.option2.name = productTypeOption2;
-    if (productTypeOption3?.length && !dto.option3.name?.length)
-      dto.option3.name = productTypeOption3;
-
+    dto = correctInvalidOptionNames(dto, pt);
+    // VariantOptions: Color: Black, Size: 12
+    // VariantOptions: null: Black, null: 12
     const dtoOptions = compact([dto.option1, dto.option2, dto.option3]).reduce(
       (map, n) => ((map[toLower(n.name)] = n.value), map),
       {} as { [key: string]: string }
     );
+    // FE PT option, set the variant option accordingly
     const optionNames = [
       productTypeOption1,
       productTypeOption2,
@@ -74,35 +106,19 @@ export class VariantService {
     dto.option2.value = optionMap[toLower(productTypeOption2)];
     dto.option3.name = productTypeOption3;
     dto.option3.value = optionMap[toLower(productTypeOption3)];
-
-    let props: IVariantProps = {
-      id: dto.id,
-      image: dto.image,
-      sku: dto.sku,
-      type: dto.type,
-      productId: dto.productId,
-      productTypeId: null,
-      option1: dto.option1,
-      option2: dto.option2,
-      option3: dto.option3,
-      height: dto.height,
-      width: dto.width,
-      weight: dto.weight,
-      manufacturingCost: dto.manufacturingCost,
-      shippingCost: dto.shippingCost,
-    };
-    let toBeCreated = new Variant(props);
-    let result = await this._repo.save(toBeCreated);
-    return result.entity();
+    return dto;
   }
+
   public async query(): Promise<Variant[]> {
     return await this._repo.query();
   }
   public async findById(id: string): Promise<Variant> {
-    return (await this._repo.findById(id)).entity();
+    const result = await this._repo.findById(id);
+    return new Variant(result.raw());
   }
   public async findBySku(sku: string): Promise<Variant> {
-    return (await this._repo.findBySku(sku)).entity();
+    const result = await this._repo.findBySku(sku);
+    return new Variant(result.raw());
   }
   public async update(dto: CreateVariantDto): Promise<Variant> {
     let toBeUpdated = await this._repo.findById(dto.id);
@@ -128,37 +144,49 @@ export class VariantService {
     };
     let toBeSaved = new Variant(props);
     let result = await this._repo.save(toBeSaved);
-    return result.entity();
+    return new Variant(result.raw());
   }
   public async delete(id: string): Promise<void> {
     return await this._repo.delete(id);
   }
 
-  public async import(stream: Readable): Promise<Variant[]> {
+  public async import(stream: string): Promise<Variant[]> {
     let csvResults: CreateVariantDto[] = [];
     let savedResults: Variant[] = [];
-    const now = moment().toDate();
-    try {
-      const parser = csv();
-      await parser.fromStream(stream).subscribe((obj) => {
-        return new Promise(async (resolve, reject) => {
-          let cp = CsvProductVariantDto.create(obj);
-          let dto = cp.toDto();
-          csvResults.push(dto);
-          return resolve();
-        });
-      });
+    let results: any[] = await csv().fromString(stream);
+    csvResults = results.map((r) => CsvProductVariantDto.create(r).toDto());
 
-      // Process each batch of Products
-      for (let i = 0; i < csvResults.length; i++) {
-        const dto = csvResults[i];
-        let saved = await this.findAndUpdateOrCreate(dto);
-        savedResults.push(saved);
-      }
-      return savedResults;
-    } catch (error) {
-      this.logger.error(error);
-      throw error;
+    // Process each batch of Products
+    for (let i = 0; i < csvResults.length; i++) {
+      const dto = csvResults[i];
+      let saved = await this.findAndUpdateOrCreate(dto);
+      savedResults.push(saved);
+    }
+    return savedResults;
+  }
+}
+export function correctInvalidOptionNames(
+  dto: CreateVariantDto,
+  pt: IProductTypeProps
+): CreateVariantDto {
+  const dtoOptions = [dto.option1, dto.option2, dto.option3];
+  for (let i = 0; i < dtoOptions.length; i++) {
+    const option = dtoOptions[i];
+    if (!option.name) {
+      let fitsInOp1 = pt.option1.values.find(
+        (v) => v.value == option.value
+      );
+      let fitsInOp2 = pt.option2.values.find(
+        (v) => v.value == option.value
+      );
+      let fitsInOp3 = pt.option3.values.find(
+        (v) => v.value == option.value
+      );
+      if (fitsInOp1) option.name = pt.option1.name;
+      else if (fitsInOp2) option.name = pt.option2.name;
+      else if (fitsInOp3) option.name = pt.option3.name;
+      else option.name = "";
     }
   }
+  return dto;
 }

@@ -18,7 +18,7 @@ import { DbProductVariant } from "./ProductVariant.entity";
 
 @Entity({ tableName: "product_types" })
 export class DbProductType {
-  constructor(props?: DbProductType | undefined) {
+  constructor(props?: IProductTypeProps | undefined) {
     if (props) {
       this.id = props.id;
       this.name = props.name;
@@ -28,7 +28,6 @@ export class DbProductType {
       this.option2 = props.option2;
       this.option3 = props.option3;
       this.livePreview = props.livePreview;
-      this.products = props.products;
       this.updatedAt = props.updatedAt;
       this.createdAt = props.createdAt;
     }
@@ -52,9 +51,9 @@ export class DbProductType {
   @Property({ type: "json" })
   livePreview: ILivePreview;
 
-  @Property()
+  @Property({ onCreate: () => new Date() })
   createdAt: Date = new Date();
-  @Property({ onUpdate: () => new Date() })
+  @Property({ onCreate: () => new Date(), onUpdate: () => new Date() })
   updatedAt: Date = new Date();
 
   @OneToMany(() => DbProduct, (v) => v.productType, {

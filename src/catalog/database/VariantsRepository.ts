@@ -28,26 +28,27 @@ export class VariantsRepository {
    * @returns {Variant>}
    */
   public async save(entity: Variant): Promise<DbProductVariant> {
-    let weMustCreate = true;
-    let dbe: DbProductVariant = await this.lookupBySkuOrId(entity);
+    let creating = true;
+    let dbe: DbProductVariant = await this.lookupBySkuOrId({
+      id: entity.id,
+      sku: entity.sku,
+    });
 
     if (!dbe) {
       dbe = await this.create(entity);
     } else {
-      weMustCreate = false;
+      creating = false;
       dbe = await this.update(dbe, entity);
     }
 
-    if (weMustCreate) {
-      let productId = entity.productId;
-      let productSku = entity.sku?.split("-").slice(0, 3).join("-");
+    if (creating) {
       let product = await this._products.lookupBySkuOrId({
-        id: productId,
-        sku: productSku,
+        id: entity.product.id,
+        sku: entity.product.sku,
       });
       let type = await this._types.lookupByNameOrId({
-        id: entity.productTypeId,
-        name: entity.type,
+        id: entity.productType.id,
+        name: entity.productType.name,
       });
       if (!product)
         throw new EntityNotFoundException(
@@ -65,7 +66,6 @@ export class VariantsRepository {
     }
 
     await this._variants.persistAndFlush(dbe);
-
     return dbe;
   }
 
@@ -101,10 +101,8 @@ export class VariantsRepository {
 
   public async query(): Promise<Variant[]> {
     let dbVariants = await this._variants.findAll({});
-
-    let tasks = await dbVariants.map(async (pt) => pt.entity());
-    let productTypes = await Promise.all(tasks);
-    return productTypes;
+    let variants = dbVariants.map((pt) => new Variant(pt.raw()));
+    return variants;
   }
 
   public async findById(id: string): Promise<DbProductVariant> {

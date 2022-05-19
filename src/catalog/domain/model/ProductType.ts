@@ -1,15 +1,7 @@
 import { IProduct, IProductProps, Product } from "./Product";
-import {
-  defaultProductionData,
-  IProductionData,
-  ProductionData,
-} from "./ProductionData";
+import { IProductionData, ProductionData } from "./ProductionData";
 import { ILivePreview, LivePreview } from "./LivePreview";
-import {
-  IVariantOptions,
-  IVariantOptionsProps,
-  VariantOptions,
-} from "./VariantOptions";
+import { IVariantOptionsProps, VariantOptions } from "./VariantOptions";
 
 export interface IProductTypeProps {
   id: string;

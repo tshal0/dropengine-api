@@ -2,6 +2,7 @@ import {
   IPersonalizationRule,
   PersonalizationRule,
 } from "./PersonalizationRule";
+import { IProductTypeProps, ProductType } from "./ProductType";
 import { IVariant, IVariantProps, Variant } from "./Variant";
 
 export interface IProductProps {
@@ -9,13 +10,13 @@ export interface IProductProps {
   sku: string;
   type: string;
   productTypeId: string;
-
   pricingTier: string;
   tags: string[];
   image: string;
   svg: string;
   personalizationRules: IPersonalizationRule[];
   variants: IVariantProps[];
+  productType?: IProductTypeProps | undefined;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,6 +32,7 @@ export interface IProduct {
   svg: string;
   personalizationRules: PersonalizationRule[];
   variants: Variant[];
+  productType?: ProductType | undefined;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,13 +41,14 @@ export class Product implements IProduct {
   private _id: string = "";
   private _sku: string = "";
   private _type: string = "";
-  private _productTypeId: string = ""
+  private _productTypeId: string = "";
   private _pricingTier: string = "";
   private _image: string = "";
   private _svg: string = "";
   private _tags: string[] = [];
   private _personalizationRules: PersonalizationRule[] = [];
   private _variants: Variant[] = [];
+  private _productType: ProductType = new ProductType();
   private _updatedAt: Date = new Date("2021-01-01T00:00:00.000Z");
   private _createdAt: Date = new Date("2021-01-01T00:00:00.000Z");
   constructor(props?: IProductProps | undefined) {
@@ -63,6 +66,9 @@ export class Product implements IProduct {
         (r) => new PersonalizationRule(r)
       );
       this._variants = props.variants.map((v) => new Variant(v));
+      this._productType = props.productType
+        ? new ProductType(props.productType)
+        : new ProductType();
       this._updatedAt = props.updatedAt;
       this._createdAt = props.createdAt;
     }
@@ -81,6 +87,7 @@ export class Product implements IProduct {
       tags: this._tags,
       personalizationRules: this._personalizationRules.map((r) => r.raw()),
       variants: this._variants.map((v) => v.raw()),
+      productType: this._productType.raw(),
       updatedAt: this._updatedAt,
       createdAt: this._createdAt,
     };
@@ -124,6 +131,9 @@ export class Product implements IProduct {
   public set variants(val: Variant[]) {
     this._variants = val;
   }
+  public set productType(val: ProductType) {
+    this._productType = val;
+  }
   public set updatedAt(val: Date) {
     this._updatedAt = val;
   }
@@ -160,6 +170,9 @@ export class Product implements IProduct {
   }
   public get variants() {
     return this._variants;
+  }
+  public get productType() {
+    return this._productType;
   }
   public get updatedAt(): Date {
     return this._updatedAt;

@@ -22,7 +22,7 @@ describe("Product", () => {
       createdAt: now,
       updatedAt: now,
     };
-    expect(val.raw()).toEqual(expected);
+    expect(val.raw()).toMatchObject(expected);
     expect(val.id).toEqual(expected.id);
     expect(val.image).toEqual(expected.image);
     expect(val.sku).toEqual(expected.sku);
@@ -65,12 +65,10 @@ describe("Product", () => {
           image: "test",
           sku: "test",
           option1: {
-            enabled: true,
             name: "Size",
             value: '18"',
           },
           option2: {
-            enabled: true,
             name: "Color",
             value: "Black",
           },
@@ -88,7 +86,7 @@ describe("Product", () => {
     };
     const val = new Product(props);
 
-    expect(val.raw()).toEqual(props);
+    expect(val.raw()).toMatchObject(props);
   });
   it("id is editable", () => {
     const val = new Product();
@@ -170,12 +168,10 @@ describe("Product", () => {
       image: "test",
       sku: "test",
       option1: {
-        enabled: true,
         name: "Size",
         value: '18"',
       },
       option2: {
-        enabled: true,
         name: "Color",
         value: "Black",
       },

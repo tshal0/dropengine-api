@@ -115,12 +115,10 @@ describe("ProductType", () => {
               image: "test",
               sku: "test",
               option1: {
-                enabled: true,
                 name: "Size",
                 value: '18"',
               },
               option2: {
-                enabled: true,
                 name: "Color",
                 value: "Black",
               },
@@ -201,12 +199,10 @@ describe("ProductType", () => {
               image: "test",
               sku: "test",
               option1: {
-                enabled: true,
                 name: "Size",
                 value: '18"',
               },
               option2: {
-                enabled: true,
                 name: "Color",
                 value: "Black",
               },
@@ -225,6 +221,6 @@ describe("ProductType", () => {
       updatedAt: new Date("2021-01-01T00:00:00.000Z"),
       createdAt: new Date("2021-01-01T00:00:00.000Z"),
     };
-    expect(val.raw()).toEqual(expected);
+    expect(val.raw()).toMatchObject(expected);
   });
 });

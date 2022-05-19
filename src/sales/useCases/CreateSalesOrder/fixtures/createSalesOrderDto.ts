@@ -22,17 +22,14 @@ createSalesOrderDto.lineItems = [
       option1: {
         name: "Size",
         value: '18"',
-        enabled: true,
       },
       option2: {
         name: "Color",
         value: "Black",
-        enabled: true,
       },
       option3: {
         value: null,
         name: undefined,
-        enabled: false,
       },
       productionData: {
         material: "Mild Steel",

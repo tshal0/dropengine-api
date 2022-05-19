@@ -12,6 +12,23 @@ import { DbProductType } from "./ProductType.entity";
 
 @Entity({ tableName: "product_variants" })
 export class DbProductVariant {
+  constructor(props?: IVariantProps | undefined) {
+    if (props) {
+      this.id = props.id;
+      this.image = props.image;
+      this.sku = props.sku;
+      this.type = props.type;
+      this.option1 = props.option1;
+      this.option2 = props.option2;
+      this.option3 = props.option3;
+      this.height = props.height;
+      this.width = props.width;
+      this.weight = props.weight;
+      this.manufacturingCost = props.manufacturingCost;
+      this.shippingCost = props.shippingCost;
+      
+    }
+  }
   @PrimaryKey({ type: "uuid", defaultRaw: "uuid_generate_v4()" })
   id!: string;
 
@@ -55,9 +72,9 @@ export class DbProductVariant {
   @ManyToOne(() => DbProductType)
   productType: DbProductType;
 
-  @Property()
+  @Property({ onCreate: () => new Date() })
   createdAt: Date = new Date();
-  @Property({ onUpdate: () => new Date() })
+  @Property({ onCreate: () => new Date(), onUpdate: () => new Date() })
   updatedAt: Date = new Date();
 
   public raw(): IVariantProps {
@@ -76,14 +93,9 @@ export class DbProductVariant {
       weight: this.weight,
       manufacturingCost: this.manufacturingCost,
       shippingCost: this.shippingCost,
+      product: this.product ? this.product.raw() : null,
+      productType: this.productType ? this.productType.raw() : null,
     };
     return props;
-  }
-  public entity() {
-    return new Variant({
-      ...this,
-      productId: this.product.id,
-      productTypeId: this.productType.id,
-    });
   }
 }

@@ -1,64 +1,133 @@
-import { DbProduct } from "@catalog/database/entities";
-import { IProductProps, Product, IPersonalizationRule } from "@catalog/domain";
+import {
+  DbProduct,
+  DbProductType,
+  DbProductVariant,
+} from "@catalog/database/entities";
+import {
+  IProductProps,
+  Product,
+  IPersonalizationRule,
+  IProductTypeProps,
+  ProductType,
+  LivePreview,
+  IVariantProps,
+  Variant,
+} from "@catalog/domain";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
 import { TestingModule } from "@nestjs/testing";
 import { mockUuid1 } from "@sales/mocks";
-import { read } from "fs";
-import { Readable } from "stream";
-import { CreateProductDto, CsvProductDto, ProductsRepository } from "..";
+import { CreateProductDto, ProductsRepository } from "..";
 import { ProductService } from "./ProductService";
-import csv from "csvtojson";
-import { lastValueFrom } from "rxjs";
-import { setFlagsFromString } from "v8";
-
+import { now, spyOnDate } from "@shared/mocks";
+import { getRepositoryToken } from "@mikro-orm/nestjs";
+spyOnDate();
 describe("ProductService", () => {
   let module: TestingModule;
   let service: ProductService;
-  let prodProps: IProductProps;
 
+  let prodTypeProps: IProductTypeProps;
+  let prodType: ProductType;
+  let dbProdType: DbProductType;
+
+  let prodProps: IProductProps;
   let prod: Product;
   let dbProd: DbProduct;
-  const mockNameRule: IPersonalizationRule = {
-    name: "name",
-    type: "input",
-    label: "Name",
-    options: "",
-    pattern: "^[a-zA-Z0-9\\s.,'/&]*",
-    required: true,
-    maxLength: 20,
-    placeholder: "Enter up to 20 characters",
-  };
-  prodProps = {
-    id: mockUuid1,
-    sku: "MEM-001-01",
-    type: "MockProductType",
-    productTypeId: undefined,
-    pricingTier: "2",
-    tags: ["MOCK_TAG"],
-    image: "MOCK_IMG",
-    svg: "MOCK_SVG",
-    personalizationRules: [mockNameRule],
-    variants: [],
-    updatedAt: new Date("2021-01-01T00:00:00.000Z"),
-    createdAt: new Date("2021-01-01T00:00:00.000Z"),
-  };
 
-  prod = new Product(prodProps);
-  dbProd = new DbProduct();
-  dbProd.id = mockUuid1;
-  dbProd.sku = prodProps.sku;
-  dbProd.image = prodProps.image;
-  dbProd.type = prodProps.type;
-  dbProd.pricingTier = prodProps.pricingTier;
-  dbProd.svg = prodProps.svg;
-  dbProd.personalizationRules = prodProps.personalizationRules;
-  dbProd.tags = prodProps.tags;
-  dbProd.createdAt = prodProps.createdAt;
-  dbProd.updatedAt = prodProps.updatedAt;
+  let vprops: IVariantProps;
+  let variant: Variant;
+  let dbVariant: DbProductVariant;
+
+  const PROD_TYPE = `2DMetalArt`;
+  const PSKU = `MEM-000-01`;
+  const VSKU = `${PSKU}-12-Black`;
 
   beforeEach(async () => {
     module = await mockCatalogModule().compile();
     service = await module.resolve(ProductService);
+    prodTypeProps = {
+      id: mockUuid1,
+      name: PROD_TYPE,
+      image: "MOCK_IMG",
+      productionData: { material: "Mild Steel", route: "1", thickness: "0.06" },
+      option1: {
+        enabled: true,
+        name: "Size",
+        values: [
+          { enabled: true, value: '12"' },
+          { enabled: true, value: '15"' },
+          { enabled: true, value: '18"' },
+        ],
+      },
+      option2: {
+        enabled: true,
+        name: "Color",
+        values: [
+          { enabled: true, value: "Black" },
+          { enabled: true, value: "Gold" },
+          { enabled: true, value: "Copper" },
+        ],
+      },
+      option3: {
+        enabled: false,
+        name: "",
+        values: [],
+      },
+      livePreview: new LivePreview().raw(),
+      products: [],
+      updatedAt: now,
+      createdAt: now,
+    };
+    prodType = new ProductType(prodTypeProps);
+    dbProdType = new DbProductType(prodTypeProps);
+    const mockNameRule: IPersonalizationRule = {
+      name: "name",
+      type: "input",
+      label: "Name",
+      options: "",
+      pattern: "^[a-zA-Z0-9\\s.,'/&]*",
+      required: true,
+      maxLength: 20,
+      placeholder: "Enter up to 20 characters",
+    };
+    prodProps = {
+      id: mockUuid1,
+      sku: PSKU,
+      type: PROD_TYPE,
+      productTypeId: mockUuid1,
+      pricingTier: "2",
+      tags: ["MOCK_TAG"],
+      image: "MOCK_IMG",
+      svg: "MOCK_SVG",
+      personalizationRules: [mockNameRule],
+      variants: [],
+      productType: prodTypeProps,
+      updatedAt: now,
+      createdAt: now,
+    };
+
+    prod = new Product(prodProps);
+    dbProd = new DbProduct(prodProps);
+    vprops = {
+      id: mockUuid1,
+      image: "MOCK_IMG",
+      sku: VSKU,
+      type: PROD_TYPE,
+      productId: mockUuid1,
+      productTypeId: mockUuid1,
+
+      option1: { name: "Size", value: '12"' },
+      option2: { name: "Color", value: "Black" },
+      option3: { name: "", value: undefined },
+      height: { dimension: 100, units: "mm" },
+      width: { dimension: 100, units: "mm" },
+      weight: { dimension: 100, units: "g" },
+      manufacturingCost: { total: 100, currency: "USD" },
+      shippingCost: { total: 100, currency: "USD" },
+      product: prodProps,
+      productType: prodTypeProps,
+    };
+    variant = new Variant(vprops);
+    dbVariant = new DbProductVariant(vprops);
   });
   describe("create", () => {
     let dto: CreateProductDto;
@@ -85,25 +154,31 @@ describe("ProductService", () => {
       dto.tags = "Tag1,Tag2";
     });
     it("should create new Product if not found", async () => {
-      const saveFn = jest.fn().mockResolvedValue(dbProd);
+      const createFn = jest.fn().mockResolvedValue(dbProd);
       // GIVEN
       module = await mockCatalogModule()
-        .overrideProvider(ProductsRepository)
+        .overrideProvider(getRepositoryToken(DbProductType))
         .useValue({
-          save: saveFn,
+          findOne: jest.fn().mockResolvedValue(dbProdType),
+        })
+        .overrideProvider(getRepositoryToken(DbProduct))
+        .useValue({
+          findOne: jest.fn().mockResolvedValue(null),
+          create: createFn,
+          persistAndFlush: jest.fn(),
         })
         .compile();
-      const repo = await module.resolve(ProductsRepository);
-      const saveSpy = jest.spyOn(repo, "save");
+      const repo = await module.resolve(getRepositoryToken(DbProduct));
+      const createSpy = jest.spyOn(repo, "create");
 
       service = await module.resolve(ProductService);
       // WHEN
       const result = await service.findAndUpdateOrCreate(dto);
+      const raw = result.raw();
       // THEN
-      expect(result.raw()).toEqual(prodProps);
-      expect(saveSpy).toBeCalledWith(
-        new Product({
-          id: undefined,
+      expect(raw).toMatchObject(prodProps);
+      expect(createSpy).toBeCalledWith(
+        new DbProduct({
           sku: prodProps.sku,
           image: "NEW_IMAGE",
           type: prodProps.type,
@@ -132,11 +207,10 @@ describe("ProductService", () => {
             },
           ],
           tags: ["Tag1", "Tag2"],
-          createdAt: undefined,
-          updatedAt: undefined,
-          productTypeId: undefined,
+          createdAt: now,
+          updatedAt: now,
           variants: [],
-        })
+        } as any)
       );
     });
   });

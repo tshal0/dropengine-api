@@ -16,10 +16,7 @@ import { compact, trim } from "lodash";
 @Injectable({ scope: Scope.DEFAULT })
 export class ProductService {
   private readonly logger: Logger = new Logger(ProductService.name);
-  constructor(
-    private _repo: ProductsRepository,
-    private _types: ProductTypesRepository
-  ) {}
+  constructor(private _repo: ProductsRepository) {}
 
   public async findAndUpdateOrCreate(dto: CreateProductDto): Promise<Product> {
     let props: IProductProps = {
@@ -73,26 +70,32 @@ export class ProductService {
     // Process each batch of Products
     for (let i = 0; i < csvResults.length; i++) {
       const dto = csvResults[i];
-      const product = new Product({
-        id: null,
-        sku: dto.sku,
-        type: dto.type,
-        productTypeId: dto.productTypeId,
-        pricingTier: dto.pricingTier,
-        tags: dto.tags.split(",").map((t) => trim(t)),
-        image: dto.image,
-        svg: dto.svg,
-        personalizationRules: dto.personalizationRules.map(
-          (r) => new PersonalizationRule(r)
-        ),
-        variants: [],
-        createdAt: now,
-        updatedAt: now,
-      });
+      const product = this.generateProduct(dto, now);
       let saved = await this._repo.save(product);
-      let raw = await saved.raw();
+      let raw = saved.raw();
       savedResults.push(new Product(raw));
     }
     return savedResults;
+  }
+
+  private generateProduct(dto: CreateProductDto, now: Date) {
+    const rules = dto.personalizationRules.map(
+      (r) => new PersonalizationRule(r)
+    );
+    const tags = dto.tags.split(",").map((t) => trim(t));
+    return new Product({
+      id: null,
+      sku: dto.sku,
+      type: dto.type,
+      productTypeId: dto.productTypeId,
+      pricingTier: dto.pricingTier,
+      tags: tags,
+      image: dto.image,
+      svg: dto.svg,
+      personalizationRules: rules,
+      variants: [],
+      createdAt: now,
+      updatedAt: now,
+    });
   }
 }

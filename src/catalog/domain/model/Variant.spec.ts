@@ -24,7 +24,7 @@ describe("Variant", () => {
       productId: "",
       productTypeId: ""
     };
-    expect(val.raw()).toEqual(expected);
+    expect(val.raw()).toMatchObject(expected);
     expect(val.id).toEqual(expected.id);
     expect(val.image).toEqual(expected.image);
     expect(val.sku).toEqual(expected.sku);
@@ -43,12 +43,10 @@ describe("Variant", () => {
       image: "test",
       sku: "test",
       option1: {
-        enabled: true,
         name: "Size",
         value: '18"',
       },
       option2: {
-        enabled: true,
         name: "Color",
         value: "Black",
       },
@@ -64,7 +62,7 @@ describe("Variant", () => {
     };
     const val = new Variant(props);
 
-    expect(val.raw()).toEqual(props);
+    expect(val.raw()).toMatchObject(props);
   });
   it("id is editable", () => {
     const val = new Variant();
@@ -87,7 +85,6 @@ describe("Variant", () => {
   it("option1 is editable", () => {
     const val = new Variant();
     const props = {
-      enabled: true,
       name: "test",
       value: "test",
     };
@@ -98,7 +95,6 @@ describe("Variant", () => {
   it("option2 is editable", () => {
     const val = new Variant();
     const props = {
-      enabled: true,
       name: "test",
       value: "test",
     };
@@ -109,7 +105,6 @@ describe("Variant", () => {
   it("option3 is editable", () => {
     const val = new Variant();
     const props = {
-      enabled: true,
       name: "test",
       value: "test",
     };

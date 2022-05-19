@@ -34,9 +34,14 @@ export class ProductsRepository {
       dbe = await this.update(dbe, entity);
     }
 
-    let productType = await this._types.findOne({ name: entity.type });
+    let productType = await this._types.findOne({
+      $or: [{ name: entity.type }, { id: entity.productTypeId }],
+    });
     if (!productType) {
-      //TODO: ProductTypeNotFound: InvalidProductTypeName
+      throw new EntityNotFoundException(
+        `ProductTypeNotFound`,
+        `${entity.productTypeId}|${entity.type}`
+      );
     }
     dbe.productType = productType;
 
@@ -65,16 +70,18 @@ export class ProductsRepository {
     return await this._products.create(dbe);
   }
 
-  public async update(dbe: DbProduct, entity: Product): Promise<DbProduct> {
-    dbe.sku = entity.sku;
-    dbe.image = entity.image;
-    dbe.type = entity.type;
-    dbe.pricingTier = entity.pricingTier;
-    dbe.tags = entity.tags;
-    dbe.image = entity.image;
-    dbe.svg = entity.svg;
-    dbe.personalizationRules = entity.personalizationRules.map((r) => r.raw());
-    return dbe;
+  public async update(target: DbProduct, source: Product): Promise<DbProduct> {
+    target.sku = source.sku;
+    target.image = source.image;
+    target.type = source.type;
+    target.pricingTier = source.pricingTier;
+    target.tags = source.tags;
+    target.image = source.image;
+    target.svg = source.svg;
+    target.personalizationRules = source.personalizationRules.map((r) =>
+      r.raw()
+    );
+    return target;
   }
 
   public async query(): Promise<Product[]> {

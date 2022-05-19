@@ -81,17 +81,14 @@ export class CsvProductVariantDto {
       };
       dto.option1 = {
         name: null,
-        enabled: !o1Disabled,
         value: this._props.Option1Value,
       };
       dto.option2 = {
         name: null,
-        enabled: !o2Disabled,
         value: this._props.Option2Value,
       };
       dto.option3 = {
         name: null,
-        enabled: !o3Disabled,
         value: this._props.Option3Value,
       };
       return dto;
