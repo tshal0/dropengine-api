@@ -1,22 +1,17 @@
 import { Injectable, Logger, Scope } from "@nestjs/common";
 import moment from "moment";
-import { compact, sortBy, toLower } from "lodash";
+import { compact, toLower } from "lodash";
 import { Readable } from "stream";
 import csv from "csvtojson";
 import {
-  ProductNotFoundException,
   ProductsRepository,
   ProductTypesRepository,
   VariantsRepository,
 } from "@catalog/database";
 import { IVariantProps, Variant } from "@catalog/domain/model";
-import {
-  CsvProductVariantDto,
-  CreateVariantDto,
-  CreateProductDto,
-  PersonalizationRuleDto,
-} from "@catalog/dto";
+import { CsvProductVariantDto, CreateVariantDto } from "@catalog/dto";
 import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
+import { EntityNotFoundException } from "@shared/exceptions";
 
 /**
  * Simple service for CRUD actions.
@@ -36,9 +31,13 @@ export class VariantService {
     let product = await this._products.findBySku(dto.productSku);
     if (!product) product = await this._products.findById(dto.productId);
     if (!product) {
-      throw new ProductNotFoundException(`${dto.productId}|${dto.productSku}`);
+      throw new EntityNotFoundException(
+        `ProductNotFound`,
+        `${dto.productId}|${dto.productSku}`
+      );
     }
-    let pt = await this._types.findById(product.productTypeId);
+    const entity = await product.entity();
+    let pt = await this._types.findById(entity.productTypeId);
 
     // TODO: Verify Variant is being created with valid Option values
 

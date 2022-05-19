@@ -145,11 +145,10 @@ describe("ProductTypesRepository", () => {
       // WHEN
 
       const result = await service.save(given);
-      const resultProps = await (await result.entity()).raw();
       // THEN
       const expected = cloneDeep(props);
       expected.id = created.id;
-      expect(resultProps).toEqual(expected);
+      expect(result.raw()).toEqual(expected);
     });
     it("should update entity if ID or NAME exists", async () => {
       // GIVEN
@@ -221,11 +220,11 @@ describe("ProductTypesRepository", () => {
     });
     it("should return list of entities", async () => {
       // GIVEN
-      const findOneFn = jest.fn().mockResolvedValue([queried]);
+      const findAllFn = jest.fn().mockResolvedValue([queried]);
       module = await mockCatalogModule()
         .overrideProvider(getRepositoryToken(DbProductType))
         .useValue({
-          findAll: findOneFn,
+          findAll: findAllFn,
         })
         .compile();
       service = await module.resolve(ProductTypesRepository);

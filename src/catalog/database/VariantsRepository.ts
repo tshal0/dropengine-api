@@ -3,7 +3,6 @@ import { EntityManager } from "@mikro-orm/postgresql";
 import { EntityNotFoundException } from "@shared/exceptions";
 import { Variant } from "@catalog/domain/model";
 import { DbProduct, DbProductType, DbProductVariant } from "./entities";
-import { ProductNotFoundException } from "./ProductsRepository";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityRepository } from "@mikro-orm/core";
 
@@ -93,7 +92,10 @@ export class VariantsRepository {
             { populate: ["productType"] }
           );
         if (!product)
-          throw new ProductNotFoundException(`${productId}|${productSku}`);
+          throw new EntityNotFoundException(
+            `ProductNotFound`,
+            `${variant.productId}|${variant.sku}`
+          );
 
         product.variants.add(dbe);
         let type = product.productType;

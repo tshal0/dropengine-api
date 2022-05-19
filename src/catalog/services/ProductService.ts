@@ -50,16 +50,16 @@ export class ProductService {
     };
     let toBeCreated = new Product(props);
     let result = await this._repo.save(toBeCreated);
-    return result;
+    return await result.entity();
   }
   public async query(): Promise<Product[]> {
     return await this._repo.query();
   }
   public async findById(id: string): Promise<Product> {
-    return await this._repo.findById(id);
+    return await (await this._repo.findById(id)).entity();
   }
   public async findBySku(sku: string): Promise<Product> {
-    return await this._repo.findBySku(sku);
+    return await (await this._repo.findBySku(sku)).entity();
   }
   public async update(dto: CreateProductDto): Promise<Product> {
     const now = moment().toDate();
@@ -93,7 +93,7 @@ export class ProductService {
     };
     let toBeSaved = new Product(props);
     let result = await this._repo.save(toBeSaved);
-    return result;
+    return await result.entity();
   }
   public async delete(id: string): Promise<void> {
     return await this._repo.delete(id);
@@ -134,7 +134,8 @@ export class ProductService {
           updatedAt: now,
         });
         let saved = await this._repo.save(product);
-        savedResults.push(saved);
+        let entity = await saved.entity();
+        savedResults.push(entity);
       }
       return savedResults;
     } catch (error) {

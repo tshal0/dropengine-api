@@ -77,7 +77,7 @@ export class DbProductType {
       await this.products.init();
     }
     const dbProducts = await this.products.loadItems();
-    const dbProductTasks = await dbProducts.map(async (p) => p.toProduct());
+    const dbProductTasks = await dbProducts.map(async (p) => p.entity());
     const products = await Promise.all(dbProductTasks);
     return new ProductType({
       id: this.id,
