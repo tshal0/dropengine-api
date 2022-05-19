@@ -1,11 +1,8 @@
 import {
   ILivePreview,
   IProductionData,
-  IProductProps,
   IProductTypeProps,
   IVariantOptionsProps,
-  IVariantProps,
-  ProductType,
 } from "@catalog/domain/model";
 import {
   Entity,
@@ -72,29 +69,7 @@ export class DbProductType {
   })
   variants = new Collection<DbProductVariant>(this);
 
-  public async entity() {
-    if (!this.products.isInitialized()) {
-      await this.products.init();
-    }
-    const dbProducts = await this.products.loadItems();
-    const dbProductTasks = await dbProducts.map(async (p) => p.entity());
-    const products = await Promise.all(dbProductTasks);
-    return new ProductType({
-      id: this.id,
-      name: this.name,
-      image: this.image,
-      productionData: this.productionData,
-      option1: this.option1,
-      option2: this.option2,
-      option3: this.option3,
-      livePreview: this.livePreview,
-      products: products,
-      updatedAt: this.updatedAt,
-      createdAt: this.createdAt,
-    });
-  }
   public raw(): IProductTypeProps {
-    const productTypeId = this.id;
     let props: IProductTypeProps = {
       id: this.id,
       name: this.name,
@@ -106,42 +81,7 @@ export class DbProductType {
       livePreview: this.livePreview,
       updatedAt: this.updatedAt,
       createdAt: this.createdAt,
-      products: this.products.getItems().map((p) => {
-        const productId = p.id;
-        const pprops: IProductProps = {
-          id: p.id,
-          sku: p.sku,
-          type: p.type,
-          productTypeId: productTypeId,
-          pricingTier: p.pricingTier,
-          tags: p.tags,
-          image: p.image,
-          svg: p.svg,
-          personalizationRules: p.personalizationRules,
-          variants: p.variants.getItems().map((v) => {
-            const vprops: IVariantProps = {
-              id: v.id,
-              image: v.image,
-              sku: v.sku,
-              type: v.type,
-              productId: productId,
-              productTypeId: productTypeId,
-              option1: v.option1,
-              option2: v.option2,
-              option3: v.option3,
-              height: v.height,
-              width: v.width,
-              weight: v.weight,
-              manufacturingCost: v.manufacturingCost,
-              shippingCost: v.shippingCost,
-            };
-            return vprops;
-          }),
-          createdAt: p.createdAt,
-          updatedAt: p.updatedAt,
-        };
-        return pprops;
-      }),
+      products: this.products.getItems().map((p) => p.raw()),
     };
     return props;
   }

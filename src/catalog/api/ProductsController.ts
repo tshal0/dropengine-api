@@ -7,7 +7,6 @@ import {
   Param,
   Post,
   Query,
-  UnprocessableEntityException,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -18,7 +17,6 @@ import { AuthGuard } from "@nestjs/passport";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CreateProductDto } from "@catalog/dto/Product/CreateProductDto";
 import "multer";
-import { Readable } from "stream";
 import { ProductResponseDto } from "@catalog/dto/Product/ProductResponseDto";
 import { QueryProductResponseDto } from "@catalog/dto/Product/QueryProductResponseDto";
 import { ProductService } from "@catalog/services/ProductService";
@@ -77,14 +75,14 @@ export class ProductsController {
   async uploadProductCsv(
     @UploadedFile() file: Express.Multer.File
   ): Promise<any> {
-    const stream = Readable.from(file.buffer.toString());
+    const stream = file.buffer.toString();
     let result = await this.service.import(stream);
     const imported = result.map((r) => r.raw());
     return { imported };
   }
   @Post()
   async post(@Body() dto: CreateProductDto): Promise<IProductProps> {
-    const result = await this.service.create(dto);
+    const result = await this.service.findAndUpdateOrCreate(dto);
     return result.raw();
   }
 }

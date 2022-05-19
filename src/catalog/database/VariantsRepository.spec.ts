@@ -84,9 +84,9 @@ describe("VariantsRepository", () => {
       // THEN
       const expected = cloneDeep(props);
       expected.id = mockUuid1;
-      expected.productId = mockUuid1;
-      expected.productTypeId = mockUuid2;
-      expect(result.raw(mockUuid1, mockUuid2)).toEqual(expected);
+      expected.productId = undefined;
+      expected.productTypeId = undefined;
+      expect(result.raw()).toEqual(expected);
     });
   });
   describe("save", () => {
@@ -121,7 +121,7 @@ describe("VariantsRepository", () => {
 
       // THEN
       const expected = cloneDeep(props);
-      expect(result.raw(mockUuid1, mockUuid2)).toEqual(expected);
+      expect(result.raw()).toEqual(expected);
     });
     it("should update entity if entity found", async () => {
       // GIVEN
@@ -154,7 +154,7 @@ describe("VariantsRepository", () => {
       // THEN
       const expected = cloneDeep(props);
       expected.image = "NEW_IMAGE";
-      expect(result.raw(mockUuid1, mockUuid2)).toEqual(expected);
+      expect(result.raw()).toEqual(expected);
     });
     it("should throw error if Product not found", async () => {
       // GIVEN
@@ -251,7 +251,7 @@ describe("VariantsRepository", () => {
       const expected = cloneDeep(props);
       expected.id = updated.id;
       // THEN
-      expect(result.raw(mockUuid1, mockUuid2)).toEqual(expected);
+      expect(result.raw()).toEqual(expected);
     });
     it("should return null if NOT found", async () => {
       // GIVEN
@@ -307,7 +307,7 @@ describe("VariantsRepository", () => {
       const expected = cloneDeep(props);
       expected.id = updated.id;
       // THEN
-      expect(result.raw(mockUuid1, mockUuid2)).toEqual(expected);
+      expect(result.raw()).toEqual(expected);
     });
     it("should return null if NOT found", async () => {
       // GIVEN
@@ -344,7 +344,7 @@ describe("VariantsRepository", () => {
       const expected = cloneDeep(props);
       expected.id = updated.id;
       // THEN
-      expect(result.raw(mockUuid1, mockUuid2)).toEqual(expected);
+      expect(result.raw()).toEqual(expected);
     });
     it("should return null if NOT found", async () => {
       // GIVEN

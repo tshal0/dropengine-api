@@ -25,7 +25,6 @@ export class PersonalizationRuleDto {
   maxLength:  number;
   pattern:    string;
   options:    string;
-  font:       string;
 }
 
 

@@ -164,11 +164,11 @@ describe("ProductTypesRepository", () => {
       // WHEN
 
       const result = await service.save(given);
-      const resultProps = await result.entity();
+      const resultProps = await result.raw();
       // THEN
       const expected = cloneDeep(given);
       expected.id = created.id;
-      expect(resultProps).toEqual(expected);
+      expect(result.raw()).toEqual(expected.raw());
     });
   });
   describe("query", () => {

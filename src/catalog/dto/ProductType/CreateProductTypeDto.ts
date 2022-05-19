@@ -28,7 +28,6 @@ export class ProductTypeOptionDto {
   values: ProductTypeVariantOptionDto[];
 }
 export class ProductTypeVariantOptionDto {
-  name: string;
   value: string;
   enabled: boolean;
 }

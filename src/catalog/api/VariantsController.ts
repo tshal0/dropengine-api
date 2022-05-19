@@ -79,7 +79,7 @@ export class ProductVariantsController {
 
   @Post()
   async post(@Body() dto: CreateVariantDto): Promise<IVariantProps> {
-    const result = await this.service.create(dto);
+    const result = await this.service.findAndUpdateOrCreate(dto);
     return result.raw();
   }
   @Get()

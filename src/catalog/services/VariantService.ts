@@ -27,17 +27,16 @@ export class VariantService {
     private _myEasySuite: MyEasySuiteClient
   ) {}
 
-  public async create(dto: CreateVariantDto): Promise<Variant> {
-    let product = await this._products.findBySku(dto.productSku);
-    if (!product) product = await this._products.findById(dto.productId);
-    if (!product) {
+  public async findAndUpdateOrCreate(dto: CreateVariantDto): Promise<Variant> {
+    let dbp = await this._products.findBySku(dto.productSku);
+    if (!dbp) dbp = await this._products.findById(dto.productId);
+    if (!dbp) {
       throw new EntityNotFoundException(
         `ProductNotFound`,
         `${dto.productId}|${dto.productSku}`
       );
     }
-    const entity = await product.entity();
-    let pt = await this._types.findById(entity.productTypeId);
+    let pt = await this._types.findById(dbp.productType.id);
 
     // TODO: Verify Variant is being created with valid Option values
 
@@ -109,7 +108,7 @@ export class VariantService {
     let toBeUpdated = await this._repo.findById(dto.id);
     if (!toBeUpdated) toBeUpdated = await this._repo.findBySku(dto.sku);
     if (!toBeUpdated) {
-      return await this.create(dto);
+      return await this.findAndUpdateOrCreate(dto);
     }
     let props: IVariantProps = {
       id: dto.id,
@@ -153,7 +152,7 @@ export class VariantService {
       // Process each batch of Products
       for (let i = 0; i < csvResults.length; i++) {
         const dto = csvResults[i];
-        let saved = await this.create(dto);
+        let saved = await this.findAndUpdateOrCreate(dto);
         savedResults.push(saved);
       }
       return savedResults;

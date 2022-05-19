@@ -60,17 +60,14 @@ export class DbProductVariant {
   @Property({ onUpdate: () => new Date() })
   updatedAt: Date = new Date();
 
-  public raw(
-    pid?: string | undefined,
-    ptid?: string | undefined
-  ): IVariantProps {
+  public raw(): IVariantProps {
     const props: IVariantProps = {
       id: this.id,
       image: this.image,
       sku: this.sku,
       type: this.type,
-      productId: pid ?? this.product.id,
-      productTypeId: ptid ?? this.productType.id,
+      productId: this.product?.id,
+      productTypeId: this.productType?.id,
       option1: this.option1,
       option2: this.option2,
       option3: this.option3,

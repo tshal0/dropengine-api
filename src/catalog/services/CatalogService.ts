@@ -84,11 +84,11 @@ export class CatalogService {
         };
         return co;
       });
-      product = await this._products.create(cpdto);
+      product = await this._products.findAndUpdateOrCreate(cpdto);
     }
     if (!variant) {
       let vdto = CreateVariantDto.fromMyEasySuite(mesVariant);
-      variant = await this._variants.create(vdto);
+      variant = await this._variants.findAndUpdateOrCreate(vdto);
     }
     return variant;
   }

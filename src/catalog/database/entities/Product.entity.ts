@@ -54,63 +54,23 @@ export class DbProduct {
   @Property({ onUpdate: () => new Date(), onCreate: () => new Date() })
   updatedAt: Date;
 
-  public raw(productTypeId?: string | undefined): IProductProps {
+  public raw(): IProductProps {
     const productId = this.id;
+    const prodTypeId = this.productType?.id;
     const props: IProductProps = {
       id: productId,
       sku: this.sku,
       type: this.type,
-      productTypeId: productTypeId,
+      productTypeId: prodTypeId,
       pricingTier: this.pricingTier,
       tags: this.tags,
       image: this.image,
       svg: this.svg,
       personalizationRules: this.personalizationRules,
-      variants: this.variants.getItems().map((v) => {
-        const vprops: IVariantProps = {
-          id: v.id,
-          image: v.image,
-          sku: v.sku,
-          type: v.type,
-          productId: productId,
-          productTypeId: productTypeId,
-          option1: v.option1,
-          option2: v.option2,
-          option3: v.option3,
-          height: v.height,
-          width: v.width,
-          weight: v.weight,
-          manufacturingCost: v.manufacturingCost,
-          shippingCost: v.shippingCost,
-        };
-        return vprops;
-      }),
+      variants: this.variants.getItems().map((v) => v.raw()),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
     return props;
-  }
-  public async entity() {
-    if (!this.variants.isInitialized()) {
-      await this.variants.init();
-    }
-    const dbVariants = await this.variants.loadItems();
-
-    return new Product({
-      id: this.id,
-      sku: this.sku,
-      type: this.type,
-      productTypeId: this.productType.id,
-      pricingTier: this.pricingTier,
-      tags: this.tags,
-      image: this.image,
-      svg: this.svg,
-      personalizationRules: this.personalizationRules.map(
-        (r) => new PersonalizationRule(r)
-      ),
-      variants: dbVariants.map((v) => v.entity()),
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-    });
   }
 }

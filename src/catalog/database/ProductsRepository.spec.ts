@@ -75,8 +75,7 @@ describe("ProductsRepository", () => {
       // THEN
       const expected = cloneDeep(props);
       expected.id = mockUuid1;
-      expected.productTypeId = mockUuid1;
-      expect(result.raw(mockUuid1)).toEqual(expected);
+      expect(result.raw()).toEqual(expected);
     });
   });
   describe("save", () => {
@@ -110,7 +109,7 @@ describe("ProductsRepository", () => {
       const expected = cloneDeep(props);
       expected.id = updated.id;
       expected.productTypeId = mockUuid1;
-      expect(result.raw(mockUuid1)).toEqual(expected);
+      expect(result.raw()).toEqual(expected);
     });
     it("should update entity if entity found", async () => {
       // GIVEN
@@ -139,7 +138,8 @@ describe("ProductsRepository", () => {
       const expected = cloneDeep(props);
       expected.id = updated.id;
       expected.productTypeId = mockUuid1;
-      expect(result.raw(mockUuid1)).toEqual(expected);
+
+      expect(result.raw()).toEqual(expected);
     });
     it("should throw an exception if no ProductType is found", async () => {
       // GIVEN
@@ -169,8 +169,7 @@ describe("ProductsRepository", () => {
       // THEN
       const expected = cloneDeep(props);
       expected.id = updated.id;
-      expected.productTypeId = mockUuid1;
-      expect(result.raw(mockUuid1)).toEqual(expected);
+      expect(result.raw()).toEqual(expected);
     });
   });
   describe("findById", () => {
@@ -188,6 +187,7 @@ describe("ProductsRepository", () => {
       const expected: IProductProps = {
         ...props,
         id: mockUuid1,
+        productTypeId: mockUuid1,
       };
       expect(result.raw()).toEqual(expected);
     });
@@ -221,6 +221,7 @@ describe("ProductsRepository", () => {
       const expected: IProductProps = {
         ...props,
         id: mockUuid1,
+        productTypeId: mockUuid1,
       };
       expect(result.raw()).toEqual(expected);
     });

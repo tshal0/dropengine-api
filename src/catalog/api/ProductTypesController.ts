@@ -33,7 +33,7 @@ export class ProductTypesController {
   @Post()
   @UseGuards(AuthGuard())
   async post(@Body() dto: CreateProductTypeDto): Promise<IProductTypeProps> {
-    const result = await this.service.create(dto);
+    const result = await this.service.findAndUpdateOrCreate(dto);
     return result.raw();
   }
   @Get()

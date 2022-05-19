@@ -59,8 +59,7 @@ export class ProductTypesRepository {
       populate: ["products"],
     });
 
-    let tasks = await loaded.map(async (pt) => pt.entity());
-    let entities = await Promise.all(tasks);
+    let entities = loaded.map((l) => new ProductType(l.raw()));
     return entities;
   }
   public async lookupByNameOrId(dto: {
