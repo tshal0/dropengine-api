@@ -10,14 +10,7 @@ import {
 @Injectable()
 export class MongoDomainEventRepository extends BaseMongoRepository<MongoDomainEvent> {
   private readonly logger: Logger = new Logger(MongoDomainEventRepository.name);
-  private async handle<T>(fn: () => T) {
-    try {
-      return await fn();
-    } catch (err) {
-      this.logger.error(err);
-      throw err;
-    }
-  }
+
   constructor(
     @InjectModel(MongoDomainEvent.name)
     private readonly model: Model<MongoDomainEventDocument>
@@ -25,8 +18,6 @@ export class MongoDomainEventRepository extends BaseMongoRepository<MongoDomainE
     super(model);
   }
   async findByAggregateId(id: string): Promise<MongoDomainEvent[]> {
-    return await this.handle<QueryWithHelpers<any, any>>(() =>
-      this._model.find({ aggregateId: id }).lean()
-    );
+    return await this._model.find({ aggregateId: id }).lean();
   }
 }

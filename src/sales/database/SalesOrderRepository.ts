@@ -103,10 +103,12 @@ export class SalesOrderRepository {
   ) {}
 
   public async exists(id: string): Promise<boolean> {
-    return await this._orders.exists({ id });
+    const result = await this._orders.query({ filter: { id } });
+    return result != null;
   }
   public async existsWithName(name: string): Promise<boolean> {
-    return await this._orders.exists({ orderName: name });
+    const result = await this._orders.query({ filter: { orderName: name } });
+    return result != null;
   }
   public async load(id: string): Promise<SalesOrder> {
     let doc = await this._orders.findById(id);

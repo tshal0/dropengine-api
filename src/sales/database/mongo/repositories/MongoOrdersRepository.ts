@@ -3,54 +3,50 @@ import { InjectModel } from "@nestjs/mongoose";
 import mongoose, { Model, QueryWithHelpers } from "mongoose";
 import { MongoQueryParams, ResultSet } from "@shared/mongo";
 import { MongoSalesOrder, MongoSalesOrderDocument } from "../schemas";
-
+import { ISalesOrderProps } from "@sales/domain";
+export interface SalesOrderQueryResult {
+  total: number;
+  pages: number;
+  size: number;
+  page: number;
+  result: MongoSalesOrder[];
+}
 const options = {
   new: true,
 };
 @Injectable()
 export class MongoOrdersRepository {
   private readonly logger: Logger = new Logger(MongoOrdersRepository.name);
-  private async handle<T>(fn: () => T) {
-    try {
-      return await fn();
-    } catch (err) {
-      this.logger.error(err);
-      throw err;
-    }
-  }
+
   constructor(
     @InjectModel(MongoSalesOrder.name)
     private readonly model: Model<MongoSalesOrderDocument>
   ) {}
 
-  async exists(
-    filter: mongoose.FilterQuery<MongoSalesOrderDocument>
-  ): Promise<boolean> {
-    const resp = await this.model.exists(filter);
-    return resp != null;
-  }
-
   async create(item: MongoSalesOrder): Promise<MongoSalesOrder> {
     let rawDoc = await this.model.create(item);
-    let doc = new MongoSalesOrder(rawDoc);
-    return doc;
+    return new MongoSalesOrder(rawDoc);
   }
 
   async insert(items: MongoSalesOrder[]): Promise<MongoSalesOrder[]> {
-    return await this.model.create(items);
+    let result = await this.model.create(items);
+    return result.map((r) => new MongoSalesOrder(r));
   }
 
-  async all(): Promise<MongoSalesOrder[]> {
-    return await this.model.find({});
+  async delete(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return null;
+    }
+    let result = await this.model.findByIdAndRemove(id);
+    return result ? new MongoSalesOrder(result) : null;
   }
 
-  async delete(_id: string) {
-    return await this.model.findByIdAndRemove(_id);
-  }
-
-  async find(params: MongoQueryParams): Promise<ResultSet<MongoSalesOrder>> {
-    const resp: ResultSet<MongoSalesOrder> = {
-      count: 0,
+  async query(params: MongoQueryParams): Promise<SalesOrderQueryResult> {
+    const resp: SalesOrderQueryResult = {
+      total: 0,
+      pages: 0,
+      size: params.limit,
+      page: params.skip || 0,
       result: [],
     };
     const { filter, skip, limit, sort, projection } = params;
@@ -62,15 +58,16 @@ export class MongoOrdersRepository {
       .sort(sort)
       .select(projection);
 
-    resp.count = countResult;
-    resp.result = result;
+    resp.total = countResult;
+    resp.pages = Math.floor(countResult / resp.size);
+
+    resp.result = result.map((r) => new MongoSalesOrder(r));
 
     return resp;
   }
   async findById(id: string): Promise<MongoSalesOrder> {
-    return await this.handle<QueryWithHelpers<any, any>>(() =>
-      this.model.findById(id)
-    );
+    let doc = await this.model.findById(id);
+    return doc ? new MongoSalesOrder(doc) : null;
   }
 
   // async findByIdAndUpdateOrCreate(

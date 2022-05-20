@@ -46,7 +46,7 @@ export class SalesOrderQuery {
       limit: params.size,
       skip: params.size * params.page,
     };
-    let docsResult = await this._mongo.find(qp);
+    let docsResult = await this._mongo.query(qp);
     let docs = docsResult.result.map((d) => d);
     let orderResults = await Promise.all(
       docs.map(async (d) => new SalesOrder())

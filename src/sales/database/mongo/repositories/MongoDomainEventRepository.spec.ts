@@ -11,8 +11,9 @@ import { TestingModule } from "@nestjs/testing";
 import { mockSalesModule } from "@sales/mocks/sales.module.mock";
 import { spyOnDate } from "@shared/mocks";
 import { MongoDomainEventRepository } from "./MongoDomainEventRepository";
+import { MongoMocks } from "./MongoOrdersRepository.spec";
 
-spyOnDate();
+// spyOnDate();
 describe("MongoDomainEventRepository", () => {
   let module: TestingModule;
   let service: MongoDomainEventRepository;
@@ -40,5 +41,10 @@ describe("MongoDomainEventRepository", () => {
 
   it("should be defined", () => {
     expect(service).toBeDefined();
+  });
+
+  it("findByAggregateId should return all events from that entity", async () => {
+    let result = await service.findByAggregateId(MongoMocks.mockMongoId);
+    expect(result).toEqual([]);
   });
 });
