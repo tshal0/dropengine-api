@@ -3,6 +3,15 @@ import { IProductionData, ProductionData } from "./ProductionData";
 import { ILivePreview, LivePreview } from "./LivePreview";
 import { IVariantOptionsProps, VariantOptions } from "./VariantOptions";
 
+export enum ProductTypes {
+  Steel = "Steel",
+  MetalArt = "MetalArt",
+  Jewelry = "Jewelry",
+  Wood = "Wood",
+  Canvas = "Canvas",
+  Uncategorized = "Uncategorized",
+}
+
 export interface IProductTypeProps {
   id: string;
   name: string;

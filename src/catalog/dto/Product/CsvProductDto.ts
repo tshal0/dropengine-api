@@ -53,9 +53,10 @@ export class CsvProductDto {
         image: this._props.Image,
         svg: this._props.Svg,
         tags: this._props.Tags,
-        personalizationRules: [...customOptions], //TODO: CustomOptions
+        personalizationRules: [...customOptions],
         pricingTier: this._props.PriceTier,
         type: this._props.Type,
+        categories: "",
       };
       return props;
     } catch (error) {

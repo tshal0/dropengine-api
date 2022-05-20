@@ -1,6 +1,6 @@
 export class Dimension implements IDimension {
   private _dimension: number = 0;
-  private _units: "in" | "mm" = "mm";
+  private _units: "in" | "mm"  = "mm";
   constructor(props?: IDimension | undefined) {
     if (props) {
       this._dimension = props.dimension;
@@ -20,5 +20,5 @@ export class Dimension implements IDimension {
 }
 export interface IDimension {
   dimension: number;
-  units: "in" | "mm";
+  units: "in" | "mm" ;
 }

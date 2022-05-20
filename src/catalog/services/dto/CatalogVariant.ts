@@ -22,20 +22,22 @@ export interface ICatalogVariant {
   weight: IWeight;
 }
 export class CatalogVariant implements ICatalogVariant {
-  constructor(variant: ICatalogVariant) {
-    this.id = variant.id;
-    this.sku = variant.sku;
-    this.image = variant.image;
-    this.svg = variant.svg;
-    this.type = variant.type;
-    this.option1 = variant.option1;
-    this.option2 = variant.option2;
-    this.option3 = variant.option3;
-    this.productionData = variant.productionData;
-    this.personalizationRules = variant.personalizationRules;
-    this.manufacturingCost = variant.manufacturingCost;
-    this.shippingCost = variant.shippingCost;
-    this.weight = variant.weight;
+  constructor(props?: ICatalogVariant | undefined) {
+    if (props) {
+      this.id = props.id;
+      this.sku = props.sku;
+      this.image = props.image;
+      this.svg = props.svg;
+      this.type = props.type;
+      this.option1 = props.option1;
+      this.option2 = props.option2;
+      this.option3 = props.option3;
+      this.productionData = props.productionData;
+      this.personalizationRules = props.personalizationRules;
+      this.manufacturingCost = props.manufacturingCost;
+      this.shippingCost = props.shippingCost;
+      this.weight = props.weight;
+    }
   }
   id: string;
   sku: string;

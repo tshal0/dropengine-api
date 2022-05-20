@@ -79,7 +79,7 @@ export class VariantService {
     const productTypeOption2 = pt.option2.name;
     const productTypeOption3 = pt.option3.name;
 
-    dto = correctInvalidOptionNames(dto, pt);
+    dto = adjustInvalidOptionNames(dto, pt);
     // VariantOptions: Color: Black, Size: 12
     // VariantOptions: null: Black, null: 12
     const dtoOptions = compact([dto.option1, dto.option2, dto.option3]).reduce(
@@ -112,40 +112,19 @@ export class VariantService {
   public async query(): Promise<Variant[]> {
     return await this._repo.query();
   }
+  public async lookup(params: { id: string; sku: string }) {
+    const result = await this._repo.lookupBySkuOrId(params);
+    return result ? new Variant(result.raw()) : null;
+  }
   public async findById(id: string): Promise<Variant> {
     const result = await this._repo.findById(id);
-    return new Variant(result.raw());
+    return result ? new Variant(result.raw()) : null;
   }
   public async findBySku(sku: string): Promise<Variant> {
     const result = await this._repo.findBySku(sku);
-    return new Variant(result.raw());
+    return result ? new Variant(result.raw()) : null;
   }
-  public async update(dto: CreateVariantDto): Promise<Variant> {
-    let toBeUpdated = await this._repo.findById(dto.id);
-    if (!toBeUpdated) toBeUpdated = await this._repo.findBySku(dto.sku);
-    if (!toBeUpdated) {
-      return await this.findAndUpdateOrCreate(dto);
-    }
-    let props: IVariantProps = {
-      id: dto.id,
-      image: dto.image,
-      sku: dto.sku,
-      type: dto.type,
-      productId: dto.productId,
-      productTypeId: null,
-      option1: dto.option1,
-      option2: dto.option2,
-      option3: dto.option3,
-      height: dto.height,
-      width: dto.width,
-      weight: dto.weight,
-      manufacturingCost: dto.manufacturingCost,
-      shippingCost: dto.shippingCost,
-    };
-    let toBeSaved = new Variant(props);
-    let result = await this._repo.save(toBeSaved);
-    return new Variant(result.raw());
-  }
+
   public async delete(id: string): Promise<void> {
     return await this._repo.delete(id);
   }
@@ -165,7 +144,7 @@ export class VariantService {
     return savedResults;
   }
 }
-export function correctInvalidOptionNames(
+export function adjustInvalidOptionNames(
   dto: CreateVariantDto,
   pt: IProductTypeProps
 ): CreateVariantDto {
@@ -173,15 +152,9 @@ export function correctInvalidOptionNames(
   for (let i = 0; i < dtoOptions.length; i++) {
     const option = dtoOptions[i];
     if (!option.name) {
-      let fitsInOp1 = pt.option1.values.find(
-        (v) => v.value == option.value
-      );
-      let fitsInOp2 = pt.option2.values.find(
-        (v) => v.value == option.value
-      );
-      let fitsInOp3 = pt.option3.values.find(
-        (v) => v.value == option.value
-      );
+      let fitsInOp1 = pt.option1.values.find((v) => v.value == option.value);
+      let fitsInOp2 = pt.option2.values.find((v) => v.value == option.value);
+      let fitsInOp3 = pt.option3.values.find((v) => v.value == option.value);
       if (fitsInOp1) option.name = pt.option1.name;
       else if (fitsInOp2) option.name = pt.option2.name;
       else if (fitsInOp3) option.name = pt.option3.name;

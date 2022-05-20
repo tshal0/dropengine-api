@@ -1,14 +1,4 @@
-import {
-  ProductsRepository,
-  ProductTypesRepository,
-  VariantsRepository,
-} from "@catalog/database";
-import { Variant } from "@catalog/domain";
-import {
-  CreateProductDto,
-  CreateVariantDto,
-  PersonalizationRuleDto,
-} from "@catalog/dto";
+import { ProductType, ProductTypes, Variant } from "@catalog/domain";
 import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import {
   HttpStatus,
@@ -16,11 +6,19 @@ import {
   InternalServerErrorException,
   Scope,
 } from "@nestjs/common";
-import { sortBy } from "lodash";
 import moment from "moment";
+import { CatalogVariant, ICatalogVariant } from "./dto";
+import {
+  determineProductType,
+  generateCategories,
+  generateCategoryMap,
+  generateProductFromMESVariant,
+  generateVariantFromMESVariant,
+} from "./CatalogServiceUtils";
 import { ProductService } from "./ProductService";
 import { ProductTypeService } from "./ProductTypeService";
 import { VariantService } from "./VariantService";
+import { MyEasySuiteProductVariant } from "@myeasysuite/dto/MESProductVariant";
 
 export class LoadLineItemVariantBySkuDto {
   sku: string;
@@ -41,53 +39,53 @@ export class CatalogService {
     private _myEasySuite: MyEasySuiteClient
   ) {}
 
-  public async loadVariantBySku(sku: string) {
-    let variant = await this._variants.findBySku(sku);
+  public async lookupVariantBySkuOrId(params: {
+    id: string;
+    sku: string;
+  }): Promise<CatalogVariant> {
+    let variant = await this._variants.lookup(params);
     if (!variant) {
-      variant = await this.syncVariant(sku);
+      variant = await this.syncVariant(params.sku);
     }
-    return variant;
-  }
-
-  public async loadVariantById(id: string) {
-    let variant = await this._variants.findById(id);
-    return variant;
+    const props: ICatalogVariant = {
+      id: variant.id,
+      sku: variant.sku,
+      image: variant.image,
+      svg: variant.product.svg,
+      type: variant.type,
+      option1: variant.option1,
+      option2: variant.option2,
+      option3: variant.option3,
+      productionData: variant.productType.productionData,
+      personalizationRules: variant.product.personalizationRules,
+      manufacturingCost: variant.manufacturingCost,
+      shippingCost: variant.shippingCost,
+      weight: variant.weight,
+    };
+    return new CatalogVariant(props);
   }
 
   public async syncVariant(sku: string): Promise<Variant> {
     let mesVariant = await this._myEasySuite.getVariantBySku(sku);
-    let type = await this._types.findByName("2DMetalArt");
+
+    let type: ProductTypes = determineProductType(mesVariant);
+    let productType: ProductType = await this._types.findByName(type);
+
+    // Validate ProductSKU
     let productSku = mesVariant.part_file_name;
+
     let product = await this._products.findBySku(productSku);
     let variant = await this._variants.findBySku(sku);
     if (!product) {
-      let cpdto = new CreateProductDto();
-      cpdto.type = type.name;
+      let cpdto = generateProductFromMESVariant(mesVariant);
+      cpdto.type = productType.name;
       cpdto.sku = productSku;
-      cpdto.pricingTier = "2";
-      cpdto.tags = mesVariant.tags || "";
-      cpdto.image = mesVariant.image;
-      const sortedSvgs = sortBy(mesVariant.svgs, (s) => s.created_at).reverse();
-      const svg = sortedSvgs.length ? sortedSvgs[0].url : "";
-      cpdto.svg = svg;
-      cpdto.personalizationRules = mesVariant.customize_text.map((c) => {
-        const co: PersonalizationRuleDto = {
-          name: c.label?.trim().replace(/\s/g, "_").toLowerCase(),
-          label: c.label,
-          placeholder: c.placeholder,
-          required: c.is_required,
-          type: c.field_type,
-          maxLength: c.field_length ? +c.field_length : null,
-          options: c.option_list,
-          pattern: c.field_pattern,
-          font: "",
-        };
-        return co;
-      });
       product = await this._products.findAndUpdateOrCreate(cpdto);
     }
     if (!variant) {
-      let vdto = CreateVariantDto.fromMyEasySuite(mesVariant);
+      let vdto = generateVariantFromMESVariant(mesVariant);
+      vdto.type = productType.name;
+      vdto.productSku = productSku;
       variant = await this._variants.findAndUpdateOrCreate(vdto);
     }
     return variant;

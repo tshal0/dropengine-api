@@ -49,12 +49,12 @@ export class ProductService {
     return await this._repo.query();
   }
   public async findById(id: string): Promise<Product> {
-    let props = (await this._repo.findById(id)).raw();
-    return new Product(props);
+    const result = await this._repo.findById(id);
+    return result ? new Product(result.raw()) : null;
   }
   public async findBySku(sku: string): Promise<Product> {
-    let props = (await this._repo.findBySku(sku)).raw();
-    return new Product(props);
+    const result = await this._repo.findBySku(sku);
+    return result ? new Product(result.raw()) : null;
   }
 
   public async delete(id: string): Promise<void> {
