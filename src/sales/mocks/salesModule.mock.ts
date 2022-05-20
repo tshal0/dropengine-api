@@ -44,6 +44,12 @@ import { AccountsRepository } from "@auth/database/AccountsRepository";
 import { StoresRepository } from "@auth/database/StoresRepository";
 import { UpdateCustomerInfo } from "@sales/useCases/UpdateCustomerInfo";
 import { LoadEvents } from "@sales/useCases/LoadEvents";
+import {
+  DbProductType,
+  DbProduct,
+  DbProductVariant,
+} from "@catalog/database/entities";
+import { getRepositoryToken } from "@mikro-orm/nestjs";
 /** MOCK UTILS */
 jest.mock("@shared/utils", () => {
   return {
@@ -120,6 +126,12 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
     // .useValue({})
     // .overrideProvider(ProductVariantsRepository)
     // .useValue({})
+    .overrideProvider(getRepositoryToken(DbProductType))
+    .useValue({})
+    .overrideProvider(getRepositoryToken(DbProduct))
+    .useValue({})
+    .overrideProvider(getRepositoryToken(DbProductVariant))
+    .useValue({})
     .overrideProvider(MyEasySuiteClient)
     .useValue({})
     .compile();

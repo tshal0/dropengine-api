@@ -3,10 +3,14 @@ import {
   IProductionData,
   IVariantOption,
 } from "@catalog/domain/model";
-import { IMoney, IWeight } from "@shared/domain";
+import { IDimension, IMoney, IWeight } from "@shared/domain";
 
 export interface ICatalogVariant {
   id: string;
+  productId: string;
+  productTypeId: string;
+  height: IDimension;
+  width: IDimension;
   sku: string;
   image: string;
   svg: string;
@@ -24,6 +28,10 @@ export class CatalogVariant implements ICatalogVariant {
   constructor(props?: ICatalogVariant | undefined) {
     if (props) {
       this.id = props.id;
+      this.productId = props.productId;
+      this.productTypeId = props.productTypeId;
+      this.height = props.height;
+      this.width = props.width;
       this.sku = props.sku;
       this.image = props.image;
       this.svg = props.svg;
@@ -38,6 +46,10 @@ export class CatalogVariant implements ICatalogVariant {
       this.weight = props.weight;
     }
   }
+  productId: string;
+  productTypeId: string;
+  height: IDimension;
+  width: IDimension;
   id: string;
   sku: string;
   image: string;

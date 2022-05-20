@@ -116,21 +116,8 @@ export class SalesOrderRepository {
   public async save(agg: SalesOrder): Promise<SalesOrder> {
     let dbe = agg.raw();
 
-    const payload: MongoSalesOrder = {
-      accountId: dbe.accountId,
-      orderName: dbe.orderName,
-      orderStatus: dbe.orderStatus,
-      orderDate: dbe.orderDate,
-      orderNumber: dbe.orderNumber,
-      customer: dbe.customer,
-      shippingAddress: dbe.shippingAddress,
-      billingAddress: dbe.billingAddress,
-      updatedAt: dbe.updatedAt,
-      createdAt: dbe.createdAt,
-      id: dbe.id,
-      lineItems: dbe.lineItems,
-    };
-    let doc = await this._orders.findByIdAndUpdateOrCreate(payload);
+    const payload: MongoSalesOrder = new MongoSalesOrder();
+    let doc = await this._orders.create(payload);
 
     await this.handleDomainEvents(agg);
 

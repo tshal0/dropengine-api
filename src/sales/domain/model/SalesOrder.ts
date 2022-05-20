@@ -132,8 +132,8 @@ export class SalesOrder implements ISalesOrder {
   public get orderStatus() {
     return this._orderStatus;
   }
-  public set lineItems(val: any) {
-    this._lineItems = val;
+  public set lineItems(val: SalesLineItem[]) {
+    this._lineItems = val.map((v) => new SalesLineItem(v));
   }
   public get lineItems() {
     return this._lineItems;

@@ -45,6 +45,15 @@ import { FailedToPlaceSalesOrderException } from "@sales/useCases/CreateSalesOrd
 import { CreateSalesOrderError } from "@sales/useCases/CreateSalesOrder/CreateSalesOrderError";
 import { LoadEvents } from "@sales/useCases/LoadEvents";
 import { UpdateCustomerInfo } from "@sales/useCases/UpdateCustomerInfo";
+import { InjectModel } from "@nestjs/mongoose";
+import {
+  MongoSalesOrder,
+  MongoSalesOrderDocument,
+} from "@sales/database/mongo";
+import { Model } from "mongoose";
+import { SalesOrder } from "@sales/domain";
+import { SalesCustomer } from "@sales/domain/model/SalesCustomer";
+import { Address } from "@shared/domain";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
@@ -61,7 +70,9 @@ export class OrdersController {
     private readonly updateCustomer: UpdateCustomerInfo,
     private readonly updateShipping: UpdateShippingAddress,
     private readonly updatePersonalization: UpdatePersonalization,
-    private readonly loadEvents: LoadEvents
+    private readonly loadEvents: LoadEvents,
+    @InjectModel(MongoSalesOrder.name)
+    private readonly model: Model<MongoSalesOrderDocument>
   ) {}
 
   @Get(":id")
@@ -150,15 +161,18 @@ export class OrdersController {
       );
     }
     const useCaseDto = new CreateSalesOrderDto();
-    useCaseDto.accountId = dto.accountId;
-    useCaseDto.orderName = dto.orderName;
-    useCaseDto.orderDate = dto.orderDate;
-    useCaseDto.orderNumber = dto.orderNumber;
-    useCaseDto.customer = dto.customer;
-    useCaseDto.lineItems = dto.lineItems;
-    useCaseDto.shippingAddress = dto.shippingAddress;
-    useCaseDto.billingAddress = dto.billingAddress;
-    let order = await this.create.execute(useCaseDto);
+    let ord = new SalesOrder();
+    ord.accountId = dto.accountId;
+    ord.orderName = dto.orderName;
+    ord.orderDate = dto.orderDate;
+    ord.orderNumber = dto.orderNumber;
+    ord.customer = new SalesCustomer(dto.customer);
+    ord.lineItems = [];
+    ord.shippingAddress = new Address(dto.shippingAddress);
+    ord.billingAddress = new Address(dto.billingAddress);
+
+    const raw = ord.raw();
+    let order = await this.model.create(raw);
     return res.status(HttpStatus.CREATED).json(order.raw());
   }
 }

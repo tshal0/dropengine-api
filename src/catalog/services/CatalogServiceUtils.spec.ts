@@ -1,10 +1,10 @@
+import { MESMetalArtMocks } from "@catalog/mocks";
 import { cloneDeep } from "lodash";
 import { CreateProductDto, CreateVariantDto } from "..";
 import {
   generateProductFromMESVariant,
   generateVariantFromMESVariant,
 } from "./CatalogServiceUtils";
-import { MESMetalArtMocks } from "./fixtures/metalArt.variant.mock";
 
 describe("CatalogServiceUtils", () => {
   describe("generateProductFromMESVariant", () => {

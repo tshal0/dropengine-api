@@ -14,11 +14,11 @@ export class MongoPersonalizationRule {
   @Prop()
   type: string;
   @Prop()
-  maxLength?: number;
+  maxLength: number;
   @Prop()
-  pattern?: string;
+  pattern: string;
   @Prop()
-  options?: string;
+  options: string;
 }
 export const MongoPersonalizationRuleSchema = SchemaFactory.createForClass(
   MongoPersonalizationRule

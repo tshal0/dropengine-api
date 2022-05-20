@@ -1,103 +1,44 @@
-import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
-import { getModelToken } from "@nestjs/mongoose";
-import { TestingModule } from "@nestjs/testing";
-import { mockSalesModule, mockUuid1 } from "@sales/mocks";
-import { now } from "@shared/mocks";
-import { Model } from "mongoose";
+import { AccountsRepository } from "@auth/database/AccountsRepository";
+import { StoresRepository } from "@auth/database/StoresRepository";
 import {
-  MongoDomainEvent,
-  MongoDomainEventDocument,
-} from "../schemas/MongoDomainEvent";
+  DbProduct,
+  DbProductType,
+  DbProductVariant,
+} from "@catalog/database/entities";
+import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
+import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { TestingModule } from "@nestjs/testing";
+import { mockSalesModule } from "@sales/mocks/sales.module.mock";
+import { spyOnDate } from "@shared/mocks";
 import { MongoDomainEventRepository } from "./MongoDomainEventRepository";
 
+spyOnDate();
 describe("MongoDomainEventRepository", () => {
   let module: TestingModule;
-  let model: Model<MongoDomainEventDocument>;
-  const modelToken = getModelToken(MongoDomainEvent.name);
-  let repo: MongoDomainEventRepository;
-  const ev: MongoDomainEvent = {
-    eventId: mockUuid1,
-    eventName: "Mock.EventName",
-    eventType: "MockEventName",
-    eventVersion: "v1",
-    details: { test: "value" },
-    aggregateType: "Mock",
-    aggregateId: mockUuid1,
-    timestamp: now,
-  };
-  const mockDoc = Object.assign(new MongoDomainEvent(), ev);
-  let id: string = null;
+  let service: MongoDomainEventRepository;
 
+  beforeEach(async () => {
+    module = await mockSalesModule()
+      .overrideProvider(getRepositoryToken(DbProductType))
+      .useValue({})
+      .overrideProvider(getRepositoryToken(DbProduct))
+      .useValue({})
+      .overrideProvider(getRepositoryToken(DbProductVariant))
+      .useValue({})
+      .overrideProvider(AccountsRepository)
+      .useValue({})
+      .overrideProvider(StoresRepository)
+      .useValue({})
+      .compile();
+    service = await module.resolve(MongoDomainEventRepository);
+  });
   afterAll(async () => {
     await closeMongoConnection();
   });
 
-  beforeEach(async () => {
-    module = await mockSalesModule();
-
-    model = await module.resolve<Model<MongoDomainEventDocument>>(modelToken);
-
-    // Set up Repo
-
-    repo = await module.resolve<MongoDomainEventRepository>(
-      MongoDomainEventRepository
-    );
-    let doc: MongoDomainEvent = Object.assign(new MongoDomainEvent(), mockDoc);
-    doc = await repo.create(doc);
-  });
+  beforeEach(async () => {});
 
   it("should be defined", () => {
-    expect(repo).toBeDefined();
-  });
-  describe("create", () => {
-    it("should correctly create a MongoDomainEvent, generating an id", async () => {
-      // GIVEN
-      let doc: MongoDomainEvent = Object.assign(
-        new MongoDomainEvent(),
-        mockDoc
-      );
-      // WHEN
-      let result = await repo.create(doc);
-      const expected = {
-        __v: 0,
-        _id: result._id,
-        eventId: mockUuid1,
-        eventName: "Mock.EventName",
-        eventType: "MockEventName",
-        eventVersion: "v1",
-        details: { test: "value" },
-        aggregateType: "Mock",
-        aggregateId: mockUuid1,
-        timestamp: now,
-      };
-      // THEN
-      expect(result).toEqual(expected);
-    });
-  });
-  describe("findByAggregateId", () => {
-    describe("given MongoDomainEvents with valid AggregateID", () => {
-      it("should find docs by ID", async () => {
-        // GIVEN
-
-        // WHEN
-        let result = await repo.findByAggregateId(mockUuid1);
-        const expected = [
-          {
-            __v: 0,
-            _id: result[0]._id,
-            eventId: mockUuid1,
-            eventName: "Mock.EventName",
-            eventType: "MockEventName",
-            eventVersion: "v1",
-            details: { test: "value" },
-            aggregateType: "Mock",
-            aggregateId: mockUuid1,
-            timestamp: now,
-          },
-        ];
-        // THEN
-        expect(result).toEqual(expected);
-      });
-    });
+    expect(service).toBeDefined();
   });
 });

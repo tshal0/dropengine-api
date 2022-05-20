@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { ISalesVariantProps } from "@sales/domain/model/SalesVariant";
 
-import { IMoney, IWeight } from "@shared/domain";
+import { IDimension, IMoney, IWeight } from "@shared/domain";
+import mongoose from "mongoose";
 import { MongoMoneySchema } from "./MongoMoney";
 import {
   MongoPersonalizationRule,
@@ -17,7 +19,15 @@ import {
 import { MongoWeightSchema } from "./MongoWeight";
 
 @Schema({ _id: false })
-export class MongoSalesVariant {
+export class MongoSalesVariant implements ISalesVariantProps {
+  @Prop()
+  productId: string;
+  @Prop()
+  productTypeId: string;
+  @Prop({ type: mongoose.Schema.Types.Mixed })
+  height: IDimension;
+  @Prop({ type: mongoose.Schema.Types.Mixed })
+  width: IDimension;
   @Prop()
   id: string;
   @Prop()

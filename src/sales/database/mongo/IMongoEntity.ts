@@ -6,8 +6,8 @@ import { Types } from "mongoose";
  */
 
 export abstract class IMongoEntity {
-  _id?: Types.ObjectId | undefined;
-  id?: string | undefined;
+  _id: Types.ObjectId | undefined;
+  id: string | undefined;
   @Prop()
   updatedAt: Date;
   @Prop()

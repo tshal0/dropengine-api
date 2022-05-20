@@ -8,6 +8,7 @@ export default {} = async function globalSetup() {
   } else {
     process.env.MONGOMS_DEBUG = null;
   }
+  // process.env.MONGOMS_DEBUG = "1";
   console.log("🚀 ~ file: globalSetup.ts ~ line 7 ~ globalSetup BEGIN");
   if (config.memory) {
     // Config to decided if an mongodb-memory-server instance should be used

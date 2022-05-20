@@ -13,11 +13,11 @@ import {
   ProductTypes,
   Variant,
 } from "@catalog/domain";
+import { CatalogVariant } from "@catalog/services";
 import { MyEasySuiteProductVariant } from "@myeasysuite/dto/MESProductVariant";
 import { mockUuid1 } from "@sales/mocks";
 import { now } from "@shared/mocks";
 import { cloneDeep } from "lodash";
-import { CatalogVariant } from "../dto/CatalogVariant";
 
 export abstract class MESMetalArtMocks {
   static readonly PROD_TYPE = ProductTypes.MetalArt;
@@ -386,6 +386,10 @@ export abstract class MESMetalArtMocks {
 
   static readonly expectedCatalogVariant: CatalogVariant = {
     id: mockUuid1,
+    productId: mockUuid1,
+    productTypeId: mockUuid1,
+    height: { units: "mm", dimension: 0 },
+    width: { units: "mm", dimension: 0 },
     sku: MESMetalArtMocks.VSKU,
     svg: MESMetalArtMocks.SVG,
     type: ProductTypes.MetalArt,

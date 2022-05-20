@@ -9,7 +9,6 @@ import {
   IProductTypeProps,
   IVariantProps,
   LivePreview,
-  Money,
   Product,
   ProductType,
   Variant,
@@ -17,7 +16,6 @@ import {
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
 import { TestingModule } from "@nestjs/testing";
 import { mockUuid1 } from "@sales/mocks";
-import { RequestTelemetryInterceptor } from "@shared/middleware/RequestTelemetry.middleware";
 import { now } from "@shared/mocks";
 import {
   CreateVariantDto,
@@ -470,7 +468,7 @@ describe("VariantService", () => {
           manufacturingCost: {
             currency: "USD",
             total: 1600,
-          },         
+          },
           shippingCost: {
             currency: "USD",
             total: 750,

@@ -3,7 +3,6 @@ import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import { TestingModule } from "@nestjs/testing";
 import { cloneDeep } from "lodash";
 import { CatalogService } from "./CatalogService";
-import { MESMetalArtMocks } from "./fixtures/metalArt.variant.mock";
 import { ProductTypeService } from "./ProductTypeService";
 import { when } from "jest-when";
 import { ProductTypesRepository } from "..";
@@ -14,6 +13,7 @@ import {
   DbProductVariant,
 } from "@catalog/database/entities";
 import { now, spyOnDate } from "@shared/mocks";
+import { MESMetalArtMocks } from "@catalog/mocks";
 class NoErrorThrownError extends Error {}
 
 const getAsyncError = async <TError>(call: () => unknown): Promise<TError> => {
