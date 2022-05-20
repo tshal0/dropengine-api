@@ -1,9 +1,14 @@
 import { mockUuid1 } from "@sales/mocks";
-import { Dimension, IDimension } from "./Dimension";
-import { IMoney, Money } from "./Money";
+import {
+  Dimension,
+  Weight,
+  Money,
+  IDimension,
+  IWeight,
+  IMoney,
+} from "@shared/domain";
 import { IVariant, IVariantProps, Variant } from "./Variant";
 import { VariantOption } from "./VariantOption";
-import { IWeight, Weight } from "./Weight";
 
 describe("Variant", () => {
   const tested = "test";

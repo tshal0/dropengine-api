@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
-import { SalesOrder } from "@sales/domain/SalesOrder";
+import { SalesOrder } from "@sales/domain";
 import { CreateOrderLineItemApiDto } from "@sales/api";
 import { CatalogVariant } from "@catalog/services";
 
@@ -69,12 +69,12 @@ export class CreateSalesOrder
       await this.validateDomainDto(cdto);
 
       // Create/Save the SalesOrder
-      let order = await SalesOrder.create(cdto);
+      let order = new SalesOrder();
       order = await this._repo.save(order);
 
       // Generate/Raise OrderPlaced event
       let $event = new SalesOrderPlaced(order.id, cdto);
-      order.raise($event);
+      // order.raise($event);
 
       return await this._repo.save(order);
     } catch (error) {

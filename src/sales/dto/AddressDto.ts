@@ -1,8 +1,8 @@
-import { ISalesOrderAddress } from "@sales/domain/ValueObjects";
+import { IAddress } from "@shared/domain";
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class AddressDto {
-  constructor(props: ISalesOrderAddress) {
+  constructor(props: IAddress) {
     this.zip = props?.zip;
     this.city = props?.city;
     this.name = props?.name;

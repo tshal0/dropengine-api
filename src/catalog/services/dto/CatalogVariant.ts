@@ -1,10 +1,9 @@
 import {
-  IMoney,
   IPersonalizationRule,
   IProductionData,
   IVariantOption,
-  IWeight,
 } from "@catalog/domain/model";
+import { IMoney, IWeight } from "@shared/domain";
 
 export interface ICatalogVariant {
   id: string;

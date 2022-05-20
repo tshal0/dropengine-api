@@ -122,7 +122,7 @@ describe("UpdateShippingAddress", () => {
       };
 
       // THEN
-      const props = result.props();
+      const props = result.raw();
 
       expect(props).toMatchObject(expected);
     });

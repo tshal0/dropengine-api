@@ -1,4 +1,4 @@
-import { SalesOrder } from "@sales/domain/SalesOrder";
+import { SalesOrder } from "@sales/domain";
 import { AddressDto } from "@sales/dto";
 
 export class OrderResponseDto {
@@ -13,7 +13,7 @@ export class OrderResponseDto {
   lineItems: any[];
 
   constructor(agg: SalesOrder) {
-    const props = agg.props();
+    const props = agg.raw();
     this.id = props.id;
     this.orderName = props.orderName;
     this.orderStatus = props.orderStatus;

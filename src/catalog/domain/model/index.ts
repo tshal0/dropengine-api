@@ -1,6 +1,4 @@
-export * from './Dimension';
 export * from './LivePreview';
-export * from './Money';
 export * from './PersonalizationRule';
 export * from './Product';
 export * from './ProductionData';
@@ -9,4 +7,3 @@ export * from './Variant';
 export * from './VariantOption';
 export * from './VariantOptions';
 export * from './VariantOptionValue';
-export * from './Weight';

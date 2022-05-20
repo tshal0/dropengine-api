@@ -1,12 +1,10 @@
 import {
-  IDimension,
-  IMoney,
   IVariantOption,
   IVariantProps,
-  IWeight,
   Variant,
 } from "@catalog/domain/model";
 import { Entity, Property, PrimaryKey, ManyToOne, wrap } from "@mikro-orm/core";
+import { IDimension, IWeight, IMoney } from "@shared/domain";
 import { DbProduct } from "./Product.entity";
 import { DbProductType } from "./ProductType.entity";
 

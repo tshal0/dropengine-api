@@ -1,10 +1,10 @@
 import { Injectable, Scope, Logger } from "@nestjs/common";
 import { MongoDomainEventRepository } from "@sales/database/mongo/repositories/MongoDomainEventRepository";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
-import { SalesOrder } from "@sales/domain/SalesOrder";
 import { UseCase } from "@shared/domain";
 import { DomainEvent } from "@shared/domain/events/DomainEvent";
 import { AzureTelemetryService } from "@shared/modules";
+import { SalesOrder } from "@sales/domain";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class LoadEvents implements UseCase<string, DomainEvent<SalesOrder>[]> {

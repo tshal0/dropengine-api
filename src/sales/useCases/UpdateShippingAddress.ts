@@ -3,7 +3,7 @@ import { SalesOrderRepository } from "../database/SalesOrderRepository";
 import { AddressDto, LineItemPropertyDto } from "@sales/dto";
 import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
-import { SalesOrder } from "@sales/domain/SalesOrder";
+import { SalesOrder } from "@sales/domain";
 
 export class UpdateShippingAddressDto {
   orderId: string;
@@ -16,14 +16,14 @@ export class UpdateShippingAddress
   private readonly logger: Logger = new Logger(UpdateShippingAddress.name);
   constructor(
     public _log: AzureTelemetryService,
-    public _repo: SalesOrderRepository,
+    public _repo: SalesOrderRepository
   ) {}
 
   async execute(dto: UpdateShippingAddressDto): Promise<SalesOrder> {
     this.logger.log(`Loading SalesOrder '${dto.orderId}'`);
     let order = await this._repo.load(dto.orderId);
     this.logger.log(`Updating shippingAddress for SalesOrder '${dto.orderId}'`);
-    await order.updateShippingAddress({ shippingAddress: dto.shippingAddress });
+    // await order.updateShippingAddress({ shippingAddress: dto.shippingAddress });
     this.logger.log(`Saving SalesOrder '${dto.orderId}'`);
     await this._repo.save(order);
     order = await this._repo.load(dto.orderId);

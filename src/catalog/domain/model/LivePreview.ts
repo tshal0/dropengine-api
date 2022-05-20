@@ -38,10 +38,10 @@ export class LivePreview implements ILivePreview {
   public set enabled(val: any) {
     this._enabled = val;
   }
+  
   public set version(val: any) {
     this._version = val;
   }
-
   public get link() {
     return this._link;
   }

@@ -3,8 +3,7 @@ import {
   PersonalizationRule,
 } from "./PersonalizationRule";
 import { IProductTypeProps, ProductType } from "./ProductType";
-import { IVariant, IVariantProps, Variant } from "./Variant";
-import { v4 as uuidV4 } from "uuid";
+import { IVariantProps, Variant } from "./Variant";
 import { trim } from "lodash";
 import validator from "validator";
 export interface IProductProps {

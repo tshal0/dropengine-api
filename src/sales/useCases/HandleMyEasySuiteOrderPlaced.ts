@@ -12,7 +12,7 @@ import { CustomerDto } from "@sales/dto";
 import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
 import { CreateSalesOrderLineItemDto } from "@sales/dto/CreateSalesOrderLineItemDto";
 import { UseCase } from "@shared/domain";
-import { SalesOrder } from "@sales/domain/SalesOrder";
+import { SalesOrder } from "@sales/domain";
 import { AuthService } from "@auth/auth.service";
 
 import { CreateSalesOrder } from "./CreateSalesOrder";

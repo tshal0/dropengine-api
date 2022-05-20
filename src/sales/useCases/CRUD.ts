@@ -5,7 +5,7 @@ import moment from "moment";
 import { QueryOrdersDto } from "../api/model";
 import { SalesOrderRepository } from "../database/SalesOrderRepository";
 import { SalesOrderQuery } from "../database/SalesOrderQueries";
-import { SalesOrder } from "@sales/domain/SalesOrder";
+import { SalesOrder } from "@sales/domain";
 @Injectable({ scope: Scope.DEFAULT })
 export class GetSalesOrder implements UseCase<string, SalesOrder> {
   constructor(private _repo: SalesOrderRepository) {}

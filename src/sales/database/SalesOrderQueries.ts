@@ -4,7 +4,7 @@ import { MongoQueryParams } from "@shared/mongo";
 import moment from "moment";
 import { MongoOrdersRepository } from "./mongo/repositories/MongoOrdersRepository";
 import { QueryOrdersDto } from "../api/model";
-import { SalesOrder } from "@sales/domain/SalesOrder";
+import { SalesOrder } from "@sales/domain";
 
 export enum SalesOrderQueryError {
   FailedToLoadSalesOrdersFromDb = "FailedToLoadSalesOrderFromDb",
@@ -49,9 +49,8 @@ export class SalesOrderQuery {
     let docsResult = await this._mongo.find(qp);
     let docs = docsResult.result.map((d) => d);
     let orderResults = await Promise.all(
-      docs.map(async (d) => await SalesOrder.load(d))
+      docs.map(async (d) => new SalesOrder())
     );
-
     return orderResults;
   }
 }

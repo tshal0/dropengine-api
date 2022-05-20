@@ -1,5 +1,4 @@
 import { CreateOrderDto } from "@sales/dto";
-import { SalesOrder } from "@sales/domain/SalesOrder";
 import {
   mockCatalogVariant1,
   mockUuid1,
@@ -14,6 +13,7 @@ import { cloneDeep } from "lodash";
 import { AuthenticatedUser } from "@shared/decorators";
 import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
 import { createSalesOrderDto } from "@sales/useCases/CreateSalesOrder/fixtures";
+import { SalesOrder } from "@sales/domain";
 
 export function newMockInvalidCreateSalesOrderDto() {
   const mockAccountId = mockUuid1;
@@ -39,6 +39,6 @@ export function newMockInvalidCreateSalesOrderDto() {
     billingAddress: null,
   };
   const mockSalesOrderDto1: CreateOrderDto = cloneDeep(createSalesOrderDto);
-  const mockSalesOrder1 = SalesOrder.create(mockSalesOrderDto1);
+  const mockSalesOrder1 = new SalesOrder();
   return mockDto;
 }

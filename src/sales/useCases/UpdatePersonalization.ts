@@ -1,6 +1,6 @@
 import { Injectable, Scope, Logger } from "@nestjs/common";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
-import { SalesOrder } from "@sales/domain/SalesOrder";
+import { SalesOrder } from "@sales/domain";
 import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
 import { UpdatePersonalizationDto } from "../dto/UpdatePersonalizationDto";
@@ -19,7 +19,7 @@ export class UpdatePersonalization
     this.logger.log(`Loading SalesOrder '${dto.orderId}'`);
     let salesOrder = await this._repo.load(dto.orderId);
     this.logger.log(`Updating personalization for SalesOrder '${dto.orderId}'`);
-    await salesOrder.updatePersonalization(dto);
+    // await salesOrder.updatePersonalization(dto);
     this.logger.log(`Saving SalesOrder '${dto.orderId}'`);
     await this._repo.save(salesOrder);
     salesOrder = await this._repo.load(dto.orderId);

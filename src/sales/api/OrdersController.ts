@@ -10,10 +10,7 @@ import {
   Res,
   Param,
   Query,
-  ConflictException,
   HttpStatus,
-  UnauthorizedException,
-  LoggerService,
   Logger,
   Patch,
   NotImplementedException,
@@ -21,7 +18,6 @@ import {
 import { REQUEST } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
 import { Versions } from "@shared/Constants";
-import { EntityNotFoundException } from "@shared/exceptions";
 import { Request, Response as ExpressResponse } from "express";
 import {
   DeleteSalesOrder,
@@ -42,7 +38,6 @@ import {
 import { User } from "@shared/decorators";
 import { AuthenticatedUser } from "@shared/decorators/AuthenticatedUser";
 import { SalesLoggingInterceptor } from "./middleware/SalesLoggingInterceptor";
-import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
 import { UpdatePersonalization } from "@sales/useCases/UpdatePersonalization";
 import { UpdateShippingAddress } from "@sales/useCases";
@@ -73,7 +68,7 @@ export class OrdersController {
   async getById(@Param("id") id: string) {
     let result = await this.load.execute(id);
     const aggregate = result;
-    return aggregate.props();
+    return aggregate.raw();
   }
   @Get(":id/events")
   async getEvents(@Param("id") id: string) {
@@ -96,7 +91,7 @@ export class OrdersController {
       lineNumber,
       personalization: dto.personalization,
     });
-    return order.props();
+    return order.raw();
   }
   @Patch(":id/customer")
   async patchCustomer(
@@ -107,7 +102,7 @@ export class OrdersController {
       orderId: id,
       customer: dto.customer,
     });
-    return order.props();
+    return order.raw();
   }
   @Patch(":id/shippingAddress")
   async patchShippingAddress(
@@ -118,7 +113,7 @@ export class OrdersController {
       orderId: id,
       shippingAddress: dto.shippingAddress,
     });
-    return order.props();
+    return order.raw();
   }
   @Post(":id/send")
   async postSend(@Param("id") id: string, @Body() dto: any) {
@@ -164,6 +159,6 @@ export class OrdersController {
     useCaseDto.shippingAddress = dto.shippingAddress;
     useCaseDto.billingAddress = dto.billingAddress;
     let order = await this.create.execute(useCaseDto);
-    return res.status(HttpStatus.CREATED).json(order.props());
+    return res.status(HttpStatus.CREATED).json(order.raw());
   }
 }

@@ -1,127 +1,128 @@
-import { IProductProps, Product } from "./Product";
-import { IProductTypeProps, ProductType } from "./ProductType";
-import { IVariantOption, VariantOption } from "./VariantOption";
-import validator from "validator";
 import {
+  IPersonalizationRule,
+  IProductionData,
+  IVariantOption,
+  PersonalizationRule,
+  ProductionData,
+  VariantOption,
+} from "@catalog/domain";
+import {
+  Dimension,
   IDimension,
   IMoney,
-  Dimension,
-  Money,
   IWeight,
+  Money,
   Weight,
 } from "@shared/domain";
-export interface IVariantProps {
+import validator from "validator";
+
+export interface ISalesVariantProps {
   id: string;
-  image: string;
-  sku: string;
-  type: string;
   productId: string;
   productTypeId: string;
+  sku: string;
+  image: string;
+  svg: string;
+  type: string;
   option1: IVariantOption;
   option2: IVariantOption;
   option3: IVariantOption;
-  height: IDimension;
-  width: IDimension;
-  weight: IWeight;
+  productionData: IProductionData;
+  personalizationRules: IPersonalizationRule[];
   manufacturingCost: IMoney;
   shippingCost: IMoney;
-  product?: IProductProps | undefined;
-  productType?: IProductTypeProps | undefined;
+  weight: IWeight;
+  height: IDimension;
+  width: IDimension;
 }
-
-export interface IVariant {
+export interface ISalesVariant {
   id: string;
-  image: string;
-  sku: string;
-  type: string;
   productId: string;
   productTypeId: string;
+  sku: string;
+  image: string;
+  svg: string;
+  type: string;
   option1: VariantOption;
   option2: VariantOption;
   option3: VariantOption;
-  height: Dimension;
-  width: Dimension;
-  weight: Weight;
+  productionData: ProductionData;
+  personalizationRules: PersonalizationRule[];
   manufacturingCost: Money;
   shippingCost: Money;
-
-  product?: Product | undefined;
-  productType?: ProductType | undefined;
+  weight: Weight;
+  height: Dimension;
+  width: Dimension;
 }
 
-export class Variant implements IVariant {
+export class SalesVariant implements ISalesVariant {
   private _id: string = null;
-  private _image: string = "";
-  private _sku: string = "";
-  private _type: string = "";
   private _productId: string = null;
   private _productTypeId: string = null;
-  private _product: Product = new Product();
-  private _productType: ProductType = new ProductType();
+  private _sku: string = "";
+  private _image: string = "";
+  private _svg: string = "";
+  private _type: string = "";
   private _option1: VariantOption = new VariantOption();
   private _option2: VariantOption = new VariantOption();
   private _option3: VariantOption = new VariantOption();
-  private _height: Dimension = new Dimension();
-  private _width: Dimension = new Dimension();
-  private _weight: Weight = new Weight();
+  private _productionData: ProductionData = new ProductionData();
+  private _personalizationRules: PersonalizationRule[] = [];
   private _manufacturingCost: Money = new Money();
   private _shippingCost: Money = new Money();
-  constructor(props?: IVariantProps | undefined) {
+  private _weight: Weight = new Weight();
+  private _height: Dimension = new Dimension();
+  private _width: Dimension = new Dimension();
+  constructor(props?: ISalesVariantProps | undefined) {
     if (props) {
-      if (validator.isUUID(`${props.id}`)) {
-        this._id = props.id;
-      }
-      this._image = props.image;
+      this._id = validator.isUUID(`${props.id}`) ? props.id : null;
+      this._productId = validator.isUUID(`${props.productId}`)
+        ? props.productId
+        : null;
+      this._productTypeId = validator.isUUID(`${props.productTypeId}`)
+        ? props.productTypeId
+        : null;
       this._sku = props.sku;
+      this._image = props.image;
+      this._svg = props.svg;
       this._type = props.type;
-      if (validator.isUUID(`${props.productId}`)) {
-        this._productId = props.productId;
-      }
-      if (validator.isUUID(`${props.productTypeId}`)) {
-        this._productTypeId = props.productTypeId;
-      }
       this._option1 = new VariantOption(props.option1);
       this._option2 = new VariantOption(props.option2);
       this._option3 = new VariantOption(props.option3);
-      this._height = new Dimension(props.height);
-      this._width = new Dimension(props.width);
-      this._weight = new Weight(props.weight);
+      this._productionData = new ProductionData(props.productionData);
+      this._personalizationRules = props.personalizationRules.map(
+        (r) => new PersonalizationRule(r)
+      );
       this._manufacturingCost = new Money(props.manufacturingCost);
       this._shippingCost = new Money(props.shippingCost);
-      this._product = props.product
-        ? new Product(props.product)
-        : new Product();
-      this._productType = props.productType
-        ? new ProductType(props.productType)
-        : new ProductType();
+      this._weight = new Weight(props.weight);
+      this._height = new Dimension(props.height);
+      this._width = new Dimension(props.width);
     }
   }
-  public raw(): IVariantProps {
-    return {
+
+  public raw(): ISalesVariantProps {
+    let props: ISalesVariantProps = {
       id: this._id,
-      image: this._image,
-      sku: this._sku,
-      type: this._type,
       productId: this._productId,
       productTypeId: this._productTypeId,
+      sku: this._sku,
+      image: this._image,
+      svg: this._svg,
+      type: this._type,
       option1: this._option1.raw(),
       option2: this._option2.raw(),
       option3: this._option3.raw(),
-      height: this._height.raw(),
-      width: this._width.raw(),
-      weight: this._weight.raw(),
+      productionData: this._productionData.raw(),
+      personalizationRules: this._personalizationRules.map((r) => r.raw()),
       manufacturingCost: this._manufacturingCost.raw(),
       shippingCost: this._shippingCost.raw(),
-      product: this._product.raw(),
-      productType: this._productType.raw(),
+      weight: this._weight.raw(),
+      height: this._height.raw(),
+      width: this._width.raw(),
     };
+    return props;
   }
-
-  /** DOMAIN ACTIONS */
-  /**
-   * - Get ProductionData, PersonalizationRules, ProductType, BaseSVG, Image
-   * - Update Variant (Must obey ProductType VariantOption rules)
-   */
 
   public set id(val: string) {
     if (validator.isUUID(`${val}`)) this._id = val;
@@ -165,12 +166,26 @@ export class Variant implements IVariant {
   public set shippingCost(val: Money) {
     this._shippingCost = new Money(val);
   }
-  public set product(val: Product) {
-    this._product = val;
+
+  public set svg(val: any) {
+    this._svg = val;
   }
-  public set productType(val: ProductType) {
-    this._productType = val;
+  public get svg() {
+    return this._svg;
   }
+  public set productionData(val: any) {
+    this._productionData = val;
+  }
+  public get productionData(): ProductionData {
+    return this._productionData;
+  }
+  public set personalizationRules(val: any) {
+    this._personalizationRules = val;
+  }
+  public get personalizationRules(): PersonalizationRule[] {
+    return this._personalizationRules;
+  }
+
   /** GETTERS */
   public get id() {
     return this._id;
@@ -213,11 +228,5 @@ export class Variant implements IVariant {
   }
   public get shippingCost() {
     return this._shippingCost;
-  }
-  public get product() {
-    return this._product;
-  }
-  public get productType() {
-    return this._productType;
   }
 }
