@@ -7,6 +7,7 @@ import {
 } from "./SalesLineItem";
 import validator from "validator";
 import { Address, IAddress } from "@shared/domain";
+import { isDate } from "moment";
 export enum OrderStatus {
   OPEN = "OPEN",
   CANCELED = "CANCELED",
@@ -60,13 +61,13 @@ export class SalesOrder implements ISalesOrder {
 
   constructor(props?: ISalesOrderProps | undefined) {
     if (props) {
-      this._id = props.id;
+      this._id = validator.isMongoId(`${props.id}`) ? props.id : null;
       this._accountId = validator.isUUID(`${props.accountId}`)
         ? props.accountId
         : null;
       this._orderName = props.orderName;
       this._orderNumber = props.orderNumber;
-      this._orderDate = validator.isDate(`${props.orderDate}`)
+      this._orderDate = isDate(props.orderDate)
         ? new Date(props.orderDate)
         : null;
       this._orderStatus = props.orderStatus;
@@ -96,13 +97,13 @@ export class SalesOrder implements ISalesOrder {
   }
 
   public set id(val: any) {
-    this._id = val;
+    this._id = validator.isMongoId(`${val}`) ? val : null;
   }
   public get id() {
     return this._id;
   }
   public set accountId(val: any) {
-    this._accountId = val;
+    this._accountId = validator.isUUID(`${val}`) ? val : null;
   }
   public get accountId() {
     return this._accountId;
@@ -120,7 +121,7 @@ export class SalesOrder implements ISalesOrder {
     return this._orderNumber;
   }
   public set orderDate(val: any) {
-    this._orderDate = val;
+    this._orderDate = isDate(val) ? new Date(val) : null;
   }
   public get orderDate() {
     return this._orderDate;

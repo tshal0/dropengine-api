@@ -1,6 +1,12 @@
 import { ProductTypes } from "@catalog/domain";
 import { mockUuid1, mockUuid2 } from "@sales/mocks";
 import { cloneDeep } from "lodash";
+import {
+  BadCharacterFlag,
+  InvalidPersonalizationFlag,
+  LineItemOptionFlagReason,
+  MissingPersonalizationFlag,
+} from "./OrderFlag";
 import { Personalization } from "./Personalization";
 import { ISalesLineItemProps, SalesLineItem } from "./SalesLineItem";
 import { SalesVariant } from "./SalesVariant";
@@ -130,6 +136,25 @@ describe("SalesLineItem", () => {
     li.personalization = personalization;
     let pers = li.personalization.map((r) => r.raw());
     expect(pers).toEqual([{ name: "Name", value: "NewVal" }]);
+  });
+  it("should have editable flags", () => {
+    let result = new SalesLineItem();
+    let invalidPers = new InvalidPersonalizationFlag({
+      lineNumber: 1,
+      property: "Name",
+      value: "Value",
+    });
+    let badChar = new BadCharacterFlag({
+      lineNumber: 1,
+      pattern: "",
+      property: "property",
+    });
+    let missingPers = new MissingPersonalizationFlag({
+      lineNumber: 1,
+      property: "property",
+    });
+    result.flags = [invalidPers, badChar, missingPers];
+    expect(result.flags).toEqual([invalidPers, badChar, missingPers]);
   });
 });
 function mockProps(): ISalesLineItemProps {

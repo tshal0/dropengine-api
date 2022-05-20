@@ -31,12 +31,8 @@ describe("SalesCustomer", () => {
       name: "Customer Name",
     });
     cust.email = "sample@yahoo.com";
-    const raw = cust.raw();
-    const expected = {
-      email: "sample@yahoo.com",
-      name: "Customer Name",
-    };
-    expect(raw).toEqual(expected);
+
+    expect(cust.email).toEqual("sample@yahoo.com");
   });
   it("should have editable name", () => {
     let cust = new SalesCustomer({
@@ -44,11 +40,7 @@ describe("SalesCustomer", () => {
       name: "Customer Name",
     });
     cust.name = "Customer Name 2";
-    const raw = cust.raw();
-    const expected = {
-      email: "sample@mail.com",
-      name: "Customer Name 2",
-    };
-    expect(raw).toEqual(expected);
+
+    expect(cust.name).toEqual("Customer Name 2");
   });
 });
