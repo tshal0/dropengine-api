@@ -29,7 +29,7 @@ import {
   CatalogService,
   CatalogServiceError,
   FailedToLoadVariantByIdException,
-  FailedToLoadVariantBySkuException,
+  FailedToLoadMyEasySuiteVariantException,
 } from "@catalog/services/CatalogService";
 import { CatalogVariant } from "@catalog/services";
 spyOnDate();
@@ -154,7 +154,7 @@ describe("CreateSalesOrder", () => {
       // GIVEN
       const params = "";
 
-      const catalogServiceException = new FailedToLoadVariantBySkuException(
+      const catalogServiceException = new FailedToLoadMyEasySuiteVariantException(
         params,
         `MOCK_CATALOG_EXCEPTION`
       );

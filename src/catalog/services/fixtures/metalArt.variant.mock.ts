@@ -17,6 +17,7 @@ import { MyEasySuiteProductVariant } from "@myeasysuite/dto/MESProductVariant";
 import { mockUuid1 } from "@sales/mocks";
 import { now } from "@shared/mocks";
 import { cloneDeep } from "lodash";
+import { CatalogVariant } from "../dto/CatalogVariant";
 
 export abstract class MESMetalArtMocks {
   static readonly PROD_TYPE = ProductTypes.MetalArt;
@@ -151,7 +152,28 @@ export abstract class MESMetalArtMocks {
     tags: [],
     image: MESMetalArtMocks.IMAGE,
     svg: MESMetalArtMocks.SVG,
-    personalizationRules: [],
+    personalizationRules: [
+      {
+        label: "Top Text",
+        maxLength: 16,
+        name: "top_text",
+        options: "",
+        pattern: "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
+        placeholder: "Enter up to 16 characters",
+        required: true,
+        type: "input",
+      },
+      {
+        label: "Bottom Text",
+        maxLength: 16,
+        name: "bottom_text",
+        options: "",
+        pattern: "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
+        placeholder: "Enter up to 16 characters",
+        required: true,
+        type: "input",
+      },
+    ],
     variants: [],
     productType: cloneDeep(MESMetalArtMocks.prodTypeProps),
     updatedAt: now,
@@ -212,28 +234,9 @@ export abstract class MESMetalArtMocks {
       id: "00000000-0000-0000-0000-000000000001",
       image:
         "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C011-00-Black.png",
-      personalizationRules: [
-        {
-          label: "Top Text",
-          maxLength: 16,
-          name: "top_text",
-          options: "",
-          pattern: "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
-          placeholder: "Enter up to 16 characters",
-          required: true,
-          type: "input",
-        },
-        {
-          label: "Bottom Text",
-          maxLength: 16,
-          name: "bottom_text",
-          options: "",
-          pattern: "^[a-zA-Z0-9\\s!?.,\\’”()&$%#@/]*$",
-          placeholder: "Enter up to 16 characters",
-          required: true,
-          type: "input",
-        },
-      ],
+      personalizationRules: cloneDeep(
+        MESMetalArtMocks.prodProps.personalizationRules
+      ),
       pricingTier: "2",
       productType: {
         createdAt: new Date("2021-01-01T00:00:00.000Z"),
@@ -378,6 +381,47 @@ export abstract class MESMetalArtMocks {
     width: {
       dimension: 0,
       units: "mm",
+    },
+  };
+
+  static readonly expectedCatalogVariant: CatalogVariant = {
+    id: mockUuid1,
+    sku: MESMetalArtMocks.VSKU,
+    svg: MESMetalArtMocks.SVG,
+    type: ProductTypes.MetalArt,
+    image:
+      "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C011-00-Black.png",
+    manufacturingCost: {
+      currency: "USD",
+      total: 600,
+    },
+    option1: {
+      name: "Size",
+      value: '12"',
+    },
+    option2: {
+      name: "Color",
+      value: "Black",
+    },
+    option3: {
+      name: "",
+      value: undefined,
+    },
+    personalizationRules: cloneDeep(
+      MESMetalArtMocks.prodProps.personalizationRules
+    ),
+    productionData: {
+      material: "Mild Steel",
+      route: "1",
+      thickness: "0.06",
+    },
+    shippingCost: {
+      currency: "USD",
+      total: 750,
+    },
+    weight: {
+      dimension: 352,
+      units: "oz",
     },
   };
 }

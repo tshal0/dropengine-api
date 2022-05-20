@@ -12,7 +12,6 @@ export class ProductTypeVariantOption {
 }
 
 export class ProductResponsePersonalizationRule {
-  [prop: string]: any;
   name: string;
   label: string;
   placeholder: string;

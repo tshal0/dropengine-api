@@ -10,8 +10,6 @@ import moment from "moment";
 import { CatalogVariant, ICatalogVariant } from "./dto";
 import {
   determineProductType,
-  generateCategories,
-  generateCategoryMap,
   generateProductFromMESVariant,
   generateVariantFromMESVariant,
 } from "./CatalogServiceUtils";
@@ -27,7 +25,7 @@ export class LoadLineItemVariantByIdDto {
   id: string;
 }
 export enum CatalogServiceError {
-  FailedToLoadVariant = "FailedToLoadVariant",
+  FailedToLoadMyEasySuiteVariant = "FailedToLoadMyEasySuiteVariant",
 }
 
 @Injectable({ scope: Scope.DEFAULT })
@@ -47,26 +45,32 @@ export class CatalogService {
     if (!variant) {
       variant = await this.syncVariant(params.sku);
     }
+    const rules = variant.product.personalizationRules.map((r) => r.raw());
     const props: ICatalogVariant = {
       id: variant.id,
       sku: variant.sku,
       image: variant.image,
       svg: variant.product.svg,
       type: variant.type,
-      option1: variant.option1,
-      option2: variant.option2,
-      option3: variant.option3,
-      productionData: variant.productType.productionData,
-      personalizationRules: variant.product.personalizationRules,
-      manufacturingCost: variant.manufacturingCost,
-      shippingCost: variant.shippingCost,
-      weight: variant.weight,
+      option1: variant.option1.raw(),
+      option2: variant.option2.raw(),
+      option3: variant.option3.raw(),
+      productionData: variant.productType.productionData.raw(),
+      personalizationRules: rules,
+      manufacturingCost: variant.manufacturingCost.raw(),
+      shippingCost: variant.shippingCost.raw(),
+      weight: variant.weight.raw(),
     };
     return new CatalogVariant(props);
   }
 
   public async syncVariant(sku: string): Promise<Variant> {
-    let mesVariant = await this._myEasySuite.getVariantBySku(sku);
+    let mesVariant: MyEasySuiteProductVariant = null;
+    try {
+      mesVariant = await this._myEasySuite.getVariantBySku(sku);
+    } catch (error) {
+      throw new FailedToLoadMyEasySuiteVariantException(sku, error);
+    }
 
     let type: ProductTypes = determineProductType(mesVariant);
     let productType: ProductType = await this._types.findByName(type);
@@ -98,35 +102,17 @@ export class CatalogServiceException extends InternalServerErrorException {
     super(objectOrError, description);
   }
 }
-export class FailedToLoadVariantBySkuException extends CatalogServiceException {
+export class FailedToLoadMyEasySuiteVariantException extends CatalogServiceException {
   constructor(id: string, error: any) {
-    const msg = `Failed to load Variant with SKU '${id}': ${
-      error?.message || error
+    const msg = `Failed to load MyEasySuite Variant with SKU '${id}': ${
+      error.message || error
     }`;
     super(
       {
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
         message: msg,
         timestamp: moment().toDate(),
-        error: CatalogServiceError.FailedToLoadVariant,
-        details: { id, inner: [error] },
-      },
-      msg
-    );
-  }
-}
-
-export class FailedToLoadVariantByIdException extends CatalogServiceException {
-  constructor(id: string, error: any) {
-    const msg = `Failed to load Variant with ID '${id}': ${
-      error?.message || error
-    }`;
-    super(
-      {
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: msg,
-        timestamp: moment().toDate(),
-        error: CatalogServiceError.FailedToLoadVariant,
+        error: CatalogServiceError.FailedToLoadMyEasySuiteVariant,
         details: { id, inner: [error] },
       },
       msg

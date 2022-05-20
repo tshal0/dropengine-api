@@ -7,17 +7,7 @@ import { mockUuid1 } from "@sales/mocks";
 import { spyOnDate } from "@shared/mocks";
 import { CreateProductTypeDto } from "..";
 import { ProductTypeService } from "./ProductTypeService";
-class NoErrorThrownError extends Error {}
 
-const getAsyncError = async <TError>(call: () => unknown): Promise<TError> => {
-  try {
-    await call();
-
-    throw new NoErrorThrownError();
-  } catch (error: unknown) {
-    return error as TError;
-  }
-};
 spyOnDate();
 describe("ProductTypeService", () => {
   let module: TestingModule;
