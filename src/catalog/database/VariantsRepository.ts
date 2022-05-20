@@ -8,6 +8,7 @@ import { EntityRepository } from "@mikro-orm/core";
 import { ProductTypesRepository } from "./ProductTypesRepository";
 import { ProductsRepository } from "./ProductsRepository";
 import moment from "moment";
+import validator from "validator";
 
 @Injectable()
 export class VariantsRepository {
@@ -93,9 +94,9 @@ export class VariantsRepository {
     id: string;
     sku: string;
   }): Promise<DbProductVariant> {
-    if (!dto.id.length) dto.id = null;
+    const id = validator.isUUID(`${dto.id}`) ? dto.id : null;
     return await this._variants.findOne(
-      { $or: [{ id: dto.id }, { sku: dto.sku }] },
+      { $or: [{ id: id }, { sku: dto.sku }] },
       { populate: ["product", "productType"] }
     );
   }

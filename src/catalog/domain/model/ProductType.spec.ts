@@ -1,3 +1,4 @@
+import { mockUuid1 } from "@sales/mocks";
 import { now } from "@shared/mocks";
 import { IProductTypeProps, ProductType } from "./ProductType";
 import { VariantOption } from "./VariantOption";
@@ -7,7 +8,7 @@ describe("ProductType", () => {
   it("should exist", () => {
     const val = new ProductType();
     const expected: IProductTypeProps = {
-      id: "",
+      id: null,
       name: "",
       image: "",
       productionData: {
@@ -55,7 +56,7 @@ describe("ProductType", () => {
   });
   it("should take props", () => {
     const props: IProductTypeProps = {
-      id: "test",
+      id: mockUuid1,
       name: "test",
       image: "test",
       productionData: {
@@ -86,8 +87,8 @@ describe("ProductType", () => {
       },
       products: [
         {
-          id: "test",
-          productTypeId: "test",
+          id: mockUuid1,
+          productTypeId: mockUuid1,
           image: "test",
           sku: "test",
           type: "test",
@@ -108,10 +109,10 @@ describe("ProductType", () => {
           ],
           variants: [
             {
-              id: "test",
+              id: mockUuid1,
               type: "",
-              productId: "",
-              productTypeId: "",
+              productId: mockUuid1,
+              productTypeId: mockUuid1,
               image: "test",
               sku: "test",
               option1: {
@@ -139,7 +140,7 @@ describe("ProductType", () => {
     };
     const val = new ProductType(props);
     const expected: IProductTypeProps = {
-      id: "test",
+      id: mockUuid1,
       name: "test",
       image: "test",
       productionData: {
@@ -170,8 +171,8 @@ describe("ProductType", () => {
       },
       products: [
         {
-          id: "test",
-          productTypeId: "test",
+          id: mockUuid1,
+          productTypeId: mockUuid1,
           image: "test",
           sku: "test",
           type: "test",
@@ -192,10 +193,10 @@ describe("ProductType", () => {
           ],
           variants: [
             {
-              id: "test",
+              id: mockUuid1,
               type: "",
-              productId: "",
-              productTypeId: "",
+              productId: mockUuid1,
+              productTypeId: mockUuid1,
               image: "test",
               sku: "test",
               option1: {

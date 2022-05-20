@@ -4,7 +4,7 @@ import { IProductProps, Product } from "./Product";
 import { IProductTypeProps, ProductType } from "./ProductType";
 import { IVariantOption, VariantOption } from "./VariantOption";
 import { IWeight, Weight } from "./Weight";
-
+import validator from "validator";
 export interface IVariantProps {
   id: string;
   image: string;
@@ -45,12 +45,12 @@ export interface IVariant {
 }
 
 export class Variant implements IVariant {
-  private _id: string = "";
+  private _id: string = null;
   private _image: string = "";
   private _sku: string = "";
   private _type: string = "";
-  private _productId: string = "";
-  private _productTypeId: string = "";
+  private _productId: string = null;
+  private _productTypeId: string = null;
   private _product: Product = new Product();
   private _productType: ProductType = new ProductType();
   private _option1: VariantOption = new VariantOption();
@@ -63,12 +63,18 @@ export class Variant implements IVariant {
   private _shippingCost: Money = new Money();
   constructor(props?: IVariantProps | undefined) {
     if (props) {
-      this._id = props.id;
+      if (validator.isUUID(`${props.id}`)) {
+        this._id = props.id;
+      }
       this._image = props.image;
       this._sku = props.sku;
       this._type = props.type;
-      this._productId = props.productId;
-      this._productTypeId = props.productTypeId;
+      if (validator.isUUID(`${props.productId}`)) {
+        this._productId = props.productId;
+      }
+      if (validator.isUUID(`${props.productTypeId}`)) {
+        this._productTypeId = props.productTypeId;
+      }
       this._option1 = new VariantOption(props.option1);
       this._option2 = new VariantOption(props.option2);
       this._option3 = new VariantOption(props.option3);
@@ -113,7 +119,7 @@ export class Variant implements IVariant {
    */
 
   public set id(val: string) {
-    this._id = val;
+    if (validator.isUUID(`${val}`)) this._id = val;
   }
   public set image(val: string) {
     this._image = val;
@@ -125,10 +131,10 @@ export class Variant implements IVariant {
     this._type = val;
   }
   public set productId(val: string) {
-    this._productId = val;
+    if (validator.isUUID(`${val}`)) this._productId = val;
   }
   public set productTypeId(val: string) {
-    this._productTypeId = val;
+    if (validator.isUUID(`${val}`)) this._productTypeId = val;
   }
   public set option1(val: VariantOption) {
     this._option1 = new VariantOption(val);

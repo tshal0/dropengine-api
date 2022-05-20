@@ -2,8 +2,7 @@ import { IProduct, IProductProps, Product } from "./Product";
 import { IProductionData, ProductionData } from "./ProductionData";
 import { ILivePreview, LivePreview } from "./LivePreview";
 import { IVariantOptionsProps, VariantOptions } from "./VariantOptions";
-import { v4 as uuidV4, validate } from "uuid";
-
+import validator from "validator";
 export enum ProductTypes {
   Steel = "Steel",
   MetalArt = "MetalArt",
@@ -59,7 +58,7 @@ export class ProductType implements IProductType {
 
   constructor(props?: IProductTypeProps | undefined) {
     if (props) {
-      if (validate(props.id)) this._id = props.id;
+      if (validator.isUUID(`${props.id}`)) this._id = props.id;
       this._name = props.name;
       this._image = props.image;
       this._productionData = new ProductionData(props.productionData);
@@ -93,7 +92,7 @@ export class ProductType implements IProductType {
 
   /** SETTERS */
   public set id(val: string) {
-    if (validate(val)) this._id = val;
+    if (validator.isUUID(`${val}`)) this._id = val;
   }
   public set name(val: string) {
     this._name = val;

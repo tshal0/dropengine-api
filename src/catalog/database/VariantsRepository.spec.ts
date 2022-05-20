@@ -189,7 +189,6 @@ describe("VariantsRepository", () => {
       service = await module.resolve(VariantsRepository);
 
       // WHEN
-      variant.id = undefined;
 
       const result = await service.save(variant);
 

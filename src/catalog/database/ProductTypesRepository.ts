@@ -4,8 +4,7 @@ import { ProductType } from "@catalog/domain/model";
 import { DbProductType } from "./entities";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { v4 as uuidV4, validate } from "uuid";
-
+import validator from "validator";
 @Injectable()
 export class ProductTypesRepository {
   private readonly logger: Logger = new Logger(ProductTypesRepository.name);
@@ -67,9 +66,9 @@ export class ProductTypesRepository {
     id: string;
     name: string;
   }): Promise<DbProductType> {
-    if (!validate(dto.id)) dto.id = null;
+    const id = validator.isUUID(`${dto.id}`) ? dto.id : null;
     let dbe = await this._types.findOne(
-      { $or: [{ id: dto.id }, { name: dto.name }] },
+      { $or: [{ id }, { name: dto.name }] },
       { populate: ["products", "variants"] }
     );
     if (dbe) {

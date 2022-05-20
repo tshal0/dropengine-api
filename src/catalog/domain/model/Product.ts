@@ -4,9 +4,9 @@ import {
 } from "./PersonalizationRule";
 import { IProductTypeProps, ProductType } from "./ProductType";
 import { IVariant, IVariantProps, Variant } from "./Variant";
-import { v4 as uuidV4, validate } from "uuid";
+import { v4 as uuidV4 } from "uuid";
 import { trim } from "lodash";
-
+import validator from "validator";
 export interface IProductProps {
   id: string;
   sku: string;
@@ -40,10 +40,10 @@ export interface IProduct {
 }
 
 export class Product implements IProduct {
-  private _id: string = "";
+  private _id: string = null;
   private _sku: string = "";
   private _type: string = "";
-  private _productTypeId: string = "";
+  private _productTypeId: string = null;
   private _pricingTier: string = "";
   private _image: string = "";
   private _svg: string = "";
@@ -55,12 +55,12 @@ export class Product implements IProduct {
   private _createdAt: Date = new Date("2021-01-01T00:00:00.000Z");
   constructor(props?: IProductProps | undefined) {
     if (props) {
-      if (validate(props.id)) {
+      if (validator.isUUID(`${props.id}`)) {
         this._id = props.id;
       }
       this._sku = props.sku;
       this._type = props.type;
-      if (validate(props.productTypeId)) {
+      if (validator.isUUID(`${props.productTypeId}`)) {
         this._productTypeId = props.productTypeId;
       }
 
@@ -108,7 +108,7 @@ export class Product implements IProduct {
    */
 
   public set id(val: string) {
-    if (validate(val)) this._id = val;
+    if (validator.isUUID(`${val}`)) this._id = val;
   }
   public set sku(val: string) {
     this._sku = val;
@@ -117,7 +117,7 @@ export class Product implements IProduct {
     this._type = val;
   }
   public set productTypeId(val: string) {
-    if (validate(val)) this._productTypeId = val;
+    if (validator.isUUID(`${val}`)) this._productTypeId = val;
   }
   public set pricingTier(val: string) {
     this._pricingTier = val;

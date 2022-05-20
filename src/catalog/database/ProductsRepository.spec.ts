@@ -51,7 +51,6 @@ describe("ProductsRepository", () => {
   const PSKU = `MEM-000-01`;
   const VSKU = `${PSKU}-12-Black`;
   beforeEach(async () => {
-    
     prodTypeProps = {
       id: mockUuid1,
       name: PROD_TYPE,
@@ -137,7 +136,6 @@ describe("ProductsRepository", () => {
     };
     variant = new Variant(vprops);
     dbVariant = new DbProductVariant(vprops);
-
   });
   it("should exist", async () => {
     module = await mockCatalogModule().compile();
@@ -213,8 +211,6 @@ describe("ProductsRepository", () => {
       service = await module.resolve(ProductsRepository);
 
       // WHEN
-      prod.id = undefined;
-
       const result = await service.save(prod);
 
       // THEN

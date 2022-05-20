@@ -1,10 +1,20 @@
-import { IProductTypeProps, LivePreview, ProductType } from "@catalog/domain";
+import {
+  IPersonalizationRule,
+  IProductProps,
+  IProductTypeProps,
+  IVariantProps,
+  LivePreview,
+  Product,
+  ProductType,
+  ProductTypes,
+  Variant,
+} from "@catalog/domain";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { TestingModule, TestingModuleBuilder } from "@nestjs/testing";
 import { mockUuid1 } from "@sales/mocks";
 import { now, spyOnDate } from "@shared/mocks";
-import { DbProductType } from "./entities";
+import { DbProduct, DbProductType, DbProductVariant } from "./entities";
 import { ProductTypesRepository } from "./ProductTypesRepository";
 import { when } from "jest-when";
 import { cloneDeep, create } from "lodash";
@@ -22,28 +32,48 @@ describe("ProductTypesRepository", () => {
     expect(service).toBeDefined();
   });
   describe("update", () => {
-    let props: IProductTypeProps;
-    let given: ProductType;
-    let updated: DbProductType;
+    let prodTypeProps: IProductTypeProps;
+    let prodType: ProductType;
+    let dbProdType: DbProductType;
+
+    let prodProps: IProductProps;
+    let prod: Product;
+    let dbProd: DbProduct;
+
+    let vprops: IVariantProps;
+    let variant: Variant;
+    let dbVariant: DbProductVariant;
+
+    const PROD_TYPE = `2DMetalArt`;
+    const PSKU = `MEM-000-01`;
+    const VSKU = `${PSKU}-12-Black`;
     beforeEach(async () => {
-      props = {
+      prodTypeProps = {
         id: mockUuid1,
-        name: "2DMetalArt",
-        image: "",
+        name: PROD_TYPE,
+        image: "MOCK_IMG",
         productionData: {
-          material: "Galv Steel",
-          route: "2",
-          thickness: "0.12",
+          material: "Mild Steel",
+          route: "1",
+          thickness: "0.06",
         },
         option1: {
           enabled: true,
           name: "Size",
-          values: [{ enabled: true, value: '12"' }],
+          values: [
+            { enabled: true, value: '12"' },
+            { enabled: true, value: '15"' },
+            { enabled: true, value: '18"' },
+          ],
         },
         option2: {
           enabled: true,
           name: "Color",
-          values: [{ enabled: true, value: "Black" }],
+          values: [
+            { enabled: true, value: "Black" },
+            { enabled: true, value: "Gold" },
+            { enabled: true, value: "Copper" },
+          ],
         },
         option3: {
           enabled: false,
@@ -52,15 +82,65 @@ describe("ProductTypesRepository", () => {
         },
         livePreview: new LivePreview().raw(),
         products: [],
-        updatedAt: new Date("2021-01-01T00:00:00.000Z"),
-        createdAt: new Date("2021-01-01T00:00:00.000Z"),
+        updatedAt: now,
+        createdAt: now,
       };
-      given = new ProductType(props);
+      prodType = new ProductType(prodTypeProps);
+      dbProdType = new DbProductType(prodTypeProps);
+      const mockNameRule: IPersonalizationRule = {
+        name: "name",
+        type: "input",
+        label: "Name",
+        options: "",
+        pattern: "^[a-zA-Z0-9\\s.,'/&]*",
+        required: true,
+        maxLength: 20,
+        placeholder: "Enter up to 20 characters",
+      };
+      prodProps = {
+        id: mockUuid1,
+        sku: PSKU,
+        type: PROD_TYPE,
+        productTypeId: mockUuid1,
+        pricingTier: "2",
+        tags: ["MOCK_TAG"],
+        image: "MOCK_IMG",
+        svg: "MOCK_SVG",
+        personalizationRules: [mockNameRule],
+        variants: [],
+        productType: prodTypeProps,
+        updatedAt: now,
+        createdAt: now,
+      };
+
+      prod = new Product(prodProps);
+      dbProd = new DbProduct(prodProps);
+      vprops = {
+        id: mockUuid1,
+        image: "MOCK_IMG",
+        sku: VSKU,
+        type: PROD_TYPE,
+        productId: mockUuid1,
+        productTypeId: mockUuid1,
+
+        option1: { name: "Size", value: '12"' },
+        option2: { name: "Color", value: "Black" },
+        option3: { name: "", value: undefined },
+        height: { dimension: 100, units: "mm" },
+        width: { dimension: 100, units: "mm" },
+        weight: { dimension: 100, units: "g" },
+        manufacturingCost: { total: 100, currency: "USD" },
+        shippingCost: { total: 100, currency: "USD" },
+        product: prodProps,
+        productType: prodTypeProps,
+      };
+      variant = new Variant(vprops);
+      dbVariant = new DbProductVariant(vprops);
     });
     it("should copy properties over to ProductType", async () => {
       // GIVEN
       spyOnDate();
-      const expected = cloneDeep(props);
+      const expected = cloneDeep(prodTypeProps);
       const findOneFn = jest.fn();
 
       module = await mockCatalogModule().compile();
@@ -72,7 +152,7 @@ describe("ProductTypesRepository", () => {
       dbe.createdAt = expected.createdAt;
 
       // WHEN
-      const result = await service.update(given, dbe);
+      const result = await service.update(prodType, dbe);
 
       // THEN
       expect(result.raw()).toEqual(expected);
@@ -81,13 +161,13 @@ describe("ProductTypesRepository", () => {
 
   //TODO: Test null entity, entity with no raw(), entity with name, with id, entity not exist, entity exist
   describe("save", () => {
-    let props: IProductTypeProps;
-    let given: ProductType;
-    let created: DbProductType;
+    let prodTypeProps: IProductTypeProps;
+    let prodType: ProductType;
+    let dbProdType: DbProductType;
     beforeEach(async () => {
-      props = {
-        id: undefined,
-        name: "2DMetalArt",
+      prodTypeProps = {
+        id: null,
+        name: ProductTypes.MetalArt,
         image: "",
         productionData: {
           material: "Galv Steel",
@@ -114,29 +194,18 @@ describe("ProductTypesRepository", () => {
         updatedAt: new Date("2021-01-01T00:00:00.000Z"),
         createdAt: new Date("2021-01-01T00:00:00.000Z"),
       };
-      given = new ProductType(props);
-      created = new DbProductType();
-      created.id = mockUuid1;
-      created.image = props.image;
-      created.name = props.name;
-      created.productionData = props.productionData;
-      created.option1 = props.option1;
-      created.option2 = props.option2;
-      created.option3 = props.option3;
-      created.livePreview = props.livePreview;
-      created.createdAt = props.createdAt;
-      created.updatedAt = props.updatedAt;
+      prodType = new ProductType(prodTypeProps);
+      dbProdType = new DbProductType(prodTypeProps);
+      dbProdType.id = mockUuid1;
     });
     it("should create entity if not exists", async () => {
       // GIVEN
-      const findOneFn = jest.fn();
-      when(findOneFn).calledWith(given.id).mockResolvedValue(null);
-      when(findOneFn).calledWith(given.name).mockResolvedValue(null);
+
       module = await mockCatalogModule()
         .overrideProvider(getRepositoryToken(DbProductType))
         .useValue({
-          findOne: findOneFn,
-          create: jest.fn().mockResolvedValue(created),
+          findOne: jest.fn(),
+          create: jest.fn().mockResolvedValue(dbProdType),
           persistAndFlush: jest.fn(),
         })
         .compile();
@@ -144,15 +213,15 @@ describe("ProductTypesRepository", () => {
 
       // WHEN
 
-      const result = await service.save(given);
+      const result = await service.save(prodType);
       // THEN
-      const expected = cloneDeep(props);
-      expected.id = created.id;
+      const expected = cloneDeep(prodTypeProps);
+      expected.id = mockUuid1;
       expect(result.raw()).toEqual(expected);
     });
     it("should update entity if ID or NAME exists", async () => {
       // GIVEN
-      const findOneFn = jest.fn().mockResolvedValue(created);
+      const findOneFn = jest.fn().mockResolvedValue(dbProdType);
       module = await mockCatalogModule()
         .overrideProvider(getRepositoryToken(DbProductType))
         .useValue({
@@ -163,22 +232,22 @@ describe("ProductTypesRepository", () => {
       service = await module.resolve(ProductTypesRepository);
       // WHEN
 
-      const result = await service.save(given);
+      const result = await service.save(prodType);
       const resultProps = await result.raw();
       // THEN
-      const expected = cloneDeep(given);
-      expected.id = created.id;
+      const expected = cloneDeep(prodType);
+      expected.id = dbProdType.id;
       expect(result.raw()).toEqual(expected.raw());
     });
   });
   describe("query", () => {
-    let props: IProductTypeProps;
-    let given: ProductType;
-    let queried: DbProductType;
+    let prodTypeProps: IProductTypeProps;
+    let prodType: ProductType;
+    let dbProdType: DbProductType;
     beforeEach(async () => {
-      props = {
+      prodTypeProps = {
         id: mockUuid1,
-        name: "2DMetalArt",
+        name: ProductTypes.MetalArt,
         image: "",
         productionData: {
           material: "Galv Steel",
@@ -205,22 +274,13 @@ describe("ProductTypesRepository", () => {
         updatedAt: new Date("2021-01-01T00:00:00.000Z"),
         createdAt: new Date("2021-01-01T00:00:00.000Z"),
       };
-      given = new ProductType(props);
-      queried = new DbProductType();
-      queried.id = mockUuid1;
-      queried.image = props.image;
-      queried.name = props.name;
-      queried.productionData = props.productionData;
-      queried.option1 = props.option1;
-      queried.option2 = props.option2;
-      queried.option3 = props.option3;
-      queried.livePreview = props.livePreview;
-      queried.createdAt = props.createdAt;
-      queried.updatedAt = props.updatedAt;
+      prodType = new ProductType(prodTypeProps);
+      dbProdType = new DbProductType(prodTypeProps);
+      dbProdType.id = mockUuid1;
     });
     it("should return list of entities", async () => {
       // GIVEN
-      const findAllFn = jest.fn().mockResolvedValue([queried]);
+      const findAllFn = jest.fn().mockResolvedValue([dbProdType]);
       module = await mockCatalogModule()
         .overrideProvider(getRepositoryToken(DbProductType))
         .useValue({
@@ -234,17 +294,17 @@ describe("ProductTypesRepository", () => {
 
       // THEN
       const raw = result.map((r) => r.raw());
-      expect(raw).toEqual([props]);
+      expect(raw).toEqual([prodTypeProps]);
     });
   });
   describe("findById", () => {
-    let props: IProductTypeProps;
-    let given: ProductType;
-    let queried: DbProductType;
+    let prodTypeProps: IProductTypeProps;
+    let prodType: ProductType;
+    let dbProdType: DbProductType;
     beforeEach(async () => {
-      props = {
+      prodTypeProps = {
         id: mockUuid1,
-        name: "2DMetalArt",
+        name: ProductTypes.MetalArt,
         image: "",
         productionData: {
           material: "Galv Steel",
@@ -271,29 +331,20 @@ describe("ProductTypesRepository", () => {
         updatedAt: new Date("2021-01-01T00:00:00.000Z"),
         createdAt: new Date("2021-01-01T00:00:00.000Z"),
       };
-      given = new ProductType(props);
-      queried = new DbProductType();
-      queried.id = mockUuid1;
-      queried.image = props.image;
-      queried.name = props.name;
-      queried.productionData = props.productionData;
-      queried.option1 = props.option1;
-      queried.option2 = props.option2;
-      queried.option3 = props.option3;
-      queried.livePreview = props.livePreview;
-      queried.createdAt = props.createdAt;
-      queried.updatedAt = props.updatedAt;
+      prodType = new ProductType(prodTypeProps);
+      dbProdType = new DbProductType(prodTypeProps);
+      dbProdType.id = mockUuid1;
     });
     it("should return entity if exists", async () => {
       module = await mockCatalogModule()
         .overrideProvider(getRepositoryToken(DbProductType))
         .useValue({
-          findOne: jest.fn().mockResolvedValue(queried),
+          findOne: jest.fn().mockResolvedValue(dbProdType),
         })
         .compile();
       service = await module.resolve(ProductTypesRepository);
       let result = await service.findById(mockUuid1);
-      expect(result.raw()).toEqual(props);
+      expect(result.raw()).toEqual(prodTypeProps);
     });
     it("should return null if not exists", async () => {
       module = await mockCatalogModule()
@@ -308,11 +359,11 @@ describe("ProductTypesRepository", () => {
     });
   });
   describe("findByName", () => {
-    let props: IProductTypeProps;
-    let given: ProductType;
-    let queried: DbProductType;
+    let prodTypeProps: IProductTypeProps;
+    let prodType: ProductType;
+    let dbProdType: DbProductType;
     beforeEach(async () => {
-      props = {
+      prodTypeProps = {
         id: mockUuid1,
         name: "2DMetalArt",
         image: "",
@@ -341,30 +392,21 @@ describe("ProductTypesRepository", () => {
         updatedAt: new Date("2021-01-01T00:00:00.000Z"),
         createdAt: new Date("2021-01-01T00:00:00.000Z"),
       };
-      given = new ProductType(props);
-      queried = new DbProductType();
-      queried.id = mockUuid1;
-      queried.image = props.image;
-      queried.name = props.name;
-      queried.productionData = props.productionData;
-      queried.option1 = props.option1;
-      queried.option2 = props.option2;
-      queried.option3 = props.option3;
-      queried.livePreview = props.livePreview;
-      queried.createdAt = props.createdAt;
-      queried.updatedAt = props.updatedAt;
+      prodType = new ProductType(prodTypeProps);
+      dbProdType = new DbProductType(prodTypeProps);
+      dbProdType.id = mockUuid1;
     });
     it("should return entity if exists", async () => {
       module = await mockCatalogModule()
         .overrideProvider(getRepositoryToken(DbProductType))
         .useValue({
-          findOne: jest.fn().mockResolvedValue(queried),
+          findOne: jest.fn().mockResolvedValue(dbProdType),
         })
         .compile();
       service = await module.resolve(ProductTypesRepository);
       let result = await service.findByName("test");
 
-      expect(result.raw()).toEqual(props);
+      expect(result.raw()).toEqual(prodTypeProps);
     });
     it("should return null if not exists", async () => {
       module = await mockCatalogModule()
