@@ -4,6 +4,8 @@ import {
 } from "./PersonalizationRule";
 import { IProductTypeProps, ProductType } from "./ProductType";
 import { IVariant, IVariantProps, Variant } from "./Variant";
+import { v4 as uuidV4, validate } from "uuid";
+import { trim } from "lodash";
 
 export interface IProductProps {
   id: string;
@@ -53,13 +55,17 @@ export class Product implements IProduct {
   private _createdAt: Date = new Date("2021-01-01T00:00:00.000Z");
   constructor(props?: IProductProps | undefined) {
     if (props) {
-      this._id = props.id;
+      if (validate(props.id)) {
+        this._id = props.id;
+      }
       this._sku = props.sku;
       this._type = props.type;
-      this._productTypeId = props.productTypeId;
+      if (validate(props.productTypeId)) {
+        this._productTypeId = props.productTypeId;
+      }
 
       this._pricingTier = props.pricingTier;
-      this._tags = props.tags;
+      this._tags = props.tags?.map((t) => trim(t)) || [];
       this._image = props.image;
       this._svg = props.svg;
       this._personalizationRules = props.personalizationRules.map(
@@ -102,7 +108,7 @@ export class Product implements IProduct {
    */
 
   public set id(val: string) {
-    this._id = val;
+    if (validate(val)) this._id = val;
   }
   public set sku(val: string) {
     this._sku = val;
@@ -111,13 +117,13 @@ export class Product implements IProduct {
     this._type = val;
   }
   public set productTypeId(val: string) {
-    this._productTypeId = val;
+    if (validate(val)) this._productTypeId = val;
   }
   public set pricingTier(val: string) {
     this._pricingTier = val;
   }
   public set tags(val: string[]) {
-    this._tags = val;
+    this._tags = val?.map((t) => trim(t)) || [];
   }
   public set image(val: string) {
     this._image = val;

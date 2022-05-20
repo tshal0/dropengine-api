@@ -64,38 +64,15 @@ export class ProductService {
   public async import(stream: string): Promise<Product[]> {
     let csvResults: CreateProductDto[] = [];
     let savedResults: Product[] = [];
-    const now = moment().toDate();
     let results: any[] = await csv().fromString(stream);
     csvResults = results.map((r) => CsvProductDto.create(r).toDto());
     // Process each batch of Products
     for (let i = 0; i < csvResults.length; i++) {
       const dto = csvResults[i];
-      const product = this.generateProduct(dto, now);
-      let saved = await this._repo.save(product);
+      let saved = await this.findAndUpdateOrCreate(dto);
       let raw = saved.raw();
       savedResults.push(new Product(raw));
     }
     return savedResults;
-  }
-
-  private generateProduct(dto: CreateProductDto, now: Date) {
-    const rules = dto.personalizationRules.map(
-      (r) => new PersonalizationRule(r)
-    );
-    const tags = dto.tags.split(",").map((t) => trim(t));
-    return new Product({
-      id: null,
-      sku: dto.sku,
-      type: dto.type,
-      productTypeId: dto.productTypeId,
-      pricingTier: dto.pricingTier,
-      tags: tags,
-      image: dto.image,
-      svg: dto.svg,
-      personalizationRules: rules,
-      variants: [],
-      createdAt: now,
-      updatedAt: now,
-    });
   }
 }

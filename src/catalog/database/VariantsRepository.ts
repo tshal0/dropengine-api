@@ -93,6 +93,7 @@ export class VariantsRepository {
     id: string;
     sku: string;
   }): Promise<DbProductVariant> {
+    if (!dto.id.length) dto.id = null;
     return await this._variants.findOne(
       { $or: [{ id: dto.id }, { sku: dto.sku }] },
       { populate: ["product", "productType"] }

@@ -77,7 +77,7 @@ export class ProductsController {
   ): Promise<any> {
     const stream = file.buffer.toString();
     let result = await this.service.import(stream);
-    const imported = result.map((r) => r.raw());
+    const imported = result.map((r) => ProductResponseDto.from(r.raw()));
     return { imported };
   }
   @Post()

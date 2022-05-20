@@ -2,6 +2,7 @@ import { IProduct, IProductProps, Product } from "./Product";
 import { IProductionData, ProductionData } from "./ProductionData";
 import { ILivePreview, LivePreview } from "./LivePreview";
 import { IVariantOptionsProps, VariantOptions } from "./VariantOptions";
+import { v4 as uuidV4, validate } from "uuid";
 
 export enum ProductTypes {
   Steel = "Steel",
@@ -44,7 +45,7 @@ export interface IProductType {
  * Holds ProductionData, VariantOptions, LivePreview, Products
  */
 export class ProductType implements IProductType {
-  private _id: string = "";
+  private _id: string = null;
   private _name: string = "";
   private _image: string = "";
   private _productionData: ProductionData = new ProductionData();
@@ -58,7 +59,7 @@ export class ProductType implements IProductType {
 
   constructor(props?: IProductTypeProps | undefined) {
     if (props) {
-      this._id = props.id;
+      if (validate(props.id)) this._id = props.id;
       this._name = props.name;
       this._image = props.image;
       this._productionData = new ProductionData(props.productionData);
@@ -92,7 +93,7 @@ export class ProductType implements IProductType {
 
   /** SETTERS */
   public set id(val: string) {
-    this._id = val;
+    if (validate(val)) this._id = val;
   }
   public set name(val: string) {
     this._name = val;

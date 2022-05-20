@@ -6,6 +6,7 @@ import { Product } from "@catalog/domain/model";
 import { DbProduct, DbProductType } from "./entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityRepository } from "@mikro-orm/core";
+import { v4 as uuidV4, validate } from "uuid";
 
 @Injectable()
 export class ProductsRepository {
@@ -34,8 +35,11 @@ export class ProductsRepository {
       dbe = await this.update(dbe, entity);
     }
 
+    const prodTypeId = validate(entity.productTypeId)
+      ? entity.productTypeId
+      : null;
     let productType = await this._types.findOne({
-      $or: [{ name: entity.type }, { id: entity.productTypeId }],
+      $or: [{ name: entity.type }, { id: prodTypeId }],
     });
     if (!productType) {
       throw new EntityNotFoundException(
@@ -58,8 +62,9 @@ export class ProductsRepository {
     id: string;
     sku: string;
   }): Promise<DbProduct> {
+    const id = validate(dto.id) ? dto.id : null;
     return await this._products.findOne(
-      { $or: [{ id: dto.id }, { sku: dto.sku }] },
+      { $or: [{ id }, { sku: dto.sku }] },
       { populate: ["variants", "productType"] }
     );
   }

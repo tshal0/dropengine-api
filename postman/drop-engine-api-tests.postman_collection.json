@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "326c0e40-0ab6-482c-8ad9-c3b159cdaa5c",
 		"name": "drop-engine-api-tests",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4547607"
 	},
 	"item": [
 		{
@@ -972,7 +973,7 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": "\\products.v1.csv"
+											"src": ".\\products.v1.csv"
 										}
 									]
 								},
@@ -1317,7 +1318,7 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": "\\variants.v1.csv"
+											"src": ".\\variants.v1.csv"
 										}
 									]
 								},
@@ -1353,9 +1354,9 @@
 											"const resp = pm.response.json()\r",
 											"const expectedVariants = {\r",
 											"    \"MU-C001-00\": {\r",
-											"         \"option1\": { \"name\": \"Size\", \"value\": \"12\", \"enabled\": true },\r",
-											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", \"enabled\": true },\r",
-											"        \"option3\": { \"value\": \"\", \"enabled\": false },\r",
+											"        \"option1\": { \"name\": \"Size\", \"value\": \"12\", },\r",
+											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", },\r",
+											"        \"option3\": { \"name\": \"\", \"value\": \"\", },\r",
 											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-12-Black\",\r",
 											"        \"sku\": \"MU-C001-00-12-Black\",\r",
 											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
@@ -1365,9 +1366,9 @@
 											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
 											"    },\r",
 											"    \"MU-C004-00\": {\r",
-											"        \"option1\": { \"name\": \"Size\", \"value\": \"12\", \"enabled\": true },\r",
-											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", \"enabled\": true },\r",
-											"        \"option3\": { \"value\": \"\", \"enabled\": false },\r",
+											"        \"option1\": { \"name\": \"Size\", \"value\": \"12\", },\r",
+											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", },\r",
+											"        \"option3\": { \"value\": \"\", },\r",
 											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C004-00-12-Black\",\r",
 											"        \"sku\": \"MU-C004-00-12-Black\",\r",
 											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
@@ -1377,9 +1378,9 @@
 											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
 											"    },\r",
 											"    \"MU-C005-00\": {\r",
-											"         \"option1\": { \"name\": \"Size\", \"value\": \"12\", \"enabled\": true },\r",
-											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", \"enabled\": true },\r",
-											"        \"option3\": { \"value\": \"\", \"enabled\": false },\r",
+											"        \"option1\": { \"name\": \"Size\", \"value\": \"12\", },\r",
+											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", },\r",
+											"        \"option3\": { \"value\": \"\", },\r",
 											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C005-00-12-Black\",\r",
 											"        \"sku\": \"MU-C005-00-12-Black\",\r",
 											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
@@ -1389,9 +1390,9 @@
 											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
 											"    },\r",
 											"    \"MU-C116-00\": {\r",
-											"        \"option1\": { \"name\": \"Size\", \"value\": \"12\", \"enabled\": true },\r",
-											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", \"enabled\": true },\r",
-											"        \"option3\": { \"value\": \"\", \"enabled\": false },\r",
+											"        \"option1\": { \"name\": \"Size\", \"value\": \"12\", },\r",
+											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", },\r",
+											"        \"option3\": { \"value\": \"\", },\r",
 											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C116-00-12-Black\",\r",
 											"        \"sku\": \"MU-C116-00-12-Black\",\r",
 											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
@@ -1401,9 +1402,9 @@
 											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
 											"    },\r",
 											"    \"MU-C017-00\": {\r",
-											"        \"option1\": { \"name\": \"Size\", \"value\": \"12\", \"enabled\": true },\r",
-											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", \"enabled\": true },\r",
-											"        \"option3\": { \"value\": \"\", \"enabled\": false },\r",
+											"        \"option1\": { \"name\": \"Size\", \"value\": \"12\", },\r",
+											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", },\r",
+											"        \"option3\": { \"value\": \"\", },\r",
 											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C017-00-12-Black\",\r",
 											"        \"sku\": \"MU-C017-00-12-Black\",\r",
 											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",
@@ -1413,9 +1414,9 @@
 											"        \"shippingCost\": { \"total\": 750, \"currency\": \"USD\" },\r",
 											"    },\r",
 											"    \"MEM-27-00\": {\r",
-											"        \"option1\": { \"name\": \"Size\", \"value\": \"12\", \"enabled\": true },\r",
-											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", \"enabled\": true },\r",
-											"        \"option3\": { \"value\": \"\", \"enabled\": false },\r",
+											"        \"option1\": { \"name\": \"Size\", \"value\": \"12\", },\r",
+											"        \"option2\": { \"name\": \"Color\", \"value\": \"Black\", },\r",
+											"        \"option3\": { \"value\": \"\", },\r",
 											"        \"image\": \"https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MEM-27-00-12-Black\",\r",
 											"        \"sku\": \"MEM-27-00-12-Black\",\r",
 											"        \"height\": { \"units\": \"in\", \"dimension\": 11.5 },\r",

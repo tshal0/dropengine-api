@@ -80,7 +80,7 @@ export class DbProductType {
       livePreview: this.livePreview,
       updatedAt: this.updatedAt,
       createdAt: this.createdAt,
-      products: this.products.getItems().map((p) => p.raw()),
+      products: [],
     };
     return props;
   }
