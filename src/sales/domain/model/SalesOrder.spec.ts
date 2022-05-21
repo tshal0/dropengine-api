@@ -1,11 +1,17 @@
 import { ProductTypes } from "@catalog/domain";
 import { mockAddress, mockUuid1 } from "@sales/mocks";
-import { Address } from "@shared/domain";
+import { Address, IAddress } from "@shared/domain";
 import { now } from "@shared/mocks";
 import { cloneDeep } from "lodash";
+import { CustomerInfoChanged } from "../events/CustomerInfoChanged";
+import { SalesOrderCanceled } from "../events/OrderCanceled";
+import { OrderPlacedDetails } from "../events/OrderPlaced";
+import { PersonalizationChanged } from "../events/PersonalizationChanged";
+import { ShippingAddressChanged } from "../events/ShippingAddressChanged";
 import { SalesCustomer } from "./SalesCustomer";
 import { ISalesLineItemProps, SalesLineItem } from "./SalesLineItem";
 import { ISalesOrderProps, OrderStatus, SalesOrder } from "./SalesOrder";
+import { SalesOrderMocks } from "../../mocks/SalesOrderMocks.mock";
 
 describe("SalesOrder", () => {
   const mockMongoId = `000000000000000000000001`;
@@ -23,6 +29,7 @@ describe("SalesOrder", () => {
       billingAddress: new Address().raw(),
       updatedAt: now,
       createdAt: now,
+      events: [],
     };
     const result = new SalesOrder();
     expect(result.raw()).toEqual(props);
@@ -39,27 +46,11 @@ describe("SalesOrder", () => {
       orderStatus: OrderStatus.OPEN,
       lineItems: [liProps],
       customer: { email: "sample@mail.com", name: "Sample" },
-      shippingAddress: new Address({
-        zip: "43844-9406",
-        city: "Warsaw",
-        name: "Tony Stark",
-        phone: "2563472777",
-        company: "MyEasySuite Inc.",
-        country: "United States",
-        address1: "19936 County Road 18",
-        address2: "",
-        address3: "",
-        latitude: 40.2496938,
-        province: "Ohio",
-        lastName: "Stark",
-        longitude: -82.1265222,
-        firstName: "Tony",
-        countryCode: "US",
-        provinceCode: "OH",
-      }).raw(),
+      shippingAddress: new Address(mockAddress).raw(),
       billingAddress: new Address().raw(),
       updatedAt: now,
       createdAt: now,
+      events: [],
     };
     const result = new SalesOrder(props);
     expect(result.raw()).toEqual(props);
@@ -68,37 +59,21 @@ describe("SalesOrder", () => {
     const liProps = mockLineItemProps();
 
     let props: ISalesOrderProps = {
-      id: '',
-      accountId: '',
+      id: "",
+      accountId: "",
       orderName: "SLI-1001",
       orderNumber: 1001,
-      orderDate: '' as any,
+      orderDate: "" as any,
       orderStatus: OrderStatus.OPEN,
       lineItems: [liProps],
       customer: { email: "sample@mail.com", name: "Sample" },
-      shippingAddress: new Address({
-        zip: "43844-9406",
-        city: "Warsaw",
-        name: "Tony Stark",
-        phone: "2563472777",
-        company: "MyEasySuite Inc.",
-        country: "United States",
-        address1: "19936 County Road 18",
-        address2: "",
-        address3: "",
-        latitude: 40.2496938,
-        province: "Ohio",
-        lastName: "Stark",
-        longitude: -82.1265222,
-        firstName: "Tony",
-        countryCode: "US",
-        provinceCode: "OH",
-      }).raw(),
+      shippingAddress: new Address(mockAddress).raw(),
       billingAddress: new Address().raw(),
       updatedAt: now,
       createdAt: now,
+      events: [],
     };
-    let expected = cloneDeep(props)
+    let expected = cloneDeep(props);
     expected.id = null;
     expected.accountId = null;
     expected.orderDate = null;
@@ -189,6 +164,121 @@ describe("SalesOrder", () => {
     result.createdAt = date;
     const raw = result.createdAt;
     expect(raw).toEqual(date);
+  });
+
+  describe("PlaceOrder", () => {
+    it("should update the order and add a SalesOrderPlacedEvent", () => {
+      const dto: OrderPlacedDetails = cloneDeep(SalesOrderMocks.placedDetails);
+      const order = new SalesOrder();
+      order.create(dto);
+      expect(order.orderStatus).toBe(OrderStatus.OPEN);
+      expect(order.orderName).toBe(SalesOrderMocks.orderName);
+      expect(order.orderNumber).toBe(SalesOrderMocks.orderNumber);
+      expect(order.orderDate).toEqual(SalesOrderMocks.orderDate);
+      expect(order.accountId).toBe(SalesOrderMocks.accountId);
+      expect(order.customer.raw()).toEqual(SalesOrderMocks.customer);
+      expect(order.lineItems).toContainEqual(
+        new SalesLineItem(SalesOrderMocks.salesLineItem1)
+      );
+      expect(order.shippingAddress.raw()).toEqual(
+        SalesOrderMocks.shippingAddress
+      );
+      expect(order.billingAddress.raw()).toEqual(
+        SalesOrderMocks.billingAddress
+      );
+      const expectedEvent = SalesOrderMocks.orderPlacedEvent;
+      expectedEvent.eventId = expect.anything();
+      expectedEvent.timestamp = expect.anything();
+      expect(order.events).toContainEqual(expectedEvent);
+    });
+  });
+  describe("CancelOrder", () => {
+    it("should update the order and add a SalesOrderCanceledEvent", () => {
+      const dto: OrderPlacedDetails = cloneDeep(SalesOrderMocks.placedDetails);
+      const order = new SalesOrder();
+      order.id = SalesOrderMocks.id;
+      const requester = { email: "sample@mail.com", name: "Sample Requester" };
+      const cancelRequest = {
+        canceledAt: now,
+        requestedBy: requester,
+      };
+      order.cancel(cancelRequest);
+      expect(order.orderStatus).toBe(OrderStatus.CANCELED);
+
+      const expectedEvent = new SalesOrderCanceled(
+        SalesOrderMocks.id,
+        cancelRequest
+      );
+      expectedEvent.eventId = expect.anything();
+      expectedEvent.timestamp = expect.anything();
+      expect(order.events).toContainEqual(expectedEvent);
+    });
+  });
+  describe("EditCustomer", () => {
+    it("should update the order and add a CustomerInfoChangedEvent", () => {
+      const order = new SalesOrder();
+      order.id = SalesOrderMocks.id;
+      const updatedCustomer = { name: "New Customer", email: "new@mail.com" };
+      order.editCustomer(updatedCustomer);
+
+      expect(order.customer.raw()).toEqual(updatedCustomer);
+
+      const expectedEvent = new CustomerInfoChanged(
+        SalesOrderMocks.id,
+        updatedCustomer
+      );
+      expectedEvent.eventId = expect.anything();
+      expectedEvent.timestamp = expect.anything();
+      expect(order.events).toContainEqual(expectedEvent);
+    });
+  });
+  describe("EditPersonalization", () => {
+    it("should update the order and add a PersonalizationChangedEvent", () => {
+      const order = SalesOrderMocks.order;
+      order.id = SalesOrderMocks.id;
+      const request = {
+        lineNumber: 1,
+        personalization: [
+          { name: "Top Text", value: "Sample" },
+          { name: "Bottom Text", value: "Updated" },
+        ],
+      };
+      order.editPersonalization(request);
+
+      const expectedEvent = new PersonalizationChanged(SalesOrderMocks.id, {
+        ...request,
+        orderId: SalesOrderMocks.id,
+      });
+      expectedEvent.eventId = expect.anything();
+      expectedEvent.timestamp = expect.anything();
+      expect(order.events).toContainEqual(expectedEvent);
+    });
+  });
+  describe("EditShippingAddress", () => {
+    it("should update the order and add a ShippingAddressChangedEvent", () => {
+      const order = SalesOrderMocks.order;
+      order.id = SalesOrderMocks.id;
+      const request = {
+        shippingAddress: {
+          ...mockAddress,
+          country: "United States",
+          countryCode: "US",
+          province: "Alabama",
+          provinceCode: "AL",
+          city: "Huntsville",
+          zip: "35801",
+        },
+      };
+      order.editShippingAddress(request);
+
+      expect(order.shippingAddress.raw()).toEqual(request.shippingAddress);
+      const expectedEvent = new ShippingAddressChanged(SalesOrderMocks.id, {
+        shippingAddress: request.shippingAddress,
+      });
+      expectedEvent.eventId = expect.anything();
+      expectedEvent.timestamp = expect.anything();
+      expect(order.events).toContainEqual(expectedEvent);
+    });
   });
 });
 function mockLineItemProps(): ISalesLineItemProps {

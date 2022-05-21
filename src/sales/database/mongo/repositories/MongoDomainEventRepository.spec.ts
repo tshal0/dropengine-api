@@ -1,3 +1,4 @@
+import { mockSalesModule } from "@sales/mocks/sales.module.mock";
 import { AccountsRepository } from "@auth/database/AccountsRepository";
 import { StoresRepository } from "@auth/database/StoresRepository";
 import {
@@ -8,7 +9,7 @@ import {
 import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { TestingModule } from "@nestjs/testing";
-import { mockSalesModule } from "@sales/mocks/sales.module.mock";
+
 import { spyOnDate } from "@shared/mocks";
 import { MongoDomainEventRepository } from "./MongoDomainEventRepository";
 import { MongoMocks } from "../../../mocks/MongoMocks";
@@ -36,8 +37,6 @@ describe("MongoDomainEventRepository", () => {
   afterAll(async () => {
     await closeMongoConnection();
   });
-
-  beforeEach(async () => {});
 
   it("should be defined", () => {
     expect(service).toBeDefined();

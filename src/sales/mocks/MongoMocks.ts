@@ -61,6 +61,7 @@ export abstract class MongoMocks {
     billingAddress: cloneDeep(MongoMocks.addressProps),
     updatedAt: now,
     createdAt: now,
+    events: []
   };
   static readonly order: SalesOrder = new SalesOrder(MongoMocks.orderProps);
 
@@ -97,5 +98,6 @@ export abstract class MongoMocks {
     shippingAddress: MongoMocks.addressProps,
     updatedAt: now,
     createdAt: now,
+    events: []
   };
 }

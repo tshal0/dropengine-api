@@ -20,7 +20,7 @@ describe("SalesOrderCanceled", () => {
       // GIVEN valid DTO
 
       const mockDto = new CancelOrderDto();
-      mockDto.cancelledAt = now;
+      mockDto.canceledAt = now;
       const requester = new CancelOrderRequesterDto();
       requester.name = "TestName";
       requester.email = "test@sample.com";

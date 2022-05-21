@@ -24,7 +24,6 @@ import {
   DbProductType,
   DbProductVariant,
 } from "@catalog/database/entities";
-
 jest.mock("@shared/utils", () => {
   return {
     loadAccessToken: jest.fn().mockResolvedValue("MOCK_ACCESS_TOKEN"),

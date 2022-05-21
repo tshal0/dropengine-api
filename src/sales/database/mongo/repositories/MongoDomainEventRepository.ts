@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model, Query, QueryWithHelpers } from "mongoose";
+import { Model } from "mongoose";
 import { BaseMongoRepository } from "@shared/mongo";
 import {
   MongoDomainEvent,

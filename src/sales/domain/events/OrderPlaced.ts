@@ -33,7 +33,7 @@ export interface IOrderPlacedDetails {
   billingAddress: IAddress;
 }
 export class OrderPlacedDetails {
-  constructor(props?: IOrderPlacedDetails) {
+  constructor(props?: IOrderPlacedDetails | undefined) {
     if (props) {
       this.accountId = props.accountId;
       this.orderName = props.orderName;

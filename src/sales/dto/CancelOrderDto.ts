@@ -11,7 +11,7 @@ export class CancelOrderRequesterDto {
 export class CancelOrderDto {
   @IsNotEmpty()
   @IsDate()
-  cancelledAt: Date;
+  canceledAt: Date;
   @Type(() => CancelOrderRequesterDto)
   @ValidateNested()
   @IsNotEmpty()

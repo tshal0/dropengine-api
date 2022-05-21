@@ -51,6 +51,7 @@
     "src"
   ],
   "exclude": [
+    "mocks",
     "_artifact",
     "dist",
     "jest*.ts",

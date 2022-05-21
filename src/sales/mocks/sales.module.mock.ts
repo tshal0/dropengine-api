@@ -1,13 +1,7 @@
 import { AuthModule } from "@auth/auth.module";
 import { CatalogModule } from "@catalog/catalog.module";
-import {
-  DbProductType,
-  DbProduct,
-  DbProductVariant,
-} from "@catalog/database/entities";
 import { CatalogService } from "@catalog/services";
 import { rootMongooseTestModule } from "@jestconfig/mongodb-memory-server";
-import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { HttpModule } from "@nestjs/axios";
 import { CacheModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
@@ -18,8 +12,6 @@ import { Test, TestingModuleBuilder } from "@nestjs/testing";
 import { OrdersController } from "@sales/api";
 import {
   MongoOrdersRepository,
-  MongoSalesLineItem,
-  MongoSalesLineItemSchema,
   MongoSalesOrder,
   MongoSalesOrderSchema,
 } from "@sales/database/mongo";

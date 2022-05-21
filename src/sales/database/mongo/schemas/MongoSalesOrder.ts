@@ -1,18 +1,22 @@
+import mongoose, { Document } from "mongoose";
+
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { ISalesOrderProps, OrderStatus } from "@sales/domain";
+
+import { SalesOrderEvent } from "@sales/domain/events/SalesOrderEvent";
 import { SalesCustomer } from "@sales/domain/model/SalesCustomer";
 import { SalesLineItem } from "@sales/domain/model/SalesLineItem";
 import { Address } from "@shared/domain";
 
-import mongoose, { Document } from "mongoose";
 import { IMongoEntity } from "../IMongoEntity";
 
 import { MongoAddress, MongoAddressSchema } from "./MongoAddress";
 import { MongoCustomer, MongoCustomerSchema } from "./MongoCustomer";
+import { MongoDomainEventSchema } from "./MongoDomainEvent";
 import {
   MongoSalesLineItem,
   MongoSalesLineItemSchema,
 } from "./MongoSalesLineItem";
+import { ISalesOrderProps, OrderStatus } from "@sales/domain/model/SalesOrder";
 
 @Schema({ collection: "orders", id: true, toObject: { virtuals: true } })
 export class MongoSalesOrder extends IMongoEntity {
@@ -31,6 +35,7 @@ export class MongoSalesOrder extends IMongoEntity {
       this.billingAddress = props.billingAddress;
       this.updatedAt = props.updatedAt;
       this.createdAt = props.createdAt;
+      this.events = props.events;
     }
   }
   @Prop({ required: true })
@@ -57,7 +62,8 @@ export class MongoSalesOrder extends IMongoEntity {
   shippingAddress: MongoAddress;
   @Prop({ type: MongoAddressSchema, required: true })
   billingAddress: MongoAddress;
-
+  @Prop({ type: [MongoDomainEventSchema], required: false })
+  events: SalesOrderEvent<any>[];
   public raw(): ISalesOrderProps {
     let props: ISalesOrderProps = {
       id: this.id,
@@ -72,6 +78,7 @@ export class MongoSalesOrder extends IMongoEntity {
       billingAddress: new Address(this.billingAddress).raw(),
       updatedAt: this.updatedAt,
       createdAt: this.createdAt,
+      events: this.events,
     };
     return props;
   }
