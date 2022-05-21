@@ -1,4 +1,3 @@
-
 export const mikroOrmOptions = {
   entities: ["./dist/**/entities/*.entity.js"],
   entitiesTs: ["./src/**/entities/*.entity.ts"],
@@ -17,5 +16,6 @@ export const mikroOrmOptions = {
   debug: process.env.ENVIRONMENT != "production",
   migrations: {
     tableName: "mikro_orm_migrations",
+    disableForeignKeys: false,
   },
 };

@@ -40,7 +40,8 @@
     "dbl:up": "dotenv -e dropengine.local.env -- yarn mikro-orm migration:up",
     "dbl:down": "dotenv -e dropengine.local.env -- yarn mikro-orm migration:down",
     "migrate": "mikro-orm migration:up",
-    "migrate:local": "dotenv -e dropengine.local.env -- yarn mikro-orm migration:up"
+    "migrate:local": "dotenv -e dropengine.local.env -- yarn mikro-orm migration:up",
+    "migrate:deploy": "dotenv -e dropengine.staging.env -- mikro-orm migration:up"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.8.0",

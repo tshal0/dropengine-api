@@ -4,5 +4,8 @@ import { mikroOrmOptions } from "./mikroOrmOptions";
 
 const config: Options<PostgreSqlDriver> = {
   ...mikroOrmOptions,
+  migrations: {
+    ...mikroOrmOptions.migrations,
+  },
 };
 export default config;
