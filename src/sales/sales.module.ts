@@ -14,7 +14,7 @@ import {
   MongoDomainEventSchema,
 } from "./database/mongo/schemas/MongoDomainEvent";
 import { MongoDomainEventRepository } from "./database/mongo/repositories/MongoDomainEventRepository";
-import { HandleMyEasySuiteOrderPlaced } from "./useCases/HandleMyEasySuiteOrderPlaced";
+import { HandleMyEasySuiteOrderPlaced } from "./features/HandleMyEasySuiteOrderPlaced";
 import { AuthModule } from "@auth/auth.module";
 import {
   ChangeCustomerInfo,

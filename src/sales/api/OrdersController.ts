@@ -54,9 +54,9 @@ export class OrdersController {
   constructor(
     @Inject(REQUEST) private readonly request: Request,
     private readonly placeOrder: PlaceOrder,
-    private readonly updateCustomer: ChangeCustomerInfo,
-    private readonly updateShipping: ChangeShippingAddress,
-    private readonly updatePersonalization: ChangePersonalization,
+    private readonly changeCustomer: ChangeCustomerInfo,
+    private readonly changeShipping: ChangeShippingAddress,
+    private readonly changePersonalization: ChangePersonalization,
     private readonly sales: SalesService
   ) {}
 
@@ -88,7 +88,7 @@ export class OrdersController {
     @Param("lineNumber") lineNumber: number,
     @Body() dto: EditPersonalizationDto
   ) {
-    let order = await this.updatePersonalization.execute({
+    let order = await this.changePersonalization.execute({
       id,
       lineNumber,
       personalization: dto.personalization,
@@ -100,7 +100,7 @@ export class OrdersController {
     @Param("id") id: string,
     @Body() dto: { customer: EditCustomerDto }
   ) {
-    let order = await this.updateCustomer.execute({
+    let order = await this.changeCustomer.execute({
       id,
       customer: dto.customer,
     });
@@ -111,7 +111,7 @@ export class OrdersController {
     @Param("id") id: string,
     @Body() dto: EditShippingAddressDto
   ) {
-    const order = await this.updateShipping.execute({
+    const order = await this.changeShipping.execute({
       id,
       address: dto.shippingAddress,
     });

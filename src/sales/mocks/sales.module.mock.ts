@@ -28,7 +28,7 @@ import {
 } from "@sales/features";
 import { PlaceOrder } from "@sales/features/PlaceOrder/PlaceOrder";
 import { SalesService } from "@sales/services";
-import { HandleMyEasySuiteOrderPlaced } from "@sales/useCases/HandleMyEasySuiteOrderPlaced";
+import { HandleMyEasySuiteOrderPlaced } from "@sales/features/HandleMyEasySuiteOrderPlaced";
 import { AzureTelemetryModule } from "@shared/modules";
 
 jest.mock("@shared/utils", () => {
