@@ -1,6 +1,5 @@
 import { Injectable, Scope, Logger } from "@nestjs/common";
 import { SalesOrderRepository } from "../database/SalesOrderRepository";
-import { AddressDto, LineItemPropertyDto } from "@sales/dto";
 import { UseCase } from "@shared/domain";
 import { AzureTelemetryService } from "@shared/modules";
 import { EditCustomerDto } from "@sales/api";

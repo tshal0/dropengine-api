@@ -37,11 +37,11 @@ export class ProductTypeService {
   }
   public async findById(id: string): Promise<ProductType> {
     const result = await this._repo.findById(id);
-    return new ProductType(result.raw());
+    return result ? new ProductType(result.raw()) : null;
   }
   public async findByName(name: string): Promise<ProductType> {
     const result = await this._repo.findByName(name);
-    return new ProductType(result.raw());
+    return result ? new ProductType(result.raw()) : null;
   }
 
   public async delete(id: string): Promise<any> {

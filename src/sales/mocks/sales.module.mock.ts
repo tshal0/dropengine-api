@@ -22,8 +22,8 @@ import {
 } from "@sales/database/mongo/schemas/MongoDomainEvent";
 import { SalesOrderQuery } from "@sales/database/SalesOrderQueries";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
+import { PlaceOrder } from "@sales/features/PlaceOrder";
 import {
-  CreateSalesOrder,
   GetSalesOrder,
   QuerySalesOrders,
   DeleteSalesOrder,
@@ -66,7 +66,7 @@ export const mockSalesModule = (): TestingModuleBuilder => {
       MongoOrdersRepository,
       SalesOrderRepository,
       SalesOrderQuery,
-      CreateSalesOrder,
+      PlaceOrder,
       GetSalesOrder,
       QuerySalesOrders,
       DeleteSalesOrder,

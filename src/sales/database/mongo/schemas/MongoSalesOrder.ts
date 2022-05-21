@@ -78,7 +78,7 @@ export class MongoSalesOrder extends IMongoEntity {
       billingAddress: new Address(this.billingAddress).raw(),
       updatedAt: this.updatedAt,
       createdAt: this.createdAt,
-      events: this.events,
+      events: [],
     };
     return props;
   }

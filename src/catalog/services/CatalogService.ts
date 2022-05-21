@@ -81,7 +81,7 @@ export class CatalogService {
 
     // Validate ProductSKU
     let productSku = mesVariant.part_file_name;
-
+    
     let product = await this._products.findBySku(productSku);
     let variant = await this._variants.findBySku(sku);
     if (!product) {

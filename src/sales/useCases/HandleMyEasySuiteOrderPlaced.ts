@@ -9,17 +9,18 @@ import { cloneDeep } from "lodash";
 
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 import { CustomerDto } from "@sales/dto";
-import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
-import { CreateSalesOrderLineItemDto } from "@sales/dto/CreateSalesOrderLineItemDto";
 import { UseCase } from "@shared/domain";
 import { SalesOrder } from "@sales/domain";
 import { AuthService } from "@auth/auth.service";
 
-import { CreateSalesOrder } from "./CreateSalesOrder";
 import {
   MyEasySuiteOrderPlaced,
   MyEasySuiteOrderEventName,
 } from "@myeasysuite/domain/events";
+import {
+  PlaceOrderRequest,
+  PlaceOrderRequestLineItem,
+} from "@sales/features/PlaceOrderRequest";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class HandleMyEasySuiteOrderPlaced
@@ -30,7 +31,6 @@ export class HandleMyEasySuiteOrderPlaced
   );
   constructor(
     private readonly _auth: AuthService,
-    private readonly createSalesOrder: CreateSalesOrder,
     private readonly repo: SalesOrderRepository
   ) {}
   @OnEvent(MyEasySuiteOrderEventName.OrderPlaced, { async: true })
@@ -47,7 +47,7 @@ export class HandleMyEasySuiteOrderPlaced
       return;
     }
     const order = dto.details;
-    let sdto = new CreateSalesOrderDto();
+    let sdto = new PlaceOrderRequest();
 
     sdto.customer = new CustomerDto();
     sdto.customer.email = order.customer_email;
@@ -55,7 +55,7 @@ export class HandleMyEasySuiteOrderPlaced
 
     sdto.orderDate = new Date(order.order_date);
     sdto.orderName = order.order_id;
-    sdto.orderNumber = order.order_number;
+    sdto.orderNumber = +order.order_number;
 
     const shippingAddress = {
       ...order.shipping_address,
@@ -79,13 +79,13 @@ export class HandleMyEasySuiteOrderPlaced
       : cloneDeep(shippingAddress);
     sdto.shippingAddress = shippingAddress;
     sdto.billingAddress = billingAddress;
-    let lineItems: CreateSalesOrderLineItemDto[] = [];
+    let lineItems: PlaceOrderRequestLineItem[] = [];
     for (let i = 0; i < order.line_items.length; i++) {
       const li = order.line_items[i];
-      let nli = new CreateSalesOrderLineItemDto();
+      let nli = new PlaceOrderRequestLineItem();
       nli.quantity = li.quantity;
       nli.sku = li.variant_sku;
-      nli.lineItemProperties = li.line_item_properties;
+      nli.properties = li.line_item_properties;
       lineItems.push(nli);
     }
     sdto.lineItems = lineItems;
@@ -101,7 +101,7 @@ export class HandleMyEasySuiteOrderPlaced
     }
     const account = result.value();
     sdto.accountId = account.entity().id;
-    let salesOrder = await this.createSalesOrder.execute(sdto);
-    this.logger.debug(`[CREATED] ${SalesOrder.name} '${salesOrder.id}'`);
+    // let salesOrder = await this.createSalesOrder.execute(sdto);
+    // this.logger.debug(`[CREATED] ${SalesOrder.name} '${salesOrder.id}'`);
   }
 }

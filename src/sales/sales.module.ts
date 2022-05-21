@@ -8,7 +8,6 @@ import { AzureTelemetryModule, AzureStorageModule } from "@shared/modules";
 import { OrdersController } from "./api";
 
 import {
-  CreateSalesOrder,
   DeleteSalesOrder,
   GetSalesOrder,
   QuerySalesOrders,
@@ -29,6 +28,7 @@ import { LoadEvents } from "./useCases/LoadEvents";
 import { UpdateCustomerInfo } from "./useCases/UpdateCustomerInfo";
 import { HandleMyEasySuiteOrderPlaced } from "./useCases/HandleMyEasySuiteOrderPlaced";
 import { AuthModule } from "@auth/auth.module";
+import { PlaceOrder } from "./features/PlaceOrder";
 
 @Module({
   imports: [
@@ -44,7 +44,7 @@ import { AuthModule } from "@auth/auth.module";
     ConfigModule,
     CacheModule.register(),
     CatalogModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [OrdersController],
   providers: [
@@ -52,7 +52,7 @@ import { AuthModule } from "@auth/auth.module";
     MongoOrdersRepository,
     SalesOrderRepository,
     SalesOrderQuery,
-    CreateSalesOrder,
+    PlaceOrder,
     GetSalesOrder,
     QuerySalesOrders,
     DeleteSalesOrder,

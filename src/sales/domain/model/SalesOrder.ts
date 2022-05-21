@@ -98,7 +98,7 @@ export class SalesOrder implements ISalesOrder {
     this._events.push(event);
     return this;
   }
-  public create(details: OrderPlacedDetails) {
+  public placed(details: OrderPlacedDetails) {
     this.accountId = details.accountId;
     this.orderName = details.orderName;
     this.orderNumber = details.orderNumber;
@@ -119,7 +119,7 @@ export class SalesOrder implements ISalesOrder {
     this.billingAddress = new Address(details.billingAddress);
     let event = new SalesOrderPlaced(null, details);
     this.raise(event);
-    return this;
+    return event;
   }
   public cancel(dto: {
     canceledAt: Date;
@@ -131,13 +131,13 @@ export class SalesOrder implements ISalesOrder {
       requestedBy: dto.requestedBy,
     });
     this.raise(event);
-    return this;
+    return event;
   }
   public editCustomer(dto: { name: string; email: string }) {
     this.customer = new SalesCustomer({ email: dto.email, name: dto.name });
     let event = new CustomerInfoChanged(this.id, dto);
     this.raise(event);
-    return this;
+    return event;
   }
   public editPersonalization(dto: {
     lineNumber: number;
@@ -153,7 +153,7 @@ export class SalesOrder implements ISalesOrder {
       personalization: dto.personalization,
     });
     this.raise(event);
-    return this;
+    return event;
   }
   public editShippingAddress(dto: { shippingAddress: IAddress }) {
     this.shippingAddress = new Address(dto.shippingAddress);
@@ -161,7 +161,7 @@ export class SalesOrder implements ISalesOrder {
       shippingAddress: { ...dto.shippingAddress },
     });
     this.raise(event);
-    return this;
+    return event;
   }
 
   /** UTILITY METHODS */

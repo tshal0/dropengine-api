@@ -170,7 +170,7 @@ describe("SalesOrder", () => {
     it("should update the order and add a SalesOrderPlacedEvent", () => {
       const dto: OrderPlacedDetails = cloneDeep(SalesOrderMocks.placedDetails);
       const order = new SalesOrder();
-      order.create(dto);
+      order.placed(dto);
       expect(order.orderStatus).toBe(OrderStatus.OPEN);
       expect(order.orderName).toBe(SalesOrderMocks.orderName);
       expect(order.orderNumber).toBe(SalesOrderMocks.orderNumber);

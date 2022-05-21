@@ -11,14 +11,14 @@ export interface ILineItemProperty {
   value: string;
 }
 
-export interface ILineItemGeneratedDetails {
+export class PlacedOrderLineItem {
   lineNumber: number;
   quantity: number;
   variant: ICatalogVariant;
   properties: ILineItemProperty[];
 }
 
-export interface ICustomerCreatedDetails {
+export interface IPlacedOrderCustomer {
   name: string;
   email: string;
 }
@@ -27,8 +27,8 @@ export interface IOrderPlacedDetails {
   orderName: string;
   orderDate: Date;
   orderNumber: number;
-  customer: ICustomerCreatedDetails;
-  lineItems: ILineItemGeneratedDetails[];
+  customer: IPlacedOrderCustomer;
+  lineItems: PlacedOrderLineItem[];
   shippingAddress: IAddress;
   billingAddress: IAddress;
 }
@@ -49,8 +49,8 @@ export class OrderPlacedDetails {
   orderName: string = "";
   orderDate: Date = new Date("2021-01-01T00:00:00.000Z");
   orderNumber: number = 0;
-  customer: ICustomerCreatedDetails = { email: "", name: "" };
-  lineItems: ILineItemGeneratedDetails[] = [];
+  customer: IPlacedOrderCustomer = { email: "", name: "" };
+  lineItems: PlacedOrderLineItem[] = [];
   shippingAddress: IAddress = new Address().raw();
   billingAddress: IAddress = new Address().raw();
 }

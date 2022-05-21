@@ -1,10 +1,8 @@
 import {
   registerDecorator,
-  validate,
   ValidationArguments,
   ValidationOptions,
 } from "class-validator";
-import { CreateLineItemDto } from "./CreateLineItemDto";
 
 export function IsArrayOfObjects(validationOptions?: ValidationOptions) {
   return (object: unknown, propertyName: string) => {

@@ -12,7 +12,6 @@ import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 
 import { AzureTelemetryModule, AzureTelemetryService } from "@shared/modules";
 import {
-  CreateSalesOrder,
   GetSalesOrder,
   QuerySalesOrders,
   DeleteSalesOrder,
@@ -50,6 +49,7 @@ import {
   DbProductVariant,
 } from "@catalog/database/entities";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { PlaceOrder } from "@sales/features/PlaceOrder";
 /** MOCK UTILS */
 jest.mock("@shared/utils", () => {
   return {
@@ -87,8 +87,7 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
       MongoOrdersRepository,
       MongoDomainEventRepository,
       SalesOrderRepository,
-      CreateSalesOrder,
-
+      PlaceOrder,
       {
         provide: StoresRepository,
         useValue: {},

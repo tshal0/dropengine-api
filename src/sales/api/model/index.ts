@@ -1,5 +1,4 @@
 export * from "./CancelOrderApiDto";
-export * from "./CreateOrderApiDto";
 export * from "./DeleteOrderResponseDto";
 export * from "./EditCustomerDto";
 export * from "./EditPersonalizationDto";

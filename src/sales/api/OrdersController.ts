@@ -24,11 +24,9 @@ import {
   GetSalesOrder,
   QuerySalesOrders,
 } from "../useCases/CRUD";
-import { CreateSalesOrder } from "../useCases/CreateSalesOrder/CreateSalesOrder";
 import { CreateOrderValidationPipe } from "./middleware";
 import {
   CancelOrderApiDto,
-  CreateOrderApiDto,
   EditCustomerDto,
   EditPersonalizationDto,
   EditShippingAddressDto,
@@ -38,12 +36,8 @@ import {
 import { User } from "@shared/decorators";
 import { AuthenticatedUser } from "@shared/decorators/AuthenticatedUser";
 import { SalesLoggingInterceptor } from "./middleware/SalesLoggingInterceptor";
-import { CreateSalesOrderDto } from "@sales/dto/CreateSalesOrderDto";
 import { UpdatePersonalization } from "@sales/useCases/UpdatePersonalization";
 import { UpdateShippingAddress } from "@sales/useCases";
-import { FailedToPlaceSalesOrderException } from "@sales/useCases/CreateSalesOrder/FailedToPlaceSalesOrderException";
-import { CreateSalesOrderError } from "@sales/useCases/CreateSalesOrder/CreateSalesOrderError";
-import { LoadEvents } from "@sales/useCases/LoadEvents";
 import { UpdateCustomerInfo } from "@sales/useCases/UpdateCustomerInfo";
 import { InjectModel } from "@nestjs/mongoose";
 import {
@@ -51,9 +45,12 @@ import {
   MongoSalesOrderDocument,
 } from "@sales/database/mongo";
 import { Model } from "mongoose";
-import { SalesOrder } from "@sales/domain";
-import { SalesCustomer } from "@sales/domain/model/SalesCustomer";
-import { Address } from "@shared/domain";
+import {
+  CreateSalesOrderError,
+  FailedToPlaceSalesOrderException,
+} from "@sales/features/CreateSalesOrderError";
+import { PlaceOrderRequest } from "@sales/features/PlaceOrderRequest";
+import { PlaceOrder } from "@sales/features/PlaceOrder";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
@@ -63,14 +60,13 @@ export class OrdersController {
 
   constructor(
     @Inject(REQUEST) private readonly request: Request,
-    private readonly create: CreateSalesOrder,
+    private readonly placeOrder: PlaceOrder,
     private readonly load: GetSalesOrder,
     private readonly query: QuerySalesOrders,
     private readonly remove: DeleteSalesOrder,
     private readonly updateCustomer: UpdateCustomerInfo,
     private readonly updateShipping: UpdateShippingAddress,
     private readonly updatePersonalization: UpdatePersonalization,
-    private readonly loadEvents: LoadEvents,
     @InjectModel(MongoSalesOrder.name)
     private readonly model: Model<MongoSalesOrderDocument>
   ) {}
@@ -81,11 +77,11 @@ export class OrdersController {
     const aggregate = result;
     return aggregate.raw();
   }
-  @Get(":id/events")
-  async getEvents(@Param("id") id: string) {
-    let result = await this.loadEvents.execute(id);
-    return result;
-  }
+  // @Get(":id/events")
+  // async getEvents(@Param("id") id: string) {
+  //   let result = await this.loadEvents.execute(id);
+  //   return result;
+  // }
   @Get()
   async get(@Query() query: QueryOrdersDto) {
     let result = await this.query.execute(query);
@@ -151,28 +147,16 @@ export class OrdersController {
   async post(
     @Res() res: ExpressResponse,
     @User() user: AuthenticatedUser,
-    @Body(CreateOrderValidationPipe) dto: CreateOrderApiDto
+    @Body(CreateOrderValidationPipe) request: PlaceOrderRequest
   ) {
-    if (!user.canManageOrders(dto.accountId)) {
+    if (!user.canManageOrders(request.accountId)) {
       throw new FailedToPlaceSalesOrderException(
-        dto,
-        `User '${user.email}' not authorized to place orders for given Account: '${dto.accountId}'`,
+        request,
+        `User '${user.email}' not authorized to place orders for given Account: '${request.accountId}'`,
         CreateSalesOrderError.UserNotAuthorizedForAccount
       );
     }
-    const useCaseDto = new CreateSalesOrderDto();
-    let ord = new SalesOrder();
-    ord.accountId = dto.accountId;
-    ord.orderName = dto.orderName;
-    ord.orderDate = dto.orderDate;
-    ord.orderNumber = dto.orderNumber;
-    ord.customer = new SalesCustomer(dto.customer);
-    ord.lineItems = [];
-    ord.shippingAddress = new Address(dto.shippingAddress);
-    ord.billingAddress = new Address(dto.billingAddress);
-
-    const raw = ord.raw();
-    let order = await this.model.create(raw);
+    let order = await this.placeOrder.execute(request);
     return res.status(HttpStatus.CREATED).json(order.raw());
   }
 }

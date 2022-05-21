@@ -115,15 +115,12 @@ export class SalesOrderRepository {
     if (doc) return new SalesOrder();
     else throw new SalesOrderNotFoundException(id);
   }
-  public async save(agg: SalesOrder): Promise<SalesOrder> {
-    let dbe = agg.raw();
-
-    const payload: MongoSalesOrder = new MongoSalesOrder();
+  public async save(order: SalesOrder): Promise<SalesOrder> {
+    let raw = order.raw();
+    const payload: MongoSalesOrder = new MongoSalesOrder(raw);
     let doc = await this._orders.create(payload);
-
-    await this.handleDomainEvents(agg);
-
-    return new SalesOrder();
+    await this.handleDomainEvents(order);
+    return new SalesOrder(doc.raw());
   }
 
   public async delete(id: string): Promise<void> {

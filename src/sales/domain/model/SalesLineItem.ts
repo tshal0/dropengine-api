@@ -27,9 +27,10 @@ export class SalesLineItem implements ISalesLineItem {
       this._lineNumber = props.lineNumber;
       this._quantity = props.quantity;
       this._variant = new SalesVariant(props.variant);
-      this._personalization = props.personalization.map(
-        (p) => new Personalization(p)
-      );
+
+      this._personalization = props.personalization?.length
+        ? props.personalization.map((p) => new Personalization(p))
+        : [];
       this._flags = props.flags;
     }
   }
