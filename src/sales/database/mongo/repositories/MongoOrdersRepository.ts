@@ -3,13 +3,14 @@ import { InjectModel } from "@nestjs/mongoose";
 import mongoose, { Model, QueryWithHelpers } from "mongoose";
 import { MongoQueryParams, ResultSet } from "@shared/mongo";
 import { MongoSalesOrder, MongoSalesOrderDocument } from "../schemas";
-import { ISalesOrderProps } from "@sales/domain";
-export interface SalesOrderQueryResult {
+import { ISalesOrderProps, SalesOrder } from "@sales/domain";
+export class SalesOrderQueryFilter {}
+export class SalesOrderQueryResult {
   total: number;
   pages: number;
   size: number;
   page: number;
-  result: MongoSalesOrder[];
+  data: SalesOrder[];
 }
 const options = {
   new: true,
@@ -47,7 +48,7 @@ export class MongoOrdersRepository {
       pages: 0,
       size: params.limit,
       page: params.skip || 0,
-      result: [],
+      data: [],
     };
     const { filter, skip, limit, sort, projection } = params;
     const countResult = await this.model.count(filter);
@@ -61,7 +62,7 @@ export class MongoOrdersRepository {
     resp.total = countResult;
     resp.pages = Math.floor(countResult / resp.size);
 
-    resp.result = result.map((r) => new MongoSalesOrder(r));
+    resp.data = result.map((r) => new SalesOrder(r));
 
     return resp;
   }

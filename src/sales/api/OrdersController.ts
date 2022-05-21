@@ -19,17 +19,13 @@ import { REQUEST } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
 import { Versions } from "@shared/Constants";
 import { Request, Response as ExpressResponse } from "express";
-import {
-  DeleteSalesOrder,
-  GetSalesOrder,
-  QuerySalesOrders,
-} from "../useCases/CRUD";
 import { CreateOrderValidationPipe } from "./middleware";
 import {
   CancelOrderApiDto,
   EditCustomerDto,
   EditPersonalizationDto,
   EditShippingAddressDto,
+  OrderResponse,
   QueryOrdersDto,
   QueryOrdersResponseDto,
 } from "./model";
@@ -39,18 +35,13 @@ import { SalesLoggingInterceptor } from "./middleware/SalesLoggingInterceptor";
 import { UpdatePersonalization } from "@sales/useCases/UpdatePersonalization";
 import { UpdateShippingAddress } from "@sales/useCases";
 import { UpdateCustomerInfo } from "@sales/useCases/UpdateCustomerInfo";
-import { InjectModel } from "@nestjs/mongoose";
-import {
-  MongoSalesOrder,
-  MongoSalesOrderDocument,
-} from "@sales/database/mongo";
-import { Model } from "mongoose";
 import {
   CreateSalesOrderError,
   FailedToPlaceSalesOrderException,
 } from "@sales/features/CreateSalesOrderError";
 import { PlaceOrderRequest } from "@sales/features/PlaceOrderRequest";
 import { PlaceOrder } from "@sales/features/PlaceOrder";
+import { SalesService } from "@sales/services";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
@@ -61,21 +52,16 @@ export class OrdersController {
   constructor(
     @Inject(REQUEST) private readonly request: Request,
     private readonly placeOrder: PlaceOrder,
-    private readonly load: GetSalesOrder,
-    private readonly query: QuerySalesOrders,
-    private readonly remove: DeleteSalesOrder,
     private readonly updateCustomer: UpdateCustomerInfo,
     private readonly updateShipping: UpdateShippingAddress,
     private readonly updatePersonalization: UpdatePersonalization,
-    @InjectModel(MongoSalesOrder.name)
-    private readonly model: Model<MongoSalesOrderDocument>
+    private readonly sales: SalesService
   ) {}
 
   @Get(":id")
   async getById(@Param("id") id: string) {
-    let result = await this.load.execute(id);
-    const aggregate = result;
-    return aggregate.raw();
+    let result = await this.sales.findById(id);
+    return new OrderResponse(result);
   }
   // @Get(":id/events")
   // async getEvents(@Param("id") id: string) {
@@ -84,8 +70,15 @@ export class OrdersController {
   // }
   @Get()
   async get(@Query() query: QueryOrdersDto) {
-    let result = await this.query.execute(query);
-    return new QueryOrdersResponseDto(query, result);
+    const { page, size } = query;
+    let result = await this.sales.query({
+      skip: page || 0,
+      limit: size || 10,
+      filter: null,
+      projection: null,
+      sort: { orderDate: -1 },
+    });
+    return new QueryOrdersResponseDto(result);
   }
   @Patch(":id/lineItems/:lineNumber/personalization")
   async patchPersonalization(
@@ -140,7 +133,7 @@ export class OrdersController {
 
   @Delete(":id")
   async delete(@Param("id") id: string) {
-    let result = await this.remove.execute(id);
+    let result = await this.sales.delete(id);
     return result;
   }
   @Post()

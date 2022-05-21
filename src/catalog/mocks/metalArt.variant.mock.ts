@@ -248,7 +248,7 @@ export abstract class MESMetalArtMocks {
           name: "",
           version: "",
         },
-        name: "MetalArt",
+        name: "2DMetalArt",
         option1: {
           enabled: true,
           name: "Size",
@@ -302,7 +302,7 @@ export abstract class MESMetalArtMocks {
       sku: "MU-C011-00",
       svg: "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/6364995934/4135624991/MU-C011-00.svg",
       tags: [],
-      type: "MetalArt",
+      type: "2DMetalArt",
       updatedAt: new Date("2021-01-01T00:00:00.000Z"),
       variants: [],
     },
@@ -317,7 +317,7 @@ export abstract class MESMetalArtMocks {
         name: "",
         version: "",
       },
-      name: "MetalArt",
+      name: "2DMetalArt",
       option1: {
         enabled: true,
         name: "Size",
@@ -373,7 +373,7 @@ export abstract class MESMetalArtMocks {
       total: 750,
     },
     sku: "MU-C011-00-12-Black",
-    type: "MetalArt",
+    type: "2DMetalArt",
     weight: {
       dimension: 352,
       units: "oz",

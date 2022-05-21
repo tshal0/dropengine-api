@@ -1,7 +1,7 @@
 import { ProductTypes } from "@catalog/domain";
 import { mockAddress, mockUuid1 } from "@sales/mocks";
 import { Address, IAddress } from "@shared/domain";
-import { now } from "@shared/mocks";
+import { now, spyOnDate } from "@shared/mocks";
 import { cloneDeep } from "lodash";
 import { CustomerInfoChanged } from "../events/CustomerInfoChanged";
 import { SalesOrderCanceled } from "../events/OrderCanceled";
@@ -12,7 +12,7 @@ import { SalesCustomer } from "./SalesCustomer";
 import { ISalesLineItemProps, SalesLineItem } from "./SalesLineItem";
 import { ISalesOrderProps, OrderStatus, SalesOrder } from "./SalesOrder";
 import { SalesOrderMocks } from "../../mocks/SalesOrderMocks.mock";
-
+spyOnDate();
 describe("SalesOrder", () => {
   const mockMongoId = `000000000000000000000001`;
   it("should exist", () => {

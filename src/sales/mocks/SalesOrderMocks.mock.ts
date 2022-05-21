@@ -48,6 +48,7 @@ export abstract class SalesOrderMocks {
   );
 
   static readonly id = "000000000000000000000001";
+  static readonly id2 = "000000000000000000000002";
 
   static readonly salesLineItem1: ISalesLineItemProps = {
     lineNumber: SalesOrderMocks.lineNumber1,

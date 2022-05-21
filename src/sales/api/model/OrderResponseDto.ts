@@ -1,7 +1,7 @@
 import { SalesOrder } from "@sales/domain";
 import { AddressDto } from "@sales/dto";
 
-export class OrderResponseDto {
+export class OrderResponse {
   id: string;
   orderName: string;
   orderStatus: string;

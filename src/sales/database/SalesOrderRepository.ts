@@ -18,6 +18,7 @@ import { MongoDomainEvent } from "./mongo/schemas/MongoDomainEvent";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { SalesOrderEvent } from "@sales/domain/events/SalesOrderEvent";
 import { ISalesOrderProps, SalesOrder } from "@sales/domain";
+import { MongoQueryParams } from "@shared/mongo";
 
 export class SalesOrderNotFoundException extends EntityNotFoundException {
   constructor(id: string) {
@@ -88,14 +89,7 @@ const convertToDoc = (
 @Injectable()
 export class SalesOrderRepository {
   private readonly logger: Logger = new Logger(SalesOrderRepository.name);
-  private async handle<T>(fn: () => T) {
-    try {
-      return await fn();
-    } catch (err) {
-      this.logger.error(err);
-      throw err;
-    }
-  }
+
   constructor(
     private readonly _orders: MongoOrdersRepository,
     private readonly _events: MongoDomainEventRepository,
@@ -112,7 +106,7 @@ export class SalesOrderRepository {
   }
   public async load(id: string): Promise<SalesOrder> {
     let doc = await this._orders.findById(id);
-    if (doc) return new SalesOrder();
+    if (doc) return new SalesOrder(doc.raw());
     else throw new SalesOrderNotFoundException(id);
   }
   public async save(order: SalesOrder): Promise<SalesOrder> {
@@ -123,8 +117,13 @@ export class SalesOrderRepository {
     return new SalesOrder(doc.raw());
   }
 
-  public async delete(id: string): Promise<void> {
-    await this._orders.delete(id);
+  public async delete(id: string): Promise<MongoSalesOrder> {
+    return await this._orders.delete(id);
+  }
+
+  public async query(params: MongoQueryParams) {
+    let result = await this._orders.query(params);
+    return result;
   }
 
   private async handleDomainEvents(agg: SalesOrder) {

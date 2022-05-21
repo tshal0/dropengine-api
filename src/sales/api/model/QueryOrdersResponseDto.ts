@@ -1,5 +1,6 @@
+import { SalesOrderQueryResult } from "@sales/database";
 import { SalesOrder } from "@sales/domain";
-import { OrderResponseDto, QueryOrdersDto } from ".";
+import { OrderResponse, QueryOrdersDto } from ".";
 
 export class AggregationResultOptions {
   key: string;
@@ -12,9 +13,11 @@ export class QueryOrdersResponseDto {
   size: number = 100;
   options: AggregationResultOptions[] = [];
   data: any[] = [];
-  constructor(query: QueryOrdersDto, data: SalesOrder[]) {
-    this.page = +query.page;
-    this.size = +query.size;
-    this.data = data.map((agg) => new OrderResponseDto(agg));
+  constructor(result: SalesOrderQueryResult) {
+    this.total = result.total;
+    this.pages = result.pages;
+    this.page = result.page;
+    this.size = result.size;
+    this.data = result.data.map((order) => new OrderResponse(order));
   }
 }

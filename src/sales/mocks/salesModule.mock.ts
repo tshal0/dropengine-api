@@ -11,12 +11,7 @@ import { OrdersController } from "@sales/api";
 import { WINSTON_MODULE_PROVIDER } from "nest-winston";
 
 import { AzureTelemetryModule, AzureTelemetryService } from "@shared/modules";
-import {
-  GetSalesOrder,
-  QuerySalesOrders,
-  DeleteSalesOrder,
-  UpdateShippingAddress,
-} from "../useCases";
+import { UpdateShippingAddress } from "../useCases";
 import { rootMongooseTestModule } from "@jestconfig/mongodb-memory-server";
 import { TraceTelemetry } from "applicationinsights/out/Declarations/Contracts";
 
@@ -24,7 +19,6 @@ import safeJsonStringify from "safe-json-stringify";
 import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import { UpdatePersonalization } from "../useCases/UpdatePersonalization";
 import { MongoOrdersRepository } from "@sales/database/mongo/repositories/MongoOrdersRepository";
-import { SalesOrderQuery } from "@sales/database/SalesOrderQueries";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 import {
   MongoSalesOrder,
@@ -96,10 +90,6 @@ export const mockSalesModule = async (): Promise<TestingModule> => {
         provide: AccountsRepository,
         useValue: {},
       },
-      { provide: SalesOrderQuery, useValue: {} },
-      { provide: GetSalesOrder, useValue: {} },
-      { provide: QuerySalesOrders, useValue: {} },
-      { provide: DeleteSalesOrder, useValue: {} },
       UpdatePersonalization,
       UpdateShippingAddress,
       UpdateCustomerInfo,

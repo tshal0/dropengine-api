@@ -20,16 +20,10 @@ import {
   MongoDomainEvent,
   MongoDomainEventSchema,
 } from "@sales/database/mongo/schemas/MongoDomainEvent";
-import { SalesOrderQuery } from "@sales/database/SalesOrderQueries";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 import { PlaceOrder } from "@sales/features/PlaceOrder";
-import {
-  GetSalesOrder,
-  QuerySalesOrders,
-  DeleteSalesOrder,
-  UpdatePersonalization,
-  UpdateShippingAddress,
-} from "@sales/useCases";
+import { SalesService } from "@sales/services";
+import { UpdatePersonalization, UpdateShippingAddress } from "@sales/useCases";
 import { HandleMyEasySuiteOrderPlaced } from "@sales/useCases/HandleMyEasySuiteOrderPlaced";
 import { LoadEvents } from "@sales/useCases/LoadEvents";
 import { UpdateCustomerInfo } from "@sales/useCases/UpdateCustomerInfo";
@@ -65,16 +59,13 @@ export const mockSalesModule = (): TestingModuleBuilder => {
       MongoDomainEventRepository,
       MongoOrdersRepository,
       SalesOrderRepository,
-      SalesOrderQuery,
       PlaceOrder,
-      GetSalesOrder,
-      QuerySalesOrders,
-      DeleteSalesOrder,
       UpdatePersonalization,
       UpdateShippingAddress,
       LoadEvents,
       UpdateCustomerInfo,
       HandleMyEasySuiteOrderPlaced,
+      SalesService
     ],
   });
 };

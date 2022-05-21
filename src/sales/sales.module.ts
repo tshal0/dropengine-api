@@ -7,16 +7,9 @@ import { AzureTelemetryModule, AzureStorageModule } from "@shared/modules";
 
 import { OrdersController } from "./api";
 
-import {
-  DeleteSalesOrder,
-  GetSalesOrder,
-  QuerySalesOrders,
-  UpdatePersonalization,
-  UpdateShippingAddress,
-} from "./useCases";
+import { UpdatePersonalization, UpdateShippingAddress } from "./useCases";
 import { CatalogModule } from "@catalog/catalog.module";
 import { MongoOrdersRepository } from "./database/mongo/repositories/MongoOrdersRepository";
-import { SalesOrderQuery } from "./database/SalesOrderQueries";
 import { SalesOrderRepository } from "./database/SalesOrderRepository";
 import { MongoSalesOrder, MongoSalesOrderSchema } from "./database/mongo";
 import {
@@ -29,6 +22,7 @@ import { UpdateCustomerInfo } from "./useCases/UpdateCustomerInfo";
 import { HandleMyEasySuiteOrderPlaced } from "./useCases/HandleMyEasySuiteOrderPlaced";
 import { AuthModule } from "@auth/auth.module";
 import { PlaceOrder } from "./features/PlaceOrder";
+import { SalesService } from "./services/SalesService";
 
 @Module({
   imports: [
@@ -51,16 +45,13 @@ import { PlaceOrder } from "./features/PlaceOrder";
     MongoDomainEventRepository,
     MongoOrdersRepository,
     SalesOrderRepository,
-    SalesOrderQuery,
     PlaceOrder,
-    GetSalesOrder,
-    QuerySalesOrders,
-    DeleteSalesOrder,
     UpdatePersonalization,
     UpdateShippingAddress,
     LoadEvents,
     UpdateCustomerInfo,
     HandleMyEasySuiteOrderPlaced,
+    SalesService,
   ],
 })
 export class SalesModule {}

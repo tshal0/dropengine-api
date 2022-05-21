@@ -1,4 +1,4 @@
-import { OrderResponseDto } from "@sales/api";
+import { OrderResponse } from "@sales/api";
 import { ISalesCustomer, SalesCustomer } from "./SalesCustomer";
 import {
   ISalesLineItem,
@@ -7,7 +7,7 @@ import {
 } from "./SalesLineItem";
 import validator from "validator";
 import { Address, IAddress } from "@shared/domain";
-import { isDate } from "moment";
+import moment, { isDate } from "moment";
 import {
   ILineItemProperty,
   OrderPlacedDetails,
@@ -63,14 +63,14 @@ export class SalesOrder implements ISalesOrder {
   private _accountId: string = null;
   private _orderName: string = "";
   private _orderNumber: number = 0;
-  private _orderDate: Date = new Date("2021-01-01T00:00:00.000Z");
+  private _orderDate: Date = moment().toDate();
   private _orderStatus: OrderStatus = OrderStatus.OPEN;
   private _lineItems: SalesLineItem[] = [];
   private _customer: SalesCustomer = new SalesCustomer();
   private _shippingAddress: Address = new Address();
   private _billingAddress: Address = new Address();
-  private _updatedAt: Date = new Date("2021-01-01T00:00:00.000Z");
-  private _createdAt: Date = new Date("2021-01-01T00:00:00.000Z");
+  private _updatedAt: Date = moment().toDate();
+  private _createdAt: Date = moment().toDate();
   private _events: SalesOrderEvent<any>[] = [];
   constructor(props?: ISalesOrderProps | undefined) {
     if (props) {
