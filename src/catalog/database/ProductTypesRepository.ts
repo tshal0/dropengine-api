@@ -92,7 +92,7 @@ export class ProductTypesRepository {
   }
   public async delete(id: string): Promise<any> {
     let productType = await this._types.findOne(id, {
-      populate: ["products", "variants"],
+      populate: ["products.variants", "variants"],
     });
     if (!productType) {
       return { result: "NOT_FOUND", timestamp: moment().toDate() };
