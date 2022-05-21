@@ -3,8 +3,6 @@ import { mockAddress, mockUuid1 } from "@sales/mocks";
 import { v4 as uuidv4 } from "uuid";
 import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
 import { ShippingAddressChanged } from "./ShippingAddressChanged";
-import { UpdateShippingAddressDto } from "@sales/useCases";
-import { EditShippingAddressDto } from "@sales/api";
 import { MongoMocks } from "@sales/mocks/MongoMocks";
 import { now, spyOnDate } from "@shared/mocks";
 jest.mock("uuid");
@@ -16,17 +14,16 @@ describe("ShippingAddressChanged", () => {
     it("should generate a valid ShippingAddressChanged event", () => {
       // GIVEN valid DTO
 
-      const mockDto = new EditShippingAddressDto();
-      mockDto.shippingAddress = mockAddress;
+      const details = { address: mockAddress };
       // WHEN
 
-      let result = new ShippingAddressChanged(MongoMocks.mockMongoId, mockDto);
+      let result = new ShippingAddressChanged(MongoMocks.mockMongoId, details);
 
       const expected: ShippingAddressChanged = {
         eventId: mockUuid1,
         eventName: SalesOrderEventName.ShippingAddressChanged,
         eventType: "ShippingAddressChanged",
-        details: mockDto,
+        details: details,
         aggregateType: "SalesOrder",
         aggregateId: MongoMocks.mockMongoId,
         timestamp: now,

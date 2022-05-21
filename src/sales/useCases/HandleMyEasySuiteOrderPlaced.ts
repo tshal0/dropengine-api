@@ -8,9 +8,7 @@ import { EventEmitter2, OnEvent } from "@nestjs/event-emitter";
 import { cloneDeep } from "lodash";
 
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
-import { CustomerDto } from "@sales/dto";
 import { UseCase } from "@shared/domain";
-import { SalesOrder } from "@sales/domain";
 import { AuthService } from "@auth/auth.service";
 
 import {
@@ -20,7 +18,8 @@ import {
 import {
   PlaceOrderRequest,
   PlaceOrderRequestLineItem,
-} from "@sales/features/PlaceOrderRequest";
+} from "@sales/features/PlaceOrder";
+import { SalesCustomer } from "@sales/domain";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class HandleMyEasySuiteOrderPlaced
@@ -49,7 +48,7 @@ export class HandleMyEasySuiteOrderPlaced
     const order = dto.details;
     let sdto = new PlaceOrderRequest();
 
-    sdto.customer = new CustomerDto();
+    sdto.customer = new SalesCustomer();
     sdto.customer.email = order.customer_email;
     sdto.customer.name = order.customer_name;
 

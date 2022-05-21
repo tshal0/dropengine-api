@@ -1,6 +1,6 @@
-import { AddressDto } from "../dto/AddressDto";
+import { IAddress } from "@shared/domain";
 
-export const mockAddress: AddressDto = {
+export const mockAddress: IAddress = {
   zip: "43844-9406",
   city: "Warsaw",
   name: "Tony Stark",

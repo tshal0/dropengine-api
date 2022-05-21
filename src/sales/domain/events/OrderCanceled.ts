@@ -1,8 +1,7 @@
-import { CancelOrderDto } from "@sales/dto/CancelOrderDto";
 import { SalesOrderEvent, SalesOrderEventName } from "./SalesOrderEvent";
 
-export class SalesOrderCanceled extends SalesOrderEvent<CancelOrderDto> {
-  constructor(aggId: string, details: CancelOrderDto) {
+export class SalesOrderCanceled extends SalesOrderEvent<any> {
+  constructor(aggId: string, details: any) {
     super(
       aggId,
       SalesOrderCanceled.name,

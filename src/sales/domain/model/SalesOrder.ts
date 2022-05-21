@@ -1,21 +1,11 @@
-import { OrderResponse } from "@sales/api";
 import { ISalesCustomer, SalesCustomer } from "./SalesCustomer";
-import {
-  ISalesLineItem,
-  ISalesLineItemProps,
-  SalesLineItem,
-} from "./SalesLineItem";
+import { ISalesLineItemProps, SalesLineItem } from "./SalesLineItem";
 import validator from "validator";
 import { Address, IAddress } from "@shared/domain";
 import moment, { isDate } from "moment";
-import {
-  ILineItemProperty,
-  OrderPlacedDetails,
-  SalesOrderPlaced,
-} from "../events/OrderPlaced";
+import { OrderPlacedDetails, SalesOrderPlaced } from "../events/OrderPlaced";
 import { SalesOrderEvent } from "../events/SalesOrderEvent";
 import { SalesOrderCanceled } from "../events/OrderCanceled";
-import { cloneDeep } from "lodash";
 import { CustomerInfoChanged } from "../events/CustomerInfoChanged";
 import { IPersonalization, Personalization } from "./Personalization";
 import { PersonalizationChanged } from "../events/PersonalizationChanged";
@@ -135,7 +125,7 @@ export class SalesOrder implements ISalesOrder {
   }
   public editCustomer(dto: { name: string; email: string }) {
     this.customer = new SalesCustomer({ email: dto.email, name: dto.name });
-    let event = new CustomerInfoChanged(this.id, dto);
+    let event = new CustomerInfoChanged(this.id, { customer: dto });
     this.raise(event);
     return event;
   }
@@ -149,16 +139,15 @@ export class SalesOrder implements ISalesOrder {
     );
     let event = new PersonalizationChanged(this.id, {
       lineNumber: dto.lineNumber,
-      orderId: this.id,
       personalization: dto.personalization,
     });
     this.raise(event);
     return event;
   }
-  public editShippingAddress(dto: { shippingAddress: IAddress }) {
-    this.shippingAddress = new Address(dto.shippingAddress);
+  public editShippingAddress(dto: { address: IAddress }) {
+    this.shippingAddress = new Address(dto.address);
     let event = new ShippingAddressChanged(this.id, {
-      shippingAddress: { ...dto.shippingAddress },
+      address: { ...dto.address },
     });
     this.raise(event);
     return event;

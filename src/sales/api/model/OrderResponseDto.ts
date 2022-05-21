@@ -1,5 +1,5 @@
 import { SalesOrder } from "@sales/domain";
-import { AddressDto } from "@sales/dto";
+import { IAddress } from "@shared/domain";
 
 export class OrderResponse {
   id: string;
@@ -8,8 +8,8 @@ export class OrderResponse {
   orderDate: Date;
   orderNumber: number;
   customer: { name: string; email: string };
-  shippingAddress: AddressDto;
-  billingAddress: AddressDto;
+  shippingAddress: IAddress;
+  billingAddress: IAddress;
   lineItems: any[];
 
   constructor(agg: SalesOrder) {

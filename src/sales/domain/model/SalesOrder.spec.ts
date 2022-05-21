@@ -223,10 +223,9 @@ describe("SalesOrder", () => {
 
       expect(order.customer.raw()).toEqual(updatedCustomer);
 
-      const expectedEvent = new CustomerInfoChanged(
-        SalesOrderMocks.id,
-        updatedCustomer
-      );
+      const expectedEvent = new CustomerInfoChanged(SalesOrderMocks.id, {
+        customer: updatedCustomer,
+      });
       expectedEvent.eventId = expect.anything();
       expectedEvent.timestamp = expect.anything();
       expect(order.events).toContainEqual(expectedEvent);
@@ -247,7 +246,6 @@ describe("SalesOrder", () => {
 
       const expectedEvent = new PersonalizationChanged(SalesOrderMocks.id, {
         ...request,
-        orderId: SalesOrderMocks.id,
       });
       expectedEvent.eventId = expect.anything();
       expectedEvent.timestamp = expect.anything();
@@ -259,7 +257,7 @@ describe("SalesOrder", () => {
       const order = SalesOrderMocks.order;
       order.id = SalesOrderMocks.id;
       const request = {
-        shippingAddress: {
+        address: {
           ...mockAddress,
           country: "United States",
           countryCode: "US",
@@ -271,9 +269,9 @@ describe("SalesOrder", () => {
       };
       order.editShippingAddress(request);
 
-      expect(order.shippingAddress.raw()).toEqual(request.shippingAddress);
+      expect(order.shippingAddress.raw()).toEqual(request.address);
       const expectedEvent = new ShippingAddressChanged(SalesOrderMocks.id, {
-        shippingAddress: request.shippingAddress,
+        address: request.address,
       });
       expectedEvent.eventId = expect.anything();
       expectedEvent.timestamp = expect.anything();

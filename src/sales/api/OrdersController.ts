@@ -32,16 +32,18 @@ import {
 import { User } from "@shared/decorators";
 import { AuthenticatedUser } from "@shared/decorators/AuthenticatedUser";
 import { SalesLoggingInterceptor } from "./middleware/SalesLoggingInterceptor";
-import { UpdatePersonalization } from "@sales/useCases/UpdatePersonalization";
-import { UpdateShippingAddress } from "@sales/useCases";
-import { UpdateCustomerInfo } from "@sales/useCases/UpdateCustomerInfo";
-import {
-  CreateSalesOrderError,
-  FailedToPlaceSalesOrderException,
-} from "@sales/features/CreateSalesOrderError";
-import { PlaceOrderRequest } from "@sales/features/PlaceOrderRequest";
-import { PlaceOrder } from "@sales/features/PlaceOrder";
 import { SalesService } from "@sales/services";
+import {
+  PlaceOrder,
+  PlaceOrderRequest,
+  FailedToPlaceSalesOrderException,
+  PlaceOrderError,
+} from "@sales/features/PlaceOrder";
+import {
+  ChangeCustomerInfo,
+  ChangePersonalization,
+  ChangeShippingAddress,
+} from "@sales/features";
 
 @UseGuards(AuthGuard())
 @UseInterceptors(SalesLoggingInterceptor)
@@ -52,9 +54,9 @@ export class OrdersController {
   constructor(
     @Inject(REQUEST) private readonly request: Request,
     private readonly placeOrder: PlaceOrder,
-    private readonly updateCustomer: UpdateCustomerInfo,
-    private readonly updateShipping: UpdateShippingAddress,
-    private readonly updatePersonalization: UpdatePersonalization,
+    private readonly updateCustomer: ChangeCustomerInfo,
+    private readonly updateShipping: ChangeShippingAddress,
+    private readonly updatePersonalization: ChangePersonalization,
     private readonly sales: SalesService
   ) {}
 
@@ -87,7 +89,7 @@ export class OrdersController {
     @Body() dto: EditPersonalizationDto
   ) {
     let order = await this.updatePersonalization.execute({
-      orderId: id,
+      id,
       lineNumber,
       personalization: dto.personalization,
     });
@@ -99,7 +101,7 @@ export class OrdersController {
     @Body() dto: { customer: EditCustomerDto }
   ) {
     let order = await this.updateCustomer.execute({
-      orderId: id,
+      id,
       customer: dto.customer,
     });
     return order.raw();
@@ -110,8 +112,8 @@ export class OrdersController {
     @Body() dto: EditShippingAddressDto
   ) {
     const order = await this.updateShipping.execute({
-      orderId: id,
-      shippingAddress: dto.shippingAddress,
+      id,
+      address: dto.shippingAddress,
     });
     return order.raw();
   }
@@ -146,7 +148,7 @@ export class OrdersController {
       throw new FailedToPlaceSalesOrderException(
         request,
         `User '${user.email}' not authorized to place orders for given Account: '${request.accountId}'`,
-        CreateSalesOrderError.UserNotAuthorizedForAccount
+        PlaceOrderError.UserNotAuthorizedForAccount
       );
     }
     let order = await this.placeOrder.execute(request);

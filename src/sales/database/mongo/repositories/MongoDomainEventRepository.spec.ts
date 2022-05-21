@@ -10,7 +10,6 @@ import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { TestingModule } from "@nestjs/testing";
 
-import { spyOnDate } from "@shared/mocks";
 import { MongoDomainEventRepository } from "./MongoDomainEventRepository";
 import { MongoMocks } from "../../../mocks/MongoMocks";
 

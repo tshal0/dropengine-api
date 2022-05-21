@@ -9,7 +9,7 @@ import moment from "moment";
  * InvalidSalesOrder (Invalid AccountId/Name/Number/Date/LineItem(s)/Customer/ShippingAddress)
  * FailedToSaveSalesOrder (DbConnection failed)
  */
-export enum CreateSalesOrderError {
+export enum PlaceOrderError {
   UnknownSalesError = "UnknownSalesError",
   SalesOrderValidationError = "SalesOrderValidationError",
 
@@ -22,17 +22,17 @@ export enum CreateSalesOrderError {
   FailedToLoadVariantBySku = "FailedToLoadVariantBySku",
   FailedToLoadVariantById = "FailedToLoadVariantById",
 }
-export class CreateSalesOrderException extends InternalServerErrorException {
-  public type: CreateSalesOrderError;
+export class PlaceOrderException extends InternalServerErrorException {
+  public type: PlaceOrderError;
   constructor(objectOrError: any, description: string) {
     super(objectOrError, description);
   }
 }
-export class FailedToPlaceSalesOrderException extends CreateSalesOrderException {
+export class FailedToPlaceSalesOrderException extends PlaceOrderException {
   constructor(
     dto: any,
     reason: any,
-    type: CreateSalesOrderError = CreateSalesOrderError.UnknownSalesError,
+    type: PlaceOrderError = PlaceOrderError.UnknownSalesError,
     inner: any[] = []
   ) {
     super(
@@ -58,8 +58,8 @@ export class FailedToPlaceSalesOrderException extends CreateSalesOrderException 
   }
 }
 export class SalesOrderValidationError {
-  public type: CreateSalesOrderError =
-    CreateSalesOrderError.SalesOrderValidationError;
+  public type: PlaceOrderError =
+    PlaceOrderError.SalesOrderValidationError;
   constructor(public property: string, public message: string) {}
 }
 

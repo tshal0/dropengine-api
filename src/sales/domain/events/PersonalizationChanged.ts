@@ -1,8 +1,13 @@
-import { UpdatePersonalizationDto } from "@sales/dto/UpdatePersonalizationDto";
+import { IPersonalization } from "../model";
 import { SalesOrderEvent, SalesOrderEventName } from "./SalesOrderEvent";
 
-export class PersonalizationChanged extends SalesOrderEvent<UpdatePersonalizationDto> {
-  constructor(aggId: string, details: UpdatePersonalizationDto) {
+export interface IPersonalizationChangeDetails {
+  lineNumber: number;
+  personalization: IPersonalization[];
+}
+
+export class PersonalizationChanged extends SalesOrderEvent<IPersonalizationChangeDetails> {
+  constructor(aggId: string, details: IPersonalizationChangeDetails) {
     super(
       aggId,
       PersonalizationChanged.name,

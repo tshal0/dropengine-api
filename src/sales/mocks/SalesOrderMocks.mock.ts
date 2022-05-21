@@ -1,11 +1,19 @@
 import { MESMetalArtMocks } from "@catalog/mocks";
 import { MongoSalesOrder } from "@sales/database/mongo";
-import { mockAddress, mockUuid1 } from "@sales/mocks";
 import { now } from "@shared/mocks";
 import { cloneDeep } from "lodash";
-import { OrderPlacedDetails, SalesOrderPlaced } from "../domain/events/OrderPlaced";
+import {
+  OrderPlacedDetails,
+  SalesOrderPlaced,
+} from "../domain/events/OrderPlaced";
 import { ISalesLineItemProps } from "../domain/model/SalesLineItem";
-import { ISalesOrderProps, OrderStatus, SalesOrder } from "../domain/model/SalesOrder";
+import {
+  ISalesOrderProps,
+  OrderStatus,
+  SalesOrder,
+} from "../domain/model/SalesOrder";
+import { mockAddress } from "./mockAddress";
+import { mockUuid1 } from "./mocks";
 
 export abstract class SalesOrderMocks {
   /** ORDER PLACED */

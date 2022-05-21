@@ -9,10 +9,10 @@ import { SalesOrderRepository } from "@sales/database";
 import { OrderPlacedDetails, PlacedOrderLineItem } from "@sales/domain/events";
 
 import {
-  CreateSalesOrderError,
+  PlaceOrderError,
   FailedToPlaceSalesOrderException,
   generateValidationError,
-} from "./CreateSalesOrderError";
+} from "./PlaceOrderError";
 import {
   PlaceOrderRequest,
   PlaceOrderRequestLineItem,
@@ -82,7 +82,7 @@ async function validateRequest(dto: PlaceOrderRequest) {
     throw new FailedToPlaceSalesOrderException(
       dto,
       message,
-      CreateSalesOrderError.InvalidSalesOrder,
+      PlaceOrderError.InvalidSalesOrder,
       valErrors
     );
   }

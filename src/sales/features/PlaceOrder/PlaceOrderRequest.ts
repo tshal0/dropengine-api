@@ -1,4 +1,3 @@
-import { CustomerDto, AddressDto } from "@sales/dto";
 import {
   IsArray,
   IsDate,
@@ -9,6 +8,7 @@ import {
   ValidateNested,
 } from "class-validator";
 import { OrderPlacedDetails } from "@sales/domain/events/OrderPlaced";
+import { IAddress } from "@shared/domain";
 
 export class PlaceOrderRequest {
   constructor(props?: OrderPlacedDetails | undefined) {
@@ -36,15 +36,14 @@ export class PlaceOrderRequest {
   orderNumber: number;
   @IsNotEmpty()
   @ValidateNested()
-  customer: CustomerDto;
+  customer: { name: string; email: string };
   @ValidateNested({ each: true })
   @IsArray()
   lineItems: PlaceOrderRequestLineItem[];
   @IsNotEmpty()
-  @ValidateNested()
-  shippingAddress: AddressDto;
+  shippingAddress: IAddress;
   @IsOptional()
-  billingAddress: AddressDto;
+  billingAddress: IAddress;
 }
 export class LineItemProperty {
   @IsNotEmpty()

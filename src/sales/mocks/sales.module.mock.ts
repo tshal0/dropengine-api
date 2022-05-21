@@ -21,12 +21,15 @@ import {
   MongoDomainEventSchema,
 } from "@sales/database/mongo/schemas/MongoDomainEvent";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
-import { PlaceOrder } from "@sales/features/PlaceOrder";
+import {
+  ChangeCustomerInfo,
+  ChangePersonalization,
+  ChangeShippingAddress,
+} from "@sales/features";
+import { PlaceOrder } from "@sales/features/PlaceOrder/PlaceOrder";
 import { SalesService } from "@sales/services";
-import { UpdatePersonalization, UpdateShippingAddress } from "@sales/useCases";
 import { HandleMyEasySuiteOrderPlaced } from "@sales/useCases/HandleMyEasySuiteOrderPlaced";
 import { LoadEvents } from "@sales/useCases/LoadEvents";
-import { UpdateCustomerInfo } from "@sales/useCases/UpdateCustomerInfo";
 import { AzureTelemetryModule } from "@shared/modules";
 
 jest.mock("@shared/utils", () => {
@@ -60,12 +63,12 @@ export const mockSalesModule = (): TestingModuleBuilder => {
       MongoOrdersRepository,
       SalesOrderRepository,
       PlaceOrder,
-      UpdatePersonalization,
-      UpdateShippingAddress,
       LoadEvents,
-      UpdateCustomerInfo,
       HandleMyEasySuiteOrderPlaced,
-      SalesService
+      SalesService,
+      ChangeCustomerInfo,
+      ChangeShippingAddress,
+      ChangePersonalization,
     ],
   });
 };

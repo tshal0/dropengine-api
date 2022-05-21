@@ -1,13 +1,10 @@
 import { HttpModule } from "@nestjs/axios";
 import { CacheModule, Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
-import { AzureTelemetryModule, AzureStorageModule } from "@shared/modules";
+import { AzureTelemetryModule } from "@shared/modules";
 
-import { OrdersController } from "./api";
-
-import { UpdatePersonalization, UpdateShippingAddress } from "./useCases";
 import { CatalogModule } from "@catalog/catalog.module";
 import { MongoOrdersRepository } from "./database/mongo/repositories/MongoOrdersRepository";
 import { SalesOrderRepository } from "./database/SalesOrderRepository";
@@ -18,12 +15,16 @@ import {
 } from "./database/mongo/schemas/MongoDomainEvent";
 import { MongoDomainEventRepository } from "./database/mongo/repositories/MongoDomainEventRepository";
 import { LoadEvents } from "./useCases/LoadEvents";
-import { UpdateCustomerInfo } from "./useCases/UpdateCustomerInfo";
 import { HandleMyEasySuiteOrderPlaced } from "./useCases/HandleMyEasySuiteOrderPlaced";
 import { AuthModule } from "@auth/auth.module";
-import { PlaceOrder } from "./features/PlaceOrder";
+import {
+  ChangeCustomerInfo,
+  ChangePersonalization,
+  ChangeShippingAddress,
+  PlaceOrder,
+} from "./features";
 import { SalesService } from "./services/SalesService";
-
+import { OrdersController } from "./api";
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
@@ -46,10 +47,10 @@ import { SalesService } from "./services/SalesService";
     MongoOrdersRepository,
     SalesOrderRepository,
     PlaceOrder,
-    UpdatePersonalization,
-    UpdateShippingAddress,
+    ChangeCustomerInfo,
+    ChangeShippingAddress,
+    ChangePersonalization,
     LoadEvents,
-    UpdateCustomerInfo,
     HandleMyEasySuiteOrderPlaced,
     SalesService,
   ],

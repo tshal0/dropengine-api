@@ -15,7 +15,7 @@ import { Model, Types } from "mongoose";
 import { MongoSalesOrder, MongoSalesOrderDocument } from "../schemas";
 import { MongoOrdersRepository } from "./MongoOrdersRepository";
 import csv from "csvtojson";
-import { MongoMocks } from "../../../mocks/MongoMocks";
+import { MongoMocks } from "@sales/mocks/MongoMocks";
 
 // spyOnDate();
 describe("MongoOrdersRepository", () => {

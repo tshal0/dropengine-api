@@ -1,9 +1,12 @@
-import { EditCustomerDto } from "@sales/api/model/EditCustomerDto";
+import { ISalesCustomer } from "../model";
 import { SalesOrderEvent, SalesOrderEventName } from "./SalesOrderEvent";
 
+export interface ICustomerInfoChangedDetails {
+  customer: ISalesCustomer;
+}
 
-export class CustomerInfoChanged extends SalesOrderEvent<EditCustomerDto> {
-  constructor(aggId: string, details: EditCustomerDto) {
+export class CustomerInfoChanged extends SalesOrderEvent<ICustomerInfoChangedDetails> {
+  constructor(aggId: string, details: ICustomerInfoChangedDetails) {
     super(
       aggId,
       CustomerInfoChanged.name,

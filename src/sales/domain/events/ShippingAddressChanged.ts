@@ -1,8 +1,12 @@
-import { EditShippingAddressDto } from "@sales/api";
+import { IAddress } from "@shared/domain";
 import { SalesOrderEvent, SalesOrderEventName } from "./SalesOrderEvent";
 
-export class ShippingAddressChanged extends SalesOrderEvent<EditShippingAddressDto> {
-  constructor(aggId: string, details: EditShippingAddressDto) {
+export interface IShippingAddressChangedDetails {
+  address: IAddress;
+}
+
+export class ShippingAddressChanged extends SalesOrderEvent<IShippingAddressChangedDetails> {
+  constructor(aggId: string, details: IShippingAddressChangedDetails) {
     super(
       aggId,
       ShippingAddressChanged.name,

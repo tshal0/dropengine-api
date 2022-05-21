@@ -1,10 +1,9 @@
-import { MESMetalArtMocks } from "@catalog/mocks";
-import { mockAddress, mockCustomer, mockUuid1 } from "@sales/mocks";
+import { mockAddress, mockUuid1 } from "@sales/mocks";
 import { MongoMocks } from "@sales/mocks/MongoMocks";
+import { SalesOrderMocks } from "@sales/mocks/SalesOrderMocks.mock";
 import { now, spyOnDate } from "@shared/mocks";
 import { cloneDeep } from "lodash";
 import { SalesOrderPlaced, OrderPlacedDetails } from "./OrderPlaced";
-import { EventSchemaVersion } from "./SalesOrderEvent";
 spyOnDate();
 describe("OrderPlacedEvent", () => {
   it("should be generated with valid OrderPlacedDetails", () => {
@@ -13,7 +12,7 @@ describe("OrderPlacedEvent", () => {
       accountId: mockUuid1,
       billingAddress: mockAddress,
       shippingAddress: mockAddress,
-      customer: mockCustomer,
+      customer: SalesOrderMocks.customer,
       orderDate: now,
       orderName: "SLI-1001",
       orderNumber: 1001,
@@ -34,7 +33,7 @@ describe("OrderPlacedEvent", () => {
       details: {
         accountId: mockUuid1,
         billingAddress: mockAddress,
-        customer: mockCustomer,
+        customer: SalesOrderMocks.customer,
         lineItems: [
           {
             lineNumber: 1,
