@@ -20,15 +20,14 @@ describe("Catalog (e2e)", () => {
   });
   beforeEach(async () => {});
 
-  it("/productTypes (POST)", () => {
+  it("/productTypes (GET)", () => {
     const server: INestApplication = app.getHttpServer();
     const expected = {};
 
     return request(server)
-      .post("/catalog/productTypes")
+      .get("/catalog/productTypes")
       .set("Authorization", `Bearer ${token}`)
-      .expect(200)
-      .expect(expected);
+      .expect(200);
   });
 
   // it("/orders/:id/lineItems/:lid (PATCH)", () => {

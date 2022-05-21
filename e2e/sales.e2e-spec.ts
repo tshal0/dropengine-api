@@ -37,8 +37,7 @@ describe("Sales (e2e)", () => {
     return request(server)
       .get("/sales/orders")
       .set("Authorization", `Bearer ${token}`)
-      .expect(200)
-      .expect(expected);
+      .expect(200);
   });
 
   // it("/orders/:id/lineItems/:lid (PATCH)", () => {
