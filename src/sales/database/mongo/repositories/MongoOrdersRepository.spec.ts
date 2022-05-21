@@ -1,15 +1,6 @@
-import { AccountsRepository } from "@auth/database/AccountsRepository";
-import { StoresRepository } from "@auth/database/StoresRepository";
-import {
-  DbProduct,
-  DbProductType,
-  DbProductVariant,
-} from "@catalog/database/entities";
 import { closeMongoConnection } from "@jestconfig/mongodb-memory-server";
-import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { getModelToken } from "@nestjs/mongoose";
 import { TestingModule } from "@nestjs/testing";
-import { mockSalesModule } from "@sales/mocks/sales.module.mock";
 import { cloneDeep } from "lodash";
 import { Model, Types } from "mongoose";
 import { MongoSalesOrder, MongoSalesOrderDocument } from "../schemas";

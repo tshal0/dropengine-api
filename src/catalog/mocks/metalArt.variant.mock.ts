@@ -24,10 +24,10 @@ export abstract class MESMetalArtMocks {
   static readonly PSKU = `MU-C011-00`;
   static readonly VSKU = `${MESMetalArtMocks.PSKU}-12-Black`;
 
-  private static readonly IMAGE =
+  static readonly IMAGE =
     "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C011-00-Black.png";
 
-  private static readonly SVG =
+  static readonly SVG =
     "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/6364995934/4135624991/MU-C011-00.svg";
 
   static readonly metalArtVariant: MyEasySuiteProductVariant = {
@@ -429,3 +429,4 @@ export abstract class MESMetalArtMocks {
     },
   };
 }
+

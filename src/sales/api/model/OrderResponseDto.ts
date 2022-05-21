@@ -11,10 +11,11 @@ export class OrderResponse {
   shippingAddress: IAddress;
   billingAddress: IAddress;
   lineItems: any[];
-
-  constructor(agg: SalesOrder) {
-    const props = agg.raw();
+  accountId: string;
+  constructor(order: SalesOrder) {
+    const props = order.raw();
     this.id = props.id;
+    this.accountId = props.accountId;
     this.orderName = props.orderName;
     this.orderStatus = props.orderStatus;
     this.orderDate = props.createdAt;

@@ -14,6 +14,7 @@ import {
   Logger,
   Patch,
   NotImplementedException,
+  HttpCode,
 } from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
@@ -139,8 +140,8 @@ export class OrdersController {
     return result;
   }
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   async post(
-    @Res() res: ExpressResponse,
     @User() user: AuthenticatedUser,
     @Body(CreateOrderValidationPipe) request: PlaceOrderRequest
   ) {
@@ -152,6 +153,6 @@ export class OrdersController {
       );
     }
     let order = await this.placeOrder.execute(request);
-    return res.status(HttpStatus.CREATED).json(order.raw());
+    return new OrderResponse(order);
   }
 }
