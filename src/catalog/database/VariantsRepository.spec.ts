@@ -286,7 +286,6 @@ describe("VariantsRepository", () => {
       const error: any = await getAsyncError(
         async () => await service.save(variant)
       );
-      console.log(error);
       // THEN
       expect(error).not.toBeInstanceOf(NoErrorThrownError);
       expect(error).toBeInstanceOf(EntityNotFoundException);

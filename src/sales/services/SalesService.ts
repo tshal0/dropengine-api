@@ -1,10 +1,19 @@
 import { Injectable, Scope } from "@nestjs/common";
-import { SalesOrderQueryResult, SalesOrderRepository } from "@sales/database";
+import {
+  MongoDomainEventRepository,
+  SalesOrderQueryResult,
+  SalesOrderRepository,
+} from "@sales/database";
+import { SalesOrder } from "@sales/domain";
+import { DomainEvent } from "@shared/domain/events/DomainEvent";
 import { MongoQueryParams } from "@shared/mongo";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class SalesService {
-  constructor(private readonly _repo: SalesOrderRepository) {}
+  constructor(
+    private readonly _repo: SalesOrderRepository,
+    public _events: MongoDomainEventRepository
+  ) {}
 
   public async findById(id: string) {
     return await this._repo.load(id);
@@ -22,5 +31,9 @@ export class SalesService {
 
   public async delete(id: string) {
     return await this._repo.delete(id);
+  }
+
+  async loadEvents(id: string): Promise<DomainEvent<SalesOrder>[]> {
+    return await this._events.findByAggregateId(id);
   }
 }

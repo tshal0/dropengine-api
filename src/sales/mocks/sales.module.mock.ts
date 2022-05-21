@@ -29,7 +29,6 @@ import {
 import { PlaceOrder } from "@sales/features/PlaceOrder/PlaceOrder";
 import { SalesService } from "@sales/services";
 import { HandleMyEasySuiteOrderPlaced } from "@sales/useCases/HandleMyEasySuiteOrderPlaced";
-import { LoadEvents } from "@sales/useCases/LoadEvents";
 import { AzureTelemetryModule } from "@shared/modules";
 
 jest.mock("@shared/utils", () => {
@@ -63,7 +62,6 @@ export const mockSalesModule = (): TestingModuleBuilder => {
       MongoOrdersRepository,
       SalesOrderRepository,
       PlaceOrder,
-      LoadEvents,
       HandleMyEasySuiteOrderPlaced,
       SalesService,
       ChangeCustomerInfo,

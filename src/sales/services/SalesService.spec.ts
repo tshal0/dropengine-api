@@ -8,6 +8,7 @@ import {
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { TestingModule, TestingModuleBuilder } from "@nestjs/testing";
 import {
+  MongoDomainEventRepository,
   MongoSalesOrder,
   SalesOrderQueryResult,
   SalesOrderRepository,
@@ -16,6 +17,14 @@ import { mockSalesModule } from "@sales/mocks/sales.module.mock";
 import { SalesOrderMocks } from "@sales/mocks/SalesOrderMocks.mock";
 import { SalesService } from "./SalesService";
 import { when } from "jest-when";
+import {
+  EventSchemaVersion,
+  SalesOrderEvent,
+  SalesOrderEventName,
+  SalesOrderPlaced,
+} from "@sales/domain/events";
+import { SalesOrder } from "@sales/domain";
+import { DomainEvent } from "@shared/domain/events/DomainEvent";
 const withDefaults = () => {
   return mockSalesModule()
     .overrideProvider(getRepositoryToken(DbProductType))
@@ -56,6 +65,33 @@ describe("SalesService", () => {
     expect(result.raw()).toEqual(SalesOrderMocks.orderProps);
     result = await service.findById(SalesOrderMocks.id2);
     expect(result).toBe(undefined);
+  });
+  it("loadEvents should return SalesOrderEvents", async () => {
+    const loadFn = jest.fn();
+    when(loadFn)
+      .calledWith(SalesOrderMocks.id)
+      .mockResolvedValue([
+        new SalesOrderPlaced(SalesOrderMocks.id, SalesOrderMocks.placedDetails),
+      ]);
+    module = await withDefaults()
+      .overrideProvider(MongoDomainEventRepository)
+      .useValue({ findByAggregateId: loadFn })
+      .compile();
+
+    service = await module.resolve(SalesService);
+    let result = await service.loadEvents(SalesOrderMocks.id);
+    const event: SalesOrderPlaced = {
+      eventId: expect.anything(),
+      eventName: SalesOrderEventName.OrderPlaced,
+      eventType: SalesOrderPlaced.name,
+      eventVersion: EventSchemaVersion.v1,
+      details: SalesOrderMocks.placedDetails,
+      aggregateType: SalesOrder.name,
+      aggregateId: SalesOrderMocks.id,
+      timestamp: expect.anything(),
+    };
+    const expected: SalesOrderEvent<any>[] = [event];
+    expect(result).toEqual(expected);
   });
   it("delete should return SalesOrder", async () => {
     const deleteFn = jest.fn();

@@ -14,7 +14,6 @@ import {
   MongoDomainEventSchema,
 } from "./database/mongo/schemas/MongoDomainEvent";
 import { MongoDomainEventRepository } from "./database/mongo/repositories/MongoDomainEventRepository";
-import { LoadEvents } from "./useCases/LoadEvents";
 import { HandleMyEasySuiteOrderPlaced } from "./useCases/HandleMyEasySuiteOrderPlaced";
 import { AuthModule } from "@auth/auth.module";
 import {
@@ -50,7 +49,6 @@ import { OrdersController } from "./api";
     ChangeCustomerInfo,
     ChangeShippingAddress,
     ChangePersonalization,
-    LoadEvents,
     HandleMyEasySuiteOrderPlaced,
     SalesService,
   ],
