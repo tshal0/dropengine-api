@@ -1,11 +1,3 @@
-import { AccountsRepository } from "@auth/database/AccountsRepository";
-import { StoresRepository } from "@auth/database/StoresRepository";
-import {
-  DbProductType,
-  DbProduct,
-  DbProductVariant,
-} from "@catalog/database/entities";
-import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { TestingModule, TestingModuleBuilder } from "@nestjs/testing";
 import {
   MongoDomainEventRepository,
@@ -13,7 +5,6 @@ import {
   SalesOrderQueryResult,
   SalesOrderRepository,
 } from "@sales/database";
-import { mockSalesModule } from "@sales/mocks/sales.module.mock";
 import { SalesOrderMocks } from "@sales/mocks/SalesOrderMocks.mock";
 import { SalesService } from "./SalesService";
 import { when } from "jest-when";
@@ -25,19 +16,7 @@ import {
 } from "@sales/domain/events";
 import { SalesOrder } from "@sales/domain";
 import { DomainEvent } from "@shared/domain/events/DomainEvent";
-const withDefaults = () => {
-  return mockSalesModule()
-    .overrideProvider(getRepositoryToken(DbProductType))
-    .useValue({})
-    .overrideProvider(getRepositoryToken(DbProduct))
-    .useValue({})
-    .overrideProvider(getRepositoryToken(DbProductVariant))
-    .useValue({})
-    .overrideProvider(AccountsRepository)
-    .useValue({})
-    .overrideProvider(StoresRepository)
-    .useValue({});
-};
+import { withDefaults } from "@sales/mocks";
 describe("SalesService", () => {
   let module: TestingModule;
   let service: SalesService;

@@ -16,6 +16,7 @@ import { MongoSalesOrder, MongoSalesOrderDocument } from "../schemas";
 import { MongoOrdersRepository } from "./MongoOrdersRepository";
 import csv from "csvtojson";
 import { MongoMocks } from "@sales/mocks/MongoMocks";
+import { withDefaults } from "@sales/mocks";
 
 // spyOnDate();
 describe("MongoOrdersRepository", () => {
@@ -24,18 +25,7 @@ describe("MongoOrdersRepository", () => {
   let model: Model<MongoSalesOrderDocument>;
 
   beforeEach(async () => {
-    module = await mockSalesModule()
-      .overrideProvider(getRepositoryToken(DbProductType))
-      .useValue({})
-      .overrideProvider(getRepositoryToken(DbProduct))
-      .useValue({})
-      .overrideProvider(getRepositoryToken(DbProductVariant))
-      .useValue({})
-      .overrideProvider(AccountsRepository)
-      .useValue({})
-      .overrideProvider(StoresRepository)
-      .useValue({})
-      .compile();
+    module = await withDefaults().compile();
 
     service = await module.resolve(MongoOrdersRepository);
     const modelToken = getModelToken(MongoSalesOrder.name);
