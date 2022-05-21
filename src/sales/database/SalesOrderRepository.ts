@@ -16,7 +16,7 @@ import { compact } from "lodash";
 import { MongoDomainEventRepository } from "./mongo/repositories/MongoDomainEventRepository";
 import { MongoDomainEvent } from "./mongo/schemas/MongoDomainEvent";
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { SalesOrderEvent } from "@sales/domain/DomainEvents/SalesOrderEvent";
+import { SalesOrderEvent } from "@sales/domain/events/SalesOrderEvent";
 import { ISalesOrderProps, SalesOrder } from "@sales/domain";
 
 export class SalesOrderNotFoundException extends EntityNotFoundException {

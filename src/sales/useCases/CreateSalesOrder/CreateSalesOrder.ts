@@ -20,12 +20,14 @@ import { validate } from "class-validator";
 import { CreateSalesOrderDto } from "../../dto/CreateSalesOrderDto";
 import safeJsonStringify from "safe-json-stringify";
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
-import { CreateSalesOrderLineItemDto } from "@sales/dto/CreateSalesOrderLineItemDto";
 import { CreateSalesOrderError } from "./CreateSalesOrderError";
 import { CreateSalesOrderException } from "./CreateSalesOrderException";
 import { FailedToPlaceSalesOrderException } from "./FailedToPlaceSalesOrderException";
 import { generateValidationError } from "./generateValidationError";
-import { SalesOrderPlaced } from "@sales/domain/DomainEvents/OrderPlaced";
+import {
+  OrderPlacedDetails,
+  SalesOrderPlaced,
+} from "@sales/domain/events/OrderPlaced";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class CreateSalesOrder
@@ -73,7 +75,10 @@ export class CreateSalesOrder
       order = await this._repo.save(order);
 
       // Generate/Raise OrderPlaced event
-      let $event = new SalesOrderPlaced(order.id, cdto);
+      let $event = new SalesOrderPlaced(
+        order.id,
+        new OrderPlacedDetails({ ...cdto, orderNumber: +cdto.orderNumber })
+      );
       // order.raise($event);
 
       return await this._repo.save(order);

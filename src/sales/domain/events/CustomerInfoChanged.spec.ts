@@ -1,13 +1,14 @@
 import { mockUuid1 } from "@sales/mocks";
 
 import { v4 as uuidv4 } from "uuid";
-import { mockOrderId, now } from "../../dto/CreateOrderDto.mock";
 import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
 import { EditCustomerDto } from "@sales/api";
 import { CustomerInfoChanged } from "./CustomerInfoChanged";
+import { MongoMocks } from "@sales/mocks/MongoMocks";
+import { now, spyOnDate } from "@shared/mocks";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
-
+spyOnDate();
 describe("CustomerInfoChanged", () => {
   beforeAll(async () => {});
   describe("given a valid DTO", () => {
@@ -20,7 +21,7 @@ describe("CustomerInfoChanged", () => {
 
       // WHEN
 
-      let result = new CustomerInfoChanged(mockOrderId, mockDto);
+      let result = new CustomerInfoChanged(MongoMocks.mockMongoId, mockDto);
 
       const expected: CustomerInfoChanged = {
         eventId: mockUuid1,
@@ -28,7 +29,7 @@ describe("CustomerInfoChanged", () => {
         eventType: "CustomerInfoChanged",
         details: mockDto,
         aggregateType: "SalesOrder",
-        aggregateId: mockOrderId,
+        aggregateId: MongoMocks.mockMongoId,
         timestamp: now,
         eventVersion: EventSchemaVersion.v1,
       };

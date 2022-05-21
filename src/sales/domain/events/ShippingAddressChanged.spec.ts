@@ -1,14 +1,15 @@
 import { mockAddress, mockUuid1 } from "@sales/mocks";
 
 import { v4 as uuidv4 } from "uuid";
-import { mockOrderId, now } from "../../dto/CreateOrderDto.mock";
 import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
 import { ShippingAddressChanged } from "./ShippingAddressChanged";
 import { UpdateShippingAddressDto } from "@sales/useCases";
 import { EditShippingAddressDto } from "@sales/api";
+import { MongoMocks } from "@sales/mocks/MongoMocks";
+import { now, spyOnDate } from "@shared/mocks";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
-
+spyOnDate();
 describe("ShippingAddressChanged", () => {
   beforeAll(async () => {});
   describe("given a valid DTO", () => {
@@ -19,7 +20,7 @@ describe("ShippingAddressChanged", () => {
       mockDto.shippingAddress = mockAddress;
       // WHEN
 
-      let result = new ShippingAddressChanged(mockOrderId, mockDto);
+      let result = new ShippingAddressChanged(MongoMocks.mockMongoId, mockDto);
 
       const expected: ShippingAddressChanged = {
         eventId: mockUuid1,
@@ -27,7 +28,7 @@ describe("ShippingAddressChanged", () => {
         eventType: "ShippingAddressChanged",
         details: mockDto,
         aggregateType: "SalesOrder",
-        aggregateId: mockOrderId,
+        aggregateId: MongoMocks.mockMongoId,
         timestamp: now,
         eventVersion: EventSchemaVersion.v1,
       };

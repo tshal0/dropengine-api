@@ -2,10 +2,12 @@ import { mockUuid1 } from "@sales/mocks";
 import { ShipmentAdded } from "./ShipmentAdded";
 
 import { v4 as uuidv4 } from "uuid";
-import { mockOrderId, now } from "../../dto/CreateOrderDto.mock";
 import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
 import { AddShipmentDto, IAddShipmentDto } from "@sales/dto/AddShipmentDto";
+import { MongoMocks } from "@sales/mocks/MongoMocks";
+import { now, spyOnDate } from "@shared/mocks";
 jest.mock("uuid");
+spyOnDate();
 uuidv4.mockImplementation(() => mockUuid1);
 
 describe("ShipmentAdded", () => {
@@ -13,7 +15,7 @@ describe("ShipmentAdded", () => {
   describe("given a valid DTO", () => {
     it("should generate a valid ShipmentAdded event", () => {
       const dto: IAddShipmentDto = {
-        orderId: mockOrderId,
+        orderId: MongoMocks.mockMongoId,
         orderName: "MOCK",
         orderNumber: "MOCK",
         shipstationOrderId: "MOCK",
@@ -35,7 +37,7 @@ describe("ShipmentAdded", () => {
 
       // WHEN
 
-      let result = new ShipmentAdded(mockOrderId, mockDto);
+      let result = new ShipmentAdded(MongoMocks.mockMongoId, mockDto);
 
       const expected: ShipmentAdded = {
         eventId: mockUuid1,
@@ -43,7 +45,7 @@ describe("ShipmentAdded", () => {
         eventType: "ShipmentAdded",
         details: mockDto,
         aggregateType: "SalesOrder",
-        aggregateId: mockOrderId,
+        aggregateId: MongoMocks.mockMongoId,
         timestamp: now,
         eventVersion: EventSchemaVersion.v1,
       };

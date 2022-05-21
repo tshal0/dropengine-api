@@ -2,15 +2,17 @@ import { mockUuid1 } from "@sales/mocks";
 import { SalesOrderCanceled } from "./OrderCanceled";
 
 import { v4 as uuidv4 } from "uuid";
-import { mockOrderId, now } from "../../dto/CreateOrderDto.mock";
+
 import {
   CancelOrderDto,
   CancelOrderRequesterDto,
 } from "@sales/dto/CancelOrderDto";
 import { EventSchemaVersion, SalesOrderEventName } from "./SalesOrderEvent";
+import { MongoMocks } from "@sales/mocks/MongoMocks";
+import { now, spyOnDate } from "@shared/mocks";
 jest.mock("uuid");
 uuidv4.mockImplementation(() => mockUuid1);
-
+spyOnDate();
 describe("SalesOrderCanceled", () => {
   beforeAll(async () => {});
   describe("given a valid DTO", () => {
@@ -26,7 +28,7 @@ describe("SalesOrderCanceled", () => {
 
       // WHEN
 
-      let result = new SalesOrderCanceled(mockOrderId, mockDto);
+      let result = new SalesOrderCanceled(MongoMocks.mockMongoId, mockDto);
 
       const expected: SalesOrderCanceled = {
         eventId: mockUuid1,
@@ -34,7 +36,7 @@ describe("SalesOrderCanceled", () => {
         eventType: "SalesOrderCanceled",
         details: mockDto,
         aggregateType: "SalesOrder",
-        aggregateId: mockOrderId,
+        aggregateId: MongoMocks.mockMongoId,
         timestamp: now,
         eventVersion: EventSchemaVersion.v1,
       };

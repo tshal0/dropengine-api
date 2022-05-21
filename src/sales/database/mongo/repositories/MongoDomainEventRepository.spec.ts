@@ -11,7 +11,7 @@ import { TestingModule } from "@nestjs/testing";
 import { mockSalesModule } from "@sales/mocks/sales.module.mock";
 import { spyOnDate } from "@shared/mocks";
 import { MongoDomainEventRepository } from "./MongoDomainEventRepository";
-import { MongoMocks } from "./MongoOrdersRepository.spec";
+import { MongoMocks } from "../../../mocks/MongoMocks";
 
 // spyOnDate();
 describe("MongoDomainEventRepository", () => {
