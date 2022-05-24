@@ -12,7 +12,7 @@ import {
   IProductTypeProps,
   IVariantProps,
   Variant,
-} from "@catalog/domain/model";
+} from "@catalog/model";
 import { CsvProductVariantDto, CreateVariantDto } from "@catalog/dto";
 import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import { EntityNotFoundException } from "@shared/exceptions";

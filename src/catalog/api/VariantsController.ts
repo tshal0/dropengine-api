@@ -1,4 +1,4 @@
-import { IVariantProps } from "@catalog/domain";
+import { IVariantProps } from "@catalog/model";
 import { CreateVariantDto, VariantQueryDto } from "@catalog/dto";
 import { VariantQueryTransformPipe } from "@catalog/middleware";
 import { VariantService } from "@catalog/services/VariantService";

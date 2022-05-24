@@ -1,4 +1,4 @@
-import { ProductTypes } from "@catalog/domain";
+import { ProductTypes } from "@catalog/model";
 import { mockUuid1, mockUuid2 } from "@sales/mocks";
 import { cloneDeep } from "lodash";
 import {

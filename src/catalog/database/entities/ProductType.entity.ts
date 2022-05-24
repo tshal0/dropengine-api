@@ -3,7 +3,7 @@ import {
   IProductionData,
   IProductTypeProps,
   IVariantOptionsProps,
-} from "@catalog/domain/model";
+} from "@catalog/model";
 import {
   Entity,
   Property,

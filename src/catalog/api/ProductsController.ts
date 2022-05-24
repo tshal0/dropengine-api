@@ -20,7 +20,7 @@ import "multer";
 import { ProductResponseDto } from "@catalog/dto/Product/ProductResponseDto";
 import { QueryProductResponseDto } from "@catalog/dto/Product/QueryProductResponseDto";
 import { ProductService } from "@catalog/services/ProductService";
-import { IProductProps } from "@catalog/domain/model";
+import { IProductProps } from "@catalog/model";
 
 export class ProductsQueryDto {
   page: number;

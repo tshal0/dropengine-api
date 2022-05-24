@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import moment from "moment";
-import { ProductType } from "@catalog/domain/model";
+import { ProductType } from "@catalog/model";
 import { DbProductType } from "./entities";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";

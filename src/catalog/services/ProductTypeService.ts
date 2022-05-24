@@ -1,5 +1,5 @@
 import { ProductTypesRepository } from "@catalog/database";
-import { IProductTypeProps, ProductType } from "@catalog/domain/model";
+import { IProductTypeProps, ProductType } from "@catalog/model";
 import { Injectable, Logger, Scope } from "@nestjs/common";
 import { CreateProductTypeDto } from "..";
 

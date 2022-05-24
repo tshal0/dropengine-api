@@ -1,4 +1,4 @@
-import { IProductProps } from "@catalog/domain/model";
+import { IProductProps } from "@catalog/model";
 import { IDimension, IWeight, IMoney } from "@shared/domain";
 
 export class ProductTypeVariantOption {

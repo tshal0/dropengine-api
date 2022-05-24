@@ -2,7 +2,7 @@ import {
   IPersonalizationRule,
   IProductionData,
   IVariantOption,
-} from "@catalog/domain/model";
+} from "@catalog/model";
 import { IDimension, IMoney, IWeight } from "@shared/domain";
 
 export interface ICatalogVariant {

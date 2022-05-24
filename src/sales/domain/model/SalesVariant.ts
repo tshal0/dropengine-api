@@ -5,7 +5,7 @@ import {
   PersonalizationRule,
   ProductionData,
   VariantOption,
-} from "@catalog/domain";
+} from "@catalog/model";
 import {
   Dimension,
   IDimension,

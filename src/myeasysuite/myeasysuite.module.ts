@@ -21,7 +21,7 @@ import {
 } from "@shared/utils";
 import safeJsonStringify from "safe-json-stringify";
 import { AuthModule } from "@auth/auth.module";
-import { HandleOrderPlaced } from "./useCases/HandleOrderPlaced";
+import { HandleOrderPlaced } from "./features/HandleOrderPlaced";
 
 export abstract class MES {
   static readonly MES_API_URL: string = `MES_API_URL`;

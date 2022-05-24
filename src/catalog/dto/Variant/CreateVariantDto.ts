@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsNotEmpty, IsNotEmptyObject, IsOptional } from "class-validator";
 import { MyEasySuiteProductVariant } from "@myeasysuite/dto/MESProductVariant";
-import { IProductTypeProps } from "@catalog/domain/model";
+import { IProductTypeProps } from "@catalog/model";
 
 export type VariantDimensionUnits = "in" | "mm";
 

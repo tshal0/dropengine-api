@@ -1,7 +1,7 @@
 import {
   HandleOrderPlaced,
   HandleOrderPlacedDto,
-} from "@myeasysuite/useCases/HandleOrderPlaced";
+} from "@myeasysuite/features/HandleOrderPlaced";
 import {
   Controller,
   Get,

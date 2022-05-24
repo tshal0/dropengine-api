@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { EntityNotFoundException } from "@shared/exceptions";
-import { Variant } from "@catalog/domain/model";
+import { Variant } from "@catalog/model";
 import { DbProduct, DbProductType, DbProductVariant } from "./entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityRepository } from "@mikro-orm/core";

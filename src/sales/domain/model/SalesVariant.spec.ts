@@ -2,7 +2,7 @@ import {
   PersonalizationRule,
   ProductionData,
   VariantOption,
-} from "@catalog/domain";
+} from "@catalog/model";
 import { mockUuid1 } from "@sales/mocks";
 import { Dimension, Money, Weight } from "@shared/domain";
 import { cloneDeep } from "lodash";

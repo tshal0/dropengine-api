@@ -1,4 +1,4 @@
-import { ProductTypes } from "@catalog/domain";
+import { ProductTypes } from "@catalog/model";
 import { CatalogVariant } from "@catalog/services";
 import { MongoSalesOrder } from "@sales/database/mongo";
 import { now } from "@shared/mocks";

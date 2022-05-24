@@ -11,7 +11,7 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { CreateProductTypeDto } from "@catalog/dto";
 import { ProductTypeService } from "@catalog/services/ProductTypeService";
-import { IProductTypeProps } from "@catalog/domain/model";
+import { IProductTypeProps } from "@catalog/model";
 
 @Controller("catalog/productTypes")
 export class ProductTypesController {

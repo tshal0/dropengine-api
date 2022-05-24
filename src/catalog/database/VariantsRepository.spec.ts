@@ -7,7 +7,7 @@ import {
   Product,
   ProductType,
   Variant,
-} from "@catalog/domain";
+} from "@catalog/model";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { TestingModule, TestingModuleBuilder } from "@nestjs/testing";

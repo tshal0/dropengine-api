@@ -7,5 +7,9 @@ const config: Options<PostgreSqlDriver> = {
   migrations: {
     ...mikroOrmOptions.migrations,
   },
+  // schemaGenerator: {
+  //   disableForeignKeys: false, // try to disable foreign_key_checks (or equivalent)
+  //   createForeignKeyConstraints: true, // do not generate FK constraints
+  // },
 };
 export default config;

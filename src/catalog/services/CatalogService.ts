@@ -1,4 +1,4 @@
-import { ProductType, ProductTypes, Variant } from "@catalog/domain";
+import { ProductType, ProductTypes, Variant } from "@catalog/model";
 import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import {
   HttpStatus,

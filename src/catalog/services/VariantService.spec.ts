@@ -12,7 +12,7 @@ import {
   Product,
   ProductType,
   Variant,
-} from "@catalog/domain";
+} from "@catalog/model";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
 import { TestingModule } from "@nestjs/testing";
 import { mockUuid1 } from "@sales/mocks";

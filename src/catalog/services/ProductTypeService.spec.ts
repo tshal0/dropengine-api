@@ -1,6 +1,6 @@
 import { ProductTypesRepository } from "@catalog/database";
 import { DbProductType } from "@catalog/database/entities";
-import { IProductTypeProps, LivePreview, ProductType } from "@catalog/domain";
+import { IProductTypeProps, LivePreview, ProductType } from "@catalog/model";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
 import { TestingModule } from "@nestjs/testing";
 import { mockUuid1 } from "@sales/mocks";

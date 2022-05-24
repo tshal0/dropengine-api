@@ -1,6 +1,6 @@
 import { CatalogModule } from "@catalog/catalog.module";
 import { MyEasySuiteController } from "@myeasysuite/api/MyEasySuiteController";
-import { HandleOrderPlaced } from "@myeasysuite/useCases/HandleOrderPlaced";
+import { HandleOrderPlaced } from "@myeasysuite/features/HandleOrderPlaced";
 import { HttpModule } from "@nestjs/axios";
 import { CacheModule } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";

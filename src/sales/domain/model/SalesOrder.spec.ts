@@ -1,4 +1,4 @@
-import { ProductTypes } from "@catalog/domain";
+import { ProductTypes } from "@catalog/model";
 import { mockAddress, mockUuid1 } from "@sales/mocks";
 import { Address, IAddress } from "@shared/domain";
 import { now, spyOnDate } from "@shared/mocks";

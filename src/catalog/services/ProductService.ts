@@ -6,7 +6,7 @@ import {
   IProductProps,
   PersonalizationRule,
   Product,
-} from "@catalog/domain/model";
+} from "@catalog/model";
 import { CreateProductDto, CsvProductDto } from "@catalog/dto/Product";
 import { compact, trim } from "lodash";
 

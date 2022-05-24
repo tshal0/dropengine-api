@@ -5,7 +5,7 @@ import {
   PersonalizationRule,
   Product,
   Variant,
-} from "@catalog/domain/model";
+} from "@catalog/model";
 import {
   Entity,
   Property,

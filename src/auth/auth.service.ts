@@ -1,5 +1,5 @@
 import { Auth0MgmtApiClient } from "@auth0/Auth0MgmtApiClient";
-import { HandleOrderPlaced } from "@myeasysuite/useCases/HandleOrderPlaced";
+import { HandleOrderPlaced } from "@myeasysuite/features/HandleOrderPlaced";
 import { Injectable, Scope, Logger } from "@nestjs/common";
 import { Result } from "@shared/domain";
 import { AccountsRepository } from "./database/AccountsRepository";

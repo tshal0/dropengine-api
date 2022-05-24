@@ -1,4 +1,4 @@
-import { ProductTypes } from "@catalog/domain";
+import { ProductTypes } from "@catalog/model";
 import { CatalogVariant } from "@catalog/services";
 import { ISalesOrderProps, OrderStatus, SalesOrder } from "@sales/domain";
 import {

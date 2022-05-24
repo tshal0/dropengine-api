@@ -12,7 +12,7 @@ import {
   ProductType,
   ProductTypes,
   Variant,
-} from "@catalog/domain";
+} from "@catalog/model";
 import { CatalogVariant } from "@catalog/services";
 import { MyEasySuiteProductVariant } from "@myeasysuite/dto/MESProductVariant";
 import { mockUuid1 } from "@sales/mocks";
