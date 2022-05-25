@@ -20,3 +20,17 @@ Reasons against:
 1. Yet another endpoint
 2. Never done GraphQL implemented in a backend (RISK)
 3. Never done GraphQL in frontend (RISK)
+
+## Design
+
+Implementation:
+
+1. Add packages
+2. Choose schema generation (Code First vs Schema First)
+3. Add module to main
+4. Add GraphQL Sales Module
+   1. Providers (queries, mutations, subscriptions)
+   2. Resolver (use Mongo collection)
+5. Mutations
+   1. Should be NO mutations yet
+   2. Future mutations would occur like commands.
