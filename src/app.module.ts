@@ -32,7 +32,6 @@ import { ApolloDriverConfig, ApolloDriver } from "@nestjs/apollo";
 import { GraphQLModule } from "@nestjs/graphql";
 import { DirectiveLocation, GraphQLDirective } from "graphql";
 import { upperDirectiveTransformer } from "@shared/graphql";
-import { RecipesModule } from './recipes/recipes.module';
 
 @Module({
   imports: [
@@ -84,7 +83,6 @@ import { RecipesModule } from './recipes/recipes.module';
     CatalogModule,
     SalesModule,
     MyEasySuiteModule,
-    RecipesModule,
   ],
   providers: [
     {

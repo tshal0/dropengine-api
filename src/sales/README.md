@@ -142,6 +142,29 @@ We want to provide the ability for merchants to place orders in our system, allo
       17. Size
 7. Validate User Authorization
 
+## GraphQL
+
+We are adding a GraphQL endpoint for querying SalesModule, specifically for SalesOrders.
+
+Goals:
+
+1. QueryOrder
+   1. By ID, Name
+2. QueryOrders
+   1. Project
+   2. Id, Name, Number, Date, Status, TotalQuantity, Merchant, Seller, Manufacturer, Colors, Sizes
+   3. Within Date Range
+   4. By Manufacturer
+   5. By Merchant
+   6. By Seller/Account
+   7. Contains Sizes
+   8. Contains Colors
+   9. SortBy
+      1. OrderDate
+      2. OrderName
+      3. TotalQuantity
+      4. Status
+
 ## ~~Results vs Exceptions~~ **Deprecated**
 
 ~~We typically use Results only for ValueObjects in order to aggregate the validation errors before throwing an exception.~~
