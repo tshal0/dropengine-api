@@ -21,6 +21,7 @@ import {
   PlaceOrderRequestLineItem,
 } from "@sales/features/PlaceOrder";
 import { SalesCustomer, SalesOrder } from "@sales/domain";
+import { extractOrderNumber } from "@sales/utils";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class HandleMyEasySuiteOrderPlaced
@@ -56,7 +57,7 @@ export class HandleMyEasySuiteOrderPlaced
 
     sdto.orderDate = new Date(order.order_date);
     sdto.orderName = order.order_id;
-    sdto.orderNumber = +order.order_number;
+    sdto.orderNumber = extractOrderNumber(order.order_number);
 
     const shippingAddress = {
       ...order.shipping_address,
