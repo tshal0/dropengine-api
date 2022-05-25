@@ -28,6 +28,11 @@ import { MikroORM } from "@mikro-orm/core";
 import { mikroOrmOptions } from "./mikroOrmOptions";
 import { AuthModule } from "./auth/auth.module";
 import { AuthenticationModule } from "./shared";
+import { ApolloDriverConfig, ApolloDriver } from "@nestjs/apollo";
+import { GraphQLModule } from "@nestjs/graphql";
+import { DirectiveLocation, GraphQLDirective } from "graphql";
+import { upperDirectiveTransformer } from "@shared/graphql";
+import { RecipesModule } from './recipes/recipes.module';
 
 @Module({
   imports: [
@@ -56,6 +61,20 @@ import { AuthenticationModule } from "./shared";
       inject: [ConfigService],
     }),
     MikroOrmModule.forRoot(mikroOrmOptions),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: "schema.gql",
+      transformSchema: (schema) => upperDirectiveTransformer(schema, "upper"),
+      installSubscriptionHandlers: true,
+      buildSchemaOptions: {
+        directives: [
+          new GraphQLDirective({
+            name: "upper",
+            locations: [DirectiveLocation.FIELD_DEFINITION],
+          }),
+        ],
+      },
+    }),
     Auth0Module,
     AuthModule,
     AzureTelemetryModule,
@@ -65,6 +84,7 @@ import { AuthenticationModule } from "./shared";
     CatalogModule,
     SalesModule,
     MyEasySuiteModule,
+    RecipesModule,
   ],
   providers: [
     {

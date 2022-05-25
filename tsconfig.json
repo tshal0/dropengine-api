@@ -45,6 +45,9 @@
       "@myeasysuite/*": [
         "myeasysuite/*"
       ],
+      "@recipes/*": [
+        "recipes/*"
+      ],
     },
   },
   "include": [
