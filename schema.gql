@@ -4,10 +4,30 @@
 
 directive @upper on FIELD_DEFINITION
 
-"""personalization"""
-type GPersonalization {
+"""salesCustomer"""
+type GAddress {
+  address1: String!
+  zip: String!
+  city: String!
+  province: String!
+  provinceCode: String!
+  country: String!
+  countryCode: String!
+  name: String
+  lastName: String
+  firstName: String
+  phone: String
+  company: String
+  address2: String
+  address3: String
+  latitude: Float
+  longitude: Float
+}
+
+"""salesCustomer"""
+type GCustomer {
   name: String!
-  value: String!
+  email: String!
 }
 
 """dimension """
@@ -20,6 +40,12 @@ type GDimension {
 type GMoney {
   total: Float!
   currency: String!
+}
+
+"""personalization"""
+type GPersonalization {
+  name: String!
+  value: String!
 }
 
 """personalizationRule """
@@ -91,6 +117,9 @@ type GSalesOrder {
   orderDate: DateTime!
   orderStatus: String!
   lineItems: [GSalesLineItem!]!
+  customer: GCustomer!
+  shippingAddress: GAddress!
+  billingAddress: GAddress!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
