@@ -74,6 +74,7 @@ export class ProductTypesRepository {
     if (dbe) {
       return dbe;
     }
+    //TODO Ick
     return null;
   }
   public async findById(id: string): Promise<DbProductType> {
@@ -81,6 +82,7 @@ export class ProductTypesRepository {
     if (dbe) {
       return dbe;
     }
+    //TODO Ick
     return null;
   }
   public async findByName(name: string): Promise<DbProductType> {
@@ -88,6 +90,7 @@ export class ProductTypesRepository {
     if (dbe) {
       return dbe;
     }
+    //TODO Ick
     return null;
   }
   public async delete(id: string): Promise<any> {

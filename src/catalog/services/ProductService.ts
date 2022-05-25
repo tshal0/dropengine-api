@@ -2,11 +2,7 @@ import { Injectable, Logger, Scope } from "@nestjs/common";
 import moment from "moment";
 import csv from "csvtojson";
 import { ProductsRepository, ProductTypesRepository } from "@catalog/database";
-import {
-  IProductProps,
-  PersonalizationRule,
-  Product,
-} from "@catalog/model";
+import { IProductProps, PersonalizationRule, Product } from "@catalog/model";
 import { CreateProductDto, CsvProductDto } from "@catalog/dto/Product";
 import { compact, trim } from "lodash";
 
@@ -19,15 +15,16 @@ export class ProductService {
   constructor(private _repo: ProductsRepository) {}
 
   public async findAndUpdateOrCreate(dto: CreateProductDto): Promise<Product> {
+    const tags = dto.tags || "";
     let props: IProductProps = {
       id: dto.id,
       sku: dto.sku,
       type: dto.type,
       productTypeId: dto.productTypeId,
       pricingTier: dto.pricingTier,
-      tags: compact(dto.tags.split(",")),
-      image: dto.image,
-      svg: dto.svg,
+      tags: compact(tags.split(",")),
+      image: dto.image || "",
+      svg: dto.svg || "",
       personalizationRules: dto.personalizationRules.map(
         (r) =>
           new PersonalizationRule({

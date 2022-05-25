@@ -144,6 +144,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "''",
           "mappedType": "string"
         },
         "pricing_tier": {
@@ -153,6 +154,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "'1'",
           "mappedType": "string"
         },
         "tags": {
@@ -171,6 +173,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "''",
           "mappedType": "string"
         },
         "svg": {
@@ -180,6 +183,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "''",
           "mappedType": "string"
         },
         "personalization_rules": {

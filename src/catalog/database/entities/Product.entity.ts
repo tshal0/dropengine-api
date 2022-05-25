@@ -39,17 +39,17 @@ export class DbProduct {
   id!: string;
   @Property()
   type: string;
-  @Property({ unique: true })
+  @Property({ unique: true, default: "" })
   sku: string;
-  @Property()
+  @Property({ default: "1" })
   pricingTier: string;
   @Property({ type: "json" })
   tags: string[];
   // @Property({ type: "json" })
   // categories: string[];
-  @Property()
+  @Property({ default: "" })
   image?: string | undefined;
-  @Property()
+  @Property({ default: "" })
   svg?: string | undefined;
   @Property({ type: "json" })
   personalizationRules: IPersonalizationRule[];

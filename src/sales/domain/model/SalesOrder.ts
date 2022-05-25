@@ -10,6 +10,7 @@ import { CustomerInfoChanged } from "../events/CustomerInfoChanged";
 import { IPersonalization, Personalization } from "./Personalization";
 import { PersonalizationChanged } from "../events/PersonalizationChanged";
 import { ShippingAddressChanged } from "../events/ShippingAddressChanged";
+
 export enum OrderStatus {
   OPEN = "OPEN",
   CANCELED = "CANCELED",

@@ -65,7 +65,7 @@ export function generateVariantFromMESVariant(
     productId: "",
     sku: modifiedSku,
     type: type,
-    image: variant.image,
+    image: variant.image || "",
     height: getVariantHeight(variant),
     width: getVariantWidth(variant),
     weight: getVariantWeight(variant),

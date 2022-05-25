@@ -16,10 +16,11 @@ import {
   MyEasySuiteOrderEventName,
 } from "@myeasysuite/domain/events";
 import {
+  PlaceOrder,
   PlaceOrderRequest,
   PlaceOrderRequestLineItem,
 } from "@sales/features/PlaceOrder";
-import { SalesCustomer } from "@sales/domain";
+import { SalesCustomer, SalesOrder } from "@sales/domain";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class HandleMyEasySuiteOrderPlaced
@@ -30,7 +31,8 @@ export class HandleMyEasySuiteOrderPlaced
   );
   constructor(
     private readonly _auth: AuthService,
-    private readonly repo: SalesOrderRepository
+    private readonly repo: SalesOrderRepository,
+    private readonly placeOrder: PlaceOrder
   ) {}
   @OnEvent(MyEasySuiteOrderEventName.OrderPlaced, { async: true })
   async execute(dto: MyEasySuiteOrderPlaced): Promise<void> {
@@ -39,12 +41,12 @@ export class HandleMyEasySuiteOrderPlaced
     );
     let orderId = dto.aggregateId;
     let exists = await this.repo.existsWithName(orderId);
-    if (exists) {
-      this.logger.debug(
-        `[EXISTS] ${MyEasySuiteOrderEventName.OrderPlaced} '${dto.aggregateId}'`
-      );
-      return;
-    }
+    // if (exists) {
+    //   this.logger.debug(
+    //     `[EXISTS] ${MyEasySuiteOrderEventName.OrderPlaced} '${dto.aggregateId}'`
+    //   );
+    //   return;
+    // }
     const order = dto.details;
     let sdto = new PlaceOrderRequest();
 
@@ -100,7 +102,7 @@ export class HandleMyEasySuiteOrderPlaced
     }
     const account = result.value();
     sdto.accountId = account.entity().id;
-    // let salesOrder = await this.createSalesOrder.execute(sdto);
-    // this.logger.debug(`[CREATED] ${SalesOrder.name} '${salesOrder.id}'`);
+    let salesOrder = await this.placeOrder.execute(sdto);
+    this.logger.debug(`[CREATED] ${SalesOrder.name} '${salesOrder.id}'`);
   }
 }

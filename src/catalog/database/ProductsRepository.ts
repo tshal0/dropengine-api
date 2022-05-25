@@ -101,6 +101,7 @@ export class ProductsRepository {
     if (dbe) {
       return await dbe;
     }
+    //TODO Ick
     return null;
   }
   public async findBySku(sku: string): Promise<DbProduct> {
@@ -108,6 +109,7 @@ export class ProductsRepository {
     if (dbe) {
       return await dbe;
     }
+    //TODO Ick
     return null;
   }
   public async delete(id: string): Promise<any> {
