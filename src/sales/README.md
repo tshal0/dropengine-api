@@ -50,31 +50,53 @@ We want to provide the ability for merchants to place orders in our system, allo
 
 ## Structure
 
-1. API
+1. Features
+   1. PlaceOrder
+   2. ChangeCustomerInfo
+   3. ChangePersonalization
+   4. ChangeShippingAddress
+   5. HandleMyEasySuiteOrder
+2. Services
+   1. SalesService (handling CRUD operations), findById, query, delete, loadEvents
+3. API
    1. Controllers
    2. DTO
    3. Middleware (pipes, validators)
    4. Exceptions (formatted for the Response to the Client)
-2. Domain
-   1. SalesOrder
-      1. Id
-      2. Number
-      3. Name
-      4. Status
-      5. UpdatedAt
-      6. CreatedAt
-   2. LineItem
-   3. Customer
-   4. Address
-3. Database
+4. Domain
+   1. Events
+   2. Model
+      1. SalesOrder
+         1. Id
+         2. Number
+         3. Name
+         4. Status
+         5. UpdatedAt
+         6. CreatedAt
+      2. SalesLineItem
+      3. SalesCustomer
+      4. SalesVariant
+      5. Personalization
+5. Database
    1. Mongo
-      1. DbSalesOrder (entity)
-      2. DbSalesOrderDocument (entity + document)
-      3. DbSalesOrderSchema (document into schema)
-   2. DbSalesOrderRepository
-      1. Takes the DbSalesOrder and persists
-   3. DbSalesOrderQueries
-      1. Used to perform queries on the collection
+      1. repositories
+         1. DomainEventRepository
+         2. OrdersRepository
+      2. schemas
+         1. Address
+         2. Customer
+         3. Dimension
+         4. DomainEvent
+         5. LineItemProperty
+         6. Money
+         7. PersonalizationRule
+         8. ProductionData
+         9. SalesLineItem
+         10. SalesOrder
+         11. SalesVariant
+         12. SalesVariantOption
+         13. Weight
+   2. SalesOrderRepository
 
 ## Order Creation Process
 
@@ -120,10 +142,10 @@ We want to provide the ability for merchants to place orders in our system, allo
       17. Size
 7. Validate User Authorization
 
-## Results vs Exceptions
+## ~~Results vs Exceptions~~ **Deprecated**
 
-We typically use Results only for ValueObjects in order to aggregate the validation errors before throwing an exception.
+~~We typically use Results only for ValueObjects in order to aggregate the validation errors before throwing an exception.~~
 
-Aggregates throw ValidationExceptions.
+~~Aggregates throw ValidationExceptions.~~
 
-UseCases, Controllers use Exceptions.
+~~UseCases, Controllers use Exceptions.~~

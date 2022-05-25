@@ -7,7 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator";
-import { OrderPlacedDetails } from "@sales/domain/events/OrderPlaced";
+import { ILineItemProperty, OrderPlacedDetails } from "@sales/domain/events";
 import { IAddress } from "@shared/domain";
 
 export class PlaceOrderRequest {
@@ -45,7 +45,13 @@ export class PlaceOrderRequest {
   @IsOptional()
   billingAddress: IAddress;
 }
-export class LineItemProperty {
+export class LineItemProperty implements ILineItemProperty {
+  constructor(props?: ILineItemProperty | undefined) {
+    if (props) {
+      this.name = props.name;
+      this.value = props.value;
+    }
+  }
   @IsNotEmpty()
   @IsString()
   name: string;
