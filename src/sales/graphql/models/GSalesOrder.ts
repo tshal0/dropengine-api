@@ -7,8 +7,9 @@ import {
 } from "@sales/domain";
 import { SalesOrderEvent } from "@sales/domain/events";
 import { IAddress } from "@shared/domain";
+import { GSalesLineItem } from "./GSalesLineItem";
 
-@ObjectType({ description: "SalesOrder " })
+@ObjectType({ description: "salesOrder " })
 export class GSalesOrder implements ISalesOrderProps {
   constructor(props?: ISalesOrderProps | undefined) {
     if (props) {
@@ -27,7 +28,8 @@ export class GSalesOrder implements ISalesOrderProps {
   orderDate: Date;
   @Field()
   orderStatus: OrderStatus;
-  lineItems: ISalesLineItemProps[];
+  @Field((type) => [GSalesLineItem])
+  lineItems: GSalesLineItem[];
   customer: ISalesCustomer;
   shippingAddress: IAddress;
   billingAddress: IAddress;

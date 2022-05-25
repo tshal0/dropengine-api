@@ -1,1 +1,1 @@
-export * from './GSalesOrder.graphql';
+export * from './GSalesOrder';

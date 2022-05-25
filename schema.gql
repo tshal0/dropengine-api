@@ -4,7 +4,85 @@
 
 directive @upper on FIELD_DEFINITION
 
-"""SalesOrder """
+"""personalization"""
+type GPersonalization {
+  name: String!
+  value: String!
+}
+
+"""dimension """
+type GDimension {
+  dimension: Float!
+  units: String!
+}
+
+"""money """
+type GMoney {
+  total: Float!
+  currency: String!
+}
+
+"""personalizationRule """
+type GPersonalizationRule {
+  name: String!
+  type: String!
+  label: String!
+  options: String!
+  pattern: String!
+  required: Boolean!
+  maxLength: Float!
+  placeholder: String!
+}
+
+"""productionData """
+type GProductionData {
+  route: String!
+  material: String!
+  thickness: String!
+}
+
+"""variantOption """
+type GVariantOption {
+  name: String!
+  value: String
+}
+
+"""weight """
+type GWeight {
+  dimension: Float!
+  units: String!
+}
+
+"""salesVariant """
+type GSalesVariant {
+  id: String!
+  productId: String!
+  productTypeId: String!
+  sku: String!
+  image: String!
+  svg: String!
+  type: String!
+  option1: GVariantOption!
+  option2: GVariantOption!
+  option3: GVariantOption!
+  productionData: GProductionData!
+  personalizationRules: [GPersonalizationRule!]!
+  manufacturingCost: GMoney!
+  shippingCost: GMoney!
+  weight: GWeight!
+  height: GDimension!
+  width: GDimension!
+}
+
+"""salesLineItem """
+type GSalesLineItem {
+  lineNumber: Float!
+  quantity: Float!
+  variant: GSalesVariant!
+  personalization: [GPersonalization!]!
+}
+
+"""salesOrder """
 type GSalesOrder {
   id: ID!
   accountId: String!
@@ -12,6 +90,7 @@ type GSalesOrder {
   orderNumber: Float!
   orderDate: DateTime!
   orderStatus: String!
+  lineItems: [GSalesLineItem!]!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
