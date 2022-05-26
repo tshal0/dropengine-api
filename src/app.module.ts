@@ -62,7 +62,9 @@ import { upperDirectiveTransformer } from "@shared/graphql";
     MikroOrmModule.forRoot(mikroOrmOptions),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      playground: true,
+      playground: new Boolean(process.env.GRAPHQL_PLAYGROUND).valueOf() || true,
+      introspection:
+        new Boolean(process.env.GRAPHQL_PLAYGROUND).valueOf() || true,
       autoSchemaFile: "schema.gql",
       transformSchema: (schema) => upperDirectiveTransformer(schema, "upper"),
       installSubscriptionHandlers: true,
