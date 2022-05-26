@@ -34,3 +34,27 @@ Implementation:
 5. Mutations
    1. Should be NO mutations yet
    2. Future mutations would occur like commands.
+
+## Azure Application Gateway Changes to allow GraphQL
+
+1. Add Listener agw-listener-dropengine-env-gql
+   1. Public, 443, Existing Cert, Host type: Multiple/Wildcard, Host names: env.drop-engine.com/graphql\*
+2. Add Backend Setting agw-hs-gql-env-https
+   1. HTTPS
+   2. 443
+   3. Use well known CA cert (yes)
+   4. Cookie based affinity (disable)
+   5. Connection draining (disable)
+   6. Request timeout (20)
+   7. Override Backend Path: LEAVE BLANK
+   8. Override with new host name: YES
+   9. Host name override: Override with specific domain name
+   10. Host name: app-dropengine-env.azurewebsites.net
+   11. Use custom probe: yes
+   12. Custom probe: same as API
+3. Edit Rule agw-rule-dropengine-env
+   1. Add Path based routing > Path based rule:
+      1. Path: /graphql
+      2. Target: de-gql-env
+      3. Backend setting: agw-hs-gql-env-https
+      4. Backend pool: agw-api-env
