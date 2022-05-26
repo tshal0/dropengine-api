@@ -31,8 +31,8 @@ export class SalesOrdersResolver {
     const filter: mongoose.FilterQuery<ISalesOrderProps> = {};
     if (args.orderName) filter.orderName = args.orderName;
     let result = await this.service.query({
-      limit: args.take,
-      skip: args.skip,
+      limit: args.size,
+      skip: args.page,
       filter: filter,
     });
     return result.data.map((d) => d.raw());
@@ -45,8 +45,8 @@ export class SalesOrdersResolver {
     const filter: mongoose.FilterQuery<ISalesOrderProps> = {};
     if (args.orderName) filter.orderName = args.orderName;
     let result = await this.service.query({
-      limit: args.take,
-      skip: args.skip,
+      limit: args.size,
+      skip: args.page * args.size,
       filter: filter,
     });
     let salesOrders = result.data.map((d) => d.raw());

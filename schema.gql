@@ -140,8 +140,8 @@ type PaginatedSalesOrders {
 
 type Query {
   salesOrder(id: String!): SalesOrder!
-  salesOrders(skip: Int = 0, take: Int = 25, orderName: String): [SalesOrder!]!
-  paginatedSalesOrders(skip: Int = 0, take: Int = 25, orderName: String): PaginatedSalesOrders!
+  salesOrders(page: Int = 0, size: Int = 25, orderName: String): [SalesOrder!]!
+  paginatedSalesOrders(page: Int = 0, size: Int = 25, orderName: String): PaginatedSalesOrders!
 }
 
 type Subscription {

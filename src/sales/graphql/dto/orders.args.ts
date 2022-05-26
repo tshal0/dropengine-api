@@ -5,12 +5,12 @@ import { Max, Min } from "class-validator";
 export class SalesOrdersArgs {
   @Field((type) => Int)
   @Min(0)
-  skip = 0;
+  page = 0;
 
   @Field((type) => Int)
   @Min(1)
   @Max(100)
-  take = 25;
+  size = 25;
 
   @Field({ nullable: true })
   orderName: string;

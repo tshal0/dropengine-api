@@ -45,14 +45,17 @@ export class MongoOrdersRepository {
   async query(
     params: MongoQueryParams<MongoSalesOrder>
   ): Promise<SalesOrderQueryResult> {
+    const { filter, skip, limit, sort, projection } = params;
+    const size = params.limit || 25;
+    const page = skip > size ? skip / size : 0;
     const resp: SalesOrderQueryResult = {
       total: 0,
       pages: 0,
-      size: params.limit,
-      page: params.skip || 0,
+      size: size,
+      page: page,
       data: [],
     };
-    const { filter, skip, limit, sort, projection } = params;
+
     const countResult = await this.model.count(filter);
     const result = await this.model
       .find(filter, { __v: 0 })
