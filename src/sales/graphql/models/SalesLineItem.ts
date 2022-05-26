@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { ISalesLineItemProps, OrderFlag } from "@sales/domain";
-import { Personalization } from "./GPersonalization";
-import { SalesVariant } from "./GSalesVariant";
+import { Personalization } from "./Personalization";
+import { SalesVariant } from "./SalesVariant";
 
 @ObjectType({ description: "SalesLineItem" })
 export class SalesLineItem implements ISalesLineItemProps {

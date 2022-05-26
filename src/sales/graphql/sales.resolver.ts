@@ -4,7 +4,7 @@ import { ISalesOrderProps } from "@sales/domain";
 import { SalesService } from "@sales/services";
 import { PubSub } from "graphql-subscriptions";
 import mongoose from "mongoose";
-import { GSalesOrdersArgs } from "./dto";
+import { SalesOrdersArgs } from "./dto";
 import { SalesOrder } from "./models";
 
 const pubSub = new PubSub();
@@ -25,7 +25,7 @@ export class SalesOrdersResolver {
   }
 
   @Query((returns) => [SalesOrder])
-  async salesOrders(@Args() args: GSalesOrdersArgs): Promise<SalesOrder[]> {
+  async salesOrders(@Args() args: SalesOrdersArgs): Promise<SalesOrder[]> {
     this.logger.debug(args);
     const filter: mongoose.FilterQuery<ISalesOrderProps> = {};
     if (args.orderName) filter.orderName = args.orderName;

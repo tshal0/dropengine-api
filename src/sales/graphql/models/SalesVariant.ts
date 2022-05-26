@@ -6,12 +6,12 @@ import {
 import { Field, ObjectType } from "@nestjs/graphql";
 import { ISalesVariantProps } from "@sales/domain";
 import { IDimension, IMoney, IWeight } from "@shared/domain";
-import { Dimension } from "./GDimension";
-import { Money } from "./GMoney";
-import { PersonalizationRule } from "./GPersonalizationRule";
-import { ProductionData } from "./GProductionData";
-import { VariantOption } from "./GVariantOption";
-import { Weight } from "./GWeight";
+import { Dimension } from "./Dimension";
+import { Money } from "./Money";
+import { PersonalizationRule } from "./PersonalizationRule";
+import { ProductionData } from "./ProductionData";
+import { VariantOption } from "./VariantOption";
+import { Weight } from "./Weight";
 
 @ObjectType({ description: "SalesVariant" })
 export class SalesVariant implements ISalesVariantProps {

@@ -51,15 +51,20 @@ export class AccountsController {
   @Get(":id")
   @UseGuards(AuthGuard())
   async get(@Param("id") id: string): Promise<IAccountResponseDto> {
-    let result = await this.getAccount.execute(id);
-    if (result.isFailure) {
-      throw new EntityNotFoundException(
-        `Failed to Find Account '${id}'`,
-        id,
-        result.error.message
-      );
+    try {
+      let result = await this.getAccount.execute(id);
+      if (result.isFailure) {
+        throw new EntityNotFoundException(
+          `Failed to Find Account '${id}'`,
+          id,
+          result.error.message
+        );
+      }
+      return await this.generateAccountResponse(result.value());
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
     }
-    return await this.generateAccountResponse(result.value());
   }
 
   @Delete(":id")

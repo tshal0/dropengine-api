@@ -7,9 +7,9 @@ import {
 } from "@sales/domain";
 import { SalesOrderEvent } from "@sales/domain/events";
 import { IAddress } from "@shared/domain";
-import { Address } from "./GAddress";
-import { Customer } from "./GCustomer";
-import { SalesLineItem } from "./GSalesLineItem";
+import { Address } from "./Address";
+import { Customer } from "./Customer";
+import { SalesLineItem } from "./SalesLineItem";
 
 @ObjectType({ description: "SalesOrder" })
 export class SalesOrder implements ISalesOrderProps {
