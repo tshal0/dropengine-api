@@ -6,15 +6,15 @@ import {
 import { Field, ObjectType } from "@nestjs/graphql";
 import { ISalesVariantProps } from "@sales/domain";
 import { IDimension, IMoney, IWeight } from "@shared/domain";
-import { GDimension } from "./GDimension";
-import { GMoney } from "./GMoney";
-import { GPersonalizationRule } from "./GPersonalizationRule";
-import { GProductionData } from "./GProductionData";
-import { GVariantOption } from "./GVariantOption";
-import { GWeight } from "./GWeight";
+import { Dimension } from "./GDimension";
+import { Money } from "./GMoney";
+import { PersonalizationRule } from "./GPersonalizationRule";
+import { ProductionData } from "./GProductionData";
+import { VariantOption } from "./GVariantOption";
+import { Weight } from "./GWeight";
 
-@ObjectType({ description: "salesVariant " })
-export class GSalesVariant implements ISalesVariantProps {
+@ObjectType({ description: "SalesVariant" })
+export class SalesVariant implements ISalesVariantProps {
   @Field()
   id: string;
   @Field()
@@ -29,24 +29,24 @@ export class GSalesVariant implements ISalesVariantProps {
   svg: string;
   @Field()
   type: string;
-  @Field((type) => GVariantOption)
+  @Field((type) => VariantOption)
   option1: IVariantOption;
-  @Field((type) => GVariantOption)
+  @Field((type) => VariantOption)
   option2: IVariantOption;
-  @Field((type) => GVariantOption)
+  @Field((type) => VariantOption)
   option3: IVariantOption;
-  @Field((type) => GProductionData)
+  @Field((type) => ProductionData)
   productionData: IProductionData;
-  @Field((type) => [GPersonalizationRule])
+  @Field((type) => [PersonalizationRule])
   personalizationRules: IPersonalizationRule[];
-  @Field((type) => GMoney)
+  @Field((type) => Money)
   manufacturingCost: IMoney;
-  @Field((type) => GMoney)
+  @Field((type) => Money)
   shippingCost: IMoney;
-  @Field((type) => GWeight)
+  @Field((type) => Weight)
   weight: IWeight;
-  @Field((type) => GDimension)
+  @Field((type) => Dimension)
   height: IDimension;
-  @Field((type) => GDimension)
+  @Field((type) => Dimension)
   width: IDimension;
 }

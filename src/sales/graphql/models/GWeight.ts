@@ -1,8 +1,8 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { IWeight } from "@shared/domain";
 
-@ObjectType({ description: "weight " })
-export class GWeight implements IWeight {
+@ObjectType({ description: "Weight" })
+export class Weight implements IWeight {
   @Field()
   dimension: number;
   @Field()

@@ -1,8 +1,8 @@
 import { IPersonalizationRule } from "@catalog/model";
 import { Field, ObjectType } from "@nestjs/graphql";
 
-@ObjectType({ description: "personalizationRule " })
-export class GPersonalizationRule implements IPersonalizationRule {
+@ObjectType({ description: "PersonalizationRule" })
+export class PersonalizationRule implements IPersonalizationRule {
   @Field()
   name: string;
   @Field()

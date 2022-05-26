@@ -5,18 +5,18 @@ import { SalesService } from "@sales/services";
 import { PubSub } from "graphql-subscriptions";
 import mongoose from "mongoose";
 import { GSalesOrdersArgs } from "./dto";
-import { GSalesOrder } from "./models";
+import { SalesOrder } from "./models";
 
 const pubSub = new PubSub();
 
-@Resolver((of) => GSalesOrder)
+@Resolver((of) => SalesOrder)
 export class SalesOrdersResolver {
   private readonly logger: Logger = new Logger(SalesOrdersResolver.name);
 
   constructor(private readonly service: SalesService) {}
 
-  @Query((returns) => GSalesOrder)
-  async salesOrder(@Args("id") id: string): Promise<GSalesOrder> {
+  @Query((returns) => SalesOrder)
+  async salesOrder(@Args("id") id: string): Promise<SalesOrder> {
     const salesOrder = await this.service.findById(id);
     if (!salesOrder) {
       throw new NotFoundException(id);
@@ -24,8 +24,8 @@ export class SalesOrdersResolver {
     return salesOrder;
   }
 
-  @Query((returns) => [GSalesOrder])
-  async salesOrders(@Args() args: GSalesOrdersArgs): Promise<GSalesOrder[]> {
+  @Query((returns) => [SalesOrder])
+  async salesOrders(@Args() args: GSalesOrdersArgs): Promise<SalesOrder[]> {
     this.logger.debug(args);
     const filter: mongoose.FilterQuery<ISalesOrderProps> = {};
     if (args.orderName) filter.orderName = args.orderName;
@@ -37,7 +37,7 @@ export class SalesOrdersResolver {
     return result.data.map((d) => d.raw());
   }
 
-  @Subscription((returns) => GSalesOrder)
+  @Subscription((returns) => SalesOrder)
   salesOrderAdded() {
     return pubSub.asyncIterator("salesOrderAdded");
   }

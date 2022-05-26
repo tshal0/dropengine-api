@@ -4,8 +4,8 @@
 
 directive @upper on FIELD_DEFINITION
 
-"""salesCustomer"""
-type GAddress {
+"""Address"""
+type Address {
   address1: String!
   zip: String!
   city: String!
@@ -24,32 +24,32 @@ type GAddress {
   longitude: Float
 }
 
-"""salesCustomer"""
-type GCustomer {
+"""SalesCustomer"""
+type Customer {
   name: String!
   email: String!
 }
 
-"""dimension """
-type GDimension {
+"""Dimension"""
+type Dimension {
   dimension: Float!
   units: String!
 }
 
-"""money """
-type GMoney {
+"""Money"""
+type Money {
   total: Float!
   currency: String!
 }
 
-"""personalization"""
-type GPersonalization {
+"""Personalization"""
+type Personalization {
   name: String!
   value: String!
 }
 
-"""personalizationRule """
-type GPersonalizationRule {
+"""PersonalizationRule"""
+type PersonalizationRule {
   name: String!
   type: String!
   label: String!
@@ -60,27 +60,27 @@ type GPersonalizationRule {
   placeholder: String!
 }
 
-"""productionData """
-type GProductionData {
+"""ProductionData """
+type ProductionData {
   route: String!
   material: String!
   thickness: String!
 }
 
-"""variantOption """
-type GVariantOption {
+"""VariantOption"""
+type VariantOption {
   name: String!
   value: String
 }
 
-"""weight """
-type GWeight {
+"""Weight"""
+type Weight {
   dimension: Float!
   units: String!
 }
 
-"""salesVariant """
-type GSalesVariant {
+"""SalesVariant"""
+type SalesVariant {
   id: String!
   productId: String!
   productTypeId: String!
@@ -88,38 +88,38 @@ type GSalesVariant {
   image: String!
   svg: String!
   type: String!
-  option1: GVariantOption!
-  option2: GVariantOption!
-  option3: GVariantOption!
-  productionData: GProductionData!
-  personalizationRules: [GPersonalizationRule!]!
-  manufacturingCost: GMoney!
-  shippingCost: GMoney!
-  weight: GWeight!
-  height: GDimension!
-  width: GDimension!
+  option1: VariantOption!
+  option2: VariantOption!
+  option3: VariantOption!
+  productionData: ProductionData!
+  personalizationRules: [PersonalizationRule!]!
+  manufacturingCost: Money!
+  shippingCost: Money!
+  weight: Weight!
+  height: Dimension!
+  width: Dimension!
 }
 
-"""salesLineItem """
-type GSalesLineItem {
+"""SalesLineItem"""
+type SalesLineItem {
   lineNumber: Float!
   quantity: Float!
-  variant: GSalesVariant!
-  personalization: [GPersonalization!]!
+  variant: SalesVariant!
+  personalization: [Personalization!]!
 }
 
-"""salesOrder """
-type GSalesOrder {
+"""SalesOrder"""
+type SalesOrder {
   id: ID!
   accountId: String!
   orderName: String!
   orderNumber: Float!
   orderDate: DateTime!
   orderStatus: String!
-  lineItems: [GSalesLineItem!]!
-  customer: GCustomer!
-  shippingAddress: GAddress!
-  billingAddress: GAddress!
+  lineItems: [SalesLineItem!]!
+  customer: Customer!
+  shippingAddress: Address!
+  billingAddress: Address!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -130,10 +130,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Query {
-  salesOrder(id: String!): GSalesOrder!
-  salesOrders(skip: Int = 0, take: Int = 25, orderName: String): [GSalesOrder!]!
+  salesOrder(id: String!): SalesOrder!
+  salesOrders(skip: Int = 0, take: Int = 25, orderName: String): [SalesOrder!]!
 }
 
 type Subscription {
-  salesOrderAdded: GSalesOrder!
+  salesOrderAdded: SalesOrder!
 }

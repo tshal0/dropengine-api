@@ -1,9 +1,8 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { IAddress } from "@shared/domain";
 
-
-@ObjectType({ description: "salesCustomer" })
-export class GAddress implements IAddress {
+@ObjectType({ description: "Address" })
+export class Address implements IAddress {
   @Field()
   address1: string;
   @Field()

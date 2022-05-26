@@ -1,8 +1,8 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { IDimension } from "@shared/domain";
 
-@ObjectType({ description: "dimension " })
-export class GDimension implements IDimension {
+@ObjectType({ description: "Dimension" })
+export class Dimension implements IDimension {
   constructor(props?: IDimension | undefined) {
     if (props) {
       this.dimension = props.dimension;

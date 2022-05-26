@@ -1,8 +1,8 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { IMoney } from "@shared/domain";
 
-@ObjectType({ description: "money " })
-export class GMoney implements IMoney {
+@ObjectType({ description: "Money" })
+export class Money implements IMoney {
   @Field()
   total: number;
   @Field()
