@@ -129,9 +129,19 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+"""PaginatedSalesOrders"""
+type PaginatedSalesOrders {
+  count: Float!
+  page: Float!
+  pages: Float!
+  size: Float!
+  salesOrders: [SalesOrder!]!
+}
+
 type Query {
   salesOrder(id: String!): SalesOrder!
   salesOrders(skip: Int = 0, take: Int = 25, orderName: String): [SalesOrder!]!
+  paginatedSalesOrders(skip: Int = 0, take: Int = 25, orderName: String): PaginatedSalesOrders!
 }
 
 type Subscription {

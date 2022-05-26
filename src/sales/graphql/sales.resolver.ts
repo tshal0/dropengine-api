@@ -5,6 +5,7 @@ import { SalesService } from "@sales/services";
 import { PubSub } from "graphql-subscriptions";
 import mongoose from "mongoose";
 import { SalesOrdersArgs } from "./dto";
+import { PaginatedSalesOrders } from "./dto/PaginatedSalesOrders";
 import { SalesOrder } from "./models";
 
 const pubSub = new PubSub();
@@ -35,6 +36,27 @@ export class SalesOrdersResolver {
       filter: filter,
     });
     return result.data.map((d) => d.raw());
+  }
+  @Query((returns) => PaginatedSalesOrders)
+  async paginatedSalesOrders(
+    @Args() args: SalesOrdersArgs
+  ): Promise<PaginatedSalesOrders> {
+    this.logger.debug(args);
+    const filter: mongoose.FilterQuery<ISalesOrderProps> = {};
+    if (args.orderName) filter.orderName = args.orderName;
+    let result = await this.service.query({
+      limit: args.take,
+      skip: args.skip,
+      filter: filter,
+    });
+    let salesOrders = result.data.map((d) => d.raw());
+    return new PaginatedSalesOrders({
+      count: result.total,
+      page: result.page,
+      pages: result.pages,
+      size: result.size,
+      salesOrders,
+    });
   }
 
   @Subscription((returns) => SalesOrder)
