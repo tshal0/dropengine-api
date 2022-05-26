@@ -11,4 +11,7 @@ export class GSalesOrdersArgs {
   @Min(1)
   @Max(100)
   take = 25;
+
+  @Field({ nullable: true })
+  orderName: string;
 }

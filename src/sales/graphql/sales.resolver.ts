@@ -1,7 +1,9 @@
 import { Logger, NotFoundException } from "@nestjs/common";
 import { Args, Mutation, Query, Resolver, Subscription } from "@nestjs/graphql";
+import { ISalesOrderProps } from "@sales/domain";
 import { SalesService } from "@sales/services";
 import { PubSub } from "graphql-subscriptions";
+import mongoose from "mongoose";
 import { GSalesOrdersArgs } from "./dto";
 import { GSalesOrder } from "./models";
 
@@ -25,9 +27,12 @@ export class SalesOrdersResolver {
   @Query((returns) => [GSalesOrder])
   async salesOrders(@Args() args: GSalesOrdersArgs): Promise<GSalesOrder[]> {
     this.logger.debug(args);
+    const filter: mongoose.FilterQuery<ISalesOrderProps> = {};
+    if (args.orderName) filter.orderName = args.orderName;
     let result = await this.service.query({
       limit: args.take,
       skip: args.skip,
+      filter: filter,
     });
     return result.data.map((d) => d.raw());
   }

@@ -42,7 +42,9 @@ export class MongoOrdersRepository {
     return result ? new MongoSalesOrder(result) : null;
   }
 
-  async query(params: MongoQueryParams): Promise<SalesOrderQueryResult> {
+  async query(
+    params: MongoQueryParams<MongoSalesOrder>
+  ): Promise<SalesOrderQueryResult> {
     const resp: SalesOrderQueryResult = {
       total: 0,
       pages: 0,

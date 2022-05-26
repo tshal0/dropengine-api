@@ -121,7 +121,7 @@ export class SalesOrderRepository {
     return await this._orders.delete(id);
   }
 
-  public async query(params: MongoQueryParams) {
+  public async query(params: MongoQueryParams<MongoSalesOrder>) {
     let result = await this._orders.query(params);
     return result;
   }

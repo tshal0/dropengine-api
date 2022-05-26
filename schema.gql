@@ -131,7 +131,7 @@ scalar DateTime
 
 type Query {
   salesOrder(id: String!): GSalesOrder!
-  salesOrders(skip: Int = 0, take: Int = 25): [GSalesOrder!]!
+  salesOrders(skip: Int = 0, take: Int = 25, orderName: String): [GSalesOrder!]!
 }
 
 type Subscription {

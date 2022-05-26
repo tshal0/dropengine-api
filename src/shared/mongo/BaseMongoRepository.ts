@@ -6,12 +6,12 @@ export interface ResultSet<T> {
   result: T[];
 }
 
-export class MongoQueryParams {
+export class MongoQueryParams<T> {
   @IsNumberString()
   skip?: number;
   @IsNumberString()
   limit?: number;
-  filter?: any;
+  filter?: mongoose.FilterQuery<T>;
   sort?: any;
   projection?: any;
 }
@@ -53,7 +53,7 @@ export class BaseMongoRepository<T> implements IRead<T>, IWrite<T> {
     return await this._model.findByIdAndRemove(_id);
   }
 
-  async find(params: MongoQueryParams): Promise<ResultSet<T>> {
+  async find(params: MongoQueryParams<T>): Promise<ResultSet<T>> {
     const resp: ResultSet<T> = {
       count: 0,
       result: [],
@@ -73,8 +73,8 @@ export class BaseMongoRepository<T> implements IRead<T>, IWrite<T> {
     return resp;
   }
 }
-export const convertUrlToMongoQuery = (url: string): MongoQueryParams => {
+export const convertUrlToMongoQuery = (url: string): MongoQueryParams<any> => {
   let query = url.split("?")[1];
-  const params: MongoQueryParams = aqp(query);
+  const params: MongoQueryParams<any> = aqp(query);
   return params;
 };

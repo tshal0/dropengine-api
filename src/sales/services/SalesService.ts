@@ -4,7 +4,7 @@ import {
   SalesOrderQueryResult,
   SalesOrderRepository,
 } from "@sales/database";
-import { SalesOrder } from "@sales/domain";
+import { ISalesOrderProps, SalesOrder } from "@sales/domain";
 import { DomainEvent } from "@shared/domain/events/DomainEvent";
 import { MongoQueryParams } from "@shared/mongo";
 
@@ -24,7 +24,9 @@ export class SalesService {
    * @param params SalesOrderQueryParams
    * @returns SalesOrderQueryResult
    */
-  public async query(params: MongoQueryParams): Promise<SalesOrderQueryResult> {
+  public async query(
+    params: MongoQueryParams<ISalesOrderProps>
+  ): Promise<SalesOrderQueryResult> {
     let result = await this._repo.query(params);
     return result;
   }
