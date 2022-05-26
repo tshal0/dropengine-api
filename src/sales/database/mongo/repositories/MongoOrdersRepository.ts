@@ -47,7 +47,7 @@ export class MongoOrdersRepository {
   ): Promise<SalesOrderQueryResult> {
     const { filter, skip, limit, sort, projection } = params;
     const size = params.limit || 25;
-    const page = skip > size ? skip / size : 0;
+    const page = skip >= size ? skip / size : 0;
     const resp: SalesOrderQueryResult = {
       total: 0,
       pages: 0,

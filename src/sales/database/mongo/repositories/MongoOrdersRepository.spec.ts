@@ -122,7 +122,7 @@ describe("MongoOrdersRepository", () => {
       });
       let p2 = await service.query({
         limit: 10,
-        skip: 1,
+        skip: 10,
         sort: { orderDate: -1 },
       });
 
