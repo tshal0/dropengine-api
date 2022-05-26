@@ -135,7 +135,7 @@ type PaginatedSalesOrders {
   page: Float!
   pages: Float!
   size: Float!
-  salesOrders: [SalesOrder!]!
+  data: [SalesOrder!]!
 }
 
 type Query {

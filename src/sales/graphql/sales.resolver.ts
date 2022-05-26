@@ -49,13 +49,13 @@ export class SalesOrdersResolver {
       skip: args.page * args.size,
       filter: filter,
     });
-    let salesOrders = result.data.map((d) => d.raw());
+    let orders = result.data.map((d) => d.raw());
     return new PaginatedSalesOrders({
       count: result.total,
       page: result.page,
       pages: result.pages,
       size: result.size,
-      salesOrders,
+      data: orders,
     });
   }
 
