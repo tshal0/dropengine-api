@@ -51,6 +51,7 @@ export class PlaceOrder implements UseCase<PlaceOrderRequest, SalesOrder> {
         customer: request.customer,
         shippingAddress: request.shippingAddress,
         billingAddress: request.billingAddress,
+        merchant: request.merchant,
         lineItems: lineItems,
       });
       let order = new SalesOrder();

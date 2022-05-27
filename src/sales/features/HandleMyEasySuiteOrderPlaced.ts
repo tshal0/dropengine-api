@@ -22,6 +22,7 @@ import {
 } from "@sales/features/PlaceOrder";
 import { SalesCustomer, SalesOrder } from "@sales/domain";
 import { extractOrderNumber } from "@sales/utils";
+import { SalesMerchant } from "@sales/domain/model/ISalesMerchant";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class HandleMyEasySuiteOrderPlaced
@@ -50,7 +51,12 @@ export class HandleMyEasySuiteOrderPlaced
     // }
     const order = dto.details;
     let sdto = new PlaceOrderRequest();
-
+    const merchant = order.store;
+    sdto.merchant = new SalesMerchant({
+      email: merchant.email,
+      name: merchant.name,
+      shopOrigin: merchant.shop_origin,
+    });
     sdto.customer = new SalesCustomer();
     sdto.customer.email = order.customer_email;
     sdto.customer.name = order.customer_name;

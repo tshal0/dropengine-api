@@ -8,8 +8,8 @@ export class SalesCustomer implements ISalesCustomer {
   private _email: string = "";
   constructor(props?: ISalesCustomer | undefined) {
     if (props) {
-      this._email = props.email;
-      this._name = props.name;
+      this._email = props.email || "";
+      this._name = props.name || "";
     }
   }
   public raw(): ISalesCustomer {

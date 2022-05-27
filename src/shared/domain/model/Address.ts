@@ -42,22 +42,22 @@ export class Address implements IAddress {
 
   constructor(props?: IAddress | undefined) {
     if (props) {
-      this._zip = props.zip;
-      this._city = props.city;
-      this._name = props.name;
-      this._phone = props.phone;
-      this._company = props.company;
-      this._country = props.country;
-      this._address1 = props.address1;
-      this._address2 = props.address2;
-      this._address3 = props.address3;
-      this._latitude = props.latitude;
-      this._longitude = props.longitude;
-      this._province = props.province;
-      this._lastName = props.lastName;
-      this._firstName = props.firstName;
-      this._countryCode = props.countryCode;
-      this._provinceCode = props.provinceCode;
+      this._zip = props.zip || "";
+      this._city = props.city || "";
+      this._name = props.name || "";
+      this._phone = props.phone || "";
+      this._company = props.company || "";
+      this._country = props.country || "";
+      this._address1 = props.address1 || "";
+      this._address2 = props.address2 || "";
+      this._address3 = props.address3 || "";
+      this._latitude = props.latitude || 0;
+      this._longitude = props.longitude || 0;
+      this._province = props.province || "";
+      this._lastName = props.lastName || "";
+      this._firstName = props.firstName || "";
+      this._countryCode = props.countryCode || "";
+      this._provinceCode = props.provinceCode || "";
     }
   }
 

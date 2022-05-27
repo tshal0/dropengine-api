@@ -10,6 +10,7 @@ import { CustomerInfoChanged } from "../events/CustomerInfoChanged";
 import { IPersonalization, Personalization } from "./Personalization";
 import { PersonalizationChanged } from "../events/PersonalizationChanged";
 import { ShippingAddressChanged } from "../events/ShippingAddressChanged";
+import { ISalesMerchant, SalesMerchant } from "./ISalesMerchant";
 
 export enum OrderStatus {
   OPEN = "OPEN",
@@ -28,6 +29,7 @@ export interface ISalesOrderProps {
   orderStatus: OrderStatus;
   lineItems: ISalesLineItemProps[];
   customer: ISalesCustomer;
+  merchant: ISalesMerchant;
   shippingAddress: IAddress;
   billingAddress: IAddress;
   events: SalesOrderEvent<any>[];
@@ -44,6 +46,7 @@ export interface ISalesOrder {
   orderStatus: OrderStatus;
   lineItems: SalesLineItem[];
   customer: SalesCustomer;
+  merchant: SalesMerchant;
   shippingAddress: Address;
   billingAddress: Address;
   updatedAt: Date;
@@ -58,6 +61,7 @@ export class SalesOrder implements ISalesOrder {
   private _orderStatus: OrderStatus = OrderStatus.OPEN;
   private _lineItems: SalesLineItem[] = [];
   private _customer: SalesCustomer = new SalesCustomer();
+  private _merchant: SalesMerchant = new SalesMerchant();
   private _shippingAddress: Address = new Address();
   private _billingAddress: Address = new Address();
   private _updatedAt: Date = moment().toDate();
@@ -69,18 +73,24 @@ export class SalesOrder implements ISalesOrder {
       this._accountId = validator.isUUID(`${props.accountId}`)
         ? props.accountId
         : null;
-      this._orderName = props.orderName;
-      this._orderNumber = props.orderNumber;
+      this._orderName = props.orderName || "";
+      this._orderNumber = props.orderNumber || 0;
       this._orderDate = isDate(props.orderDate)
         ? new Date(props.orderDate)
-        : null;
-      this._orderStatus = props.orderStatus;
-      this._lineItems = props.lineItems.map((li) => new SalesLineItem(li));
+        : moment().toDate();
+      this._orderStatus = props.orderStatus || OrderStatus.OPEN;
+      this._lineItems =
+        props.lineItems?.map((li) => new SalesLineItem(li)) || [];
       this._customer = new SalesCustomer(props.customer);
+      this._merchant = new SalesMerchant(props.merchant);
       this._shippingAddress = new Address(props.shippingAddress);
       this._billingAddress = new Address(props.billingAddress);
-      this._updatedAt = props.updatedAt;
-      this._createdAt = props.createdAt;
+      this._updatedAt = isDate(props.updatedAt)
+        ? new Date(props.updatedAt)
+        : moment().toDate();
+      this._createdAt = isDate(props.createdAt)
+        ? new Date(props.createdAt)
+        : moment().toDate();
     }
   }
 
@@ -108,6 +118,7 @@ export class SalesOrder implements ISalesOrder {
     this.customer = new SalesCustomer(details.customer);
     this.shippingAddress = new Address(details.shippingAddress);
     this.billingAddress = new Address(details.billingAddress);
+    this.merchant = new SalesMerchant(details.merchant);
     let event = new SalesOrderPlaced(null, details);
     this.raise(event);
     return event;
@@ -165,6 +176,7 @@ export class SalesOrder implements ISalesOrder {
       orderStatus: this._orderStatus,
       lineItems: this._lineItems.map((li) => li.raw()),
       customer: this._customer.raw(),
+      merchant: this._merchant.raw(),
       shippingAddress: this._shippingAddress.raw(),
       billingAddress: this._billingAddress.raw(),
       updatedAt: this._updatedAt,
@@ -178,6 +190,14 @@ export class SalesOrder implements ISalesOrder {
   public get events() {
     return this._events;
   }
+
+  public set merchant(val: SalesMerchant) {
+    this._merchant = new SalesMerchant(val);
+  }
+  public get merchant() {
+    return this._merchant;
+  }
+
   public set id(val: any) {
     this._id = validator.isMongoId(`${val}`) ? val : null;
   }
@@ -220,20 +240,20 @@ export class SalesOrder implements ISalesOrder {
   public get lineItems(): SalesLineItem[] {
     return this._lineItems;
   }
-  public set customer(val: any) {
-    this._customer = val;
+  public set customer(val: SalesCustomer) {
+    this._customer = new SalesCustomer(val);
   }
   public get customer(): SalesCustomer {
     return this._customer;
   }
-  public set shippingAddress(val: any) {
-    this._shippingAddress = val;
+  public set shippingAddress(val: Address) {
+    this._shippingAddress = new Address(val);
   }
   public get shippingAddress(): Address {
     return this._shippingAddress;
   }
-  public set billingAddress(val: any) {
-    this._billingAddress = val;
+  public set billingAddress(val: Address) {
+    this._billingAddress = new Address(val);
   }
   public get billingAddress(): Address {
     return this._billingAddress;

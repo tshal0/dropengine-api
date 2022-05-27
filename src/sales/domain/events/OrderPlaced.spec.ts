@@ -12,7 +12,8 @@ describe("OrderPlacedEvent", () => {
       accountId: mockUuid1,
       billingAddress: mockAddress,
       shippingAddress: mockAddress,
-      customer: SalesOrderMocks.customer,
+      customer: cloneDeep(SalesOrderMocks.customer),
+      merchant: cloneDeep(SalesOrderMocks.merchant),
       orderDate: now,
       orderName: "SLI-1001",
       orderNumber: 1001,
@@ -25,6 +26,8 @@ describe("OrderPlacedEvent", () => {
         },
       ],
     });
+    expect(payload.customer).toEqual(SalesOrderMocks.customer);
+    expect(payload.merchant).toEqual(SalesOrderMocks.merchant);
     let event = new SalesOrderPlaced(MongoMocks.mockMongoId, payload);
 
     const expected = {
@@ -34,6 +37,7 @@ describe("OrderPlacedEvent", () => {
         accountId: mockUuid1,
         billingAddress: mockAddress,
         customer: SalesOrderMocks.customer,
+        merchant: SalesOrderMocks.merchant,
         lineItems: [
           {
             lineNumber: 1,

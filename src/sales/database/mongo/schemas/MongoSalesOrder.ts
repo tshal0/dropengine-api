@@ -17,6 +17,8 @@ import {
   MongoSalesLineItemSchema,
 } from "./MongoSalesLineItem";
 import { ISalesOrderProps, OrderStatus } from "@sales/domain/model/SalesOrder";
+import { MongoMerchant, MongoMerchantSchema } from "./MongoMerchant";
+import { SalesMerchant } from "@sales/domain/model/ISalesMerchant";
 
 @Schema({ collection: "orders", id: true, toObject: { virtuals: true } })
 export class MongoSalesOrder extends IMongoEntity {
@@ -31,6 +33,7 @@ export class MongoSalesOrder extends IMongoEntity {
       this.orderStatus = props.orderStatus;
       this.lineItems = props.lineItems;
       this.customer = props.customer;
+      this.merchant = props.merchant;
       this.shippingAddress = props.shippingAddress;
       this.billingAddress = props.billingAddress;
       this.updatedAt = props.updatedAt;
@@ -58,6 +61,8 @@ export class MongoSalesOrder extends IMongoEntity {
   lineItems: MongoSalesLineItem[];
   @Prop({ type: MongoCustomerSchema, required: true })
   customer: MongoCustomer;
+  @Prop({ type: MongoMerchantSchema, required: false })
+  merchant: MongoMerchant;
   @Prop({ type: MongoAddressSchema, required: true })
   shippingAddress: MongoAddress;
   @Prop({ type: MongoAddressSchema, required: true })
@@ -74,6 +79,7 @@ export class MongoSalesOrder extends IMongoEntity {
       orderStatus: this.orderStatus as OrderStatus,
       lineItems: this.lineItems.map((li) => new SalesLineItem(li).raw()),
       customer: new SalesCustomer(this.customer).raw(),
+      merchant: new SalesMerchant(this.merchant).raw(),
       shippingAddress: new Address(this.shippingAddress).raw(),
       billingAddress: new Address(this.billingAddress).raw(),
       updatedAt: this.updatedAt,

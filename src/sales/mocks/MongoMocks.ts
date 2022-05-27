@@ -124,6 +124,11 @@ export abstract class MongoMocks {
     orderStatus: OrderStatus.OPEN,
     lineItems: [cloneDeep(MongoMocks.lineItemProps)],
     customer: { email: "sample@mail.com", name: "SampleCustomer" },
+    merchant: {
+      email: "merchant@mail.com",
+      name: "Merchant",
+      shopOrigin: "merchant.myshopify.com",
+    },
     shippingAddress: cloneDeep(MongoMocks.addressProps),
     billingAddress: cloneDeep(MongoMocks.addressProps),
     updatedAt: now,
@@ -143,6 +148,11 @@ export abstract class MongoMocks {
     customer: {
       email: "sample@mail.com",
       name: "SampleCustomer",
+    },
+    merchant: {
+      email: "merchant@mail.com",
+      name: "Merchant",
+      shopOrigin: "merchant.myshopify.com",
     },
     lineItems: [
       {

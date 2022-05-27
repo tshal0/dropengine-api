@@ -108,6 +108,13 @@ type SalesLineItem {
   personalization: [Personalization!]!
 }
 
+"""SalesMerchant"""
+type Merchant {
+  name: String!
+  email: String!
+  shopOrigin: String!
+}
+
 """SalesOrder"""
 type SalesOrder {
   id: ID!
@@ -118,6 +125,7 @@ type SalesOrder {
   orderStatus: String!
   lineItems: [SalesLineItem!]!
   customer: Customer!
+  merchant: Merchant!
   shippingAddress: Address!
   billingAddress: Address!
   updatedAt: DateTime!

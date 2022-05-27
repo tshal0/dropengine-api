@@ -1,5 +1,6 @@
 import { ICatalogVariant } from "@catalog/services";
 import { Address, IAddress } from "@shared/domain";
+import { ISalesMerchant, SalesMerchant } from "../model/ISalesMerchant";
 import {
   EventSchemaVersion,
   SalesOrderEvent,
@@ -31,6 +32,7 @@ export interface IOrderPlacedDetails {
   lineItems: PlacedOrderLineItem[];
   shippingAddress: IAddress;
   billingAddress: IAddress;
+  merchant: ISalesMerchant;
 }
 export class OrderPlacedDetails {
   constructor(props?: IOrderPlacedDetails | undefined) {
@@ -43,6 +45,7 @@ export class OrderPlacedDetails {
       this.lineItems = props.lineItems;
       this.shippingAddress = props.shippingAddress;
       this.billingAddress = props.billingAddress;
+      this.merchant = new SalesMerchant(props.merchant).raw();
     }
   }
   accountId: string = null;
@@ -53,6 +56,7 @@ export class OrderPlacedDetails {
   lineItems: PlacedOrderLineItem[] = [];
   shippingAddress: IAddress = new Address().raw();
   billingAddress: IAddress = new Address().raw();
+  merchant: ISalesMerchant = new SalesMerchant().raw();
 }
 
 export class SalesOrderPlaced extends SalesOrderEvent<OrderPlacedDetails> {

@@ -1,12 +1,13 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
+
 @Schema({ _id: false })
-export class MongoCustomer {
+export class MongoMerchant {
   @Prop()
   name: string;
   @Prop()
   email: string;
+  @Prop()
+  shopOrigin: string;
 }
-export const MongoCustomerSchema = SchemaFactory.createForClass(MongoCustomer);
-
-
+export const MongoMerchantSchema = SchemaFactory.createForClass(MongoMerchant);

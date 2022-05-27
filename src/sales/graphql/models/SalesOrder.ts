@@ -6,9 +6,11 @@ import {
   OrderStatus,
 } from "@sales/domain";
 import { SalesOrderEvent } from "@sales/domain/events";
+import { ISalesMerchant } from "@sales/domain/model/ISalesMerchant";
 import { IAddress } from "@shared/domain";
 import { Address } from "./Address";
 import { Customer } from "./Customer";
+import { Merchant } from "./Merchant";
 import { SalesLineItem } from "./SalesLineItem";
 
 @ObjectType({ description: "SalesOrder" })
@@ -34,6 +36,8 @@ export class SalesOrder implements ISalesOrderProps {
   lineItems: SalesLineItem[];
   @Field((type) => Customer)
   customer: ISalesCustomer;
+  @Field((type) => Merchant)
+  merchant: ISalesMerchant;
   @Field((type) => Address)
   shippingAddress: IAddress;
   @Field((type) => Address)

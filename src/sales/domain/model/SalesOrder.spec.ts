@@ -12,6 +12,7 @@ import { SalesCustomer } from "./SalesCustomer";
 import { ISalesLineItemProps, SalesLineItem } from "./SalesLineItem";
 import { ISalesOrderProps, OrderStatus, SalesOrder } from "./SalesOrder";
 import { SalesOrderMocks } from "../../mocks/SalesOrderMocks.mock";
+import { SalesMerchant } from "./ISalesMerchant";
 spyOnDate();
 describe("SalesOrder", () => {
   const mockMongoId = `000000000000000000000001`;
@@ -25,6 +26,7 @@ describe("SalesOrder", () => {
       orderStatus: OrderStatus.OPEN,
       lineItems: [],
       customer: { email: "", name: "" },
+      merchant: { email: "", name: "", shopOrigin: "" },
       shippingAddress: new Address().raw(),
       billingAddress: new Address().raw(),
       updatedAt: now,
@@ -46,6 +48,11 @@ describe("SalesOrder", () => {
       orderStatus: OrderStatus.OPEN,
       lineItems: [liProps],
       customer: { email: "sample@mail.com", name: "Sample" },
+      merchant: {
+        email: "merchant@mail.com",
+        name: "Merchant",
+        shopOrigin: "merchant.myshopify.com",
+      },
       shippingAddress: new Address(mockAddress).raw(),
       billingAddress: new Address().raw(),
       updatedAt: now,
@@ -67,6 +74,11 @@ describe("SalesOrder", () => {
       orderStatus: OrderStatus.OPEN,
       lineItems: [liProps],
       customer: { email: "sample@mail.com", name: "Sample" },
+      merchant: {
+        email: "merchant@mail.com",
+        name: "Merchant",
+        shopOrigin: "merchant.myshopify.com",
+      },
       shippingAddress: new Address(mockAddress).raw(),
       billingAddress: new Address().raw(),
       updatedAt: now,
@@ -76,7 +88,7 @@ describe("SalesOrder", () => {
     let expected = cloneDeep(props);
     expected.id = null;
     expected.accountId = null;
-    expected.orderDate = null;
+    expected.orderDate = now;
     const result = new SalesOrder(props);
     expect(result.raw()).toEqual(expected);
   });
@@ -138,6 +150,21 @@ describe("SalesOrder", () => {
     result.customer = new SalesCustomer({ email: "MOCK", name: "MOCK" });
     const raw = result.customer.raw();
     expect(raw).toEqual({ email: "MOCK", name: "MOCK" });
+  });
+  it("merchant should be editable", () => {
+    let result = new SalesOrder();
+    result.merchant = new SalesMerchant({
+      email: "MOCK",
+      name: "MOCK",
+      shopOrigin: "MOCK",
+    });
+    const raw = result.merchant.raw();
+    expect(raw).toEqual({ email: "MOCK", name: "MOCK", shopOrigin: "MOCK" });
+  });
+  it("given undefined props, result should behave as if no props were provided", () => {
+    let result = new SalesOrder({} as any).raw();
+    const expected = new SalesOrder().raw();
+    expect(result).toEqual(expected);
   });
   it("shippingAddress should be editable", () => {
     let result = new SalesOrder();

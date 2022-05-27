@@ -32,6 +32,11 @@ export abstract class SalesOrderMocks {
     email: "sample@mail.com",
     name: "Sample Customer",
   };
+  static readonly merchant = {
+    email: "merchant@mail.com",
+    name: "Sample Merchant",
+    shopOrigin: "sample-merchant.myshopify.com",
+  };
   static readonly shippingAddress = { ...mockAddress };
   static readonly billingAddress = { ...mockAddress };
   static readonly lineNumber1 = 1;
@@ -116,6 +121,7 @@ export abstract class SalesOrderMocks {
     orderDate: SalesOrderMocks.orderDate,
     orderNumber: SalesOrderMocks.orderNumber,
     customer: SalesOrderMocks.customer,
+    merchant: SalesOrderMocks.merchant,
     lineItems: [SalesOrderMocks.lineItem1 as any],
     shippingAddress: SalesOrderMocks.shippingAddress,
     billingAddress: SalesOrderMocks.billingAddress,
@@ -146,6 +152,7 @@ export abstract class SalesOrderMocks {
     orderStatus: OrderStatus.OPEN,
     lineItems: [SalesOrderMocks.salesLineItem1],
     customer: { ...SalesOrderMocks.customer },
+    merchant: { ...SalesOrderMocks.merchant },
     shippingAddress: { ...SalesOrderMocks.shippingAddress },
     billingAddress: { ...SalesOrderMocks.billingAddress },
     events: [],

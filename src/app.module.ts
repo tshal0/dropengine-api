@@ -30,7 +30,7 @@ import { AuthModule } from "./auth/auth.module";
 import { AuthenticationModule } from "./shared";
 import { ApolloDriverConfig, ApolloDriver } from "@nestjs/apollo";
 import { GraphQLModule } from "@nestjs/graphql";
-import { DirectiveLocation, GraphQLDirective } from "graphql";
+import { DirectiveLocation, GraphQLDirective, GraphQLError, GraphQLFormattedError } from "graphql";
 import { upperDirectiveTransformer } from "@shared/graphql";
 
 @Module({
@@ -66,6 +66,13 @@ import { upperDirectiveTransformer } from "@shared/graphql";
       introspection:
         new Boolean(process.env.GRAPHQL_PLAYGROUND).valueOf() || true,
       autoSchemaFile: "schema.gql",
+      formatError: (error: GraphQLError) => {
+        const exception = error?.extensions?.exception as any;
+        const graphQLFormattedError: GraphQLFormattedError = {
+          message: exception?.response?.message || error?.message,
+        };
+        return graphQLFormattedError;
+      },
       transformSchema: (schema) => upperDirectiveTransformer(schema, "upper"),
       installSubscriptionHandlers: true,
       buildSchemaOptions: {

@@ -9,6 +9,7 @@ import {
 } from "class-validator";
 import { ILineItemProperty, OrderPlacedDetails } from "@sales/domain/events";
 import { IAddress } from "@shared/domain";
+import { ISalesMerchant } from "@sales/domain/model/ISalesMerchant";
 
 export class PlaceOrderRequest {
   constructor(props?: OrderPlacedDetails | undefined) {
@@ -21,6 +22,7 @@ export class PlaceOrderRequest {
       this.lineItems = props.lineItems;
       this.shippingAddress = props.shippingAddress;
       this.billingAddress = props.billingAddress;
+      this.merchant = props.merchant;
     }
   }
   @IsString()
@@ -37,6 +39,9 @@ export class PlaceOrderRequest {
   @IsNotEmpty()
   @ValidateNested()
   customer: { name: string; email: string };
+  @IsNotEmpty()
+  @ValidateNested()
+  merchant: ISalesMerchant;
   @ValidateNested({ each: true })
   @IsArray()
   lineItems: PlaceOrderRequestLineItem[];

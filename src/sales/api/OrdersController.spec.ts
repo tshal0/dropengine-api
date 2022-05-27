@@ -87,7 +87,8 @@ describe("OrdersController", () => {
         service = await module.resolve<OrdersController>(OrdersController);
         let request: PlaceOrderRequest = new PlaceOrderRequest({
           billingAddress: SalesOrderMocks.billingAddress,
-          customer: SalesOrderMocks.customer,
+          customer: cloneDeep(SalesOrderMocks.customer),
+          merchant: cloneDeep(SalesOrderMocks.merchant),
           lineItems: [SalesOrderMocks.lineItem1 as any],
           orderDate: now,
           orderName: SalesOrderMocks.orderName,
