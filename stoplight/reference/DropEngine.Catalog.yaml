@@ -3,7 +3,7 @@ info:
   title: Catalog
   version: '1'
   summary: DropEngine™ Catalog API
-  description: TBD
+  description: 'DropEngine™ Catalog Module manages Products, ProductTypes, Variants, and other product related services.'
   contact:
     name: thomas@drop-engine.com
 servers:

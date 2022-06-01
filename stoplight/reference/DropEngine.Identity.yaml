@@ -1,13 +1,15 @@
 openapi: 3.1.0
+x-stoplight:
+  id: f70340aadc944
 info:
-  title: Auth
+  title: Identity
   version: '1'
-  summary: DropEngine™ Auth API
-  description: TBD
+  summary: DropEngine™ Identity API
+  description: 'DropEngine™ Identity Module manages Users, Accounts/Organizations, Stores, and other identity services.'
   contact:
     name: Thomas Shallenberger
 servers:
-  - url: 'https://dev.drop-engine.com/api/v1/auth'
+  - url: 'https://dev.drop-engine.com/api/v1/identity'
     description: Dev
 paths:
   /users:

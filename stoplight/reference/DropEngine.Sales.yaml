@@ -3,7 +3,7 @@ info:
   title: Sales
   version: '1'
   summary: DropEngine™ Sales API
-  description: TBD
+  description: 'DropEngine™ Sales Module manages SalesOrders, LineItems, SalesVariants, Sellers, and other sales related services.'
   contact:
     name: Thomas Shallenberger
     email: thomas@drop-engine.com
