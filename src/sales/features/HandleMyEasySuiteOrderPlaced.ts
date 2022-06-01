@@ -9,7 +9,7 @@ import { cloneDeep } from "lodash";
 
 import { SalesOrderRepository } from "@sales/database/SalesOrderRepository";
 import { UseCase } from "@shared/domain";
-import { AuthService } from "@auth/auth.service";
+import { IdentityService } from "@identity/identity.service";
 
 import {
   MyEasySuiteOrderPlaced,
@@ -32,7 +32,7 @@ export class HandleMyEasySuiteOrderPlaced
     HandleMyEasySuiteOrderPlaced.name
   );
   constructor(
-    private readonly _auth: AuthService,
+    private readonly _auth: IdentityService,
     private readonly repo: SalesOrderRepository,
     private readonly placeOrder: PlaceOrder
   ) {}

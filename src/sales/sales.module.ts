@@ -15,7 +15,7 @@ import {
 } from "./database/mongo/schemas/MongoDomainEvent";
 import { MongoDomainEventRepository } from "./database/mongo/repositories/MongoDomainEventRepository";
 import { HandleMyEasySuiteOrderPlaced } from "./features/HandleMyEasySuiteOrderPlaced";
-import { AuthModule } from "@auth/auth.module";
+import { IdentityModule } from "@identity/identity.module";
 import {
   ChangeCustomerInfo,
   ChangePersonalization,
@@ -39,7 +39,7 @@ import { SalesOrdersResolver } from "./graphql/sales.resolver";
     ConfigModule,
     CacheModule.register(),
     CatalogModule,
-    AuthModule,
+    IdentityModule,
   ],
   controllers: [OrdersController],
   providers: [

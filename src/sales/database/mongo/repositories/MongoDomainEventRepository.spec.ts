@@ -1,6 +1,6 @@
 import { mockSalesModule } from "@sales/mocks/sales.module.mock";
-import { AccountsRepository } from "@auth/database/AccountsRepository";
-import { StoresRepository } from "@auth/database/StoresRepository";
+import { AccountsRepository } from "@identity/database/AccountsRepository";
+import { StoresRepository } from "@identity/database/StoresRepository";
 import {
   DbProduct,
   DbProductType,

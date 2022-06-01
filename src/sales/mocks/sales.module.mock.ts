@@ -1,4 +1,4 @@
-import { AuthModule } from "@auth/auth.module";
+import { IdentityModule } from "@identity/identity.module";
 import { CatalogModule } from "@catalog/catalog.module";
 import { CatalogService } from "@catalog/services";
 import { rootMongooseTestModule } from "@jestconfig/mongodb-memory-server";
@@ -52,7 +52,7 @@ export const mockSalesModule = (): TestingModuleBuilder => {
       ConfigModule.forRoot(),
       CacheModule.register(),
       CatalogModule,
-      AuthModule,
+      IdentityModule,
     ],
     controllers: [OrdersController],
     exports: [],

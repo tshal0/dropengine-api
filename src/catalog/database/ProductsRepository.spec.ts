@@ -14,7 +14,6 @@ import { mockUuid1 } from "@sales/mocks";
 import { cloneDeep } from "lodash";
 import { DbProduct, DbProductType, DbProductVariant } from "./entities";
 import { ProductsRepository } from "./ProductsRepository";
-import { when } from "jest-when";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { now, spyOnDate } from "@shared/mocks";
 import { EntityNotFoundException } from "@shared/exceptions";

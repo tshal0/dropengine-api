@@ -1,4 +1,4 @@
-import { AuthService } from "@auth/auth.service";
+import { IdentityService } from "@identity/identity.service";
 import { MyEasySuiteOrderPlaced } from "@myeasysuite/domain/events";
 import { Injectable, Scope, Logger } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";

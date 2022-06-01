@@ -26,7 +26,7 @@ import { AllExceptionsFilter } from "@shared/filters";
 import { winstonLoggerOptions } from "@shared/modules/winston-logger/winstonLogger";
 import { MikroORM } from "@mikro-orm/core";
 import { mikroOrmOptions } from "./mikroOrmOptions";
-import { AuthModule } from "./auth/auth.module";
+import { IdentityModule } from "./identity/identity.module";
 import { AuthenticationModule } from "./shared";
 import { ApolloDriverConfig, ApolloDriver } from "@nestjs/apollo";
 import { GraphQLModule } from "@nestjs/graphql";
@@ -85,7 +85,7 @@ import { upperDirectiveTransformer } from "@shared/graphql";
       },
     }),
     Auth0Module,
-    AuthModule,
+    IdentityModule,
     AzureTelemetryModule,
     AzureStorageModule,
     HealthModule,

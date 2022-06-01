@@ -1,4 +1,4 @@
-import { IUserMetadata } from "@auth/domain";
+import { IUserMetadata } from "@identity/domain";
 
 export interface IAuthenticatedUser {
   id: string;

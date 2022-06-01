@@ -13,14 +13,8 @@ import https from "https";
 import { Cache } from "cache-manager";
 import { MyEasySuiteClient } from "./myeasysuite.client";
 import { MyEasySuiteController } from "./api/MyEasySuiteController";
-import {
-  AuthPayloadParams,
-  generateTokenRequestOptions,
-  grantTypePayloads,
-  loadAccessToken,
-} from "@shared/utils";
+import { AuthPayloadParams, loadAccessToken } from "@shared/utils";
 import safeJsonStringify from "safe-json-stringify";
-import { AuthModule } from "@auth/auth.module";
 import { HandleOrderPlaced } from "./features/HandleOrderPlaced";
 
 export abstract class MES {

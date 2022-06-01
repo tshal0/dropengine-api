@@ -1,6 +1,6 @@
 import { Auth0Identity } from "../dto/Auth0Identity";
 import { Auth0AppMetadata } from "../dto/Auth0AppMetadata";
-import { CreateUserDto } from "@auth/dto";
+import { CreateUserDto } from "@identity/dto";
 
 export interface IAuth0User {
   email?: string;

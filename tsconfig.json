@@ -33,8 +33,8 @@
       "@catalog/*": [
         "catalog/*"
       ],
-      "@auth/*": [
-        "auth/*"
+      "@identity/*": [
+        "identity/*"
       ],
       "@shopify/*": [
         "shopify/*"
