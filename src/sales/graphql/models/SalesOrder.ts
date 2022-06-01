@@ -6,7 +6,7 @@ import {
   OrderStatus,
 } from "@sales/domain";
 import { SalesOrderEvent } from "@sales/domain/events";
-import { ISalesMerchant } from "@sales/domain/model/ISalesMerchant";
+import { ISalesMerchant } from "@sales/domain/model/SalesMerchant";
 import { IAddress } from "@shared/domain";
 import { Address } from "./Address";
 import { Customer } from "./Customer";

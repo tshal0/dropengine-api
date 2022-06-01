@@ -10,7 +10,7 @@ import { CustomerInfoChanged } from "../events/CustomerInfoChanged";
 import { IPersonalization, Personalization } from "./Personalization";
 import { PersonalizationChanged } from "../events/PersonalizationChanged";
 import { ShippingAddressChanged } from "../events/ShippingAddressChanged";
-import { ISalesMerchant, SalesMerchant } from "./ISalesMerchant";
+import { ISalesMerchant, SalesMerchant } from "./SalesMerchant";
 
 export enum OrderStatus {
   OPEN = "OPEN",

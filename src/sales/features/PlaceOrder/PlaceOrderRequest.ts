@@ -9,7 +9,7 @@ import {
 } from "class-validator";
 import { ILineItemProperty, OrderPlacedDetails } from "@sales/domain/events";
 import { IAddress } from "@shared/domain";
-import { ISalesMerchant } from "@sales/domain/model/ISalesMerchant";
+import { ISalesMerchant } from "@sales/domain/model/SalesMerchant";
 
 export class PlaceOrderRequest {
   constructor(props?: OrderPlacedDetails | undefined) {

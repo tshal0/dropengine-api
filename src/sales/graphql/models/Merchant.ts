@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { ISalesMerchant } from "@sales/domain/model/ISalesMerchant";
+import { ISalesMerchant } from "@sales/domain/model/SalesMerchant";
 
 
 

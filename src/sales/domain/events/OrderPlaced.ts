@@ -1,6 +1,6 @@
 import { ICatalogVariant } from "@catalog/services";
 import { Address, IAddress } from "@shared/domain";
-import { ISalesMerchant, SalesMerchant } from "../model/ISalesMerchant";
+import { ISalesMerchant, SalesMerchant } from "../model/SalesMerchant";
 import {
   EventSchemaVersion,
   SalesOrderEvent,

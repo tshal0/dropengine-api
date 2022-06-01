@@ -12,7 +12,7 @@ import { SalesCustomer } from "./SalesCustomer";
 import { ISalesLineItemProps, SalesLineItem } from "./SalesLineItem";
 import { ISalesOrderProps, OrderStatus, SalesOrder } from "./SalesOrder";
 import { SalesOrderMocks } from "../../mocks/SalesOrderMocks.mock";
-import { SalesMerchant } from "./ISalesMerchant";
+import { SalesMerchant } from "./SalesMerchant";
 spyOnDate();
 describe("SalesOrder", () => {
   const mockMongoId = `000000000000000000000001`;

@@ -18,7 +18,7 @@ import {
 } from "./MongoSalesLineItem";
 import { ISalesOrderProps, OrderStatus } from "@sales/domain/model/SalesOrder";
 import { MongoMerchant, MongoMerchantSchema } from "./MongoMerchant";
-import { SalesMerchant } from "@sales/domain/model/ISalesMerchant";
+import { SalesMerchant } from "@sales/domain/model/SalesMerchant";
 
 @Schema({ collection: "orders", id: true, toObject: { virtuals: true } })
 export class MongoSalesOrder extends IMongoEntity {

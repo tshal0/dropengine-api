@@ -22,7 +22,7 @@ import {
 } from "@sales/features/PlaceOrder";
 import { SalesCustomer, SalesOrder } from "@sales/domain";
 import { extractOrderNumber } from "@sales/utils";
-import { SalesMerchant } from "@sales/domain/model/ISalesMerchant";
+import { SalesMerchant } from "@sales/domain/model/SalesMerchant";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class HandleMyEasySuiteOrderPlaced
