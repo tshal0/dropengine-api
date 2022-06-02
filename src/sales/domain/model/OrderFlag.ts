@@ -16,6 +16,7 @@ export enum LineItemOptionFlagReason {
   MISSING = "MISSING",
   INVALID = "INVALID",
   INVALID_LENGTH = "INVALID_LENGTH",
+  INVALID_OPTIONS = "INVALID_OPTION",
   BAD_CHARACTER = "BAD_CHARACTER",
 }
 export interface ILineItemOptionFlagDetails {
@@ -23,9 +24,8 @@ export interface ILineItemOptionFlagDetails {
   property: string;
   value?: string | undefined;
   reason?: LineItemOptionFlagReason | undefined;
-}
-export interface BadCharacterFlagDetails extends ILineItemOptionFlagDetails {
-  pattern: string;
+  pattern?: string | undefined;
+  options?: string | undefined;
 }
 
 export class InvalidPersonalizationFlag
@@ -46,8 +46,8 @@ export class BadCharacterFlag
 {
   type = OrderFlagType.BadCharacter;
   message: string;
-  details: BadCharacterFlagDetails;
-  constructor(details: BadCharacterFlagDetails) {
+  details: ILineItemOptionFlagDetails;
+  constructor(details: ILineItemOptionFlagDetails) {
     this.details = details;
     this.details.reason = LineItemOptionFlagReason.BAD_CHARACTER;
     this.message =

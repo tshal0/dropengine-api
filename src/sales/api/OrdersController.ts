@@ -7,7 +7,6 @@ import {
   Post,
   Delete,
   Body,
-  Res,
   Param,
   Query,
   HttpStatus,
@@ -133,7 +132,7 @@ export class OrdersController {
   ) {
     throw new NotImplementedException({ dto, id });
   }
-
+  
   @Delete(":id")
   async delete(@Param("id") id: string) {
     let result = await this.sales.delete(id);

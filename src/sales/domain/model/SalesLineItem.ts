@@ -1,4 +1,12 @@
-import { OrderFlag } from "./OrderFlag";
+import { PersonalizationRule } from "@catalog/model";
+import { compact, toLower } from "lodash";
+import {
+  InvalidPersonalizationFlag,
+  IOrderFlag,
+  LineItemOptionFlagReason,
+  MissingPersonalizationFlag,
+  OrderFlag,
+} from "./OrderFlag";
 import { IPersonalization, Personalization } from "./Personalization";
 import { ISalesVariantProps, SalesVariant } from "./SalesVariant";
 
@@ -31,9 +39,83 @@ export class SalesLineItem implements ISalesLineItem {
       this._personalization = props.personalization?.length
         ? props.personalization.map((p) => new Personalization(p))
         : [];
-      this._flags = props.flags;
+      this._flags = this.validate();
     }
   }
+
+  /**
+   * Validates self and returns generated flags.
+   * @returns {OrderFlag[]}
+   */
+  public validate(): IOrderFlag<any>[] {
+    const flags: IOrderFlag<any>[] = [];
+    const { lineNumber, personalization, variant } = this;
+    let rules = variant.personalizationRules;
+    for (let i = 0; i < rules.length; i++) {
+      const { label, maxLength, options, pattern, required } = rules[i];
+      const propName = toLower(label);
+      let prop = personalization.find((p) => toLower(p.name) === propName);
+      if (required && !prop) {
+        flags.push(
+          new MissingPersonalizationFlag({
+            lineNumber,
+            property: label,
+            reason: LineItemOptionFlagReason.MISSING,
+          })
+        );
+        continue;
+      }
+      if (maxLength && prop?.value?.length > maxLength) {
+        flags.push(
+          new InvalidPersonalizationFlag({
+            lineNumber,
+            property: label,
+            value: prop.value,
+            reason: LineItemOptionFlagReason.INVALID_LENGTH,
+          })
+        );
+      }
+      if (options?.length) {
+        let isValidOption = compact(options.split(",")).includes(prop.value);
+        if (!isValidOption) {
+          flags.push(
+            new InvalidPersonalizationFlag({
+              lineNumber,
+              property: label,
+              value: prop.value,
+              options: options,
+              reason: LineItemOptionFlagReason.INVALID_OPTIONS,
+            })
+          );
+        }
+      }
+      if (typeof pattern === "string") {
+        let cleanPattern = pattern.replace("’", "'");
+        cleanPattern = cleanPattern.replace("”", '"');
+
+        console.log({ pattern, cleanPattern, prop, rule: rules[i] });
+        try {
+          let re = new RegExp(cleanPattern, "g");
+          let validProp = re.test(prop.value);
+          if (!validProp) {
+            flags.push(
+              new InvalidPersonalizationFlag({
+                lineNumber,
+                property: label,
+                value: prop.value,
+                pattern,
+                reason: LineItemOptionFlagReason.BAD_CHARACTER,
+              })
+            );
+          }
+        } catch (err) {
+          console.error(`InvalidRegularExpressiong for ${variant.sku}`, err);
+        }
+      }
+    }
+    return flags;
+  }
+
   public raw(): ISalesLineItemProps {
     return {
       flags: this._flags,

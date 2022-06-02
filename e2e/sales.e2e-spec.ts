@@ -5,7 +5,7 @@ import { WinstonModule } from "nest-winston";
 import { loadAccessToken } from "./utils";
 import { AppModule } from "../src/app.module";
 import { MikroORM } from "@mikro-orm/core";
-
+import orderNames from './fixtures/2022_06_02__order_names.json'
 /** MOCK UTILS */
 jest.setTimeout(60000);
 describe("Sales (e2e)", () => {

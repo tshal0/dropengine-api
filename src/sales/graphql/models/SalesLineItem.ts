@@ -1,8 +1,8 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { ISalesLineItemProps, OrderFlag } from "@sales/domain";
+import { ErrorFlag } from "./ErrorFlag";
 import { Personalization } from "./Personalization";
 import { SalesVariant } from "./SalesVariant";
-
 @ObjectType({ description: "SalesLineItem" })
 export class SalesLineItem implements ISalesLineItemProps {
   @Field()
@@ -13,5 +13,6 @@ export class SalesLineItem implements ISalesLineItemProps {
   variant: SalesVariant;
   @Field((type) => [Personalization])
   personalization: Personalization[];
+  @Field((type) => [ErrorFlag])
   flags: OrderFlag[];
 }

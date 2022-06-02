@@ -50,14 +50,14 @@ type Personalization {
 
 """PersonalizationRule"""
 type PersonalizationRule {
-  name: String!
-  type: String!
-  label: String!
-  options: String!
-  pattern: String!
-  required: Boolean!
-  maxLength: Float!
-  placeholder: String!
+  name: String
+  type: String
+  label: String
+  options: String
+  pattern: String
+  required: Boolean
+  maxLength: Float
+  placeholder: String
 }
 
 """ProductionData """
@@ -65,6 +65,22 @@ type ProductionData {
   route: String!
   material: String!
   thickness: String!
+}
+
+"""FlagDetails"""
+type FlagDetails {
+  lineNumber: Float
+  property: String
+  value: String
+  reason: String
+  pattern: String
+}
+
+"""ErrorFlag"""
+type ErrorFlag {
+  type: String!
+  message: String!
+  details: FlagDetails!
 }
 
 """VariantOption"""
@@ -106,6 +122,7 @@ type SalesLineItem {
   quantity: Float!
   variant: SalesVariant!
   personalization: [Personalization!]!
+  flags: [ErrorFlag!]!
 }
 
 """SalesMerchant"""

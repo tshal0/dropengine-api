@@ -33,6 +33,20 @@ export class MyEasySuiteController {
     this.logger.debug(dto);
     return await this.handleOrderPlaced.execute(dto);
   }
+  @Post("/syncNames")
+  async syncNames(@Body() dto: { orderNames: string[] }) {
+    this.logger.debug(dto);
+    for (let i = 0; i < dto.orderNames.length; i++) {
+      const orderName = dto.orderNames[i];
+      const orderDto = new HandleOrderPlacedDto();
+      orderDto.orderId = orderName;
+      try {
+        await this.handleOrderPlaced.execute(orderDto);
+      } catch (error) {
+        this.logger.error(error);
+      }
+    }
+  }
   @UseGuards(AuthGuard())
   @Get("/variants/:id")
   async getVariantBySku(@Param("sku") sku: string) {

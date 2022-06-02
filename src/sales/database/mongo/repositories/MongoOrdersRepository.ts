@@ -25,6 +25,8 @@ export class MongoOrdersRepository {
   ) {}
 
   async create(item: MongoSalesOrder): Promise<MongoSalesOrder> {
+    let exists = await this.model.findOne({ orderName: item.orderName });
+    if (exists) return new MongoSalesOrder(exists);
     let rawDoc = await this.model.create(item);
     return new MongoSalesOrder(rawDoc);
   }
