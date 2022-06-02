@@ -4,15 +4,15 @@ import { ISalesOrderProps } from "@sales/domain";
 import { SalesService } from "@sales/services";
 import { PubSub } from "graphql-subscriptions";
 import mongoose from "mongoose";
-import { SalesOrdersArgs } from "./dto";
+import { SalesOrdersQueryArgs } from "./dto";
 import { PaginatedSalesOrders } from "./dto/PaginatedSalesOrders";
 import { SalesOrder } from "./models";
 
 const pubSub = new PubSub();
 
 @Resolver((of) => SalesOrder)
-export class SalesOrdersResolver {
-  private readonly logger: Logger = new Logger(SalesOrdersResolver.name);
+export class SalesOrderResolver {
+  private readonly logger: Logger = new Logger(SalesOrderResolver.name);
 
   constructor(private readonly service: SalesService) {}
 
@@ -26,7 +26,7 @@ export class SalesOrdersResolver {
   }
 
   @Query((returns) => [SalesOrder])
-  async salesOrders(@Args() args: SalesOrdersArgs): Promise<SalesOrder[]> {
+  async salesOrders(@Args() args: SalesOrdersQueryArgs): Promise<SalesOrder[]> {
     this.logger.debug(args);
     const filter: mongoose.FilterQuery<ISalesOrderProps> = {};
     if (args.orderName) filter.orderName = args.orderName;
@@ -39,13 +39,18 @@ export class SalesOrdersResolver {
   }
   @Query((returns) => PaginatedSalesOrders)
   async paginatedSalesOrders(
-    @Args() args: SalesOrdersArgs
+    @Args() args: SalesOrdersQueryArgs
   ): Promise<PaginatedSalesOrders> {
     this.logger.debug(args);
     const filter: mongoose.FilterQuery<ISalesOrderProps> = {};
     if (args.orderName) filter.orderName = args.orderName;
+    if (args.merchantName) filter["merchant.name"] = { $eq: args.merchantName };
+    filter.orderDate = { $gte: args.startDate, $lte: args.endDate };
+    const sort = {};
+    sort[args.sortBy] = args.sortDir;
     let result = await this.service.query({
       limit: args.size,
+      sort,
       skip: args.page * args.size,
       filter: filter,
     });

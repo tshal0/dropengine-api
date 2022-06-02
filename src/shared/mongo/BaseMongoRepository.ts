@@ -12,7 +12,7 @@ export class MongoQueryParams<T> {
   @IsNumberString()
   limit?: number;
   filter?: mongoose.FilterQuery<T>;
-  sort?: any;
+  sort?: { [key: string]: number };
   projection?: any;
 }
 

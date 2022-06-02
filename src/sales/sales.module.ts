@@ -24,7 +24,7 @@ import {
 } from "./features";
 import { SalesService } from "./services/SalesService";
 import { OrdersController } from "./api";
-import { SalesOrdersResolver } from "./graphql/sales.resolver";
+import { SalesOrderResolver } from "./graphql/SalesOrderResolver";
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
@@ -52,7 +52,7 @@ import { SalesOrdersResolver } from "./graphql/sales.resolver";
     ChangePersonalization,
     HandleMyEasySuiteOrderPlaced,
     SalesService,
-    SalesOrdersResolver
+    SalesOrderResolver
   ],
 })
 export class SalesModule {}

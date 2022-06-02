@@ -1,1 +1,1 @@
-export * from './orders.args';
+export * from './SalesOrdersQueryArgs';
