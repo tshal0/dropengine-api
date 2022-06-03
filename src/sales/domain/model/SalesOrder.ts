@@ -54,7 +54,7 @@ export interface ISalesOrder {
 }
 export class SalesOrder implements ISalesOrder {
   private _id: string = null;
-  private _seller: string = null;
+  private _seller: string = "";
   private _orderName: string = "";
   private _orderNumber: number = 0;
   private _orderDate: Date = moment().toDate();
@@ -70,7 +70,7 @@ export class SalesOrder implements ISalesOrder {
   constructor(props?: ISalesOrderProps | undefined) {
     if (props) {
       this._id = validator.isMongoId(`${props.id}`) ? props.id : null;
-      this._seller = props.seller;
+      this._seller = props.seller || "";
       this._orderName = props.orderName || "";
       this._orderNumber = props.orderNumber || 0;
       this._orderDate = isDate(props.orderDate)

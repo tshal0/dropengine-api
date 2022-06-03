@@ -19,7 +19,7 @@ describe("SalesOrder", () => {
   it("should exist", () => {
     let props: ISalesOrderProps = {
       id: null,
-      seller: null,
+      seller: "",
       orderName: "",
       orderNumber: 0,
       orderDate: now,
@@ -87,7 +87,6 @@ describe("SalesOrder", () => {
     };
     let expected = cloneDeep(props);
     expected.id = null;
-    expected.seller = null;
     expected.orderDate = now;
     const result = new SalesOrder(props);
     expect(result.raw()).toEqual(expected);
