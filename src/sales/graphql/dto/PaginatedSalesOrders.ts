@@ -10,7 +10,7 @@ export class PaginatedSalesOrders {
       this.pages = props.pages;
       this.size = props.size;
       this.data = props.data;
-      this.options = props.options;
+      this.query = props.query;
     }
   }
   @Field()
@@ -21,8 +21,9 @@ export class PaginatedSalesOrders {
   pages: number;
   @Field()
   size: number;
-  @Field((type) => SalesOrderQueryOptions)
-  options: SalesOrderQueryOptions;
+  @Field()
+  query: string;
+
   @Field((type) => [SalesOrder])
   data: SalesOrder[];
 }

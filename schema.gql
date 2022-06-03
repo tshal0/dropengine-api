@@ -154,26 +154,26 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-"""SalesOrderQueryOptions"""
-type SalesOrderQueryOptions {
-  merchants: [String!]!
-  sellers: [String!]!
-}
-
 """PaginatedSalesOrders"""
 type PaginatedSalesOrders {
   count: Float!
   page: Float!
   pages: Float!
   size: Float!
-  options: SalesOrderQueryOptions!
+  query: String!
   data: [SalesOrder!]!
+}
+
+"""SalesOrderQueryOptions"""
+type SalesOrderQueryOptions {
+  merchants: [String!]!
+  sellers: [String!]!
 }
 
 type Query {
   salesOrder(id: String!): SalesOrder!
-  salesOrders(page: Int = 0, size: Int = 25, orderName: String, merchantName: String, startDate: DateTime = "2022-05-04T05:00:00.000Z", endDate: DateTime = "2022-06-04T04:59:59.999Z", sortBy: String = "orderDate", sortDir: String = "desc"): [SalesOrder!]!
-  paginatedSalesOrders(page: Int = 0, size: Int = 25, orderName: String, merchantName: String, startDate: DateTime = "2022-05-04T05:00:00.000Z", endDate: DateTime = "2022-06-04T04:59:59.999Z", sortBy: String = "orderDate", sortDir: String = "desc"): PaginatedSalesOrders!
+  salesOrderOptions(query: String, startDate: DateTime = "2022-05-04T05:00:00.000Z", endDate: DateTime = "2022-06-04T04:59:59.999Z"): SalesOrderQueryOptions!
+  salesOrders(page: Int = 0, size: Int = 25, query: String, startDate: DateTime = "2022-05-04T05:00:00.000Z", endDate: DateTime = "2022-06-04T04:59:59.999Z", sortBy: String = "orderDate", sortDir: String = "desc"): PaginatedSalesOrders!
 }
 
 type Subscription {

@@ -1,8 +1,7 @@
 import { ArgsType, Field, Int } from "@nestjs/graphql";
 import { SalesOrder } from "@sales/domain";
 import { Max, Min } from "class-validator";
-import moment from "moment";
-
+import { getDefaultStartDate, getDefaultEndDate } from "./dateUtils";
 @ArgsType()
 export class SalesOrdersQueryArgs {
   constructor() {}
@@ -16,10 +15,8 @@ export class SalesOrdersQueryArgs {
   size = 25;
 
   @Field({ nullable: true })
-  orderName: string;
-  @Field({ nullable: true })
-  merchantName: string;
-  
+  query: string;
+
   @Field({ nullable: true, defaultValue: getDefaultStartDate() })
   startDate: Date = getDefaultStartDate();
   @Field({ nullable: true, defaultValue: getDefaultEndDate() })
@@ -30,11 +27,4 @@ export class SalesOrdersQueryArgs {
 
   @Field((type) => String, { nullable: true })
   sortDir: "asc" | "desc" = "desc";
-}
-function getDefaultEndDate(): any {
-  return moment().endOf("day").toDate();
-}
-
-function getDefaultStartDate(): any {
-  return moment().subtract(30, "days").startOf("day").toDate();
 }
