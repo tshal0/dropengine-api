@@ -135,7 +135,7 @@ type Merchant {
 """SalesOrder"""
 type SalesOrder {
   id: ID!
-  seller: String!
+  seller: String
   orderName: String!
   orderNumber: Float!
   orderDate: DateTime!

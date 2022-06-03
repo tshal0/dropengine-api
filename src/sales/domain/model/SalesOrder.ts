@@ -70,7 +70,7 @@ export class SalesOrder implements ISalesOrder {
   constructor(props?: ISalesOrderProps | undefined) {
     if (props) {
       this._id = validator.isMongoId(`${props.id}`) ? props.id : null;
-      this._seller = validator.isUUID(`${props.seller}`) ? props.seller : null;
+      this._seller = props.seller;
       this._orderName = props.orderName || "";
       this._orderNumber = props.orderNumber || 0;
       this._orderDate = isDate(props.orderDate)

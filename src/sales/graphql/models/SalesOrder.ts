@@ -22,7 +22,7 @@ export class SalesOrder implements ISalesOrderProps {
   }
   @Field((type) => ID)
   id: string;
-  @Field()
+  @Field({nullable: true})
   seller: string;
   @Field()
   orderName: string;
