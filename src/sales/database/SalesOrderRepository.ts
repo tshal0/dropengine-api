@@ -125,7 +125,10 @@ export class SalesOrderRepository {
     let result = await this._orders.query(params);
     return result;
   }
-
+  public async options(params: MongoQueryParams<MongoSalesOrder>) {
+    let result = await this._orders.options(params);
+    return result;
+  }
   private async handleDomainEvents(agg: SalesOrder) {
     let events = [];
     if (events.length) {

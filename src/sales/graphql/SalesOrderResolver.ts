@@ -48,18 +48,22 @@ export class SalesOrderResolver {
     filter.orderDate = { $gte: args.startDate, $lte: args.endDate };
     const sort = {};
     sort[args.sortBy] = args.sortDir;
-    let result = await this.service.query({
+    const params = {
       limit: args.size,
       sort,
       skip: args.page * args.size,
       filter: filter,
-    });
+    };
+    let result = await this.service.query(params);
+    let options = await this.service.options(params);
     let orders = result.data.map((d) => d.raw());
+
     return new PaginatedSalesOrders({
       count: result.total,
       page: result.page,
       pages: result.pages,
       size: result.size,
+      options: options,
       data: orders,
     });
   }

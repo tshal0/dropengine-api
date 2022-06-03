@@ -1,6 +1,7 @@
 import { Injectable, Scope } from "@nestjs/common";
 import {
   MongoDomainEventRepository,
+  SalesOrderQueryOptions,
   SalesOrderQueryResult,
   SalesOrderRepository,
 } from "@sales/database";
@@ -28,6 +29,12 @@ export class SalesService {
     params: MongoQueryParams<ISalesOrderProps>
   ): Promise<SalesOrderQueryResult> {
     let result = await this._repo.query(params);
+    return result;
+  }
+  public async options(
+    params: MongoQueryParams<ISalesOrderProps>
+  ): Promise<SalesOrderQueryOptions> {
+    let result = await this._repo.options(params);
     return result;
   }
 

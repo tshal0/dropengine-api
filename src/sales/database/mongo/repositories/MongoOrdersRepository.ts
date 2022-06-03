@@ -5,6 +5,16 @@ import { MongoQueryParams, ResultSet } from "@shared/mongo";
 import { MongoSalesOrder, MongoSalesOrderDocument } from "../schemas";
 import { ISalesOrderProps, SalesOrder } from "@sales/domain";
 export class SalesOrderQueryFilter {}
+export class SalesOrderQueryOptions {
+  constructor(props?: SalesOrderQueryOptions | undefined) {
+    if (props) {
+      this.merchants = props.merchants;
+      this.sellers = props.sellers;
+    }
+  }
+  merchants: string[];
+  sellers: string[];
+}
 export class SalesOrderQueryResult {
   total: number;
   pages: number;
@@ -42,6 +52,31 @@ export class MongoOrdersRepository {
     }
     let result = await this.model.findByIdAndRemove(id);
     return result ? new MongoSalesOrder(result) : null;
+  }
+
+  async options(
+    params: MongoQueryParams<MongoSalesOrder>
+  ): Promise<SalesOrderQueryOptions> {
+    let result = await this.model.aggregate<
+      { options: SalesOrderQueryOptions }
+    >([
+      { $match: params.filter },
+      {
+        $facet: {
+          options: [
+            {
+              $group: {
+                _id: null,
+                merchants: { $addToSet: "$merchant.name" },
+                sellers: { $addToSet: "$seller" },
+              },
+            },
+          ],
+        },
+      },
+    ]);
+    let options = result[0].options[0];
+    return new SalesOrderQueryOptions(options);
   }
 
   async query(
