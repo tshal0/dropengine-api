@@ -4,7 +4,6 @@ import { cloneDeep } from "lodash";
 import {
   BadCharacterFlag,
   InvalidPersonalizationFlag,
-  LineItemOptionFlagReason,
   MissingPersonalizationFlag,
 } from "./OrderFlag";
 import { Personalization } from "./Personalization";
@@ -123,7 +122,7 @@ describe("SalesLineItem", () => {
     const variant = cloneDeep(props.variant);
     variant.id = mockUuid2;
     const li = new SalesLineItem(cloneDeep(props));
-    li.variant = variant;
+    li.variant = new SalesVariant(variant);
     expect(li.variant.id).toEqual(mockUuid2);
   });
   it("should have editable personalization", () => {

@@ -9,7 +9,6 @@ import {
 } from "./OrderFlag";
 import { IPersonalization, Personalization } from "./Personalization";
 import { ISalesVariantProps, SalesVariant } from "./SalesVariant";
-
 export interface ISalesLineItemProps {
   lineNumber: number;
   quantity: number;
@@ -93,7 +92,7 @@ export class SalesLineItem implements ISalesLineItem {
         let cleanPattern = pattern.replace("’", "'");
         cleanPattern = cleanPattern.replace("”", '"');
 
-        console.log({ pattern, cleanPattern, prop, rule: rules[i] });
+        console.log({ pattern, cleanPattern, prop, rule: rules[i].raw() });
         try {
           let re = new RegExp(cleanPattern, "g");
           let validProp = re.test(prop.value);
@@ -126,16 +125,16 @@ export class SalesLineItem implements ISalesLineItem {
     };
   }
 
-  public set lineNumber(val: any) {
+  public set lineNumber(val: number) {
     this._lineNumber = val;
   }
-  public get lineNumber() {
+  public get lineNumber(): number {
     return this._lineNumber;
   }
-  public set quantity(val: any) {
+  public set quantity(val: number) {
     this._quantity = val;
   }
-  public get quantity() {
+  public get quantity(): number {
     return this._quantity;
   }
   public set personalization(val: Personalization[]) {
@@ -144,16 +143,16 @@ export class SalesLineItem implements ISalesLineItem {
   public get personalization(): Personalization[] {
     return this._personalization;
   }
-  public set variant(val: any) {
+  public set variant(val: SalesVariant) {
     this._variant = val;
   }
-  public get variant() {
+  public get variant(): SalesVariant {
     return this._variant;
   }
-  public set flags(val: any) {
+  public set flags(val: OrderFlag[]) {
     this._flags = val;
   }
-  public get flags() {
+  public get flags(): OrderFlag[] {
     return this._flags;
   }
 }

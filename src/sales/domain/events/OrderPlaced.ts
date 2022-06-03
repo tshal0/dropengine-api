@@ -24,7 +24,7 @@ export interface IPlacedOrderCustomer {
   email: string;
 }
 export interface IOrderPlacedDetails {
-  accountId: string;
+  seller: string;
   orderName: string;
   orderDate: Date;
   orderNumber: number;
@@ -37,7 +37,7 @@ export interface IOrderPlacedDetails {
 export class OrderPlacedDetails {
   constructor(props?: IOrderPlacedDetails | undefined) {
     if (props) {
-      this.accountId = props.accountId;
+      this.seller = props.seller;
       this.orderName = props.orderName;
       this.orderDate = props.orderDate;
       this.orderNumber = props.orderNumber;
@@ -48,7 +48,7 @@ export class OrderPlacedDetails {
       this.merchant = new SalesMerchant(props.merchant).raw();
     }
   }
-  accountId: string = null;
+  seller: string = null;
   orderName: string = "";
   orderDate: Date = new Date("2021-01-01T00:00:00.000Z");
   orderNumber: number = 0;

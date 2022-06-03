@@ -15,7 +15,7 @@ export class OrderResponse {
   constructor(order: SalesOrder) {
     const props = order.raw();
     this.id = props.id;
-    this.accountId = props.accountId;
+    this.accountId = props.seller;
     this.orderName = props.orderName;
     this.orderStatus = props.orderStatus;
     this.orderDate = props.createdAt;

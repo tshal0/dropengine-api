@@ -26,7 +26,7 @@ export class MongoSalesOrder extends IMongoEntity {
     super();
     if (props) {
       this.id = props.id;
-      this.accountId = props.accountId;
+      this.seller = props.seller;
       this.orderName = props.orderName;
       this.orderNumber = props.orderNumber;
       this.orderDate = props.orderDate;
@@ -42,11 +42,12 @@ export class MongoSalesOrder extends IMongoEntity {
     }
   }
   @Prop({ required: true })
-  accountId: string;
+  seller: string;
+  
   @Prop({ required: true })
   orderStatus: OrderStatus;
 
-  @Prop({ required: true })
+  @Prop({ required: true, index: true})
   orderDate: Date;
   @Prop({ required: true })
   orderNumber: number;
@@ -72,7 +73,7 @@ export class MongoSalesOrder extends IMongoEntity {
   public raw(): ISalesOrderProps {
     let props: ISalesOrderProps = {
       id: this.id,
-      accountId: this.accountId,
+      seller: this.seller,
       orderName: this.orderName,
       orderNumber: this.orderNumber,
       orderDate: this.orderDate,

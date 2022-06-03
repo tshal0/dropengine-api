@@ -116,7 +116,7 @@ export abstract class SalesOrderMocks {
   };
 
   static placedDetails: OrderPlacedDetails = {
-    accountId: SalesOrderMocks.accountId,
+    seller: SalesOrderMocks.accountId,
     orderName: SalesOrderMocks.orderName,
     orderDate: SalesOrderMocks.orderDate,
     orderNumber: SalesOrderMocks.orderNumber,
@@ -145,7 +145,7 @@ export abstract class SalesOrderMocks {
   /** ORDER CREATED */
   static orderProps: ISalesOrderProps = {
     id: SalesOrderMocks.id,
-    accountId: SalesOrderMocks.accountId,
+    seller: SalesOrderMocks.accountId,
     orderName: SalesOrderMocks.orderName,
     orderNumber: SalesOrderMocks.orderNumber,
     orderDate: SalesOrderMocks.orderDate,

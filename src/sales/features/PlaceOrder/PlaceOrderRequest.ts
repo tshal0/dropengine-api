@@ -14,7 +14,7 @@ import { ISalesMerchant } from "@sales/domain/model/SalesMerchant";
 export class PlaceOrderRequest {
   constructor(props?: OrderPlacedDetails | undefined) {
     if (props) {
-      this.accountId = props.accountId;
+      this.seller = props.seller;
       this.orderName = props.orderName;
       this.orderDate = props.orderDate;
       this.orderNumber = props.orderNumber;
@@ -27,7 +27,7 @@ export class PlaceOrderRequest {
   }
   @IsString()
   @IsNotEmpty()
-  accountId: string;
+  seller: string;
   @IsOptional()
   orderName: string;
   @IsNotEmpty()

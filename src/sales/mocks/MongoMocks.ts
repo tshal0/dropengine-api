@@ -117,7 +117,7 @@ export abstract class MongoMocks {
   static readonly mockMongoId = "000000000000000000000001";
   static readonly orderProps: ISalesOrderProps = {
     id: MongoMocks.mockMongoId,
-    accountId: mockUuid1,
+    seller: mockUuid1,
     orderName: "SLI-1001",
     orderNumber: 1001,
     orderDate: now,
@@ -143,7 +143,7 @@ export abstract class MongoMocks {
     orderName: "SLI-1001",
     orderNumber: 1001,
     orderStatus: OrderStatus.OPEN,
-    accountId: mockUuid1,
+    seller: mockUuid1,
     billingAddress: MongoMocks.addressProps,
     customer: {
       email: "sample@mail.com",

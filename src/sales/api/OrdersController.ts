@@ -144,10 +144,10 @@ export class OrdersController {
     @User() user: AuthenticatedUser,
     @Body(CreateOrderValidationPipe) request: PlaceOrderRequest
   ) {
-    if (!user.canManageOrders(request.accountId)) {
+    if (!user.canManageOrders(request.seller)) {
       throw new FailedToPlaceSalesOrderException(
         request,
-        `User '${user.email}' not authorized to place orders for given Account: '${request.accountId}'`,
+        `User '${user.email}' not authorized to place orders for given Account: '${request.seller}'`,
         PlaceOrderError.UserNotAuthorizedForAccount
       );
     }

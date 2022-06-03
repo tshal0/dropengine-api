@@ -50,6 +50,7 @@ export class HandleMyEasySuiteOrderPlaced
     //   return;
     // }
     const order = dto.details;
+
     let sdto = new PlaceOrderRequest();
     const merchant = order.store;
     sdto.merchant = new SalesMerchant({
@@ -108,7 +109,7 @@ export class HandleMyEasySuiteOrderPlaced
       );
     }
     const account = result.value();
-    sdto.accountId = account.entity().id;
+    sdto.seller = account.entity().companyCode;
     let salesOrder = await this.placeOrder.execute(sdto);
     this.logger.debug(`[CREATED] ${SalesOrder.name} '${salesOrder.id}'`);
   }

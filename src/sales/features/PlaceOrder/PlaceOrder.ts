@@ -44,7 +44,7 @@ export class PlaceOrder implements UseCase<PlaceOrderRequest, SalesOrder> {
       }
 
       const payload = new OrderPlacedDetails({
-        accountId: request.accountId,
+        seller: request.seller,
         orderName: request.orderName,
         orderNumber: request.orderNumber,
         orderDate: request.orderDate,

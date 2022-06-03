@@ -94,7 +94,7 @@ describe("OrdersController", () => {
           orderName: SalesOrderMocks.orderName,
           orderNumber: SalesOrderMocks.orderNumber,
           shippingAddress: SalesOrderMocks.shippingAddress,
-          accountId: SalesOrderMocks.accountId,
+          seller: SalesOrderMocks.accountId,
         });
 
         const reqUser: IRequestUser = {

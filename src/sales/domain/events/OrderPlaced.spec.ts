@@ -9,7 +9,7 @@ describe("OrderPlacedEvent", () => {
   it("should be generated with valid OrderPlacedDetails", () => {
     const liprops = cloneDeep(MongoMocks.lineItemProps);
     const payload = new OrderPlacedDetails({
-      accountId: mockUuid1,
+      seller: mockUuid1,
       billingAddress: mockAddress,
       shippingAddress: mockAddress,
       customer: cloneDeep(SalesOrderMocks.customer),
@@ -34,7 +34,7 @@ describe("OrderPlacedEvent", () => {
       aggregateId: MongoMocks.mockMongoId,
       aggregateType: "SalesOrder",
       details: {
-        accountId: mockUuid1,
+        seller: mockUuid1,
         billingAddress: mockAddress,
         customer: SalesOrderMocks.customer,
         merchant: SalesOrderMocks.merchant,

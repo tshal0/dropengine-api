@@ -22,7 +22,7 @@ export enum OrderStatus {
 
 export interface ISalesOrderProps {
   id: string;
-  accountId: string;
+  seller: string;
   orderName: string;
   orderNumber: number;
   orderDate: Date;
@@ -39,7 +39,7 @@ export interface ISalesOrderProps {
 
 export interface ISalesOrder {
   id: string;
-  accountId: string;
+  seller: string;
   orderName: string;
   orderNumber: number;
   orderDate: Date;
@@ -54,7 +54,7 @@ export interface ISalesOrder {
 }
 export class SalesOrder implements ISalesOrder {
   private _id: string = null;
-  private _accountId: string = null;
+  private _seller: string = null;
   private _orderName: string = "";
   private _orderNumber: number = 0;
   private _orderDate: Date = moment().toDate();
@@ -70,9 +70,7 @@ export class SalesOrder implements ISalesOrder {
   constructor(props?: ISalesOrderProps | undefined) {
     if (props) {
       this._id = validator.isMongoId(`${props.id}`) ? props.id : null;
-      this._accountId = validator.isUUID(`${props.accountId}`)
-        ? props.accountId
-        : null;
+      this._seller = validator.isUUID(`${props.seller}`) ? props.seller : null;
       this._orderName = props.orderName || "";
       this._orderNumber = props.orderNumber || 0;
       this._orderDate = isDate(props.orderDate)
@@ -100,7 +98,7 @@ export class SalesOrder implements ISalesOrder {
     return this;
   }
   public placed(details: OrderPlacedDetails) {
-    this.accountId = details.accountId;
+    this.seller = details.seller;
     this.orderName = details.orderName;
     this.orderNumber = details.orderNumber;
     this.orderDate = details.orderDate;
@@ -169,7 +167,7 @@ export class SalesOrder implements ISalesOrder {
   public raw(): ISalesOrderProps {
     return {
       id: this._id,
-      accountId: this._accountId,
+      seller: this._seller,
       orderName: this._orderName,
       orderNumber: this._orderNumber,
       orderDate: this._orderDate,
@@ -204,11 +202,11 @@ export class SalesOrder implements ISalesOrder {
   public get id() {
     return this._id;
   }
-  public set accountId(val: any) {
-    this._accountId = validator.isUUID(`${val}`) ? val : null;
+  public set seller(val: string) {
+    this._seller = val;
   }
-  public get accountId(): string {
-    return this._accountId;
+  public get seller(): string {
+    return this._seller;
   }
   public set orderName(val: any) {
     this._orderName = val;

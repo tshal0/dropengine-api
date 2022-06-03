@@ -19,7 +19,7 @@ describe("SalesOrder", () => {
   it("should exist", () => {
     let props: ISalesOrderProps = {
       id: null,
-      accountId: null,
+      seller: null,
       orderName: "",
       orderNumber: 0,
       orderDate: now,
@@ -41,7 +41,7 @@ describe("SalesOrder", () => {
 
     let props: ISalesOrderProps = {
       id: mockMongoId,
-      accountId: mockUuid1,
+      seller: mockUuid1,
       orderName: "SLI-1001",
       orderNumber: 1001,
       orderDate: now,
@@ -67,7 +67,7 @@ describe("SalesOrder", () => {
 
     let props: ISalesOrderProps = {
       id: "",
-      accountId: "",
+      seller: "",
       orderName: "SLI-1001",
       orderNumber: 1001,
       orderDate: "" as any,
@@ -87,7 +87,7 @@ describe("SalesOrder", () => {
     };
     let expected = cloneDeep(props);
     expected.id = null;
-    expected.accountId = null;
+    expected.seller = null;
     expected.orderDate = now;
     const result = new SalesOrder(props);
     expect(result.raw()).toEqual(expected);
@@ -98,11 +98,7 @@ describe("SalesOrder", () => {
     result.id = "";
     expect(result.id).toBe(null);
   });
-  it("should not allow non-UUID accountId", () => {
-    let result = new SalesOrder();
-    result.accountId = "";
-    expect(result.accountId).toBe(null);
-  });
+
   it("should not allow non-Date orderDate", () => {
     let result = new SalesOrder();
     result.orderDate = "";
@@ -115,8 +111,8 @@ describe("SalesOrder", () => {
   });
   it("accountId should be editable", () => {
     let result = new SalesOrder();
-    result.accountId = mockUuid1;
-    expect(result.accountId).toEqual(mockUuid1);
+    result.seller = mockUuid1;
+    expect(result.seller).toEqual(mockUuid1);
   });
   it("orderDate should be editable", () => {
     let result = new SalesOrder();
@@ -202,7 +198,7 @@ describe("SalesOrder", () => {
       expect(order.orderName).toBe(SalesOrderMocks.orderName);
       expect(order.orderNumber).toBe(SalesOrderMocks.orderNumber);
       expect(order.orderDate).toEqual(SalesOrderMocks.orderDate);
-      expect(order.accountId).toBe(SalesOrderMocks.accountId);
+      expect(order.seller).toBe(SalesOrderMocks.accountId);
       expect(order.customer.raw()).toEqual(SalesOrderMocks.customer);
       expect(order.lineItems).toContainEqual(
         new SalesLineItem(SalesOrderMocks.salesLineItem1)
