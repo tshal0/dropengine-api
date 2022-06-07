@@ -1,9 +1,6 @@
-
-
 export class CreateProductDto {
-  id?: string | undefined;
+  id?: number | undefined;
   type: string;
-  productTypeId: string;
   sku: string;
   tags: string;
   pricingTier: string;

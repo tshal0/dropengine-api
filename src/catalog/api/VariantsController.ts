@@ -47,13 +47,13 @@ export class ProductVariantsController {
   constructor(private service: VariantService) {}
   @Get(":id")
   @UseGuards(AuthGuard())
-  async get(@Param("id") id: string) {
+  async get(@Param("id") id: number) {
     const result = await this.service.findById(id);
     return result.raw();
   }
   @Delete(":id")
   @UseGuards(AuthGuard())
-  async delete(@Param("id") id: string) {
+  async delete(@Param("id") id: number) {
     return await this.service.delete(id);
   }
 

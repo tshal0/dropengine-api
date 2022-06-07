@@ -307,9 +307,7 @@ function mockLineItemProps(): ISalesLineItemProps {
     quantity: 1,
     personalization: [{ name: "Name", value: "Sample" }],
     variant: {
-      id: mockUuid1,
-      productId: mockUuid1,
-      productTypeId: mockUuid1,
+      id: 1,
       sku: `MOCK_SKU`,
       type: ProductTypes.MetalArt,
       image: "MOCK_IMAGE",

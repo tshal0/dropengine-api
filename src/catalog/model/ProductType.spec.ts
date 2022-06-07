@@ -10,6 +10,7 @@ describe("ProductType", () => {
     const expected: IProductTypeProps = {
       id: null,
       name: "",
+      slug: "",
       image: "",
       productionData: {
         route: "1",
@@ -56,8 +57,9 @@ describe("ProductType", () => {
   });
   it("should take props", () => {
     const props: IProductTypeProps = {
-      id: mockUuid1,
+      id: 1,
       name: "test",
+      slug: "test",
       image: "test",
       productionData: {
         route: "2",
@@ -87,8 +89,7 @@ describe("ProductType", () => {
       },
       products: [
         {
-          id: mockUuid1,
-          productTypeId: mockUuid1,
+          id: 1,
           image: "test",
           sku: "test",
           type: "test",
@@ -109,10 +110,8 @@ describe("ProductType", () => {
           ],
           variants: [
             {
-              id: mockUuid1,
+              id: 1,
               type: "",
-              productId: mockUuid1,
-              productTypeId: mockUuid1,
               image: "test",
               sku: "test",
               option1: {
@@ -140,8 +139,9 @@ describe("ProductType", () => {
     };
     const val = new ProductType(props);
     const expected: IProductTypeProps = {
-      id: mockUuid1,
+      id: 1,
       name: "test",
+      slug: "test",
       image: "test",
       productionData: {
         route: "2",
@@ -171,8 +171,7 @@ describe("ProductType", () => {
       },
       products: [
         {
-          id: mockUuid1,
-          productTypeId: mockUuid1,
+          id: 1,
           image: "test",
           sku: "test",
           type: "test",
@@ -193,10 +192,8 @@ describe("ProductType", () => {
           ],
           variants: [
             {
-              id: mockUuid1,
+              id: 1,
               type: "",
-              productId: mockUuid1,
-              productTypeId: mockUuid1,
               image: "test",
               sku: "test",
               option1: {

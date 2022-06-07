@@ -6,12 +6,13 @@ import {
   LivePreview,
   Product,
   ProductType,
+  ProductTypes,
+  ProductTypeSlugs,
   Variant,
 } from "@catalog/model";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { TestingModule, TestingModuleBuilder } from "@nestjs/testing";
-import { mockUuid1, mockUuid2 } from "@sales/mocks";
 import { EntityNotFoundException } from "@shared/exceptions";
 import { now, spyOnDate } from "@shared/mocks";
 import { cloneDeep } from "lodash";
@@ -19,6 +20,7 @@ import { DbProduct, DbProductType, DbProductVariant } from "./entities";
 import { ProductsRepository } from "./ProductsRepository";
 import { ProductTypesRepository } from "./ProductTypesRepository";
 import { VariantsRepository } from "./VariantsRepository";
+import { strictEqual } from "assert";
 
 class NoErrorThrownError extends Error {}
 
@@ -48,13 +50,15 @@ describe("VariantsRepository", () => {
   let variant: Variant;
   let dbVariant: DbProductVariant;
 
-  const PROD_TYPE = `2DMetalArt`;
+  const PROD_TYPE = ProductTypes.MetalArt;
+  const PROD_TYPE_SLUG = ProductTypeSlugs.MetalArt;
   const PSKU = `MEM-000-01`;
   const VSKU = `${PSKU}-12-Black`;
   beforeEach(async () => {
     prodTypeProps = {
-      id: mockUuid1,
+      id: 1,
       name: PROD_TYPE,
+      slug: PROD_TYPE_SLUG,
       image: "MOCK_IMG",
       productionData: { material: "Mild Steel", route: "1", thickness: "0.06" },
       option1: {
@@ -98,10 +102,9 @@ describe("VariantsRepository", () => {
       placeholder: "Enter up to 20 characters",
     };
     prodProps = {
-      id: mockUuid1,
+      id: 1,
       sku: PSKU,
       type: PROD_TYPE,
-      productTypeId: mockUuid1,
       pricingTier: "2",
       tags: ["MOCK_TAG"],
       image: "MOCK_IMG",
@@ -117,12 +120,10 @@ describe("VariantsRepository", () => {
     dbProd = new DbProduct(prodProps);
     dbProd.productType = dbProdType;
     vprops = {
-      id: mockUuid1,
+      id: 1,
       image: "MOCK_IMG",
       sku: VSKU,
       type: PROD_TYPE,
-      productId: mockUuid1,
-      productTypeId: mockUuid1,
 
       option1: { name: "Size", value: '12"' },
       option2: { name: "Color", value: "Black" },
@@ -153,14 +154,12 @@ describe("VariantsRepository", () => {
       service = await module.resolve(VariantsRepository);
       const dbe = new DbProductVariant();
       // These props are handled by the database
-      dbe.id = mockUuid1;
+      dbe.id = 1;
       // WHEN
       const result = await service.update(dbe, variant);
       // THEN
       const expected = cloneDeep(vprops);
-      expected.id = mockUuid1;
-      expected.productId = undefined;
-      expected.productTypeId = undefined;
+      expected.id = 1;
       expected.product = null;
       expected.productType = null;
       expect(result.raw()).toMatchObject(expected);
@@ -256,7 +255,7 @@ describe("VariantsRepository", () => {
       expect(error).not.toBeInstanceOf(NoErrorThrownError);
       expect(error).toBeInstanceOf(EntityNotFoundException);
       expect(error.getResponse()).toMatchObject({
-        id: "00000000-0000-0000-0000-000000000001|MEM-000-01-12-Black",
+        id: "MEM-000-01-12-Black",
         message: "ProductNotFound",
         error: "ENTITY_NOT_FOUND",
       });
@@ -290,7 +289,7 @@ describe("VariantsRepository", () => {
       expect(error).not.toBeInstanceOf(NoErrorThrownError);
       expect(error).toBeInstanceOf(EntityNotFoundException);
       expect(error.getResponse()).toMatchObject({
-        id: "00000000-0000-0000-0000-000000000001|2DMetalArt",
+        id: "2DMetalArt",
         message: "ProductTypeNotFound",
         error: "ENTITY_NOT_FOUND",
       });
@@ -309,7 +308,7 @@ describe("VariantsRepository", () => {
       service = await module.resolve(VariantsRepository);
       // WHEN
       const result = await service.lookupBySkuOrId({
-        id: mockUuid1,
+        id: 1,
         sku: dbVariant.sku,
       });
       const expected = cloneDeep(vprops);
@@ -329,7 +328,7 @@ describe("VariantsRepository", () => {
       service = await module.resolve(VariantsRepository);
       // WHEN
       const result = await service.lookupBySkuOrId({
-        id: mockUuid1,
+        id: 1,
         sku: dbVariant.sku,
       });
       const expected = cloneDeep(vprops);
@@ -367,7 +366,7 @@ describe("VariantsRepository", () => {
         .compile();
       service = await module.resolve(VariantsRepository);
       // WHEN
-      const result = await service.findById("test");
+      const result = await service.findById(1);
       const expected = cloneDeep(vprops);
       expected.id = dbVariant.id;
       // THEN
@@ -384,7 +383,7 @@ describe("VariantsRepository", () => {
         .compile();
       service = await module.resolve(VariantsRepository);
       // WHEN
-      const result = await service.findById("test");
+      const result = await service.findById(1);
 
       const expected = cloneDeep(vprops);
       expected.id = dbVariant.id;
@@ -439,7 +438,7 @@ describe("VariantsRepository", () => {
         })
         .compile();
       service = await module.resolve(VariantsRepository);
-      let result = await service.delete("test");
+      let result = await service.delete(1);
       expect(result).toMatchObject({ result: "DELETED", timestamp: now });
     });
     it("should return NOT_FOUND if not exists", async () => {
@@ -451,7 +450,7 @@ describe("VariantsRepository", () => {
         })
         .compile();
       service = await module.resolve(VariantsRepository);
-      let result = await service.delete("test");
+      let result = await service.delete(1);
       expect(result).toMatchObject({ result: "NOT_FOUND", timestamp: now });
     });
   });

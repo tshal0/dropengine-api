@@ -1,6 +1,7 @@
 import {
   IVariantOption,
   IVariantProps,
+  ProductTypes,
   Variant,
 } from "@catalog/model";
 import { Entity, Property, PrimaryKey, ManyToOne, wrap } from "@mikro-orm/core";
@@ -24,17 +25,16 @@ export class DbProductVariant {
       this.weight = props.weight;
       this.manufacturingCost = props.manufacturingCost;
       this.shippingCost = props.shippingCost;
-      
     }
   }
-  @PrimaryKey({ type: "uuid", defaultRaw: "uuid_generate_v4()" })
-  id!: string;
+  @PrimaryKey({ autoincrement: true })
+  id!: number;
 
   @Property({ unique: true })
   sku: string;
   @Property()
   image: string;
-  @Property({ default: "2DMetalArt" })
+  @Property({ default: ProductTypes.Uncategorized })
   type: string;
 
   @Property({ type: "json" })
@@ -81,8 +81,6 @@ export class DbProductVariant {
       image: this.image,
       sku: this.sku,
       type: this.type,
-      productId: this.product?.id,
-      productTypeId: this.productType?.id,
       option1: this.option1,
       option2: this.option2,
       option3: this.option3,

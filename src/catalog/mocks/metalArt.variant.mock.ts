@@ -11,6 +11,7 @@ import {
   Product,
   ProductType,
   ProductTypes,
+  ProductTypeSlugs,
   Variant,
 } from "@catalog/model";
 import { CatalogVariant } from "@catalog/services";
@@ -21,6 +22,7 @@ import { cloneDeep } from "lodash";
 
 export abstract class MESMetalArtMocks {
   static readonly PROD_TYPE = ProductTypes.MetalArt;
+  static readonly PROD_TYPE_SLUG = ProductTypeSlugs.MetalArt;
   static readonly PSKU = `MU-C011-00`;
   static readonly VSKU = `${MESMetalArtMocks.PSKU}-12-Black`;
 
@@ -101,8 +103,9 @@ export abstract class MESMetalArtMocks {
     is_deleted: "N",
   };
   static readonly prodTypeProps: IProductTypeProps = {
-    id: mockUuid1,
+    id: 1,
     name: MESMetalArtMocks.PROD_TYPE,
+    slug: MESMetalArtMocks.PROD_TYPE_SLUG,
     image: "MOCK_IMG",
     productionData: {
       material: "Mild Steel",
@@ -144,10 +147,9 @@ export abstract class MESMetalArtMocks {
     MESMetalArtMocks.prodTypeProps
   );
   static readonly prodProps: IProductProps = {
-    id: mockUuid1,
+    id: 1,
     sku: MESMetalArtMocks.PSKU,
     type: MESMetalArtMocks.PROD_TYPE,
-    productTypeId: mockUuid1,
     pricingTier: "2",
     tags: [],
     image: MESMetalArtMocks.IMAGE,
@@ -182,12 +184,10 @@ export abstract class MESMetalArtMocks {
   static readonly prod: Product = new Product(MESMetalArtMocks.prodProps);
   static readonly dbProd: DbProduct = new DbProduct(MESMetalArtMocks.prodProps);
   static readonly vprops: IVariantProps = {
-    id: mockUuid1,
+    id: 1,
     image: MESMetalArtMocks.IMAGE,
     sku: MESMetalArtMocks.VSKU,
     type: MESMetalArtMocks.PROD_TYPE,
-    productId: mockUuid1,
-    productTypeId: mockUuid1,
 
     option1: { name: "Size", value: '12"' },
     option2: { name: "Color", value: "Black" },
@@ -206,11 +206,11 @@ export abstract class MESMetalArtMocks {
   );
 
   static readonly expected = {
+    id: 1,
     height: {
       dimension: 0,
       units: "mm",
     },
-    id: "00000000-0000-0000-0000-000000000001",
     image:
       "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C011-00-Black.png",
     manufacturingCost: {
@@ -231,7 +231,7 @@ export abstract class MESMetalArtMocks {
     },
     product: {
       createdAt: new Date("2021-01-01T00:00:00.000Z"),
-      id: "00000000-0000-0000-0000-000000000001",
+      id: 1,
       image:
         "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C011-00-Black.png",
       personalizationRules: cloneDeep(
@@ -240,7 +240,9 @@ export abstract class MESMetalArtMocks {
       pricingTier: "2",
       productType: {
         createdAt: new Date("2021-01-01T00:00:00.000Z"),
-        id: "00000000-0000-0000-0000-000000000001",
+        id: 1,
+        name: MESMetalArtMocks.PROD_TYPE,
+        slug: MESMetalArtMocks.PROD_TYPE_SLUG,
         image: "MOCK_IMG",
         livePreview: {
           enabled: false,
@@ -248,7 +250,6 @@ export abstract class MESMetalArtMocks {
           name: "",
           version: "",
         },
-        name: "2DMetalArt",
         option1: {
           enabled: true,
           name: "Size",
@@ -298,18 +299,18 @@ export abstract class MESMetalArtMocks {
         products: [],
         updatedAt: new Date("2021-01-01T00:00:00.000Z"),
       },
-      productTypeId: "00000000-0000-0000-0000-000000000001",
       sku: "MU-C011-00",
       svg: "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/6364995934/4135624991/MU-C011-00.svg",
       tags: [],
-      type: "2DMetalArt",
+      type: ProductTypes.MetalArt,
       updatedAt: new Date("2021-01-01T00:00:00.000Z"),
       variants: [],
     },
-    productId: "00000000-0000-0000-0000-000000000001",
     productType: {
       createdAt: new Date("2021-01-01T00:00:00.000Z"),
-      id: "00000000-0000-0000-0000-000000000001",
+      id: 1,
+      name: MESMetalArtMocks.PROD_TYPE,
+      slug: MESMetalArtMocks.PROD_TYPE_SLUG,
       image: "MOCK_IMG",
       livePreview: {
         enabled: false,
@@ -317,7 +318,7 @@ export abstract class MESMetalArtMocks {
         name: "",
         version: "",
       },
-      name: "2DMetalArt",
+
       option1: {
         enabled: true,
         name: "Size",
@@ -367,7 +368,6 @@ export abstract class MESMetalArtMocks {
       products: [],
       updatedAt: new Date("2021-01-01T00:00:00.000Z"),
     },
-    productTypeId: "00000000-0000-0000-0000-000000000001",
     shippingCost: {
       currency: "USD",
       total: 750,
@@ -385,9 +385,7 @@ export abstract class MESMetalArtMocks {
   };
 
   static readonly expectedCatalogVariant: CatalogVariant = {
-    id: mockUuid1,
-    productId: mockUuid1,
-    productTypeId: mockUuid1,
+    id: 1,
     height: { units: "mm", dimension: 0 },
     width: { units: "mm", dimension: 0 },
     sku: MESMetalArtMocks.VSKU,
@@ -429,4 +427,3 @@ export abstract class MESMetalArtMocks {
     },
   };
 }
-

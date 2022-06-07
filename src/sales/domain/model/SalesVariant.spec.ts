@@ -28,8 +28,6 @@ describe("SalesVariant", () => {
       weight: { units: "g", dimension: 0 },
       productionData: { material: "Mild Steel", route: "1", thickness: "0.06" },
       personalizationRules: [],
-      productId: null,
-      productTypeId: null,
       height: { dimension: 0, units: "mm" },
       width: { dimension: 0, units: "mm" },
     };
@@ -48,45 +46,18 @@ describe("SalesVariant", () => {
   it("id should change for valid ObjectId", () => {
     const expected = cloneDeep(props);
     variant = new SalesVariant(expected);
-    variant.id = mockUuid1;
+    variant.id = 1;
 
-    expect(variant.id).toEqual(mockUuid1);
+    expect(variant.id).toEqual(1);
   });
   it("id should NOT change for non-ObjectId", () => {
     const expected = cloneDeep(props);
     variant = new SalesVariant(expected);
-    variant.id = ``;
+    variant.id = `` as unknown as number;
 
     expect(variant.id).toEqual(null);
   });
-  it("productId should change for valid UUID", () => {
-    const expected = cloneDeep(props);
-    variant = new SalesVariant(expected);
-    variant.productId = mockUuid1;
 
-    expect(variant.productId).toEqual(mockUuid1);
-  });
-  it("productId should NOT change for non-UUID", () => {
-    const expected = cloneDeep(props);
-    variant = new SalesVariant(expected);
-    variant.productId = "";
-
-    expect(variant.productId).toEqual(null);
-  });
-  it("productTypeId should change for valid UUID", () => {
-    const expected = cloneDeep(props);
-    variant = new SalesVariant(expected);
-    variant.productTypeId = mockUuid1;
-
-    expect(variant.productTypeId).toEqual(mockUuid1);
-  });
-  it("productTypeId should NOT change for non-UUID", () => {
-    const expected = cloneDeep(props);
-    variant = new SalesVariant(expected);
-    variant.productTypeId = "";
-
-    expect(variant.productTypeId).toEqual(null);
-  });
   it("image should be editable", () => {
     const expected = cloneDeep(props);
     variant = new SalesVariant(expected);

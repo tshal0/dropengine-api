@@ -3,11 +3,16 @@ import { getModelToken } from "@nestjs/mongoose";
 import { TestingModule } from "@nestjs/testing";
 import { cloneDeep } from "lodash";
 import { Model, Types } from "mongoose";
-import { MongoSalesOrder, MongoSalesOrderDocument } from "../schemas";
+import {
+  MongoSalesLineItem,
+  MongoSalesOrder,
+  MongoSalesOrderDocument,
+} from "../schemas";
 import { MongoOrdersRepository } from "./MongoOrdersRepository";
 import csv from "csvtojson";
 import { MongoMocks } from "@sales/mocks/MongoMocks";
 import { withDefaults } from "@sales/mocks";
+import { ISalesLineItemProps } from "@sales/domain";
 
 // spyOnDate();
 describe("MongoOrdersRepository", () => {
@@ -98,8 +103,9 @@ describe("MongoOrdersRepository", () => {
       //TODO: Insert 100+ orders
       let results = await csv().fromFile("./e2e/fixtures/orders.csv");
       results = results.map((r) => {
-        r.lineItems = JSON.parse(r.lineItems).map((li) => {
-          li._id = null;
+        r.lineItems = JSON.parse(r.lineItems).map((li: MongoSalesLineItem) => {
+          li.variant.id = null;
+          li["_id"] = null;
           return li;
         });
         r.orderNumber = +r.orderNumber;

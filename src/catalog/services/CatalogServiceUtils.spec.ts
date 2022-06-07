@@ -14,8 +14,10 @@ describe("CatalogServiceUtils", () => {
       // WHEN
       let result = generateProductFromMESVariant(mesVariant);
       const expected: CreateProductDto = {
-        categories: "Nautical Designs,Simple Products,For Her,Steel Monograms,All Custom",
-        image: "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C011-00-Black.png",
+        categories:
+          "Nautical Designs,Simple Products,For Her,Steel Monograms,All Custom",
+        image:
+          "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C011-00-Black.png",
         personalizationRules: [
           {
             label: "Top Text",
@@ -43,7 +45,6 @@ describe("CatalogServiceUtils", () => {
         svg: "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/6364995934/4135624991/MU-C011-00.svg",
         tags: "",
         type: "2DMetalArt",
-        productTypeId: ""
       };
       // THEN
       expect(result).toEqual(expected);
@@ -57,7 +58,6 @@ describe("CatalogServiceUtils", () => {
       // WHEN
       let result = generateVariantFromMESVariant(mesVariant);
       const expected: CreateVariantDto = {
-        productId: "",
         productSku: "MU-C011-00",
         sku: "MU-C011-00-12-Black",
         type: "2DMetalArt",

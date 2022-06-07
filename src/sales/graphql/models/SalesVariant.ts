@@ -16,11 +16,7 @@ import { Weight } from "./Weight";
 @ObjectType({ description: "SalesVariant" })
 export class SalesVariant implements ISalesVariantProps {
   @Field()
-  id: string;
-  @Field()
-  productId: string;
-  @Field()
-  productTypeId: string;
+  id: number;
   @Field()
   sku: string;
   @Field()

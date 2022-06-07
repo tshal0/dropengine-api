@@ -62,7 +62,6 @@ export function generateVariantFromMESVariant(
 
   const type = determineProductType(variant);
   let dto: CreateVariantDto = {
-    productId: "",
     sku: modifiedSku,
     type: type,
     image: variant.image || "",
@@ -150,7 +149,6 @@ export function generateProductFromMESVariant(
   dto.svg = extractLatestSvg(variant.svgs);
   dto.personalizationRules = extractRules(variant);
   dto.type = determineProductType(variant);
-  dto.productTypeId = "";
   return dto;
 }
 

@@ -43,9 +43,7 @@ export abstract class MongoMocks {
     lineNumber: 1,
     quantity: 1,
     variant: cloneDeep({
-      id: mockUuid1,
-      productId: mockUuid1,
-      productTypeId: mockUuid1,
+      id: 1,
       height: { units: "mm", dimension: 0 },
       width: { units: "mm", dimension: 0 },
       sku: MongoMocks.VSKU,
@@ -170,9 +168,7 @@ export abstract class MongoMocks {
         ],
         quantity: 1,
         variant: {
-          id: mockUuid1,
-          productId: mockUuid1,
-          productTypeId: mockUuid1,
+          id: 1,
           height: { units: "mm", dimension: 0 },
           width: { units: "mm", dimension: 0 },
           sku: MongoMocks.VSKU,
@@ -241,9 +237,7 @@ export abstract class MongoMocks {
   };
 
   static readonly expectedCatalogVariant: CatalogVariant = {
-    id: mockUuid1,
-    productId: mockUuid1,
-    productTypeId: mockUuid1,
+    id: 1,
     height: { units: "mm", dimension: 0 },
     width: { units: "mm", dimension: 0 },
     sku: MongoMocks.VSKU,

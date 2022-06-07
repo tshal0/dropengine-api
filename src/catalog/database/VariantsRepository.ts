@@ -52,14 +52,11 @@ export class VariantsRepository {
         name: entity.productType.name,
       });
       if (!product)
-        throw new EntityNotFoundException(
-          `ProductNotFound`,
-          `${entity.productId}|${entity.sku}`
-        );
+        throw new EntityNotFoundException(`ProductNotFound`, `${entity.sku}`);
       if (!type) {
         throw new EntityNotFoundException(
           `ProductTypeNotFound`,
-          `${entity.productTypeId}|${entity.type}`
+          `${entity.type}`
         );
       }
       dbe.product = product;
@@ -91,7 +88,7 @@ export class VariantsRepository {
     return dbe;
   }
   public async lookupBySkuOrId(dto: {
-    id: string;
+    id: number;
     sku: string;
   }): Promise<DbProductVariant> {
     const id = validator.isUUID(`${dto.id}`) ? dto.id : null;
@@ -107,7 +104,7 @@ export class VariantsRepository {
     return variants;
   }
 
-  public async findById(id: string): Promise<DbProductVariant> {
+  public async findById(id: number): Promise<DbProductVariant> {
     let dbe = await this._variants.findOne(
       { id },
       { populate: ["product", "productType"] }
@@ -127,7 +124,7 @@ export class VariantsRepository {
     }
     return null;
   }
-  public async delete(id: string): Promise<any> {
+  public async delete(id: number): Promise<any> {
     let dbe = await this._variants.findOne(id);
     if (!dbe) {
       return { result: "NOT_FOUND", timestamp: moment().toDate() };

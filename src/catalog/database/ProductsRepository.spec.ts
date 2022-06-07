@@ -6,6 +6,8 @@ import {
   LivePreview,
   Product,
   ProductType,
+  ProductTypes,
+  ProductTypeSlugs,
   Variant,
 } from "@catalog/model";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
@@ -46,13 +48,15 @@ describe("ProductsRepository", () => {
   let variant: Variant;
   let dbVariant: DbProductVariant;
 
-  const PROD_TYPE = `2DMetalArt`;
+  const PROD_TYPE = ProductTypes.MetalArt;
+  const PROD_TYPE_SLUG = ProductTypeSlugs.MetalArt;
   const PSKU = `MEM-000-01`;
   const VSKU = `${PSKU}-12-Black`;
   beforeEach(async () => {
     prodTypeProps = {
-      id: mockUuid1,
+      id: 1,
       name: PROD_TYPE,
+      slug: PROD_TYPE_SLUG,
       image: "MOCK_IMG",
       productionData: { material: "Mild Steel", route: "1", thickness: "0.06" },
       option1: {
@@ -96,10 +100,9 @@ describe("ProductsRepository", () => {
       placeholder: "Enter up to 20 characters",
     };
     prodProps = {
-      id: mockUuid1,
+      id: 1,
       sku: PSKU,
       type: PROD_TYPE,
-      productTypeId: mockUuid1,
       pricingTier: "2",
       tags: ["MOCK_TAG"],
       image: "MOCK_IMG",
@@ -115,12 +118,10 @@ describe("ProductsRepository", () => {
     dbProd = new DbProduct(prodProps);
     dbProd.productType = dbProdType;
     vprops = {
-      id: mockUuid1,
+      id: 1,
       image: "MOCK_IMG",
       sku: VSKU,
       type: PROD_TYPE,
-      productId: mockUuid1,
-      productTypeId: mockUuid1,
 
       option1: { name: "Size", value: '12"' },
       option2: { name: "Color", value: "Black" },
@@ -153,7 +154,7 @@ describe("ProductsRepository", () => {
       service = await module.resolve(ProductsRepository);
       const dbe = new DbProduct();
       // These props are handled by the database
-      dbe.id = mockUuid1;
+      dbe.id = 1;
       dbe.updatedAt = prodProps.updatedAt;
       dbe.createdAt = prodProps.createdAt;
       // WHEN
@@ -162,7 +163,7 @@ describe("ProductsRepository", () => {
       const raw = result.raw();
       expect(raw).toEqual({
         createdAt: now,
-        id: mockUuid1,
+        id: 1,
         image: "MOCK_IMG",
         personalizationRules: [
           {
@@ -178,11 +179,10 @@ describe("ProductsRepository", () => {
         ],
         pricingTier: "2",
         productType: null,
-        productTypeId: null,
         sku: "MEM-000-01",
         svg: "MOCK_SVG",
         tags: ["MOCK_TAG"],
-        type: "2DMetalArt",
+        type: ProductTypes.MetalArt,
         updatedAt: now,
         variants: [],
       });
@@ -276,7 +276,7 @@ describe("ProductsRepository", () => {
       expect(error).not.toBeInstanceOf(NoErrorThrownError);
       expect(error).toBeInstanceOf(EntityNotFoundException);
       expect(error.getResponse()).toMatchObject({
-        id: "00000000-0000-0000-0000-000000000001|2DMetalArt",
+        id: ProductTypes.MetalArt,
         message: "ProductTypeNotFound",
         error: "ENTITY_NOT_FOUND",
       });
@@ -304,7 +304,7 @@ describe("ProductsRepository", () => {
         .compile();
       service = await module.resolve(ProductsRepository);
       // WHEN
-      let result = await service.findById(mockUuid1);
+      let result = await service.findById(1);
 
       const raw = result.raw();
       // THEN
@@ -331,7 +331,7 @@ describe("ProductsRepository", () => {
         .compile();
       service = await module.resolve(ProductsRepository);
       // WHEN
-      let result = await service.findById(mockUuid1);
+      let result = await service.findById(1);
       // THEN
       expect(result).toBe(null);
     });
@@ -399,7 +399,7 @@ describe("ProductsRepository", () => {
         })
         .compile();
       service = await module.resolve(ProductsRepository);
-      let result = await service.delete("test");
+      let result = await service.delete(1);
       expect(result).toEqual({ result: "DELETED", timestamp: now });
     });
     it("should return NOT_FOUND if not exists", async () => {
@@ -411,7 +411,7 @@ describe("ProductsRepository", () => {
         })
         .compile();
       service = await module.resolve(ProductsRepository);
-      let result = await service.delete("test");
+      let result = await service.delete(1);
       expect(result).toEqual({ result: "NOT_FOUND", timestamp: now });
     });
   });

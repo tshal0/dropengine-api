@@ -47,9 +47,8 @@ export class CsvProductDto {
       );
 
       let props: CreateProductDto = {
-        id: this._props.Id,
+        id: +this._props.Id,
         sku: this._props.Sku,
-        productTypeId: "",
         image: this._props.Image,
         svg: this._props.Svg,
         tags: this._props.Tags,

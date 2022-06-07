@@ -6,9 +6,7 @@ import {
 import { IDimension, IMoney, IWeight } from "@shared/domain";
 
 export interface ICatalogVariant {
-  id: string;
-  productId: string;
-  productTypeId: string;
+  id: number;
   height: IDimension;
   width: IDimension;
   sku: string;
@@ -28,8 +26,6 @@ export class CatalogVariant implements ICatalogVariant {
   constructor(props?: ICatalogVariant | undefined) {
     if (props) {
       this.id = props.id;
-      this.productId = props.productId;
-      this.productTypeId = props.productTypeId;
       this.height = props.height;
       this.width = props.width;
       this.sku = props.sku;
@@ -46,11 +42,9 @@ export class CatalogVariant implements ICatalogVariant {
       this.weight = props.weight;
     }
   }
-  productId: string;
-  productTypeId: string;
   height: IDimension;
   width: IDimension;
-  id: string;
+  id: number;
   sku: string;
   image: string;
   svg: string;

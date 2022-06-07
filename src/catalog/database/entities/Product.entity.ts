@@ -35,8 +35,8 @@ export class DbProduct {
       this.createdAt = props.createdAt;
     }
   }
-  @PrimaryKey({ type: "uuid", defaultRaw: "uuid_generate_v4()" })
-  id!: string;
+  @PrimaryKey({ autoincrement: true })
+  id!: number;
   @Property()
   type: string;
   @Property({ unique: true, default: "" })
@@ -69,17 +69,14 @@ export class DbProduct {
   updatedAt: Date = new Date();
 
   public raw(): IProductProps {
-    const productId = this.id;
     const rules = this.personalizationRules
       ? this.personalizationRules.map((r) => new PersonalizationRule(r).raw())
       : [];
     const productType = this.productType ? this.productType.raw() : null;
-    const productTypeId = productType ? productType.id : null;
     const props: IProductProps = {
-      id: productId,
+      id: this.id,
       sku: this.sku,
       type: this.type,
-      productTypeId: productTypeId,
       pricingTier: this.pricingTier,
       tags: this.tags,
       image: this.image,

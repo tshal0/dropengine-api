@@ -66,7 +66,7 @@ export class LineItemProperty implements ILineItemProperty {
 }
 export class PlaceOrderRequestLineItem {
   sku?: string | undefined;
-  variantId?: string | undefined;
+  variantId?: number | undefined;
   @IsNotEmpty()
   quantity: number;
   @IsArray()

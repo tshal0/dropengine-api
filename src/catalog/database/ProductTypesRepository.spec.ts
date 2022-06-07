@@ -7,6 +7,7 @@ import {
   Product,
   ProductType,
   ProductTypes,
+  ProductTypeSlugs,
   Variant,
 } from "@catalog/model";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
@@ -49,8 +50,9 @@ describe("ProductTypesRepository", () => {
     const VSKU = `${PSKU}-12-Black`;
     beforeEach(async () => {
       prodTypeProps = {
-        id: mockUuid1,
+        id: 1,
         name: PROD_TYPE,
+        slug: ProductTypeSlugs.MetalArt,
         image: "MOCK_IMG",
         productionData: {
           material: "Mild Steel",
@@ -98,10 +100,9 @@ describe("ProductTypesRepository", () => {
         placeholder: "Enter up to 20 characters",
       };
       prodProps = {
-        id: mockUuid1,
+        id: 1,
         sku: PSKU,
         type: PROD_TYPE,
-        productTypeId: mockUuid1,
         pricingTier: "2",
         tags: ["MOCK_TAG"],
         image: "MOCK_IMG",
@@ -116,12 +117,10 @@ describe("ProductTypesRepository", () => {
       prod = new Product(prodProps);
       dbProd = new DbProduct(prodProps);
       vprops = {
-        id: mockUuid1,
+        id: 1,
         image: "MOCK_IMG",
         sku: VSKU,
         type: PROD_TYPE,
-        productId: mockUuid1,
-        productTypeId: mockUuid1,
 
         option1: { name: "Size", value: '12"' },
         option2: { name: "Color", value: "Black" },
@@ -147,7 +146,7 @@ describe("ProductTypesRepository", () => {
       service = await module.resolve(ProductTypesRepository);
       const dbe = new DbProductType();
       // These props are handled by the database
-      dbe.id = mockUuid1;
+      dbe.id = 1;
       dbe.updatedAt = expected.updatedAt;
       dbe.createdAt = expected.createdAt;
 
@@ -168,6 +167,7 @@ describe("ProductTypesRepository", () => {
       prodTypeProps = {
         id: null,
         name: ProductTypes.MetalArt,
+        slug: ProductTypeSlugs.MetalArt,
         image: "",
         productionData: {
           material: "Galv Steel",
@@ -196,7 +196,7 @@ describe("ProductTypesRepository", () => {
       };
       prodType = new ProductType(prodTypeProps);
       dbProdType = new DbProductType(prodTypeProps);
-      dbProdType.id = mockUuid1;
+      dbProdType.id = 1;
     });
     it("should create entity if not exists", async () => {
       // GIVEN
@@ -216,7 +216,7 @@ describe("ProductTypesRepository", () => {
       const result = await service.save(prodType);
       // THEN
       const expected = cloneDeep(prodTypeProps);
-      expected.id = mockUuid1;
+      expected.id = 1;
       expect(result.raw()).toEqual(expected);
     });
     it("should update entity if ID or NAME exists", async () => {
@@ -246,8 +246,9 @@ describe("ProductTypesRepository", () => {
     let dbProdType: DbProductType;
     beforeEach(async () => {
       prodTypeProps = {
-        id: mockUuid1,
+        id: 1,
         name: ProductTypes.MetalArt,
+        slug: ProductTypeSlugs.MetalArt,
         image: "",
         productionData: {
           material: "Galv Steel",
@@ -276,7 +277,7 @@ describe("ProductTypesRepository", () => {
       };
       prodType = new ProductType(prodTypeProps);
       dbProdType = new DbProductType(prodTypeProps);
-      dbProdType.id = mockUuid1;
+      dbProdType.id = 1;
     });
     it("should return list of entities", async () => {
       // GIVEN
@@ -303,8 +304,9 @@ describe("ProductTypesRepository", () => {
     let dbProdType: DbProductType;
     beforeEach(async () => {
       prodTypeProps = {
-        id: mockUuid1,
+        id: 1,
         name: ProductTypes.MetalArt,
+        slug: ProductTypeSlugs.MetalArt,
         image: "",
         productionData: {
           material: "Galv Steel",
@@ -333,7 +335,7 @@ describe("ProductTypesRepository", () => {
       };
       prodType = new ProductType(prodTypeProps);
       dbProdType = new DbProductType(prodTypeProps);
-      dbProdType.id = mockUuid1;
+      dbProdType.id = 1;
     });
     it("should return entity if exists", async () => {
       module = await mockCatalogModule()
@@ -343,7 +345,7 @@ describe("ProductTypesRepository", () => {
         })
         .compile();
       service = await module.resolve(ProductTypesRepository);
-      let result = await service.findById(mockUuid1);
+      let result = await service.findById(1);
       expect(result.raw()).toEqual(prodTypeProps);
     });
     it("should return null if not exists", async () => {
@@ -354,7 +356,7 @@ describe("ProductTypesRepository", () => {
         })
         .compile();
       service = await module.resolve(ProductTypesRepository);
-      let result = await service.findById(mockUuid1);
+      let result = await service.findById(1);
       expect(result).toEqual(null);
     });
   });
@@ -364,8 +366,9 @@ describe("ProductTypesRepository", () => {
     let dbProdType: DbProductType;
     beforeEach(async () => {
       prodTypeProps = {
-        id: mockUuid1,
-        name: "2DMetalArt",
+        id: 1,
+        name: ProductTypes.MetalArt,
+        slug: ProductTypeSlugs.MetalArt,
         image: "",
         productionData: {
           material: "Galv Steel",
@@ -394,7 +397,7 @@ describe("ProductTypesRepository", () => {
       };
       prodType = new ProductType(prodTypeProps);
       dbProdType = new DbProductType(prodTypeProps);
-      dbProdType.id = mockUuid1;
+      dbProdType.id = 1;
     });
     it("should return entity if exists", async () => {
       module = await mockCatalogModule()
@@ -441,7 +444,7 @@ describe("ProductTypesRepository", () => {
         })
         .compile();
       service = await module.resolve(ProductTypesRepository);
-      let result = await service.delete("test");
+      let result = await service.delete(1);
       expect(result).toEqual({ result: "DELETED", timestamp: now });
     });
     it("should return NOT_FOUND if not exists", async () => {
@@ -453,7 +456,7 @@ describe("ProductTypesRepository", () => {
         })
         .compile();
       service = await module.resolve(ProductTypesRepository);
-      let result = await service.delete("test");
+      let result = await service.delete(1);
       expect(result).toEqual({ result: "NOT_FOUND", timestamp: now });
     });
   });

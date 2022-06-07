@@ -8,11 +8,7 @@ import {
   ProductTypesRepository,
   VariantsRepository,
 } from "@catalog/database";
-import {
-  IProductTypeProps,
-  IVariantProps,
-  Variant,
-} from "@catalog/model";
+import { IProductTypeProps, IVariantProps, Variant } from "@catalog/model";
 import { CsvProductVariantDto, CreateVariantDto } from "@catalog/dto";
 import { MyEasySuiteClient } from "@myeasysuite/myeasysuite.client";
 import { EntityNotFoundException } from "@shared/exceptions";
@@ -33,14 +29,11 @@ export class VariantService {
 
   public async findAndUpdateOrCreate(dto: CreateVariantDto): Promise<Variant> {
     let product = await this._products.lookupBySkuOrId({
-      id: dto.productId,
+      id: null,
       sku: dto.productSku,
     });
     if (!product) {
-      throw new EntityNotFoundException(
-        `ProductNotFound`,
-        `${dto.productId}|${dto.productSku}`
-      );
+      throw new EntityNotFoundException(`ProductNotFound`, `${dto.productSku}`);
     }
     let productType = await this._types.lookupByNameOrId({
       id: product.productType.id,
@@ -53,8 +46,6 @@ export class VariantService {
       image: dto.image,
       sku: dto.sku,
       type: productType.name,
-      productId: product.id,
-      productTypeId: productType.id,
       option1: dto.option1,
       option2: dto.option2,
       option3: dto.option3,
@@ -112,11 +103,11 @@ export class VariantService {
   public async query(): Promise<Variant[]> {
     return await this._repo.query();
   }
-  public async lookup(params: { id: string; sku: string }) {
+  public async lookup(params: { id: number; sku: string }) {
     const result = await this._repo.lookupBySkuOrId(params);
     return result ? new Variant(result.raw()) : null;
   }
-  public async findById(id: string): Promise<Variant> {
+  public async findById(id: number): Promise<Variant> {
     const result = await this._repo.findById(id);
     return result ? new Variant(result.raw()) : null;
   }
@@ -125,7 +116,7 @@ export class VariantService {
     return result ? new Variant(result.raw()) : null;
   }
 
-  public async delete(id: string): Promise<void> {
+  public async delete(id: number): Promise<void> {
     return await this._repo.delete(id);
   }
 

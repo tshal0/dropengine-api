@@ -31,10 +31,8 @@ export class CreateVariantDtoMoney {
 }
 export class CreateVariantDto {
   @IsOptional()
-  id?: string | undefined;
+  id?: number | undefined;
 
-  @IsNotEmpty()
-  productId: string;
   @IsOptional()
   productSku?: string | undefined;
 

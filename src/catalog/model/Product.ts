@@ -7,10 +7,9 @@ import { IVariantProps, Variant } from "./Variant";
 import { trim } from "lodash";
 import validator from "validator";
 export interface IProductProps {
-  id: string;
+  id: number;
   sku: string;
   type: string;
-  productTypeId: string;
   pricingTier: string;
   tags: string[];
   image: string;
@@ -22,10 +21,9 @@ export interface IProductProps {
   updatedAt: Date;
 }
 export interface IProduct {
-  id: string;
+  id: number;
   sku: string;
   type: string;
-  productTypeId: string;
 
   pricingTier: string;
   tags: string[];
@@ -39,10 +37,9 @@ export interface IProduct {
 }
 
 export class Product implements IProduct {
-  private _id: string = null;
+  private _id: number = null;
   private _sku: string = "";
   private _type: string = "";
-  private _productTypeId: string = null;
   private _pricingTier: string = "";
   private _image: string = "";
   private _svg: string = "";
@@ -54,14 +51,11 @@ export class Product implements IProduct {
   private _createdAt: Date = new Date("2021-01-01T00:00:00.000Z");
   constructor(props?: IProductProps | undefined) {
     if (props) {
-      if (validator.isUUID(`${props.id}`)) {
+      if (validator.isNumeric(`${props.id}`)) {
         this._id = props.id;
       }
       this._sku = props.sku;
       this._type = props.type;
-      if (validator.isUUID(`${props.productTypeId}`)) {
-        this._productTypeId = props.productTypeId;
-      }
 
       this._pricingTier = props.pricingTier;
       this._tags = props.tags?.map((t) => trim(t)) || [];
@@ -84,7 +78,6 @@ export class Product implements IProduct {
       id: this._id,
       sku: this._sku,
       type: this._type,
-      productTypeId: this._productTypeId,
 
       pricingTier: this._pricingTier,
       image: this._image,
@@ -106,8 +99,8 @@ export class Product implements IProduct {
    * - Add/Remove Variant
    */
 
-  public set id(val: string) {
-    if (validator.isUUID(`${val}`)) this._id = val;
+  public set id(val: number) {
+    if (validator.isNumeric(`${val}`)) this._id = val;
   }
   public set sku(val: string) {
     this._sku = val;
@@ -115,9 +108,7 @@ export class Product implements IProduct {
   public set type(val: string) {
     this._type = val;
   }
-  public set productTypeId(val: string) {
-    if (validator.isUUID(`${val}`)) this._productTypeId = val;
-  }
+
   public set pricingTier(val: string) {
     this._pricingTier = val;
   }
@@ -155,9 +146,7 @@ export class Product implements IProduct {
   public get type() {
     return this._type;
   }
-  public get productTypeId() {
-    return this._productTypeId;
-  }
+
   public get pricingTier() {
     return this._pricingTier;
   }

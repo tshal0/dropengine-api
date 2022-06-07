@@ -17,9 +17,7 @@ import {
 import validator from "validator";
 
 export interface ISalesVariantProps {
-  id: string;
-  productId: string;
-  productTypeId: string;
+  id: number;
   sku: string;
   image: string;
   svg: string;
@@ -36,9 +34,7 @@ export interface ISalesVariantProps {
   width: IDimension;
 }
 export interface ISalesVariant {
-  id: string;
-  productId: string;
-  productTypeId: string;
+  id: number;
   sku: string;
   image: string;
   svg: string;
@@ -56,9 +52,7 @@ export interface ISalesVariant {
 }
 
 export class SalesVariant implements ISalesVariant {
-  private _id: string = null;
-  private _productId: string = null;
-  private _productTypeId: string = null;
+  private _id: number = null;
   private _sku: string = "";
   private _image: string = "";
   private _svg: string = "";
@@ -75,13 +69,8 @@ export class SalesVariant implements ISalesVariant {
   private _width: Dimension = new Dimension();
   constructor(props?: ISalesVariantProps | undefined) {
     if (props) {
-      this._id = validator.isUUID(`${props.id}`) ? props.id : null;
-      this._productId = validator.isUUID(`${props.productId}`)
-        ? props.productId
-        : null;
-      this._productTypeId = validator.isUUID(`${props.productTypeId}`)
-        ? props.productTypeId
-        : null;
+      this._id = validator.isNumeric(`${props.id}`) ? props.id : null;
+
       this._sku = props.sku;
       this._image = props.image;
       this._svg = props.svg;
@@ -104,8 +93,6 @@ export class SalesVariant implements ISalesVariant {
   public raw(): ISalesVariantProps {
     let props: ISalesVariantProps = {
       id: this._id,
-      productId: this._productId,
-      productTypeId: this._productTypeId,
       sku: this._sku,
       image: this._image,
       svg: this._svg,
@@ -124,8 +111,8 @@ export class SalesVariant implements ISalesVariant {
     return props;
   }
 
-  public set id(val: string) {
-    if (validator.isUUID(`${val}`)) this._id = val;
+  public set id(val: number) {
+    if (validator.isNumeric(`${val}`)) this._id = val;
   }
   public set image(val: string) {
     this._image = val;
@@ -136,12 +123,7 @@ export class SalesVariant implements ISalesVariant {
   public set type(val: string) {
     this._type = val;
   }
-  public set productId(val: string) {
-    if (validator.isUUID(`${val}`)) this._productId = val;
-  }
-  public set productTypeId(val: string) {
-    if (validator.isUUID(`${val}`)) this._productTypeId = val;
-  }
+
   public set option1(val: VariantOption) {
     this._option1 = new VariantOption(val);
   }
@@ -199,12 +181,7 @@ export class SalesVariant implements ISalesVariant {
   public get type() {
     return this._type;
   }
-  public get productId() {
-    return this._productId;
-  }
-  public get productTypeId() {
-    return this._productTypeId;
-  }
+
   public get option1() {
     return this._option1;
   }

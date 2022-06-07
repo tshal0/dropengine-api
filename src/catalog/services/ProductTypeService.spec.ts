@@ -1,9 +1,14 @@
 import { ProductTypesRepository } from "@catalog/database";
 import { DbProductType } from "@catalog/database/entities";
-import { IProductTypeProps, LivePreview, ProductType } from "@catalog/model";
+import {
+  IProductTypeProps,
+  LivePreview,
+  ProductType,
+  ProductTypes,
+  ProductTypeSlugs,
+} from "@catalog/model";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
 import { TestingModule } from "@nestjs/testing";
-import { mockUuid1 } from "@sales/mocks";
 import { spyOnDate } from "@shared/mocks";
 import { CreateProductTypeDto } from "..";
 import { ProductTypeService } from "./ProductTypeService";
@@ -21,8 +26,9 @@ describe("ProductTypeService", () => {
     module = await mockCatalogModule().compile();
     service = await module.resolve(ProductTypeService);
     prodTypeProps = {
-      id: mockUuid1,
-      name: "MOCK_NAME",
+      id: 1,
+      name: ProductTypes.MetalArt,
+      slug: ProductTypeSlugs.MetalArt,
       image: "MOCK_IMG",
       productionData: { material: "Mild Steel", route: "1", thickness: "0.06" },
       option1: {
@@ -47,9 +53,10 @@ describe("ProductTypeService", () => {
     };
     prodType = new ProductType(prodTypeProps);
     dbProdType = new DbProductType();
-    dbProdType.id = mockUuid1;
+    dbProdType.id = 1;
     dbProdType.image = prodTypeProps.image;
     dbProdType.name = prodTypeProps.name;
+    dbProdType.slug = prodTypeProps.slug;
     dbProdType.productionData = prodTypeProps.productionData;
     dbProdType.option1 = prodTypeProps.option1;
     dbProdType.option2 = prodTypeProps.option2;
@@ -66,6 +73,7 @@ describe("ProductTypeService", () => {
       dto.id = prodTypeProps.id;
       dto.image = prodTypeProps.image;
       dto.name = prodTypeProps.name;
+      dto.slug = prodTypeProps.slug;
       dto.productionData = prodTypeProps.productionData;
       dto.option1 = prodTypeProps.option1;
       dto.option2 = prodTypeProps.option2;
@@ -94,6 +102,7 @@ describe("ProductTypeService", () => {
         new ProductType({
           id: dto.id,
           name: dto.name,
+          slug: dto.slug,
           image: dto.image,
           productionData: dto.productionData,
           option1: dto.option1,
@@ -143,10 +152,10 @@ describe("ProductTypeService", () => {
       service = await module.resolve(ProductTypeService);
 
       // WHEN
-      const result = await service.findById("test");
+      const result = await service.findById(1);
       // THEN
       expect(result.raw()).toEqual(prodTypeProps);
-      expect(spy).toBeCalledWith("test");
+      expect(spy).toBeCalledWith(1);
     });
   });
   describe("findByName", () => {
@@ -188,10 +197,10 @@ describe("ProductTypeService", () => {
       service = await module.resolve(ProductTypeService);
 
       // WHEN
-      const result = await service.delete("test");
+      const result = await service.delete(1);
       // THEN
 
-      expect(spy).toBeCalledWith("test");
+      expect(spy).toBeCalledWith(1);
     });
   });
 });

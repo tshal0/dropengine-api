@@ -35,7 +35,7 @@ export class ProductsController {
   constructor(private readonly service: ProductService) {}
   @Get(":id")
   @UseGuards(AuthGuard())
-  async get(@Param("id") id: string) {
+  async get(@Param("id") id: number) {
     const result = await this.service.findById(id);
     return result.raw();
   }
@@ -66,7 +66,7 @@ export class ProductsController {
   }
   @Delete(":id")
   @UseGuards(AuthGuard())
-  async delete(@Param("id") id: string) {
+  async delete(@Param("id") id: number) {
     return await this.service.delete(id);
   }
 

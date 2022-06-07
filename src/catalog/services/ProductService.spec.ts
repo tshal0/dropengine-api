@@ -12,6 +12,8 @@ import {
   LivePreview,
   IVariantProps,
   Variant,
+  ProductTypes,
+  ProductTypeSlugs,
 } from "@catalog/model";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
 import { TestingModule } from "@nestjs/testing";
@@ -37,7 +39,8 @@ describe("ProductService", () => {
   let variant: Variant;
   let dbVariant: DbProductVariant;
 
-  const PROD_TYPE = `2DMetalArt`;
+  const PROD_TYPE = ProductTypes.MetalArt;
+  const PROD_TYPE_SLUG = ProductTypeSlugs.MetalArt;
   const PSKU = `MEM-000-01`;
   const VSKU = `${PSKU}-12-Black`;
 
@@ -45,8 +48,9 @@ describe("ProductService", () => {
     module = await mockCatalogModule().compile();
     service = await module.resolve(ProductService);
     prodTypeProps = {
-      id: mockUuid1,
+      id: 1,
       name: PROD_TYPE,
+      slug: PROD_TYPE_SLUG,
       image: "MOCK_IMG",
       productionData: { material: "Mild Steel", route: "1", thickness: "0.06" },
       option1: {
@@ -90,10 +94,9 @@ describe("ProductService", () => {
       placeholder: "Enter up to 20 characters",
     };
     prodProps = {
-      id: mockUuid1,
+      id: 1,
       sku: PSKU,
       type: PROD_TYPE,
-      productTypeId: mockUuid1,
       pricingTier: "2",
       tags: ["MOCK_TAG"],
       image: "MOCK_IMG",
@@ -108,12 +111,10 @@ describe("ProductService", () => {
     prod = new Product(prodProps);
     dbProd = new DbProduct(prodProps);
     vprops = {
-      id: mockUuid1,
+      id: 1,
       image: "MOCK_IMG",
       sku: VSKU,
       type: PROD_TYPE,
-      productId: mockUuid1,
-      productTypeId: mockUuid1,
 
       option1: { name: "Size", value: '12"' },
       option2: { name: "Color", value: "Black" },
@@ -239,9 +240,9 @@ describe("ProductService", () => {
       service = await module.resolve(ProductService);
 
       // WHEN
-      await service.findById("test");
+      await service.findById(1);
       // THEN
-      expect(findByIdFn).toBeCalledWith("test");
+      expect(findByIdFn).toBeCalledWith(1);
     });
   });
   describe("findBySku", () => {
@@ -269,9 +270,9 @@ describe("ProductService", () => {
       service = await module.resolve(ProductService);
 
       // WHEN
-      await service.delete("test");
+      await service.delete(1);
       // THEN
-      expect(deleteFn).toBeCalledWith("test");
+      expect(deleteFn).toBeCalledWith(1);
     });
   });
   describe("import", () => {

@@ -18,7 +18,7 @@ export class ProductResponsePersonalizationRule {
   options?: string;
 }
 export class ProductResponseProductVariant {
-  uuid: string;
+  id: number;
   sku: string;
   image: string;
   height: IDimension;
@@ -45,7 +45,7 @@ export class ProductResponseProductTypeOption {
 }
 
 export class ProductResponseProductType {
-  uuid: string;
+  id: number;
   name: string;
   productionData: {
     material: string;
@@ -66,7 +66,7 @@ export class ProductResponseProductType {
   createdAt: Date;
 }
 export class ProductResponseDto {
-  id: string;
+  id: number;
   sku: string;
   type: string;
   pricingTier: string;

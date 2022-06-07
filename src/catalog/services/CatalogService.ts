@@ -22,7 +22,7 @@ export class LoadLineItemVariantBySkuDto {
   sku: string;
 }
 export class LoadLineItemVariantByIdDto {
-  id: string;
+  id: number;
 }
 export enum CatalogServiceError {
   FailedToLoadMyEasySuiteVariant = "FailedToLoadMyEasySuiteVariant",
@@ -38,7 +38,7 @@ export class CatalogService {
   ) {}
 
   public async lookupVariantBySkuOrId(params: {
-    id: string;
+    id: number;
     sku: string;
   }): Promise<CatalogVariant> {
     let variant = await this._variants.lookup(params);
@@ -54,8 +54,6 @@ export class CatalogService {
       type: variant.type,
       height: variant.height.raw(),
       width: variant.width.raw(),
-      productId: variant.productId,
-      productTypeId: variant.productTypeId,
       option1: variant.option1.raw(),
       option2: variant.option2.raw(),
       option3: variant.option3.raw(),

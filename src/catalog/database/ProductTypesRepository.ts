@@ -45,6 +45,7 @@ export class ProductTypesRepository {
     dbe: DbProductType
   ): Promise<DbProductType> {
     dbe.name = entity.name;
+    dbe.slug = entity.slug;
     dbe.image = entity.image;
     dbe.productionData = entity.productionData.raw();
     dbe.option1 = entity.option1.raw();
@@ -63,7 +64,7 @@ export class ProductTypesRepository {
     return entities;
   }
   public async lookupByNameOrId(dto: {
-    id: string;
+    id: number;
     name: string;
   }): Promise<DbProductType> {
     const id = validator.isUUID(`${dto.id}`) ? dto.id : null;
@@ -77,7 +78,7 @@ export class ProductTypesRepository {
     //TODO Ick
     return null;
   }
-  public async findById(id: string): Promise<DbProductType> {
+  public async findById(id: number): Promise<DbProductType> {
     let dbe = await this._types.findOne({ id }, { populate: ["products"] });
     if (dbe) {
       return dbe;
@@ -93,7 +94,15 @@ export class ProductTypesRepository {
     //TODO Ick
     return null;
   }
-  public async delete(id: string): Promise<any> {
+  public async findBySlug(slug: string): Promise<DbProductType> {
+    let dbe = await this._types.findOne({ slug }, { populate: ["products"] });
+    if (dbe) {
+      return dbe;
+    }
+    //TODO Ick
+    return null;
+  }
+  public async delete(id: number): Promise<any> {
     let productType = await this._types.findOne(id, {
       populate: ["products.variants", "variants"],
     });

@@ -14,7 +14,6 @@ describe("Product", () => {
       image: "",
       sku: "",
       type: "",
-      productTypeId: null,
       pricingTier: "",
       tags: [],
       svg: "",
@@ -38,8 +37,7 @@ describe("Product", () => {
   });
   it("should take props", () => {
     const props: IProductProps = {
-      id: mockUuid1,
-      productTypeId: mockUuid1,
+      id: 1,
       image: "test",
       sku: "test",
       type: "test",
@@ -60,9 +58,7 @@ describe("Product", () => {
       ],
       variants: [
         {
-          id: mockUuid1,
-          productId: mockUuid1,
-          productTypeId: mockUuid1,
+          id: 1,
           type: "",
           image: "test",
           sku: "test",
@@ -89,30 +85,20 @@ describe("Product", () => {
 
     expect(val.raw()).toMatchObject(props);
   });
-  it("id fails to change if given non-UUID", () => {
+  it("id fails to change if given non-Number", () => {
     const val = new Product();
-    val.id = "test";
+    val.id = "f" as unknown as number;
     const expected = { id: null };
     expect(val.raw()).toMatchObject(expected);
   });
-  it("productTypeId fails to change if given non-UUID", () => {
+
+  it("id changes if given Number", () => {
     const val = new Product();
-    val.productTypeId = "test";
-    const expected = { productTypeId: null };
+    val.id = 1;
+    const expected = { id: 1 };
     expect(val.raw()).toMatchObject(expected);
   });
-  it("id changes if given UUID", () => {
-    const val = new Product();
-    val.id = mockUuid1;
-    const expected = { id: mockUuid1 };
-    expect(val.raw()).toMatchObject(expected);
-  });
-  it("productTypeId changes if given UUID", () => {
-    const val = new Product();
-    val.productTypeId = mockUuid1;
-    const expected = { productTypeId: mockUuid1 };
-    expect(val.raw()).toMatchObject(expected);
-  });
+
   it("sku is editable", () => {
     const val = new Product();
     val.sku = "test";
@@ -180,10 +166,8 @@ describe("Product", () => {
   it("variants is editable", () => {
     const val = new Product();
     const variantProps: IVariantProps = {
-      id: mockUuid1,
+      id: 1,
       type: "",
-      productId: mockUuid1,
-      productTypeId: mockUuid1,
       image: "test",
       sku: "test",
       option1: {

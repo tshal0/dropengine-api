@@ -34,16 +34,13 @@ export class ProductsRepository {
       dbe = await this.update(dbe, entity);
     }
 
-    const id = validator.isUUID(`${entity.productTypeId}`)
-      ? entity.productTypeId
-      : null;
     let productType = await this._types.findOne({
-      $or: [{ name: entity.type }, { id }],
+      $or: [{ name: entity.type }],
     });
     if (!productType) {
       throw new EntityNotFoundException(
         `ProductTypeNotFound`,
-        `${entity.productTypeId}|${entity.type}`
+        `${entity.type}`
       );
     }
     dbe.productType = productType;
@@ -58,7 +55,7 @@ export class ProductsRepository {
    * @returns {DbProduct}
    */
   public async lookupBySkuOrId(dto: {
-    id: string;
+    id: number;
     sku: string;
   }): Promise<DbProduct> {
     const id = validator.isUUID(`${dto.id}`) ? dto.id : null;
@@ -96,7 +93,7 @@ export class ProductsRepository {
     return entities;
   }
 
-  public async findById(id: string): Promise<DbProduct> {
+  public async findById(id: number): Promise<DbProduct> {
     let dbe = await this._products.findOne({ id }, { populate: ["variants"] });
     if (dbe) {
       return await dbe;
@@ -112,7 +109,7 @@ export class ProductsRepository {
     //TODO Ick
     return null;
   }
-  public async delete(id: string): Promise<any> {
+  public async delete(id: number): Promise<any> {
     let dbe = await this._products.findOne(id);
     if (!dbe) {
       return { result: "NOT_FOUND", timestamp: moment().toDate() };

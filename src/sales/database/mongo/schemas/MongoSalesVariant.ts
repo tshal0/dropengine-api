@@ -20,16 +20,12 @@ import { MongoWeightSchema } from "./MongoWeight";
 
 @Schema({ _id: false })
 export class MongoSalesVariant implements ISalesVariantProps {
-  @Prop()
-  productId: string;
-  @Prop()
-  productTypeId: string;
   @Prop({ type: mongoose.Schema.Types.Mixed })
   height: IDimension;
   @Prop({ type: mongoose.Schema.Types.Mixed })
   width: IDimension;
   @Prop()
-  id: string;
+  id: number;
   @Prop()
   sku: string;
   @Prop()

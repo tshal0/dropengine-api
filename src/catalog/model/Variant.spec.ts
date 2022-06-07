@@ -27,8 +27,6 @@ describe("Variant", () => {
       manufacturingCost: new Money().raw(),
       shippingCost: new Money().raw(),
       type: "",
-      productId: null,
-      productTypeId: null,
     };
     expect(val.raw()).toMatchObject(expected);
     expect(val.id).toEqual(expected.id);
@@ -45,7 +43,7 @@ describe("Variant", () => {
   });
   it("should take props", () => {
     const props: IVariantProps = {
-      id: mockUuid1,
+      id: 1,
       image: "test",
       sku: "test",
       option1: {
@@ -63,8 +61,6 @@ describe("Variant", () => {
       manufacturingCost: { total: 100, currency: "USD" },
       shippingCost: { total: 100, currency: "USD" },
       type: "",
-      productId: mockUuid1,
-      productTypeId: mockUuid1,
     };
     const val = new Variant(props);
 
@@ -72,38 +68,15 @@ describe("Variant", () => {
   });
   it("id does not change if given non-UUID", () => {
     const val = new Variant();
-    val.id = "test";
+    val.id = "f" as unknown as number;
     const expected = { id: null };
     expect(val.raw()).toMatchObject(expected);
   });
-  it("productId does not change if given non-UUID", () => {
-    const val = new Variant();
-    val.productId = "test";
-    const expected = { productId: null };
-    expect(val.raw()).toMatchObject(expected);
-  });
-  it("productTypeId does not change if given non-UUID", () => {
-    const val = new Variant();
-    val.productTypeId = "test";
-    const expected = { productTypeId: null };
-    expect(val.raw()).toMatchObject(expected);
-  });
+
   it("id does change if given UUID", () => {
     const val = new Variant();
-    val.id = mockUuid1;
-    const expected = { id: mockUuid1 };
-    expect(val.raw()).toMatchObject(expected);
-  });
-  it("productId does change if given UUID", () => {
-    const val = new Variant();
-    val.productId = mockUuid1;
-    const expected = { productId: mockUuid1 };
-    expect(val.raw()).toMatchObject(expected);
-  });
-  it("productTypeId does change if given UUID", () => {
-    const val = new Variant();
-    val.productTypeId = mockUuid1;
-    const expected = { productTypeId: mockUuid1 };
+    val.id = 1;
+    const expected = { id: 1 };
     expect(val.raw()).toMatchObject(expected);
   });
 

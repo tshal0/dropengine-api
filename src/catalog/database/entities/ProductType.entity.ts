@@ -22,6 +22,7 @@ export class DbProductType {
     if (props) {
       this.id = props.id;
       this.name = props.name;
+      this.slug = props.slug;
       this.image = props.image;
       this.productionData = props.productionData;
       this.option1 = props.option1;
@@ -33,11 +34,14 @@ export class DbProductType {
     }
   }
 
-  @PrimaryKey({ type: "uuid", defaultRaw: "uuid_generate_v4()" })
-  id!: string;
+  @PrimaryKey({ autoincrement: true })
+  id!: number;
 
   @Property()
   name: string;
+  @Property()
+  slug: string;
+
   @Property({ nullable: true })
   image?: string | undefined;
   @Property({ type: "json" })
@@ -72,6 +76,7 @@ export class DbProductType {
     let props: IProductTypeProps = {
       id: this.id,
       name: this.name,
+      slug: this.slug,
       image: this.image,
       productionData: this.productionData,
       option1: this.option1,

@@ -11,11 +11,12 @@ import {
   LivePreview,
   Product,
   ProductType,
+  ProductTypes,
+  ProductTypeSlugs,
   Variant,
 } from "@catalog/model";
 import { mockCatalogModule } from "@catalog/mocks/catalog.module.mock";
 import { TestingModule } from "@nestjs/testing";
-import { mockUuid1 } from "@sales/mocks";
 import { now } from "@shared/mocks";
 import {
   CreateVariantDto,
@@ -45,7 +46,8 @@ describe("VariantService", () => {
   let variant: Variant;
   let dbVariant: DbProductVariant;
 
-  const PROD_TYPE = `2DMetalArt`;
+  const PROD_TYPE = ProductTypes.MetalArt;
+  const PROD_TYPE_SLUG = ProductTypeSlugs.MetalArt;
   const PSKU = `MEM-000-01`;
   const VSKU = `${PSKU}-12-Black`;
 
@@ -54,8 +56,9 @@ describe("VariantService", () => {
     service = await module.resolve(VariantService);
 
     prodTypeProps = {
-      id: mockUuid1,
+      id: 1,
       name: PROD_TYPE,
+      slug: PROD_TYPE_SLUG,
       image: "MOCK_IMG",
       productionData: { material: "Mild Steel", route: "1", thickness: "0.06" },
       option1: {
@@ -99,10 +102,9 @@ describe("VariantService", () => {
       placeholder: "Enter up to 20 characters",
     };
     prodProps = {
-      id: mockUuid1,
+      id: 1,
       sku: PSKU,
       type: PROD_TYPE,
-      productTypeId: mockUuid1,
       pricingTier: "2",
       tags: ["MOCK_TAG"],
       image: "MOCK_IMG",
@@ -117,12 +119,10 @@ describe("VariantService", () => {
     prod = new Product(prodProps);
     dbProd = new DbProduct(prodProps);
     vprops = {
-      id: mockUuid1,
+      id: 1,
       image: "MOCK_IMG",
       sku: VSKU,
       type: PROD_TYPE,
-      productId: mockUuid1,
-      productTypeId: mockUuid1,
 
       option1: { name: "Size", value: '12"' },
       option2: { name: "Color", value: "Black" },
@@ -152,7 +152,6 @@ describe("VariantService", () => {
       const option3 = new CreateVariantDtoOption();
 
       let dto: CreateVariantDto = {
-        productId: "",
         sku: "",
         type: "",
         image: "",
@@ -182,7 +181,6 @@ describe("VariantService", () => {
           name: "",
           value: undefined,
         },
-        productId: "",
         sku: "",
         type: "",
         weight: {},
@@ -202,7 +200,6 @@ describe("VariantService", () => {
       const option3 = new CreateVariantDtoOption();
 
       let dto: CreateVariantDto = {
-        productId: "",
         sku: "",
         type: "",
         image: "",
@@ -232,7 +229,6 @@ describe("VariantService", () => {
           name: "",
           value: undefined,
         },
-        productId: "",
         sku: "",
         type: "",
         weight: {},
@@ -245,7 +241,6 @@ describe("VariantService", () => {
     beforeEach(async () => {
       dto = new CreateVariantDto();
       dto.id = undefined;
-      dto.productId = "";
       dto.sku = VSKU;
       dto.type = PROD_TYPE;
       dto.image = "MOCK_IMG";
@@ -288,7 +283,7 @@ describe("VariantService", () => {
         .overrideProvider(VariantsRepository)
         .useValue({
           save: jest.fn().mockImplementation((e: Variant) => {
-            e.id = mockUuid1;
+            e.id = 1;
             return e;
           }),
         })
@@ -298,9 +293,7 @@ describe("VariantService", () => {
       let result = await service.findAndUpdateOrCreate(dto);
       // THEN
       expect(result.raw()).toMatchObject({
-        id: mockUuid1,
-        productId: mockUuid1,
-        productTypeId: mockUuid1,
+        id: 1,
         sku: VSKU,
         type: PROD_TYPE,
         height: {
@@ -365,9 +358,9 @@ describe("VariantService", () => {
       service = await module.resolve(VariantService);
 
       // WHEN
-      await service.findById("test");
+      await service.findById(1);
       // THEN
-      expect(mockFn).toBeCalledWith("test");
+      expect(mockFn).toBeCalledWith(1);
     });
   });
   describe("findBySku", () => {
@@ -395,9 +388,9 @@ describe("VariantService", () => {
       service = await module.resolve(VariantService);
 
       // WHEN
-      await service.delete("test");
+      await service.delete(1);
       // THEN
-      expect(mockFn).toBeCalledWith("test");
+      expect(mockFn).toBeCalledWith(1);
     });
   });
   describe("import", () => {
@@ -416,7 +409,7 @@ describe("VariantService", () => {
         .overrideProvider(VariantsRepository)
         .useValue({
           save: jest.fn().mockImplementation((e: Variant) => {
-            e.id = mockUuid1;
+            e.id = 1;
             const dbv = new DbProductVariant(e.raw());
             dbv.product = dbProd;
             dbv.productType = dbProdType;
@@ -427,14 +420,14 @@ describe("VariantService", () => {
       service = await module.resolve(VariantService);
       const url = `https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-12-Copper`;
       const csvString =
-        `ProductUuid,ProductId,ProductSku,` +
-        `VariantUuid,VariantId,VariantSku,` +
+        `ProductId,ProductSku,` +
+        `VariantId,VariantSku,` +
         `Option1Value,Option2Value,Option3Value,` +
         `VariantImage,DimensionUnits,HeightValue,WidthValue,` +
         `WeightUnits,WeightValue,` +
         `Currency,ManufacturingCost,ShippingCost,TotalCost\n` +
-        `,,${PSKU},` +
-        `,,${VSKU},` +
+        `,${PSKU},` +
+        `,${VSKU},` +
         `12",Black,,` +
         `${url},in,11.5,11.5,` +
         `g,365,` +
@@ -443,11 +436,9 @@ describe("VariantService", () => {
       expect(results.length).toBeGreaterThan(0);
       expect(results.map((r) => r.raw())).toMatchObject([
         {
-          id: mockUuid1,
+          id: 1,
           sku: VSKU,
           type: PROD_TYPE,
-          productId: mockUuid1,
-          productTypeId: mockUuid1,
           option1: {
             name: "Size",
             value: '12"',

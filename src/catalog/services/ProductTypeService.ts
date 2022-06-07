@@ -18,6 +18,7 @@ export class ProductTypeService {
     let props: IProductTypeProps = {
       id: dto.id,
       name: dto.name,
+      slug: dto.slug,
       image: dto.image,
       productionData: dto.productionData,
       option1: dto.option1,
@@ -35,7 +36,7 @@ export class ProductTypeService {
   public async query(): Promise<ProductType[]> {
     return await this._repo.query();
   }
-  public async findById(id: string): Promise<ProductType> {
+  public async findById(id: number): Promise<ProductType> {
     const result = await this._repo.findById(id);
     return result ? new ProductType(result.raw()) : null;
   }
@@ -44,7 +45,7 @@ export class ProductTypeService {
     return result ? new ProductType(result.raw()) : null;
   }
 
-  public async delete(id: string): Promise<any> {
+  public async delete(id: number): Promise<any> {
     return await this._repo.delete(id);
   }
 }

@@ -11,12 +11,10 @@ import {
   Weight,
 } from "@shared/domain";
 export interface IVariantProps {
-  id: string;
+  id: number;
   image: string;
   sku: string;
   type: string;
-  productId: string;
-  productTypeId: string;
   option1: IVariantOption;
   option2: IVariantOption;
   option3: IVariantOption;
@@ -30,12 +28,10 @@ export interface IVariantProps {
 }
 
 export interface IVariant {
-  id: string;
+  id: number;
   image: string;
   sku: string;
   type: string;
-  productId: string;
-  productTypeId: string;
   option1: VariantOption;
   option2: VariantOption;
   option3: VariantOption;
@@ -50,12 +46,10 @@ export interface IVariant {
 }
 
 export class Variant implements IVariant {
-  private _id: string = null;
+  private _id: number = null;
   private _image: string = "";
   private _sku: string = "";
   private _type: string = "";
-  private _productId: string = null;
-  private _productTypeId: string = null;
   private _product: Product = new Product();
   private _productType: ProductType = new ProductType();
   private _option1: VariantOption = new VariantOption();
@@ -68,18 +62,13 @@ export class Variant implements IVariant {
   private _shippingCost: Money = new Money();
   constructor(props?: IVariantProps | undefined) {
     if (props) {
-      if (validator.isUUID(`${props.id}`)) {
+      if (validator.isNumeric(`${props.id}`)) {
         this._id = props.id;
       }
       this._image = props.image;
       this._sku = props.sku;
       this._type = props.type;
-      if (validator.isUUID(`${props.productId}`)) {
-        this._productId = props.productId;
-      }
-      if (validator.isUUID(`${props.productTypeId}`)) {
-        this._productTypeId = props.productTypeId;
-      }
+
       this._option1 = new VariantOption(props.option1);
       this._option2 = new VariantOption(props.option2);
       this._option3 = new VariantOption(props.option3);
@@ -102,8 +91,7 @@ export class Variant implements IVariant {
       image: this._image,
       sku: this._sku,
       type: this._type,
-      productId: this._productId,
-      productTypeId: this._productTypeId,
+
       option1: this._option1.raw(),
       option2: this._option2.raw(),
       option3: this._option3.raw(),
@@ -123,8 +111,8 @@ export class Variant implements IVariant {
    * - Update Variant (Must obey ProductType VariantOption rules)
    */
 
-  public set id(val: string) {
-    if (validator.isUUID(`${val}`)) this._id = val;
+  public set id(val: number) {
+    if (validator.isNumeric(`${val}`)) this._id = val;
   }
   public set image(val: string) {
     this._image = val;
@@ -135,12 +123,7 @@ export class Variant implements IVariant {
   public set type(val: string) {
     this._type = val;
   }
-  public set productId(val: string) {
-    if (validator.isUUID(`${val}`)) this._productId = val;
-  }
-  public set productTypeId(val: string) {
-    if (validator.isUUID(`${val}`)) this._productTypeId = val;
-  }
+
   public set option1(val: VariantOption) {
     this._option1 = new VariantOption(val);
   }
@@ -184,12 +167,7 @@ export class Variant implements IVariant {
   public get type() {
     return this._type;
   }
-  public get productId() {
-    return this._productId;
-  }
-  public get productTypeId() {
-    return this._productTypeId;
-  }
+
   public get option1() {
     return this._option1;
   }

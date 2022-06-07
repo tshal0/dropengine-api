@@ -11,10 +11,19 @@ export enum ProductTypes {
   Canvas = "Canvas",
   Uncategorized = "Uncategorized",
 }
+export enum ProductTypeSlugs {
+  Steel = "steel",
+  MetalArt = "2d-metal-art",
+  Jewelry = "jewelry",
+  Wood = "wood",
+  Canvas = "canvas",
+  Uncategorized = "uncategorized",
+}
 
 export interface IProductTypeProps {
-  id: string;
+  id: number;
   name: string;
+  slug: string;
   image: string;
   productionData: IProductionData;
   option1: IVariantOptionsProps;
@@ -26,8 +35,9 @@ export interface IProductTypeProps {
   createdAt: Date;
 }
 export interface IProductType {
-  id: string;
+  id: number;
   name: string;
+  slug: string;
   image: string;
   productionData: ProductionData;
   option1: VariantOptions;
@@ -44,8 +54,9 @@ export interface IProductType {
  * Holds ProductionData, VariantOptions, LivePreview, Products
  */
 export class ProductType implements IProductType {
-  private _id: string = null;
+  private _id: number = null;
   private _name: string = "";
+  private _slug: string = "";
   private _image: string = "";
   private _productionData: ProductionData = new ProductionData();
   private _option1: VariantOptions = new VariantOptions();
@@ -58,8 +69,9 @@ export class ProductType implements IProductType {
 
   constructor(props?: IProductTypeProps | undefined) {
     if (props) {
-      if (validator.isUUID(`${props.id}`)) this._id = props.id;
+      if (validator.isNumeric(`${props.id}`)) this._id = +props.id;
       this._name = props.name;
+      this._slug = props.slug;
       this._image = props.image;
       this._productionData = new ProductionData(props.productionData);
       this._option1 = new VariantOptions(props.option1);
@@ -76,6 +88,7 @@ export class ProductType implements IProductType {
     return {
       id: this._id,
       name: this._name,
+      slug: this._slug,
       image: this._image,
       productionData: this._productionData.raw(),
       option1: this._option1.raw(),
@@ -90,9 +103,16 @@ export class ProductType implements IProductType {
 
   /** DOMAIN METHODS */
 
+  public set slug(val: string) {
+    this._slug = val;
+  }
+  public get slug(): string {
+    return this._slug;
+  }
+
   /** SETTERS */
-  public set id(val: string) {
-    if (validator.isUUID(`${val}`)) this._id = val;
+  public set id(val: number) {
+    if (validator.isNumeric(`${val}`)) this._id = +val;
   }
   public set name(val: string) {
     this._name = val;
@@ -126,7 +146,7 @@ export class ProductType implements IProductType {
   }
 
   /** GETTERS */
-  public get id(): string {
+  public get id(): number {
     return this._id;
   }
   public get name(): string {

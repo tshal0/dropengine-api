@@ -34,8 +34,6 @@ describe("SalesLineItem", () => {
           thickness: "0.06",
         },
         personalizationRules: [],
-        productId: null,
-        productTypeId: null,
         height: { dimension: 0, units: "mm" },
         width: { dimension: 0, units: "mm" },
       },
@@ -52,8 +50,6 @@ describe("SalesLineItem", () => {
       personalization: [],
       variant: {
         id: null,
-        productId: null,
-        productTypeId: null,
         image: "",
         sku: "",
         svg: "",
@@ -120,10 +116,10 @@ describe("SalesLineItem", () => {
   it("should have editable variant", () => {
     const props: ISalesLineItemProps = mockProps();
     const variant = cloneDeep(props.variant);
-    variant.id = mockUuid2;
+    variant.id = 1;
     const li = new SalesLineItem(cloneDeep(props));
     li.variant = new SalesVariant(variant);
-    expect(li.variant.id).toEqual(mockUuid2);
+    expect(li.variant.id).toEqual(1);
   });
   it("should have editable personalization", () => {
     const props: ISalesLineItemProps = mockProps();
@@ -162,9 +158,7 @@ function mockProps(): ISalesLineItemProps {
     quantity: 1,
     personalization: [{ name: "Name", value: "Sample" }],
     variant: {
-      id: mockUuid1,
-      productId: mockUuid1,
-      productTypeId: mockUuid1,
+      id: 1,
       sku: `MOCK_SKU`,
       type: ProductTypes.MetalArt,
       image: "MOCK_IMAGE",

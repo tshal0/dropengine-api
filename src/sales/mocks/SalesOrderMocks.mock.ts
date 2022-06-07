@@ -46,9 +46,7 @@ export abstract class SalesOrderMocks {
     { name: "Bottom Text", value: "Sample" },
   ];
   static catalogVariant: CatalogVariant = {
-    id: mockUuid1,
-    productId: mockUuid1,
-    productTypeId: mockUuid1,
+    id: 1,
     height: { units: "mm", dimension: 0 },
     width: { units: "mm", dimension: 0 },
     sku: VSKU,

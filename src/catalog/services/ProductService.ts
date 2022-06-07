@@ -20,7 +20,6 @@ export class ProductService {
       id: dto.id,
       sku: dto.sku,
       type: dto.type,
-      productTypeId: dto.productTypeId,
       pricingTier: dto.pricingTier,
       tags: compact(tags.split(",")),
       image: dto.image || "",
@@ -45,7 +44,7 @@ export class ProductService {
   public async query(): Promise<Product[]> {
     return await this._repo.query();
   }
-  public async findById(id: string): Promise<Product> {
+  public async findById(id: number): Promise<Product> {
     const result = await this._repo.findById(id);
     return result ? new Product(result.raw()) : null;
   }
@@ -54,7 +53,7 @@ export class ProductService {
     return result ? new Product(result.raw()) : null;
   }
 
-  public async delete(id: string): Promise<void> {
+  public async delete(id: number): Promise<void> {
     return await this._repo.delete(id);
   }
 

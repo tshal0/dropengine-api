@@ -9,8 +9,6 @@ import {
 export interface ICsvProductVariantDto {
   ProductId: string;
   ProductSku: string;
-  ProductUuid: string;
-  VariantUuid: string;
   VariantId: string;
   VariantSku: string;
   Option1Value: string;
@@ -52,10 +50,9 @@ export class CsvProductVariantDto {
       );
       let dto = new CreateVariantDto();
 
-      dto.productId = this._props.ProductUuid;
       dto.productSku = this._props.ProductSku;
 
-      dto.id = this._props.VariantUuid;
+      dto.id = +this._props.VariantId;
       dto.sku = this._props.VariantSku;
 
       dto.image = this._props.VariantImage;
