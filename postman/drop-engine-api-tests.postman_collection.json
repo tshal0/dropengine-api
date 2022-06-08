@@ -767,9 +767,7 @@
 											"pm.test(`Name should be '${productTypeName}'`, () => {\r",
 											"    pm.expect(resp.name).to.eq(productTypeName)\r",
 											"})\r",
-											"pm.test(`UUID should not be empty`, () => {\r",
-											"    pm.expect(resp.id.length).to.be.greaterThan(0)\r",
-											"})\r",
+											"\r",
 											"\r",
 											"pm.collectionVariables.set(`productTypeUuid`, resp.id)"
 										],
@@ -973,7 +971,7 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": ".\\products.v1.csv"
+											"src": ".//products.v1.csv"
 										}
 									]
 								},
@@ -1318,7 +1316,7 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": ".\\variants.v1.csv"
+											"src": ".//variants.v1.csv"
 										}
 									]
 								},
@@ -2131,7 +2129,7 @@
 		},
 		{
 			"key": "module",
-			"value": "identity",
+			"value": "auth",
 			"type": "string"
 		},
 		{
