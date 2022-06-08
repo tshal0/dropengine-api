@@ -15,7 +15,7 @@
               "sku": "MU-C004-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/4384264343/MU-C004-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                   "name": "Size",
                   "option": "24\"",
@@ -132,7 +132,7 @@
               "sku": "MU-C004-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C004-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/4384264343/MU-C004-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                   "name": "Size",
                   "option": "18\"",

@@ -62,7 +62,7 @@ We want to provide the ability for merchants to browse a catalog of products, se
 
 1. Try Load from MES
 2. If Exists
-   1. LoadProductType: 2DMetalArt
+   1. LoadProductType: MetalArt
    2. SyncProduct
       1. LoadProductBySku
       2. ApplyMESVariant

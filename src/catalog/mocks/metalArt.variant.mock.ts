@@ -373,7 +373,7 @@ export abstract class MESMetalArtMocks {
       total: 750,
     },
     sku: "MU-C011-00-12-Black",
-    type: "2DMetalArt",
+    type: "MetalArt",
     weight: {
       dimension: 352,
       units: "oz",

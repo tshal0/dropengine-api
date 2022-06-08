@@ -40,7 +40,7 @@
         "sku": "MEM-403-00-30-Copper",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-403-00-Copper.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/1898314339/9126254199/MEM-403-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "30\""
@@ -219,7 +219,7 @@
               "sku": "MEM-403-00-30-Copper",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-403-00-Copper.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/1898314339/9126254199/MEM-403-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "30\""
@@ -410,7 +410,7 @@
         "sku": "MEM-123-00-30-Copper",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-123-00-Copper.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5624955641/4742814833/MEM-123-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "30\""
@@ -539,7 +539,7 @@
               "sku": "MEM-123-00-30-Copper",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-123-00-Copper.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5624955641/4742814833/MEM-123-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "30\""
@@ -684,7 +684,7 @@
         "sku": "MEM-56-00-15-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-56-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2964224423/2738564655/MEM-56-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -884,7 +884,7 @@
               "sku": "MEM-56-00-15-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-56-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2964224423/2738564655/MEM-56-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -1654,7 +1654,7 @@
         "sku": "MU-C109-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -1847,7 +1847,7 @@
               "sku": "MU-C109-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -2306,7 +2306,7 @@
         "sku": "MU-C109-00-18-White",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-White.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -2499,7 +2499,7 @@
               "sku": "MU-C109-00-18-White",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-White.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -2674,7 +2674,7 @@
         "sku": "MU-C109-00-24-Copper",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Copper.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -2867,7 +2867,7 @@
               "sku": "MU-C109-00-24-Copper",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Copper.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -3042,7 +3042,7 @@
         "sku": "MU-C017-00-15-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -3199,7 +3199,7 @@
               "sku": "MU-C017-00-15-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -3354,7 +3354,7 @@
         "sku": "MU-C109-00-12-Silver",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Silver.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "12\""
@@ -3547,7 +3547,7 @@
               "sku": "MU-C109-00-12-Silver",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Silver.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "12\""
@@ -3722,7 +3722,7 @@
         "sku": "MU-C109-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -3915,7 +3915,7 @@
               "sku": "MU-C109-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -4090,7 +4090,7 @@
         "sku": "MU-C109-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -4283,7 +4283,7 @@
               "sku": "MU-C109-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -4458,7 +4458,7 @@
         "sku": "MU-C109-00-15-White",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-White.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -4617,7 +4617,7 @@
               "sku": "MU-C109-00-15-White",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-White.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -4857,7 +4857,7 @@
         "sku": "MU-C109-00-30-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "30\""
@@ -5111,7 +5111,7 @@
               "sku": "MU-C109-00-30-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "30\""
@@ -5286,7 +5286,7 @@
         "sku": "MEM-172-00-12-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-172-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/9852544454/9849347576/MEM-172-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "12\""
@@ -5461,7 +5461,7 @@
               "sku": "MEM-172-00-12-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-172-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/9852544454/9849347576/MEM-172-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "12\""
@@ -5910,7 +5910,7 @@
         "sku": "MU-C116-00-15-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -6085,7 +6085,7 @@
               "sku": "MU-C116-00-15-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -6534,7 +6534,7 @@
         "sku": "MU-C109-00-12-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "12\""
@@ -6727,7 +6727,7 @@
               "sku": "MU-C109-00-12-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "12\""
@@ -6902,7 +6902,7 @@
         "sku": "MU-C109-00-15-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -7095,7 +7095,7 @@
               "sku": "MU-C109-00-15-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -7270,7 +7270,7 @@
         "sku": "MU-C109-00-15-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -7463,7 +7463,7 @@
               "sku": "MU-C109-00-15-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -7638,7 +7638,7 @@
         "sku": "MEM-85-00-30-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-85-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2237843134/6719411244/MEM-85-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "30\""
@@ -7787,7 +7787,7 @@
               "sku": "MEM-85-00-30-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-85-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2237843134/6719411244/MEM-85-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "30\""
@@ -7942,7 +7942,7 @@
         "sku": "MEM-427-00-12-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-427-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3333122341/2174788927/MEM-427-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "12\""
@@ -8142,7 +8142,7 @@
               "sku": "MEM-427-00-12-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-427-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3333122341/2174788927/MEM-427-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "12\""
@@ -8344,7 +8344,7 @@
         "sku": "MU-C026-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C026-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5848486632/5677677468/MU-C026-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -8519,7 +8519,7 @@
               "sku": "MU-C026-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C026-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5848486632/5677677468/MU-C026-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -8749,7 +8749,7 @@
         "sku": "MU-C017-00-30-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "30\""
@@ -8967,7 +8967,7 @@
               "sku": "MU-C017-00-30-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "30\""
@@ -9122,7 +9122,7 @@
         "sku": "MU-C025-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C025-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3771343389/1619263466/MU-C025-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -9279,7 +9279,7 @@
               "sku": "MU-C025-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C025-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3771343389/1619263466/MU-C025-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -9746,7 +9746,7 @@
         "sku": "MU-C109-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -9939,7 +9939,7 @@
               "sku": "MU-C109-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -10384,7 +10384,7 @@
         "sku": "MU-C109-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -10543,7 +10543,7 @@
               "sku": "MU-C109-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -10718,7 +10718,7 @@
         "sku": "MU-C109-00-15-Gold",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Gold.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -10911,7 +10911,7 @@
               "sku": "MU-C109-00-15-Gold",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Gold.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -11719,7 +11719,7 @@
         "sku": "MU-C017-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -11937,7 +11937,7 @@
               "sku": "MU-C017-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -12092,7 +12092,7 @@
         "sku": "MEM-85-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-85-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2237843134/6719411244/MEM-85-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -12249,7 +12249,7 @@
               "sku": "MEM-85-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-85-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2237843134/6719411244/MEM-85-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -13596,7 +13596,7 @@
         "sku": "MU-C001-00-15-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C001-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/5711666546/MU-C001-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -13753,7 +13753,7 @@
               "sku": "MU-C001-00-15-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C001-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/5711666546/MU-C001-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -13908,7 +13908,7 @@
         "sku": "MU-C109-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -14022,7 +14022,7 @@
         "sku": "MU-C109-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -14215,7 +14215,7 @@
               "sku": "MU-C109-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -14325,7 +14325,7 @@
               "sku": "MU-C109-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -14500,7 +14500,7 @@
         "sku": "MEM-442-00-15-Gold",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-442-00-Gold.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2245621743/3448914172/MEM-442-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -14700,7 +14700,7 @@
               "sku": "MEM-442-00-15-Gold",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-442-00-Gold.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2245621743/3448914172/MEM-442-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -14902,7 +14902,7 @@
         "sku": "MU-C109-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -15095,7 +15095,7 @@
               "sku": "MU-C109-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -15270,7 +15270,7 @@
         "sku": "MU-C109-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -15429,7 +15429,7 @@
               "sku": "MU-C109-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -15888,7 +15888,7 @@
         "sku": "MU-C109-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -16081,7 +16081,7 @@
               "sku": "MU-C109-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -16256,7 +16256,7 @@
         "sku": "MEM-380-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-380-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/4938758498/3233741438/MEM-380-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -16374,7 +16374,7 @@
               "sku": "MEM-380-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-380-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/4938758498/3233741438/MEM-380-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -16508,7 +16508,7 @@
         "sku": "MU-C010-00-24-White",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C010-00-White.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/6585954757/3858714311/MU-C010-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -16665,7 +16665,7 @@
               "sku": "MU-C010-00-24-White",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C010-00-White.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/6585954757/3858714311/MU-C010-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -17072,7 +17072,7 @@
         "sku": "MU-C026-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C026-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5848486632/5677677468/MU-C026-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -17247,7 +17247,7 @@
               "sku": "MU-C026-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C026-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5848486632/5677677468/MU-C026-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -17412,7 +17412,7 @@
         "sku": "MU-C109-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -17605,7 +17605,7 @@
               "sku": "MU-C109-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -17780,7 +17780,7 @@
         "sku": "MEM-182-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-182-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/9554894638/7585656488/MEM-182-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -17919,7 +17919,7 @@
               "sku": "MEM-182-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-182-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/9554894638/7585656488/MEM-182-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -18316,7 +18316,7 @@
         "sku": "MU-C109-00-15-Copper",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Copper.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -18509,7 +18509,7 @@
               "sku": "MU-C109-00-15-Copper",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Copper.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -18684,7 +18684,7 @@
         "sku": "MU-C109-00-15-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -18877,7 +18877,7 @@
               "sku": "MU-C109-00-15-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -19304,7 +19304,7 @@
         "sku": "MEM-380-00-12-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-380-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/4938758498/3233741438/MEM-380-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "12\""
@@ -19422,7 +19422,7 @@
               "sku": "MEM-380-00-12-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-380-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/4938758498/3233741438/MEM-380-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "12\""
@@ -19621,7 +19621,7 @@
         "sku": "MU-C017-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -19839,7 +19839,7 @@
               "sku": "MU-C017-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -19994,7 +19994,7 @@
         "sku": "MU-C116-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -20143,7 +20143,7 @@
               "sku": "MU-C116-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -20308,7 +20308,7 @@
         "sku": "MU-C116-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -20457,7 +20457,7 @@
               "sku": "MU-C116-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -20622,7 +20622,7 @@
         "sku": "MU-C109-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -20781,7 +20781,7 @@
               "sku": "MU-C109-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -21240,7 +21240,7 @@
         "sku": "MU-C116-00-30-White",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-White.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "30\""
@@ -21415,7 +21415,7 @@
               "sku": "MU-C116-00-30-White",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-White.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "30\""
@@ -21580,7 +21580,7 @@
         "sku": "MU-C017-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -21802,7 +21802,7 @@
               "sku": "MU-C017-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -22018,7 +22018,7 @@
         "sku": "MU-C025-00-30-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C025-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3771343389/1619263466/MU-C025-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "30\""
@@ -22175,7 +22175,7 @@
               "sku": "MU-C025-00-30-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C025-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3771343389/1619263466/MU-C025-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "30\""
@@ -22330,7 +22330,7 @@
         "sku": "MU-C116-00-24-Silver",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Silver.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -22505,7 +22505,7 @@
               "sku": "MU-C116-00-24-Silver",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Silver.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -22670,7 +22670,7 @@
         "sku": "MEM-194-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-194-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8829546724/4749733431/MEM-194-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -22809,7 +22809,7 @@
               "sku": "MEM-194-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-194-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8829546724/4749733431/MEM-194-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -22954,7 +22954,7 @@
         "sku": "MU-C018-00-30-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C018-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7878844517/5354466325/MU-C018-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "30\""
@@ -23093,7 +23093,7 @@
               "sku": "MU-C018-00-30-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C018-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7878844517/5354466325/MU-C018-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "30\""
@@ -23248,7 +23248,7 @@
         "sku": "MU-C109-00-15-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -23441,7 +23441,7 @@
               "sku": "MU-C109-00-15-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -23616,7 +23616,7 @@
         "sku": "MEM-346-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-346-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/4912448347/8443524411/MEM-346-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -23773,7 +23773,7 @@
               "sku": "MEM-346-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-346-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/4912448347/8443524411/MEM-346-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -23993,7 +23993,7 @@
         "sku": "MU-C116-00-30-Copper",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Copper.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "30\""
@@ -24229,7 +24229,7 @@
               "sku": "MU-C116-00-30-Copper",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Copper.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "30\""
@@ -24678,7 +24678,7 @@
         "sku": "MU-C116-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -24853,7 +24853,7 @@
               "sku": "MU-C116-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C116-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/6478649684/MU-C116-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -25018,7 +25018,7 @@
         "sku": "MU-C025-00-15-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C025-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3771343389/1619263466/MU-C025-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -25175,7 +25175,7 @@
               "sku": "MU-C025-00-15-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C025-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3771343389/1619263466/MU-C025-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -25582,7 +25582,7 @@
         "sku": "MU-C109-00-15-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -25775,7 +25775,7 @@
               "sku": "MU-C109-00-15-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -25950,7 +25950,7 @@
         "sku": "MEM-85-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-85-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2237843134/6719411244/MEM-85-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -26107,7 +26107,7 @@
               "sku": "MEM-85-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MEM-85-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2237843134/6719411244/MEM-85-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -26262,7 +26262,7 @@
         "sku": "MU-C109-00-15-Copper",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Copper.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "15\""
@@ -26455,7 +26455,7 @@
               "sku": "MU-C109-00-15-Copper",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Copper.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "15\""
@@ -26630,7 +26630,7 @@
         "sku": "MU-C109-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -26823,7 +26823,7 @@
               "sku": "MU-C109-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -27502,7 +27502,7 @@
         "sku": "MU-C109-00-12-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "12\""
@@ -27695,7 +27695,7 @@
               "sku": "MU-C109-00-12-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "12\""
@@ -29006,7 +29006,7 @@
         "sku": "MU-C017-00-24-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -29157,7 +29157,7 @@
               "sku": "MU-C017-00-24-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C017-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/1326774888/MU-C017-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""
@@ -29306,7 +29306,7 @@
         "sku": "MU-C109-00-18-Black",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "18\""
@@ -29493,7 +29493,7 @@
               "sku": "MU-C109-00-18-Black",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C109-00-Black.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7747438832/7834775479/MU-C109-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "18\""
@@ -29662,7 +29662,7 @@
         "sku": "MU-C027-00-24-Silver",
         "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C027-00-Silver.png",
         "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/6533354679/3788141244/MU-C027-00.svg",
-        "type": "2DMetalArt",
+        "type": "MetalArt",
         "option1": {
           "name": "Size",
           "value": "24\""
@@ -29905,7 +29905,7 @@
               "sku": "MU-C027-00-24-Silver",
               "image": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/01+-+Product+Variant+Images/01+-+White+Backdrop/MU-C027-00-Silver.png",
               "svg": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/6533354679/3788141244/MU-C027-00.svg",
-              "type": "2DMetalArt",
+              "type": "MetalArt",
               "option1": {
                 "name": "Size",
                 "value": "24\""

@@ -460,7 +460,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "'2DMetalArt'",
+          "default": "'MetalArt'",
           "mappedType": "string"
         },
         "height": {

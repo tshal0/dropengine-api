@@ -156,7 +156,7 @@ components:
                 data:
                   - uuid: e06cc34d-6979-44b2-9fdc-54fbb7edc05f
                     sku: MU-C001-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '1'
                     tags:
                       - Steel
@@ -184,7 +184,7 @@ components:
                     productType: null
                   - uuid: fff90a63-6b5b-4b01-a7be-6a5205ecf7c5
                     sku: MU-C004-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     tags:
                       - Steel
@@ -219,7 +219,7 @@ components:
                     productType: null
                   - uuid: 1aab0038-5211-4017-8263-a6f437c83b7e
                     sku: MU-C005-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '3'
                     tags:
                       - Steel
@@ -248,7 +248,7 @@ components:
                     productType: null
                   - uuid: 0c1f7dac-3547-47c2-ac13-034c3a653175
                     sku: MU-C116-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '3'
                     tags:
                       - Steel
@@ -285,7 +285,7 @@ components:
                     productType: null
                   - uuid: 50118145-07b4-41d0-8841-b20dbbc6d8ed
                     sku: MU-C017-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     tags:
                       - Steel
@@ -313,7 +313,7 @@ components:
                     productType: null
                   - uuid: 1b9f757b-45bc-4b42-a615-b42e47b197de
                     sku: MEM-27-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     tags:
                       - Steel
@@ -547,7 +547,7 @@ components:
                 data:
                   - uuid: e06cc34d-6979-44b2-9fdc-54fbb7edc05f
                     sku: MU-C001-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '1'
                     tags:
                       - Steel
@@ -575,7 +575,7 @@ components:
                     productType: null
                   - uuid: fff90a63-6b5b-4b01-a7be-6a5205ecf7c5
                     sku: MU-C004-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     tags:
                       - Steel
@@ -610,7 +610,7 @@ components:
                     productType: null
                   - uuid: 1aab0038-5211-4017-8263-a6f437c83b7e
                     sku: MU-C005-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '3'
                     tags:
                       - Steel
@@ -639,7 +639,7 @@ components:
                     productType: null
                   - uuid: 0c1f7dac-3547-47c2-ac13-034c3a653175
                     sku: MU-C116-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '3'
                     tags:
                       - Steel
@@ -676,7 +676,7 @@ components:
                     productType: null
                   - uuid: 50118145-07b4-41d0-8841-b20dbbc6d8ed
                     sku: MU-C017-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     tags:
                       - Steel
@@ -704,7 +704,7 @@ components:
                     productType: null
                   - uuid: 1b9f757b-45bc-4b42-a615-b42e47b197de
                     sku: MEM-27-00
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     tags:
                       - Steel
@@ -928,7 +928,7 @@ components:
                 errors: []
                 imported:
                   - uuid: e06cc34d-6979-44b2-9fdc-54fbb7edc05f
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '1'
                     sku: MU-C001-00
                     tags:
@@ -956,7 +956,7 @@ components:
                     createdAt: '2022-03-24T20:43:26.000Z'
                     updatedAt: '2022-04-01T19:43:31.124Z'
                   - uuid: fff90a63-6b5b-4b01-a7be-6a5205ecf7c5
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     sku: MU-C004-00
                     tags:
@@ -991,7 +991,7 @@ components:
                     createdAt: '2022-03-24T20:43:26.000Z'
                     updatedAt: '2022-04-01T19:43:31.124Z'
                   - uuid: 1aab0038-5211-4017-8263-a6f437c83b7e
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '3'
                     sku: MU-C005-00
                     tags:
@@ -1020,7 +1020,7 @@ components:
                     createdAt: '2022-03-24T20:43:26.000Z'
                     updatedAt: '2022-04-01T19:43:31.124Z'
                   - uuid: 0c1f7dac-3547-47c2-ac13-034c3a653175
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '3'
                     sku: MU-C116-00
                     tags:
@@ -1057,7 +1057,7 @@ components:
                     createdAt: '2022-03-24T20:43:26.000Z'
                     updatedAt: '2022-04-01T19:43:31.123Z'
                   - uuid: 50118145-07b4-41d0-8841-b20dbbc6d8ed
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     sku: MU-C017-00
                     tags:
@@ -1085,7 +1085,7 @@ components:
                     createdAt: '2022-03-24T20:43:26.000Z'
                     updatedAt: '2022-04-01T19:43:31.124Z'
                   - uuid: 1b9f757b-45bc-4b42-a615-b42e47b197de
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     sku: MEM-27-00
                     tags:
@@ -1132,7 +1132,7 @@ components:
                 errors: []
                 imported:
                   - uuid: e06cc34d-6979-44b2-9fdc-54fbb7edc05f
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '1'
                     sku: MU-C001-00
                     tags:
@@ -1160,7 +1160,7 @@ components:
                     createdAt: '2022-03-24T20:43:26.000Z'
                     updatedAt: '2022-04-01T19:43:31.124Z'
                   - uuid: fff90a63-6b5b-4b01-a7be-6a5205ecf7c5
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     sku: MU-C004-00
                     tags:
@@ -1195,7 +1195,7 @@ components:
                     createdAt: '2022-03-24T20:43:26.000Z'
                     updatedAt: '2022-04-01T19:43:31.124Z'
                   - uuid: 1aab0038-5211-4017-8263-a6f437c83b7e
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '3'
                     sku: MU-C005-00
                     tags:
@@ -1224,7 +1224,7 @@ components:
                     createdAt: '2022-03-24T20:43:26.000Z'
                     updatedAt: '2022-04-01T19:43:31.124Z'
                   - uuid: 0c1f7dac-3547-47c2-ac13-034c3a653175
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '3'
                     sku: MU-C116-00
                     tags:
@@ -1261,7 +1261,7 @@ components:
                     createdAt: '2022-03-24T20:43:26.000Z'
                     updatedAt: '2022-04-01T19:43:31.123Z'
                   - uuid: 50118145-07b4-41d0-8841-b20dbbc6d8ed
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     sku: MU-C017-00
                     tags:
@@ -1289,7 +1289,7 @@ components:
                     createdAt: '2022-03-24T20:43:26.000Z'
                     updatedAt: '2022-04-01T19:43:31.124Z'
                   - uuid: 1b9f757b-45bc-4b42-a615-b42e47b197de
-                    type: 2DMetalArt
+                    type: MetalArt
                     pricingTier: '2'
                     sku: MEM-27-00
                     tags:

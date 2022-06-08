@@ -5,7 +5,7 @@ import { IVariantOptionsProps, VariantOptions } from "./VariantOptions";
 import validator from "validator";
 export enum ProductTypes {
   Steel = "Steel",
-  MetalArt = "2DMetalArt",
+  MetalArt = "MetalArt",
   Jewelry = "Jewelry",
   Wood = "Wood",
   Canvas = "Canvas",
@@ -13,7 +13,7 @@ export enum ProductTypes {
 }
 export enum ProductTypeSlugs {
   Steel = "steel",
-  MetalArt = "2d-metal-art",
+  MetalArt = "metal-art",
   Jewelry = "jewelry",
   Wood = "wood",
   Canvas = "canvas",

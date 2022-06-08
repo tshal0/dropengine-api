@@ -45,7 +45,7 @@ describe("ProductTypesRepository", () => {
     let variant: Variant;
     let dbVariant: DbProductVariant;
 
-    const PROD_TYPE = `2DMetalArt`;
+    const PROD_TYPE = `MetalArt`;
     const PSKU = `MEM-000-01`;
     const VSKU = `${PSKU}-12-Black`;
     beforeEach(async () => {

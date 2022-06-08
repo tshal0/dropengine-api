@@ -1,5 +1,11 @@
 import { ProductTypesRepository } from "@catalog/database";
-import { IProductTypeProps, ProductType } from "@catalog/model";
+import {
+  IProductTypeProps,
+  LivePreview,
+  ProductType,
+  ProductTypes,
+  ProductTypeSlugs,
+} from "@catalog/model";
 import { Injectable, Logger, Scope } from "@nestjs/common";
 import { CreateProductTypeDto } from "..";
 
@@ -17,8 +23,8 @@ export class ProductTypeService {
   ): Promise<ProductType> {
     let props: IProductTypeProps = {
       id: dto.id,
-      name: dto.name,
-      slug: dto.slug,
+      name: ProductTypes[dto.name],
+      slug: ProductTypeSlugs[dto.name],
       image: dto.image,
       productionData: dto.productionData,
       option1: dto.option1,
@@ -47,5 +53,43 @@ export class ProductTypeService {
 
   public async delete(id: number): Promise<any> {
     return await this._repo.delete(id);
+  }
+
+  public async createMetalArt() {
+    let type = new ProductType({
+      name: ProductTypes.MetalArt,
+      slug: ProductTypeSlugs.MetalArt,
+      option1: {
+        enabled: true,
+        name: "Size",
+        values: [
+          { enabled: true, value: '12"' },
+          { enabled: true, value: '15"' },
+          { enabled: true, value: '18"' },
+          { enabled: true, value: '24"' },
+          { enabled: true, value: '30"' },
+        ],
+      },
+      option2: {
+        enabled: true,
+        name: "Color",
+        values: [
+          { enabled: true, value: "Black" },
+          { enabled: true, value: "White" },
+          { enabled: true, value: "Copper" },
+          { enabled: true, value: "Gold" },
+          { enabled: true, value: "Silver" },
+        ],
+      },
+      option3: { enabled: false, name: null, values: [] },
+      livePreview: null,
+      productionData: null,
+      image: "",
+      id: null,
+      products: [],
+      createdAt: null,
+      updatedAt: null,
+    });
+    return await this._repo.create(type);
   }
 }

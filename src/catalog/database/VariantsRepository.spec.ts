@@ -289,7 +289,7 @@ describe("VariantsRepository", () => {
       expect(error).not.toBeInstanceOf(NoErrorThrownError);
       expect(error).toBeInstanceOf(EntityNotFoundException);
       expect(error.getResponse()).toMatchObject({
-        id: "2DMetalArt",
+        id: "MetalArt",
         message: "ProductTypeNotFound",
         error: "ENTITY_NOT_FOUND",
       });
