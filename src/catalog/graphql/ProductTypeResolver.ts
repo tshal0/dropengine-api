@@ -18,20 +18,4 @@ export class ProductTypeResolver {
     else if (args.slug) return await this.service.findBySlug(args.slug);
     throw new NotFoundException(args.id || args.name || args.slug);
   }
-  @Query((returns) => ProductType)
-  async bySlug(@Args("slug") slug: string): Promise<ProductType> {
-    const entity = await this.service.findByName(slug);
-    if (!entity) {
-      throw new NotFoundException(slug);
-    }
-    return entity;
-  }
-  @Query((returns) => ProductType)
-  async byName(@Args("name") name: string): Promise<ProductType> {
-    const entity = await this.service.findByName(name);
-    if (!entity) {
-      throw new NotFoundException(name);
-    }
-    return entity;
-  }
 }

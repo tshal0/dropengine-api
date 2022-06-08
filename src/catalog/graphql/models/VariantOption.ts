@@ -3,8 +3,8 @@ import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType({ description: "VariantOption" })
 export class VariantOption implements IVariantOption {
-  @Field()
+  @Field({nullable: true})
   name: string;
-  @Field()
+  @Field({nullable: true})
   value: string;
 }

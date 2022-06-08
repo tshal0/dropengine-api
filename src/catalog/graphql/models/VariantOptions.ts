@@ -4,10 +4,10 @@ import { OptionValue } from "./OptionValue";
 
 @ObjectType({ description: "VariantOptions" })
 export class VariantOptions implements IVariantOptionsProps {
-  @Field()
+  @Field({ nullable: true })
   name: string;
   @Field()
   enabled: boolean;
-  @Field((type) => [OptionValue])
+  @Field((type) => [OptionValue], { nullable: true })
   values: OptionValue[];
 }

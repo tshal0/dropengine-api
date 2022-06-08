@@ -1,13 +1,13 @@
 import { ArgsType, Field, Int } from "@nestjs/graphql";
 import { Max, Min } from "class-validator";
 @ArgsType()
-export class ProductTypeArgs {
+export class VariantArgs {
   constructor() {}
 
-  @Field((type) => Int, { nullable: true })
+  @Field({ nullable: true })
   id: number;
   @Field({ nullable: true })
-  name: string;
+  sku: string;
   @Field({ nullable: true })
   slug: string;
 }

@@ -21,6 +21,8 @@ import {
   DbProductVariant,
 } from "./database/entities";
 import { ProductTypeResolver } from "./graphql";
+import { ProductResolver } from "./graphql/ProductResolver";
+import { VariantResolver } from "./graphql/VariantResolver";
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { ProductTypeResolver } from "./graphql";
     VariantService,
     CatalogService,
     ProductTypeResolver,
+    ProductResolver,
+    VariantResolver,
   ],
   exports: [CatalogService],
 })
