@@ -8,7 +8,7 @@ import {
 import { SalesOrderEvent } from "@sales/domain/events";
 import { ISalesMerchant } from "@sales/domain/model/SalesMerchant";
 import { IAddress } from "@shared/domain";
-import { Address } from "./Address";
+import { Address } from "@shared/graphql";
 import { Customer } from "./Customer";
 import { Merchant } from "./Merchant";
 import { SalesLineItem } from "./SalesLineItem";
@@ -22,7 +22,7 @@ export class SalesOrder implements ISalesOrderProps {
   }
   @Field((type) => ID)
   id: string;
-  @Field({nullable: true})
+  @Field({ nullable: true })
   seller: string;
   @Field()
   orderName: string;

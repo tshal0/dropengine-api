@@ -1,3 +1,4 @@
+import { PersonalizationRule, ProductionData, VariantOption } from "@catalog/graphql";
 import {
   IVariantOption,
   IProductionData,
@@ -6,12 +7,7 @@ import {
 import { Field, ObjectType } from "@nestjs/graphql";
 import { ISalesVariantProps } from "@sales/domain";
 import { IDimension, IMoney, IWeight } from "@shared/domain";
-import { Dimension } from "./Dimension";
-import { Money } from "./Money";
-import { PersonalizationRule } from "./PersonalizationRule";
-import { ProductionData } from "./ProductionData";
-import { VariantOption } from "./VariantOption";
-import { Weight } from "./Weight";
+import { Dimension, Money, Weight } from "@shared/graphql";
 
 @ObjectType({ description: "SalesVariant" })
 export class SalesVariant implements ISalesVariantProps {

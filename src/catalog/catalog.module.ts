@@ -20,6 +20,7 @@ import {
   DbProductType,
   DbProductVariant,
 } from "./database/entities";
+import { ProductTypeResolver } from "./graphql";
 
 @Module({
   imports: [
@@ -31,6 +32,11 @@ import {
     MyEasySuiteModule,
     MikroOrmModule.forFeature([DbProductType, DbProduct, DbProductVariant]),
   ],
+  controllers: [
+    ProductTypesController,
+    ProductsController,
+    ProductVariantsController,
+  ],
   providers: [
     ProductTypesRepository,
     ProductsRepository,
@@ -39,12 +45,8 @@ import {
     ProductService,
     VariantService,
     CatalogService,
+    ProductTypeResolver,
   ],
   exports: [CatalogService],
-  controllers: [
-    ProductTypesController,
-    ProductsController,
-    ProductVariantsController,
-  ],
 })
 export class CatalogModule {}

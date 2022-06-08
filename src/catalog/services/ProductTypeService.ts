@@ -50,6 +50,10 @@ export class ProductTypeService {
     const result = await this._repo.findByName(name);
     return result ? new ProductType(result.raw()) : null;
   }
+  public async findBySlug(slug: string): Promise<ProductType> {
+    const result = await this._repo.findBySlug(slug);
+    return result ? new ProductType(result.raw()) : null;
+  }
 
   public async delete(id: number): Promise<any> {
     return await this._repo.delete(id);

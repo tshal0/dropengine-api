@@ -3,20 +3,20 @@ import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType({ description: "PersonalizationRule" })
 export class PersonalizationRule implements IPersonalizationRule {
-  @Field({nullable: true})
+  @Field()
   name: string;
-  @Field({nullable: true})
+  @Field()
   type: string;
-  @Field({nullable: true})
+  @Field()
   label: string;
-  @Field({nullable: true})
+  @Field()
   options: string;
-  @Field({nullable: true})
+  @Field()
   pattern: string;
-  @Field({nullable: true})
+  @Field()
   required: boolean;
-  @Field({nullable: true})
+  @Field()
   maxLength: number;
-  @Field({nullable: true})
+  @Field()
   placeholder: string;
 }
