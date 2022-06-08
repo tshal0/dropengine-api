@@ -92,4 +92,21 @@ export class ProductTypeService {
     });
     return await this._repo.create(type);
   }
+  public async createUncategorized() {
+    let type = new ProductType({
+      name: ProductTypes.Uncategorized,
+      slug: ProductTypeSlugs.Uncategorized,
+      option1: { enabled: false, name: null, values: [] },
+      option2: { enabled: false, name: null, values: [] },
+      option3: { enabled: false, name: null, values: [] },
+      livePreview: null,
+      productionData: null,
+      image: "",
+      id: null,
+      products: [],
+      createdAt: null,
+      updatedAt: null,
+    });
+    return await this._repo.create(type);
+  }
 }

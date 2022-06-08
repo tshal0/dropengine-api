@@ -820,7 +820,7 @@
 											"const uuid = pm.collectionVariables.get('productTypeUuid')\r",
 											"\r",
 											"const expected = {\r",
-											"    \"name\": \"APITestProductType\",\r",
+											"    \"name\": \"Uncategorized\",\r",
 											"    \"image\": \"MockImage\",\r",
 											"    \"productionData\": {\r",
 											"        \"route\": \"1\",\r",
@@ -2086,7 +2086,7 @@
 		},
 		{
 			"key": "productTypeName",
-			"value": "APITestProductType",
+			"value": "Uncategorized",
 			"type": "string"
 		},
 		{

@@ -1331,7 +1331,7 @@ components:
       x-examples:
         example-1:
           uuid: fc74eb52-2e6f-4a3d-be95-5597ae5c11ae
-          name: APITestProductType
+          name: Uncategorized
           image: MockImage
           productionData:
             material: Mild Steel
@@ -1501,7 +1501,7 @@ components:
       x-examples:
         example-1:
           uuid: 906872df-1bcf-4c9b-8f18-6814da5bf698
-          type: APITestProductType
+          type: Uncategorized
           pricingTier: '1'
           sku: MU-C001-00
           tags:

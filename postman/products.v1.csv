@@ -1,5 +1,5 @@
 Id,Sku,Code,PriceTier,Type,Svg,Image,Tags,Option1Name,Option2Name,Option3Name,CustomOption1,CustomOption2,CustomOption3,CustomOption4,CustomOption5,CustomOption6
-,MU-C001-00,C001,1,APITestProductType,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/7329271441/MU-C001-00.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-Black.png,"Steel, Custom, Initial",Size,Color,,"{
+,MU-C001-00,C001,1,Uncategorized,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/2133323496/7329271441/MU-C001-00.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C001-00-Black.png,"Steel, Custom, Initial",Size,Color,,"{
   ""label"": ""Name"",
   ""placeholder"": ""Enter up to 16 characters"",
   ""required"": true,
@@ -14,7 +14,7 @@ Id,Sku,Code,PriceTier,Type,Svg,Image,Tags,Option1Name,Option2Name,Option3Name,Cu
   ""type"": ""Dropdown"",
   ""options"": ""A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z""
 }",,,,
-,MU-C004-00,C004,2,APITestProductType,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/1486874782/MU-C004-00.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C004-00-Black.png,"Steel, Custom, Initial",Size,Color,,"{
+,MU-C004-00,C004,2,Uncategorized,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/5747787946/1486874782/MU-C004-00.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C004-00-Black.png,"Steel, Custom, Initial",Size,Color,,"{
 ""label"": ""Top Text"",
 ""placeholder"": ""Enter up to 24 characters"",
 ""required"": true,
@@ -37,7 +37,7 @@ Id,Sku,Code,PriceTier,Type,Svg,Image,Tags,Option1Name,Option2Name,Option3Name,Cu
 ""type"": ""Dropdown"",
 ""options"": ""A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z""
 }",,,
-,MU-C005-00,C005,3,APITestProductType,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7191694457/7636424154/MU-C005-00.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C005-00-Black.png,"Steel, Custom, Initial",Size,Color,,"{
+,MU-C005-00,C005,3,Uncategorized,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7191694457/7636424154/MU-C005-00.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C005-00-Black.png,"Steel, Custom, Initial",Size,Color,,"{
 ""label"": ""Top Text"",
 ""placeholder"": ""Enter up to 24 characters"",
 ""required"": true,
@@ -54,7 +54,7 @@ Id,Sku,Code,PriceTier,Type,Svg,Image,Tags,Option1Name,Option2Name,Option3Name,Cu
 ""maxLength"": 24,
 ""pattern"": ""A-Z,a-z,0-9""
 }",,,,
-,MU-C116-00,C116,3,APITestProductType,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/1891427748/MU-C116-00.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C116-00-Black.png,"Steel, Custom, Outdoors, Tree",Size,Color,,"{
+,MU-C116-00,C116,3,Uncategorized,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/7737486998/1891427748/MU-C116-00.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C116-00-Black.png,"Steel, Custom, Outdoors, Tree",Size,Color,,"{
 ""label"": ""Top Text"",
 ""placeholder"": ""Enter up to 24 characters"",
 ""required"": true,
@@ -79,7 +79,7 @@ Id,Sku,Code,PriceTier,Type,Svg,Image,Tags,Option1Name,Option2Name,Option3Name,Cu
 ""maxLength"": 24,
 ""pattern"": ""A-Z,a-z,0-9""
 }",,,
-,MU-C017-00,C017,2,APITestProductType,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/5233468681/MU-C017-00.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C017-00-Black.png,"Steel, Custom, Initial",Size,Color,,"{
+,MU-C017-00,C017,2,Uncategorized,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/8846864191/5233468681/MU-C017-00.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MU-C017-00-Black.png,"Steel, Custom, Initial",Size,Color,,"{
 ""label"": ""Name"",
 ""placeholder"": ""Enter up to 16 characters"",
 ""required"": true,
@@ -94,7 +94,7 @@ Id,Sku,Code,PriceTier,Type,Svg,Image,Tags,Option1Name,Option2Name,Option3Name,Cu
 ""type"": ""Dropdown"",
 ""options"": ""A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z""
 }",,,,
-,MEM-27-00,27,2,APITestProductType,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3499663496/9643599499/27_04.20.2021.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MEM-27-00-Black.png,"Steel, Custom, Nurse",Size,Color,,"{
+,MEM-27-00,27,2,Uncategorized,https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/preview_images/3499663496/9643599499/27_04.20.2021.svg,https://s3.console.aws.amazon.com/s3/buckets/prodmyeasymonogram?region=us-east-2&prefix=Product/Product+Variant+Images+-+Background+1/MEM-27-00-Black.png,"Steel, Custom, Nurse",Size,Color,,"{
 ""label"": ""Name"",
 ""placeholder"": ""Enter up to 16 characters"",
 ""required"": true,

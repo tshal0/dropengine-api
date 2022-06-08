@@ -35,10 +35,7 @@ export class VariantService {
     if (!product) {
       throw new EntityNotFoundException(`ProductNotFound`, `${dto.productSku}`);
     }
-    let productType = await this._types.lookupByNameOrId({
-      id: product.productType.id,
-      name: dto.type,
-    });
+    let productType = product.productType;
     dto = this.swapVariantOptions(productType.raw(), dto);
 
     let props: IVariantProps = {
