@@ -97,7 +97,6 @@ type Weight {
 
 """SalesVariant"""
 type SalesVariant {
-  id: Float!
   sku: String!
   image: String!
   svg: String!
