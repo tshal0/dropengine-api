@@ -32,6 +32,7 @@ import { ApolloDriverConfig, ApolloDriver } from "@nestjs/apollo";
 import { GraphQLModule } from "@nestjs/graphql";
 import { DirectiveLocation, GraphQLDirective, GraphQLError, GraphQLFormattedError } from "graphql";
 import { upperDirectiveTransformer } from "@shared/graphql";
+import { MemModule } from './mem/mem.module';
 
 @Module({
   imports: [
@@ -93,6 +94,7 @@ import { upperDirectiveTransformer } from "@shared/graphql";
     CatalogModule,
     SalesModule,
     MyEasySuiteModule,
+    MemModule,
   ],
   providers: [
     {

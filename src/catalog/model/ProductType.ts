@@ -3,6 +3,7 @@ import { IProductionData, ProductionData } from "./ProductionData";
 import { ILivePreview, LivePreview } from "./LivePreview";
 import { IVariantOptionsProps, VariantOptions } from "./VariantOptions";
 import validator from "validator";
+
 export enum ProductTypes {
   Steel = "Steel",
   MetalArt = "MetalArt",
@@ -11,6 +12,7 @@ export enum ProductTypes {
   Canvas = "Canvas",
   Uncategorized = "Uncategorized",
 }
+
 export enum ProductTypeSlugs {
   Steel = "steel",
   MetalArt = "metal-art",
