@@ -2,6 +2,12 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import * as mysql2 from "mysql2/promise";
 import * as appInsights from "applicationinsights";
+import { NumberScalarMode } from "@nestjs/graphql";
+
+export interface IMerchantProductDesignResponse {
+  store_product_id: number;
+  image_url: string;
+}
 
 interface MemDatabaseOptions {
   endpoint?: string;
@@ -10,7 +16,7 @@ interface MemDatabaseOptions {
   password?: string;
 }
 @Injectable()
-export class MemService {
+export class MyEasyMonogramService {
   private pool: mysql2.Pool;
   private options: MemDatabaseOptions = {};
   constructor(private configService: ConfigService) {
@@ -30,17 +36,38 @@ export class MemService {
   async queryDesigns() {
     return await appInsights.wrapWithCorrelationContext(async () => {
       const connection = await this.pool.getConnection();
-      const resp = await connection.execute(selectDesigns());
-
-      connection.release();
-      return Object.values(resp[0][0])[0];
+      try {
+        const resp = await connection.execute(selectDesigns());
+        const result: IMerchantProductDesignResponse[] = Object.values(resp[0]);
+        return result;
+      } catch (err) {
+      } finally {
+        connection.release();
+      }
+    })();
+  }
+  async getDesign(id: string) {
+    return await appInsights.wrapWithCorrelationContext(async () => {
+      const connection = await this.pool.getConnection();
+      try {
+        const resp = await connection.execute(selectDesignObject(id));
+        const result = Object.values(resp[0][0])[0];
+        return result;
+      } catch (err) {
+      } finally {
+        connection.release();
+      }
     })();
   }
 }
-
 export const selectDesigns = () => `
-SELECT JSON_ARRAYAGG(
-	JSON_OBJECT(
+SELECT mrp.store_product_id, md.image_url FROM merchant_products AS mrp
+INNER JOIN merchant_design AS md
+ON md.duplicate_unique_id = mrp.duplicate_unique_id
+WHERE mrp.duplicate_unique_id IS NOT NULL AND mrp.store_product_id IS NOT NULL`;
+
+export const selectDesignObject = (id: string) => `
+SELECT JSON_OBJECT(
     'id', mp.id,
     'app_store_id', mp.app_store_id,
     'store_id', mp.store_id,
@@ -139,9 +166,8 @@ SELECT JSON_ARRAYAGG(
       ) FROM merchant_design AS merchd WHERE merchd.duplicate_unique_id = mp.duplicate_unique_id
     )
   )
-) 
 FROM merchant_products AS mp 
 INNER JOIN master_products AS masp
 ON masp.master_product_id = mp.master_product_id
-WHERE mp.duplicate_unique_id IS NOT NULL AND masp.is_enable_duplicate = 'Y'
+WHERE mp.duplicate_unique_id IS NOT NULL AND masp.is_enable_duplicate = 'Y' AND mp.store_product_id = ${id}
 `;

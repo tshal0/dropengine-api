@@ -17,19 +17,22 @@ export class IdentityService {
   ) {}
 
   async findOrCreateAccountByCode(code: string): Promise<Result<Account>> {
+    this.logger.debug(`Looking up Account '${code}'`);
     let result = await this._repo.loadByCompanyCode(
       CompanyCode.from(code).value()
     );
     if (result.isFailure) {
+      this.logger.debug(`AccountLookupFailed '${code}'`);
       let dto = new CreateAccountDto();
       dto.companyCode = code;
       dto.name = code;
-
+      this.logger.debug(`AdminLookup '${code}'`);
       let admin = await this.auth0.getAdminByEmail();
       dto.owner = User.fromAuth0User(admin).props();
-
+      this.logger.debug(`AccountCreate '${code}'`);
       result = Account.create(dto);
       if (result.isFailure) {
+        this.logger.debug(`AccountCreateFailed '${code}'`);
         this.logger.error(result.error);
         return result;
       }
