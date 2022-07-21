@@ -1,0 +1,307 @@
+[
+  {
+    "id": 64787,
+    "store": {
+      "name": "memappdemo",
+      "email": "shopifydev@lucentinnovation.com"
+    },
+    "title": "Christmas Tree Monogram - Wood Ornament",
+    "product_type": "Custom",
+    "design_elements": null,
+    "store_product_id": 7671870292119,
+    "duplicate_unique_id": "19927399931312467341"
+  },
+  {
+    "id": 64788,
+    "store": {
+      "name": "memappdemo",
+      "email": "shopifydev@lucentinnovation.com"
+    },
+    "title": "Magnetic Hanging Hardware",
+    "product_type": null,
+    "design_elements": [
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1656999626146-Keyring-Front.svg",
+        "is_deleted": "N",
+        "is_required": "Y",
+        "master_design": {
+          "name": "Front Design",
+          "type": "Front",
+          "width": 10,
+          "height": 10,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1656999626146-Keyring-Front.svg",
+          "resolution": 20,
+          "description": "Sunt culpa duis amet nisi labore voluptate esse. Occaecat proident consectetur dolor in occaecat aliquip. Cupidatat dolore officia minim laborum ullamco laboris et dolor laborum. Magna anim ex deserunt excepteur. Ullamco veniam ipsum reprehenderit amet enim culpa ex amet.\n\nIrure sit id minim ea. Sint anim veniam deserunt nulla. Fugiat proident irure adipisicing magna.\n\nNulla fugiat nulla minim proident est nulla. Laboris et anim enim sit commodo sint non sunt. Do aliqua labore fugiat velit quis.\n\nCupidatat et sunt consequat incididunt ut fugiat do tempor. Est laboris Lorem consectetur excepteur elit non cillum. Sunt deserunt cillum eu pariatur culpa sit labore qui sit.\n\nIn nisi quis sit magna laborum. Aliqua eiusmod anim cupidatat ea aliquip. Consectetur pariatur reprehenderit aliqua non.\n",
+          "is_required": "Y"
+        },
+        "is_master_required": "Y"
+      }
+    ],
+    "store_product_id": 7671887167639,
+    "duplicate_unique_id": "19927399918455942551"
+  },
+  {
+    "id": 64803,
+    "store": {
+      "name": "memappdemo",
+      "email": "shopifydev@lucentinnovation.com"
+    },
+    "title": "Test Designable Keychain",
+    "product_type": null,
+    "design_elements": [
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+        "is_deleted": "N",
+        "is_required": "Y",
+        "master_design": {
+          "name": "Keychain Front",
+          "type": "Etch",
+          "width": 300,
+          "height": 120,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+          "resolution": 300,
+          "description": "Test",
+          "is_required": "Y"
+        },
+        "is_master_required": "Y"
+      }
+    ],
+    "store_product_id": 7680919699607,
+    "duplicate_unique_id": "19927399921142476361"
+  },
+  {
+    "id": 64804,
+    "store": {
+      "name": "memappdemo",
+      "email": "shopifydev@lucentinnovation.com"
+    },
+    "title": "Test Designable Keychain",
+    "product_type": null,
+    "design_elements": [
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+        "is_deleted": "N",
+        "is_required": "Y",
+        "master_design": {
+          "name": "Keychain Front",
+          "type": "Etch",
+          "width": 300,
+          "height": 120,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+          "resolution": 300,
+          "description": "Test",
+          "is_required": "Y"
+        },
+        "is_master_required": "Y"
+      }
+    ],
+    "store_product_id": 7680933265559,
+    "duplicate_unique_id": "19927399921142476362"
+  },
+  {
+    "id": 64805,
+    "store": {
+      "name": "memappdemo",
+      "email": "shopifydev@lucentinnovation.com"
+    },
+    "title": "Test Designable Keychain",
+    "product_type": null,
+    "design_elements": [
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+        "is_deleted": "N",
+        "is_required": "Y",
+        "master_design": {
+          "name": "Keychain Front",
+          "type": "Etch",
+          "width": 300,
+          "height": 120,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+          "resolution": 300,
+          "description": "Test",
+          "is_required": "Y"
+        },
+        "is_master_required": "Y"
+      }
+    ],
+    "store_product_id": 7680932741271,
+    "duplicate_unique_id": "19927399921142476363"
+  },
+  {
+    "id": 64806,
+    "store": {
+      "name": "memappdemo",
+      "email": "shopifydev@lucentinnovation.com"
+    },
+    "title": "Test Designable Keychain",
+    "product_type": null,
+    "design_elements": [
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+        "is_deleted": "N",
+        "is_required": "Y",
+        "master_design": {
+          "name": "Keychain Front",
+          "type": "Etch",
+          "width": 300,
+          "height": 120,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+          "resolution": 300,
+          "description": "Test",
+          "is_required": "Y"
+        },
+        "is_master_required": "Y"
+      }
+    ],
+    "store_product_id": 7680932282519,
+    "duplicate_unique_id": "19927399921142476364"
+  },
+  {
+    "id": 64807,
+    "store": {
+      "name": "memappdemo",
+      "email": "shopifydev@lucentinnovation.com"
+    },
+    "title": "Test Designable Keychain",
+    "product_type": null,
+    "design_elements": [
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+        "is_deleted": "N",
+        "is_required": "Y",
+        "master_design": {
+          "name": "Keychain Front",
+          "type": "Etch",
+          "width": 300,
+          "height": 120,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+          "resolution": 300,
+          "description": "Test",
+          "is_required": "Y"
+        },
+        "is_master_required": "Y"
+      }
+    ],
+    "store_product_id": 7680931692695,
+    "duplicate_unique_id": "19927399921142476365"
+  },
+  {
+    "id": 64808,
+    "store": {
+      "name": "memappdemo",
+      "email": "shopifydev@lucentinnovation.com"
+    },
+    "title": "Test Designable Keychain",
+    "product_type": null,
+    "design_elements": [
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+        "is_deleted": "N",
+        "is_required": "Y",
+        "master_design": {
+          "name": "Keychain Front",
+          "type": "Etch",
+          "width": 300,
+          "height": 120,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+          "resolution": 300,
+          "description": "Test",
+          "is_required": "Y"
+        },
+        "is_master_required": "Y"
+      }
+    ],
+    "store_product_id": 7680930250903,
+    "duplicate_unique_id": "19927399921142476366"
+  },
+  {
+    "id": 64815,
+    "store": {
+      "name": "memappdemo",
+      "email": "shopifydev@lucentinnovation.com"
+    },
+    "title": "Test Designable Keychain",
+    "product_type": null,
+    "design_elements": [
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+        "is_deleted": "N",
+        "is_required": "Y",
+        "master_design": {
+          "name": "Keychain Front",
+          "type": "Etch",
+          "width": 300,
+          "height": 120,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+          "resolution": 300,
+          "description": "Test",
+          "is_required": "Y"
+        },
+        "is_master_required": "Y"
+      },
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Merchant/designs/1657564106361-KeychainStyleTesting.svg",
+        "is_deleted": "N",
+        "is_required": "N",
+        "master_design": {
+          "name": "Keychain Back",
+          "type": "Swaggggg",
+          "width": 50,
+          "height": 500,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657563837264-Keychain_Front.svg",
+          "resolution": 600,
+          "description": "sample description",
+          "is_required": "N"
+        },
+        "is_master_required": "N"
+      }
+    ],
+    "store_product_id": 7685337743511,
+    "duplicate_unique_id": "19927399921142476367"
+  },
+  {
+    "id": 64822,
+    "store": {
+      "name": "memappdemo",
+      "email": "shopifydev@lucentinnovation.com"
+    },
+    "title": "Test Designable Keychain",
+    "product_type": null,
+    "design_elements": [
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+        "is_deleted": "N",
+        "is_required": "Y",
+        "master_design": {
+          "name": "Keychain Front",
+          "type": "Etch",
+          "width": 300,
+          "height": 120,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657265978947-Keychain_Front.svg",
+          "resolution": 300,
+          "description": "Test",
+          "is_required": "Y"
+        },
+        "is_master_required": "Y"
+      },
+      {
+        "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657563837264-Keychain_Front.svg",
+        "is_deleted": "N",
+        "is_required": "Y",
+        "master_design": {
+          "name": "Keychain Back",
+          "type": "Swaggggg",
+          "width": 50,
+          "height": 500,
+          "image_url": "https://prodmyeasymonogram.s3.us-east-2.amazonaws.com/Product/designs/1657563837264-Keychain_Front.svg",
+          "resolution": 600,
+          "description": "sample description",
+          "is_required": "N"
+        },
+        "is_master_required": "N"
+      }
+    ],
+    "store_product_id": 7693144195223,
+    "duplicate_unique_id": "199273999211424763612"
+  }
+]

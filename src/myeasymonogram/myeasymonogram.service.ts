@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import * as mysql2 from "mysql2/promise";
 import * as appInsights from "applicationinsights";
 import { NumberScalarMode } from "@nestjs/graphql";
+import { MerchantProduct } from "./MerchantProduct";
 
 export interface IMerchantProductDesignResponse {
   store_product_id: number;
@@ -15,9 +16,14 @@ interface MemDatabaseOptions {
   username?: string;
   password?: string;
 }
+
+// Pull Designs, Design, Products with Designs embedded
+
 @Injectable()
 export class MyEasyMonogramService {
+  private readonly logger: Logger = new Logger(MyEasyMonogramService.name);
   private pool: mysql2.Pool;
+  private connection: mysql2.PoolConnection;
   private options: MemDatabaseOptions = {};
   constructor(private configService: ConfigService) {
     this.options.endpoint = this.configService.get<string>("MEM_DB_HOST");
@@ -35,35 +41,74 @@ export class MyEasyMonogramService {
 
   async queryDesigns() {
     return await appInsights.wrapWithCorrelationContext(async () => {
-      const connection = await this.pool.getConnection();
       try {
-        const resp = await connection.execute(selectDesigns());
-        const result: IMerchantProductDesignResponse[] = Object.values(resp[0]);
+        this.connection = await this.pool.getConnection();
+        const resp = await this.connection.execute(selectDesigns());
+        const result: MerchantProduct[] = Object.values(resp[0][0])[0] as any;
         return result;
       } catch (err) {
+        this.logger.error(err);
       } finally {
-        connection.release();
+        this.logger.log(`[queryDesigns] Releasing connection`);
+        this.connection.release();
       }
     })();
   }
   async getDesign(id: string) {
     return await appInsights.wrapWithCorrelationContext(async () => {
-      const connection = await this.pool.getConnection();
       try {
-        const resp = await connection.execute(selectDesignObject(id));
+        this.connection = await this.pool.getConnection();
+        const resp = await this.connection.execute(selectDesignObject(id));
         const result = Object.values(resp[0][0])[0];
         return result;
       } catch (err) {
+        this.logger.error(err);
       } finally {
-        connection.release();
+        this.logger.log(`[getDesign] Releasing connection`);
+        this.connection.release();
       }
     })();
   }
 }
 export const selectDesigns = () => `
-SELECT mrp.store_product_id, md.image_url FROM merchant_products AS mrp
-INNER JOIN merchant_design AS md
-ON md.duplicate_unique_id = mrp.duplicate_unique_id
+SELECT JSON_ARRAYAGG(
+	JSON_OBJECT(
+    'id', mrp.id,
+    'title', mrp.title,
+    'product_type', mrp.product_type,
+    'store_product_id', mrp.store_product_id,
+    'duplicate_unique_id', mrp.duplicate_unique_id,
+    'store', (
+      SELECT JSON_OBJECT(
+        'email', usr.email,
+        'name', usr.first_name
+      ) FROM users AS usr WHERE usr.store_id = mrp.store_id
+    ),
+    'design_elements', (
+      SELECT JSON_ARRAYAGG(
+        JSON_OBJECT(
+          'is_required', merchd.is_required,
+          'is_master_required', merchd.is_master_required,
+          'image_url', merchd.image_url,
+          'is_deleted', merchd.is_deleted,
+          'master_design', (
+            SELECT JSON_OBJECT(
+              'name', masd.name,
+              'type', masd.type,
+              'description', masd.description,
+              'is_required', masd.is_required,
+              'height', masd.height,
+              'width', masd.width,
+              'resolution', masd.resolution,
+              'image_url', masd.image_url
+            ) FROM master_design AS masd 
+            WHERE masd.id = merchd.master_design_id
+          )
+        ) 
+      ) FROM merchant_design AS merchd WHERE merchd.duplicate_unique_id = mrp.duplicate_unique_id
+    ) 
+  )
+) FROM merchant_products AS mrp
 WHERE mrp.duplicate_unique_id IS NOT NULL AND mrp.store_product_id IS NOT NULL`;
 
 export const selectDesignObject = (id: string) => `
