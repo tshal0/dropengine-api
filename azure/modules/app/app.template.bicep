@@ -112,6 +112,14 @@ param MyEasySuiteAuth0UserPassword string
 @secure()
 param MongoConnectionString string
 
+@secure()
+param MyEasyMonogramDbUser string
+@secure()
+param MyEasyMonogramDbPass string
+@secure()
+param MyEasyMonogramDbHost string
+@secure()
+param MyEasyMonogramDbName string
 
 @description('The client secret for the Auth0 integration')
 @secure()
@@ -345,6 +353,22 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
         {
           name: 'MONGO_CONNECTION_STRING'
           value: MongoConnectionString
+        }
+        {
+          name: 'MEM_DB_USER'
+          value: MyEasyMonogramDbUser
+        }
+        {
+          name: 'MEM_DB_PASS'
+          value: MyEasyMonogramDbPass
+        }
+        {
+          name: 'MEM_DB_HOST'
+          value: MyEasyMonogramDbHost
+        }
+        {
+          name: 'MEM_DB_NAME'
+          value: MyEasyMonogramDbName
         }
       ]
     }

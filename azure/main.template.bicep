@@ -97,6 +97,10 @@ module appService 'modules/app/app.template.bicep' = {
     MyEasySuiteAuth0UserPassword: kv.getSecret('MyEasySuiteAuth0UserPassword')
     MyEasySuiteAuth0UserName: kv.getSecret('MyEasySuiteAuth0UserName')
     MongoConnectionString: kv.getSecret('MongoConnectionString')
+    MyEasyMonogramDbUser: kv.getSecret('MyEasyMonogramDbUser')
+    MyEasyMonogramDbPass: kv.getSecret('MyEasyMonogramDbPass')
+    MyEasyMonogramDbHost: kv.getSecret('MyEasyMonogramDbHost')
+    MyEasyMonogramDbName: kv.getSecret('MyEasyMonogramDbName')
   }
 }
 
