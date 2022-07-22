@@ -50,7 +50,7 @@ export class MyEasyMonogramService {
         this.logger.error(err);
       } finally {
         this.logger.log(`[queryDesigns] Releasing connection`);
-        this.connection.release();
+        this.connection?.release();
       }
     })();
   }
@@ -65,7 +65,7 @@ export class MyEasyMonogramService {
         this.logger.error(err);
       } finally {
         this.logger.log(`[getDesign] Releasing connection`);
-        this.connection.release();
+        this.connection?.release();
       }
     })();
   }
