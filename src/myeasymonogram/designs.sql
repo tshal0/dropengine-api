@@ -14,6 +14,8 @@ SELECT JSON_ARRAYAGG(
     'design_elements', (
       SELECT JSON_ARRAYAGG(
         JSON_OBJECT(
+          'id', merchd.id,
+          'duplicate_unique_id', merchd.duplicate_unique_id,
           'is_required', merchd.is_required,
           'is_master_required', merchd.is_master_required,
           'image_url', merchd.image_url,

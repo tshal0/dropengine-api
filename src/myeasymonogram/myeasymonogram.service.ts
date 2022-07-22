@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import * as mysql2 from "mysql2/promise";
 import * as appInsights from "applicationinsights";
 import { NumberScalarMode } from "@nestjs/graphql";
-import { MerchantProduct } from "./MerchantProduct";
+import { MEMProduct } from "./MEMMerchantProduct";
 
 export interface IMerchantProductDesignResponse {
   store_product_id: number;
@@ -44,7 +44,7 @@ export class MyEasyMonogramService {
       try {
         this.connection = await this.pool.getConnection();
         const resp = await this.connection.execute(selectDesigns());
-        const result: MerchantProduct[] = Object.values(resp[0][0])[0] as any;
+        const result: MEMProduct[] = Object.values(resp[0][0])[0] as any;
         return result;
       } catch (err) {
         this.logger.error(err);
