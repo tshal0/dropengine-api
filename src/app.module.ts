@@ -33,6 +33,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { DirectiveLocation, GraphQLDirective, GraphQLError, GraphQLFormattedError } from "graphql";
 import { upperDirectiveTransformer } from "@shared/graphql";
 import { MyEasyMonogramModule } from './myeasymonogram/myeasymonogram.module';
+import { PreviewModule } from './preview/preview.module';
 
 @Module({
   imports: [
@@ -95,6 +96,7 @@ import { MyEasyMonogramModule } from './myeasymonogram/myeasymonogram.module';
     SalesModule,
     MyEasySuiteModule,
     MyEasyMonogramModule,
+    PreviewModule,
   ],
   providers: [
     {

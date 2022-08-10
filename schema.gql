@@ -243,8 +243,8 @@ type Query {
   product(id: Float, sku: String, slug: String): Product!
   variant(id: Float, sku: String, slug: String): Variant!
   salesOrder(id: String!): SalesOrder!
-  salesOrderOptions(query: String, startDate: DateTime = "2022-06-21T05:00:00.000Z", endDate: DateTime = "2022-07-22T04:59:59.999Z"): SalesOrderQueryOptions!
-  salesOrders(page: Int = 0, size: Int = 25, query: String, startDate: DateTime = "2022-06-21T05:00:00.000Z", endDate: DateTime = "2022-07-22T04:59:59.999Z", sortBy: String = "orderDate", sortDir: String = "desc"): PaginatedSalesOrders!
+  salesOrderOptions(query: String, startDate: DateTime = "2022-07-11T05:00:00.000Z", endDate: DateTime = "2022-08-11T04:59:59.999Z"): SalesOrderQueryOptions!
+  salesOrders(page: Int = 0, size: Int = 25, query: String, startDate: DateTime = "2022-07-11T05:00:00.000Z", endDate: DateTime = "2022-08-11T04:59:59.999Z", sortBy: String = "orderDate", sortDir: String = "desc"): PaginatedSalesOrders!
 }
 
 type Subscription {
