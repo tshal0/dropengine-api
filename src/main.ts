@@ -99,10 +99,9 @@ async function bootstrap() {
   app.enableShutdownHooks();
 
   const port = config.get("PORT");
+  app.enableCors();
   await app.listen(`${Number(port)}`);
 
   wlog.log(`Application is running on: ${await app.getUrl()}`);
-
-  app.enableCors();
 }
 bootstrap();

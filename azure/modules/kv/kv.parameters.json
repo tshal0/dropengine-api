@@ -8,6 +8,9 @@
     "userObjectId": {
       "value": "484d7643-bde6-4ce8-8d42-2ab1c684c1df"
     },
+    "deploymentObjectId": {
+      "value": "b6f0cbc2-e4b8-4f24-9ef7-442014aa0e4d"
+    },
     "secretsObject": {
       "value": {
         "secrets": [
