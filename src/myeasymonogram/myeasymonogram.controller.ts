@@ -5,6 +5,11 @@ import { MyEasyMonogramService } from "./myeasymonogram.service";
 @Controller("myeasymonogram")
 export class MyEasyMonogramController {
   constructor(private client: MyEasyMonogramService) {}
+  @Get("/available_products")
+  async getAvailable() {
+    return await this.client.queryAvailable();
+  }
+
   @UseGuards(AuthGuard())
   @Get("/merchant_products")
   async getDesigns() {

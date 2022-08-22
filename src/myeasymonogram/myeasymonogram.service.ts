@@ -39,7 +39,23 @@ export class MyEasyMonogramService {
     });
   }
 
-  async queryDesigns() {
+  async queryAvailable(): Promise<number[]> {
+    return await appInsights.wrapWithCorrelationContext(async () => {
+      try {
+        this.connection = await this.pool.getConnection();
+        const resp = await this.connection.execute(selectDesigns());
+        const result: MEMProduct[] = Object.values(resp[0][0])[0] as any;
+        return result.map((r) => r.store_product_id);
+      } catch (err) {
+        this.logger.error(err);
+      } finally {
+        this.logger.log(`[queryDesigns] Releasing connection`);
+        this.connection?.release();
+      }
+    })();
+  }
+
+  async queryDesigns(): Promise<MEMProduct[]> {
     return await appInsights.wrapWithCorrelationContext(async () => {
       try {
         this.connection = await this.pool.getConnection();
