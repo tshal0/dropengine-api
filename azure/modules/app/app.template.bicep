@@ -662,6 +662,22 @@ resource appSlot1 'Microsoft.Web/sites/slots@2021-02-01' = {
           name: 'MONGO_CONNECTION_STRING'
           value: MongoConnectionString
         }
+        {
+          name: 'MEM_DB_USER'
+          value: MyEasyMonogramDbUser
+        }
+        {
+          name: 'MEM_DB_PASS'
+          value: MyEasyMonogramDbPass
+        }
+        {
+          name: 'MEM_DB_HOST'
+          value: MyEasyMonogramDbHost
+        }
+        {
+          name: 'MEM_DB_NAME'
+          value: MyEasyMonogramDbName
+        }
       ]
     }
     scmSiteAlsoStopped: false
