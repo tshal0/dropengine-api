@@ -523,7 +523,7 @@ resource appSlot1 'Microsoft.Web/sites/slots@2021-02-01' = {
           value: saConnString
         }
         {
-          name: 'AZURE_STORAGE_ACCOUNT'
+          name: 'AZURE_STORAGE_ACCOUNT_NAME'
           value: saName
         }
         {

@@ -15,7 +15,9 @@ export class AzureStorageService {
     data: any
   ) {
     // Enter your storage account name and shared key
-    const account = this.config.get("AZURE_STORAGE_ACCOUNT_NAME");
+    const account =
+      this.config.get("AZURE_STORAGE_ACCOUNT_NAME") ||
+      this.config.get("AZURE_STORAGE_ACCOUNT");
     const accountKey = this.config.get("AZURE_STORAGE_SAS_KEY");
 
     // Use StorageSharedKeyCredential with storage account and account key
